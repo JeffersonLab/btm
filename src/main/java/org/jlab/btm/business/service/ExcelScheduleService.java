@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -101,13 +100,13 @@ public class ExcelScheduleService {
             //cell = row.getCell(1); // Weekday, skip
             cell = row.getCell(2); // GeV/pass
 
-            if (cell != null && cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+            if (cell != null && cell.getCellType() == CellType.NUMERIC) {
                 day.setKiloVoltsPerPass((int) gigaToKilo(cell.getNumericCellValue()));
             }
 
             cell = row.getCell(3); // Program
 
-            if (cell == null || cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+            if (cell == null || cell.getCellType() == CellType.BLANK) {
                 day.setAccProgram("OFF");
             } else {
                 String programStr = cell.getStringCellValue().toUpperCase();
@@ -211,7 +210,7 @@ public class ExcelScheduleService {
 
             String priorityHall = null;
 
-            if (cell != null && cell.getCellType() == Cell.CELL_TYPE_STRING) {
+            if (cell != null && cell.getCellType() == CellType.STRING) {
                 priorityHall = cell.getStringCellValue();
 
                 List<HallPriority> priorityList = BtmFunctions.parsePriorityString(priorityHall);
@@ -236,7 +235,7 @@ public class ExcelScheduleService {
 
             cell = row.getCell(13); // Pass
 
-            if(cell != null && cell.getCellType() == Cell.CELL_TYPE_STRING) {
+            if(cell != null && cell.getCellType() == CellType.STRING) {
                 String passString = cell.getStringCellValue();
 
                 String[] tokens = passString.split("/");
@@ -276,7 +275,7 @@ public class ExcelScheduleService {
     private HallProperties parseHallProperties(Cell cell, Hall hall, String currentUnits) throws UserFriendlyException {
         HallProperties properties = null;
 
-        if (cell != null && cell.getCellType() == Cell.CELL_TYPE_STRING) {
+        if (cell != null && cell.getCellType() == CellType.STRING) {
             String hallProperties = cell.getStringCellValue();
 
             if (hallProperties != null && !hallProperties.trim().isEmpty()) {
@@ -332,7 +331,7 @@ public class ExcelScheduleService {
         String purposeName = null;
         Integer programId = null;
 
-        if (cell != null && cell.getCellType() == Cell.CELL_TYPE_STRING) {
+        if (cell != null && cell.getCellType() == CellType.STRING) {
             purposeName = cell.getStringCellValue();
         }
 

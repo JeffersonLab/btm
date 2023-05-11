@@ -1,11 +1,11 @@
 package org.jlab.btm.business.service;
 
-import org.jlab.elog.Body;
-import org.jlab.elog.Library;
-import org.jlab.elog.LogEntry;
-import org.jlab.elog.LogEntryAdminExtension;
-import org.jlab.elog.exception.LogCertificateException;
-import org.jlab.elog.exception.LogIOException;
+import org.jlab.jlog.Body;
+import org.jlab.jlog.Library;
+import org.jlab.jlog.LogEntry;
+import org.jlab.jlog.LogEntryAdminExtension;
+import org.jlab.jlog.exception.LogCertificateException;
+import org.jlab.jlog.exception.LogIOException;
 
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
