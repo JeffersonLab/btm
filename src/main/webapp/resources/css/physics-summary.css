@@ -1,0 +1,48 @@
+.availability-legend {
+    margin-top: 11px;
+}
+
+.availability-legend td {
+    min-width: 3em;
+    padding: 1em 0.5em;
+}
+
+.sub-head-row {
+    height: 6em;
+    vertical-align: bottom;
+    border-bottom-width: 2px !important;
+}
+
+.chart-legend tbody tr.total-row,
+.chart-legend tbody tr.total-row th,
+.chart-legend tbody tr.total-row td {
+    border-top: 4px double #000 !important;
+    border-bottom: none !important;
+}
+
+.chart-legend tbody tr.percent-row,
+.chart-legend tbody tr.percent-row th,
+.chart-legend tbody tr.percent-row td {
+    border-top: none !important;
+    border-bottom: none !important;
+    padding-top: 0;
+}
+
+.data-table-panel {
+    overflow: auto;
+    font-size: 12px;
+}
+
+#graph-data-table td {
+    min-width: 50px;
+    text-align: right;
+}
+
+#multiplicity-hourly-table th,
+#multiplicity-hourly-table td {
+    text-align: right;
+}
+.sched-info {
+    font-size: 0.8em;
+    margin-bottom: 2em;
+}

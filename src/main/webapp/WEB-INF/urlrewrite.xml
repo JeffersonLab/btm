@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE urlrewrite
+        PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN"
+        "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
+
+<urlrewrite>
+
+    <!-- Rewrite timesheet URL query parameter -->
+    <rule>
+        <from>^/crew-chief-timesheet/(\d{2}-[a-zA-Z]{3}-\d{4})/(owl|day|swing)/(seconds|minutes|hours)$</from>
+        <to>/crew-chief-timesheet?day=$1&amp;shift=$2&amp;units=$3</to>
+    </rule>
+    <!-- Anchor links and redirects can be rewritten -->
+    <!-- This outbound rule isn't working
+   <outbound-rule>
+       <from>^/crew-chief-timesheet\?day=(\d{4}-\d{2}-\d{2})&amp;shift=(owl|day|swing)$</from>
+       <to>/crew-chief-timesheet/$1/$2</to>
+   </outbound-rule>
+   -->
+
+    <rule>
+        <from>^/schedule/([a-zA-Z]*-\d{4})$</from>
+        <to>/schedule?date=$1</to>
+    </rule>
+
+    <rule>
+        <from>^/schedule/([a-zA-Z]*-\d{4})/(\d*)$</from>
+        <to>/schedule?date=$1&amp;version=$2</to>
+    </rule>
+
+    <rule>
+        <from>^/schedule/([a-zA-Z]*-\d{4})/tentative$</from>
+        <to>/schedule?date=$1&amp;version=0</to>
+    </rule>
+
+
+    <!-- Resource Versioning -->
+
+    <!-- Rewrite resource link to strip off directory version -->
+    <rule>
+        <from>^/resources/v([0-9]+)/(.*)$</from>
+        <to>/resources/$2</to>
+    </rule>
+
+</urlrewrite>

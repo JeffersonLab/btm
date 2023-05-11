@@ -1,0 +1,84 @@
+.ui-datepicker {
+    width: 20em;
+}
+
+/*WARNING: having multiple date pickers will be a problem if some need calendar.  However, alternatives don't work on double-click'*/
+/*NOTE: monthpicker does not honor text changed by users in input box while picker dialog is open*/
+.ui-datepicker-calendar {
+    display: none;
+}
+
+.left-header-table td {
+    border: none;
+    text-align: right;
+    padding: 0;
+}
+
+.data-table .left-header-cell {
+    padding: 0;
+}
+
+.day-detail-table {
+    width: 100%;
+}
+
+.day-detail-table tr:first-child {
+    background-color: #f0f0f0;
+    text-align: left;
+}
+
+.day-detail-table td {
+    border: none;
+    padding: 0;
+}
+
+.day-detail-table tr {
+    text-align: right;
+}
+
+.weekday-header {
+    width: 90px;
+}
+
+.data-table td.detail-holder-cell {
+    padding: 0;
+    vertical-align: top;
+}
+
+.bad-data-day {
+    background-color: #ffffaa;
+}
+
+.bad-availability {
+    background-color: pink;
+}
+
+.print .quick-nav {
+    display: none;
+}
+
+#export-menu {
+    z-index: 10;
+}
+
+.print .data-table {
+    margin: 0 auto;
+}
+
+.print #bad-data-key-table {
+    margin: 0 auto;
+}
+
+.fullscreen .data-table th {
+    background-color: lightblue;
+}
+
+body.print:not(.fullscreen),
+body.print:not(.fullscreen) #content {
+    background-color: white;
+}
+
+.left-header-table,
+#calendar-table {
+    width: 100%;
+}

@@ -1,0 +1,430 @@
+.fullscreen #page {
+    max-width: none;
+    min-width: 100%;
+    box-sizing: border-box;
+    position: absolute;
+}
+
+.print.fullscreen #content,
+body.print.fullscreen {
+    background-color: white;
+}
+
+body.print.fullscreen .fork-option-pair {
+    top: 47px;
+}
+
+body.print.fullscreen #filter-flyout-widget {
+    display: inline-block;
+}
+
+.fullscreen .filter-flyout-ribbon {
+    left: 0;
+}
+
+body.fullscreen {
+    font-size: 16px;
+}
+
+/*.fullscreen #sticky-header,*/
+.fullscreen .filter-flyout-ribbon:before {
+    display: none;
+}
+
+.fullscreen .filterable-breadcrumb {
+    left: -12px;
+}
+
+/*body:not(.fullscreen) #fullscreen-title,
+.fullscreen .filterable-breadcrumb {
+    display: none;
+}*/
+body:not(.fullscreen) #table-wrap {
+    height: 500px;
+    overflow: auto;
+}
+
+#sticky-header {
+    margin-top: -24px;
+    height: 0;
+    width: 800px;
+    top: 0px;
+    position: sticky;
+    background-color: blue;
+    font-size: 12px;
+}
+
+.fullscreen #sticky-header {
+    height: 50px;
+    margin-top: 0;
+    margin-bottom: -62px;
+}
+
+#elastic-content {
+    width: auto;
+}
+
+#schedule-table {
+    font-size: 12px;
+}
+
+h2 {
+    margin: 16px 0 0 16px;
+}
+
+.ui-datepicker {
+    width: 20em;
+}
+
+/*WARNING: having multiple date pickers will be a problem if some need calendar.  However, alternatives don't work on double-click'*/
+/*NOTE: monthpicker does not honor text changed by users in input box while picker dialog is open*/
+.ui-datepicker-calendar {
+    display: none;
+}
+
+#form-panel {
+    margin-top: 16px;
+    height: 24px;
+}
+
+#new-version-form,
+#create-form,
+#publish-form,
+#excel-form,
+#html-form {
+    display: inline-block;
+    float: right;
+    margin: 0 0 1em 0.5em;
+}
+
+tr input[type=text] {
+    width: 31px;
+}
+
+tr td:nth-child(25) input {
+    width: 60px;
+}
+
+tr td:nth-child(26) input,
+tr td:nth-child(27) input,
+tr td:nth-child(28) input,
+tr td:nth-child(29) input,
+tr td:last-child input {
+    width: 125px;
+}
+
+section.scrollable-section {
+    overflow: visible;
+}
+
+tfoot {
+    background-color: lightgray;
+}
+
+tfoot input,
+tfoot select {
+    visibility: hidden;
+}
+
+table select {
+    max-width: 125px;
+}
+
+tr {
+    height: 35px;
+}
+
+.ui-selected {
+    outline: 2px dotted blue;
+    background-color: lightblue;
+}
+
+tr:nth-child(2n).ui-selected {
+    background-color: lightskyblue;
+}
+
+.selectable tbody td {
+    cursor: pointer;
+}
+
+.ui-selected .read {
+    display: none;
+}
+
+#toolbar {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    background-color: white;
+    z-index: 99;
+    border: 1px solid black;
+    border-left: none;
+    box-shadow: 0.5em 0.5em 0.5em #979797; /*This makes for bad animations */
+    border-radius: 0 0.5em 0.5em 0;
+    padding: 0.5em;
+    /*margin-top: -55px;  This makes for horrible animations*/
+    min-width: 150px;
+}
+
+#clipboard-clear-link {
+    float: right;
+}
+
+#clipboard-dialog.empty-clipboard #clipboard-panel {
+    display: none;
+}
+
+#empty-message {
+    display: none;
+    text-align: center;
+}
+
+#clipboard-dialog.empty-clipboard #empty-message {
+    display: block;
+}
+
+#no-schedule-message {
+    text-align: center;
+    margin-top: 8em;
+    height: 400px;
+    width: 100%;
+}
+
+.form-control-indicator {
+    display: inline-block;
+}
+
+tbody tr td:nth-child(26) .read,
+tbody tr td:nth-child(27) .read,
+tbody tr td:nth-child(28) .read,
+tbody tr td:nth-child(29) .read,
+tbody tr td:last-child .read {
+    white-space: nowrap;
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+tbody tr td:nth-child(5) .read,
+tbody tr td:nth-child(6) .read,
+tbody tr td:nth-child(7) .read,
+tbody tr td:nth-child(8) .read {
+    width: 120px;
+    word-wrap: break-word;
+}
+
+
+#calendar-table {
+    /*table-layout: fixed;*/
+    width: 100%;
+}
+
+.left-header-table td {
+    border: none;
+    text-align: right;
+    padding: 0;
+}
+
+.left-header-table {
+    width: 100%;
+}
+
+.data-table .left-header-cell {
+    padding: 0;
+}
+
+.day-detail-table {
+    width: 100%;
+}
+
+.day-detail-table tr:first-child {
+    background-color: #f0f0f0;
+    text-align: left;
+}
+
+.day-detail-table td {
+    border: none;
+    padding: 0;
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+
+.day-detail-table tr {
+    text-align: right;
+}
+
+.weekday-header {
+    width: 13.4%;
+}
+
+.data-table td.detail-holder-cell {
+    padding: 0;
+    vertical-align: top;
+}
+
+#view-select {
+    margin-right: 1em;
+    vertical-align: middle;
+}
+
+h3 {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+#filter-flyout-widget {
+    margin-bottom: 12px;
+}
+
+.data-table td,
+.data-table th {
+    padding: 8px;
+}
+#sticky-header,
+.data-table {
+    table-layout: fixed;
+    width: 3000px;
+}
+.fixed-size-first-row {
+    height: 0;
+    visibility: hidden;
+}
+.fixed-size-first-row th {
+    padding: 0;
+}
+.fixed-size-first-row .date {
+    width: 50px;
+}
+.fixed-size-first-row .program {
+    width: 150px;
+}
+.fixed-size-first-row .energy-pass {
+    width: 60px;
+}
+.fixed-size-first-row .count {
+    width: 60px;
+}
+.fixed-size-first-row .energy {
+    width: 60px;
+}
+.fixed-size-first-row .current {
+    width: 60px;
+}
+.fixed-size-first-row .polarized {
+    width: 60px;
+}
+.fixed-size-first-row .passes {
+    width: 60px;
+}
+.fixed-size-first-row .priority {
+    width: 100px;
+}
+.fixed-size-first-row .notes {
+    width: 175px;
+}
+.priority-hall-color,
+.priority-hall {
+    background-color: #d0e6e0;
+}
+.key {
+    float: right;
+    margin-bottom: 4px;
+}
+.priority-hall-color {
+    display: inline-block;
+    border: 1px solid black;
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+}
+.key-text {
+    display: inline-block;
+    vertical-align: top;
+}
+.key img {
+    margin-left: 12px;
+    margin-right: 4px;
+}
+.checkmark {
+    text-align: center;
+}
+.numeric,
+.numeric input {
+    text-align: right;
+}
+#calendar-table thead tr th:first-child {
+    width: 8%;
+}
+/*.day-detail-table tbody tr:nth-child(2) td,*/
+/*.day-detail-table tbody tr:nth-child(4) td,
+.day-detail-table tbody tr:nth-child(6) td,
+.day-detail-table tbody tr:nth-child(8) td {
+    padding-top: 0;
+    margin-top: 0;
+    /*background-color: yellow;*/
+    /*border-bottom: 1px dashed gray;*/
+/*}*/
+/*.day-detail-table tbody tr:nth-child(3) td,
+.day-detail-table tbody tr:nth-child(5) td,
+.day-detail-table tbody tr:nth-child(7) td,
+.day-detail-table tbody tr:nth-child(9) td {
+    padding-bottom: 0;
+    padding-top: 0;
+    margin-bottom: 0;
+}*/
+.day-detail-table tbody tr:nth-child(2),
+.day-detail-table tbody tr:nth-child(3),
+.day-detail-table tbody tr:nth-child(4),
+.day-detail-table tbody tr:nth-child(5),
+.day-detail-table tbody tr:nth-child(6),
+.left-header-table tbody tr:nth-child(2),
+.left-header-table tbody tr:nth-child(3),
+.left-header-table tbody tr:nth-child(4),
+.left-header-table tbody tr:nth-child(5),
+.left-header-table tbody tr:nth-child(6) {
+    height: 50px;
+    /*background-color: blue;*/
+    vertical-align: top;
+}
+/*.left-header-table td {
+    font-size: 14px;
+    padding-bottom: 0;
+    padding-top: 0;
+}*/
+.day-detail-table,
+.left-header-table {
+    table-layout: fixed;
+}
+.day-detail-table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+div.detail-key {
+    margin-left: 8px;
+    font-size: 16px;
+}
+.top-section {
+    /*background-color: aqua;*/
+}
+.shift-detail {
+    font-style: italic;
+    color: #595959;
+    font-size: 12px;
+    /*background-color: purple;*/
+}
+.shift-detail img {
+    vertical-align: bottom;
+    margin-left: 4px;
+}
+.day-detail-table tr:first-child td {
+    overflow: visible;
+    /*padding-left: 0;*/
+}
+.today {
+    border: 3px solid red;
+    padding: 10px;
+    border-radius: 24px;
+    position: relative;
+    left: -15px;
+}
