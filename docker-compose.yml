@@ -1,0 +1,49 @@
+services:
+  oracle:
+    extends:
+      file: deps.yml
+      service: oracle
+
+  keycloak:
+    extends:
+      file: deps.yml
+      service: keycloak
+
+  puppet:
+    extends:
+      file: deps.yml
+      service: puppet
+
+  mailhog:
+    extends:
+      file: deps.yml
+      service: mailhog
+
+  btm:
+    hostname: btm
+    container_name: btm
+    ports:
+      - "8443:8443"
+      - "8080:8080"
+      - "9990:9990"
+    environment:
+      KEYCLOAK_REALM: 'test-realm'
+      KEYCLOAK_RESOURCE: 'btm'
+      KEYCLOAK_SECRET: 'yHi6W2raPmLvPXoxqMA7VWbLAA2WN0eB'
+      KEYCLOAK_FRONTEND_SERVER_URL: 'http://localhost:8081'
+      KEYCLOAK_BACKEND_SERVER_URL: 'http://keycloak:8080'
+      LOGBOOK_SERVER_URL: 'https://logbooks.jlab.org'
+      ORACLE_DATASOURCE: 'btm'
+      ORACLE_SERVER: 'oracle:1521'
+      ORACLE_USER: 'BTM_OWNER'
+      ORACLE_PASS: 'password'
+      ORACLE_SERVICE: 'xepdb1'
+      PUPPET_SHOW_SERVER_URL: 'http://puppet:3000'
+      BACKEND_SERVER_URL: 'http://srm:8080'
+      FRONTEND_SERVER_URL: 'https://localhost:8443'
+      TZ: 'America/New_York'
+      SRM_FEEDBACK_SENDER_ADDRESS: 'btm@example.com'
+      SRM_FEEDBACK_TO_ADDRESS_CSV: 'recipient1@example.com,recipient2@example.com'
+      SRM_CONTENT_CONTACT: 'bob@example.com'
+      SRN_TECHNICAL_CONTACT: 'larry@example.com'
+      SRM_DOC_CSV: 'https://github.com/JeffersonLab/btm|BTM Home'

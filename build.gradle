@@ -3,7 +3,7 @@ plugins {
 }
 description = 'Beam Time Manager app'
 group 'org.jlab'
-version '3.0.0-alpha1'
+version '3.0.0-alpha0'
 ext.releaseDate = 'May 11 2023'
 tasks.withType(JavaCompile) {
     options.release = 11
