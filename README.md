@@ -42,7 +42,7 @@ This application requires a Java 11+ JVM and standard library to run, plus a Jav
 2. Download [Wildfly 26.1.3](https://www.wildfly.org/downloads/)
 3. [Configure](https://github.com/JeffersonLab/btm#configure) Wildfly and start it
 4. Download [btm.war](https://github.com/JeffersonLab/srm/releases) and deploy it to Wildfly
-5. Navigate your web browser to [localhost:8080/btm(http://localhost:8080/btm)
+5. Navigate your web browser to [localhost:8080/btm](http://localhost:8080/btm)
 
 ## Configure
 
