@@ -7,8 +7,7 @@
 <%@attribute name="stylesheets" fragment="true" %>
 <%@attribute name="scripts" fragment="true" %>
 <%@attribute name="secondaryNavigation" fragment="true" %>
-<s:tabbed-page title="${title}" category="${category}" keycloakClientIdKey="KEYCLOAK_CLIENT_ID_BTM"
-               resourceLocation="CDN">
+<s:tabbed-page title="${title}" category="${category}">
     <jsp:attribute name="stylesheets">
         <link rel="stylesheet" type="text/css"
               href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/btm.css"/>
