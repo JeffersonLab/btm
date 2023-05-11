@@ -12,7 +12,7 @@
               href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/crew-chief-timesheet.css"/>
         <style type="text/css">
             #comparison-table .ui-icon {
-                background-image: url("${cdnContextPath}/jquery-ui/1.10.3/theme/smoothness/images/ui-icons_2e83ff_256x240.png");
+                background-image: url("${pageContext.request.contextPath}/resources/jquery-ui-1.13.2/images/ui-icons_2e83ff_256x240.png");
             }
         </style>
     </jsp:attribute>

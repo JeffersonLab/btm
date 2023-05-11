@@ -24,11 +24,18 @@
         </style>
     </jsp:attribute>
     <jsp:attribute name="scripts">
-        <script type="text/javascript" src="${cdnContextPath}/jquery-plugins/flot/0.8.3/jquery.flot.min.js"></script>
-        <script type="text/javascript"
-                src="${cdnContextPath}/jquery-plugins/flot/0.8.3/jquery.flot.pie.min.js"></script>
-        <script type="text/javascript"
-                src="${cdnContextPath}/jquery-plugins/flot/0.8.3/jquery.flot.resize.min.js"></script>
+        <c:choose>
+            <c:when test="${'CDN' eq resourceLocation}">
+                <script src="${cdnContextPath}/jquery-plugins/flot/0.8.3/jquery.flot.min.js"></script>
+                <script src="${cdnContextPath}/jquery-plugins/flot/0.8.3/jquery.flot.pie.min.js"></script>
+                <script src="${cdnContextPath}/jquery-plugins/flot/0.8.3/jquery.flot.resize.min.js"></script>
+            </c:when>
+            <c:otherwise><!-- LOCAL -->
+                <script src="${pageContext.request.contextPath}/resources/jquery-plugins/flot/0.8.3/jquery.flot.min.js"></script>
+                <script src="${pageContext.request.contextPath}/resources/jquery-plugins/flot/0.8.3/jquery.flot.pie.min.js"></script>
+                <script src="${pageContext.request.contextPath}/resources/jquery-plugins/flot/0.8.3/jquery.flot.resize.min.js"></script>
+            </c:otherwise>
+        </c:choose>
         <script type="text/javascript"
                 src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/beam-time-summary.js"></script>
     </jsp:attribute>
