@@ -344,35 +344,34 @@ public class ExpHallHour extends HallHour {
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
 
-        builder.append("ID: ");
-        builder.append(this.getExpHallHourId());
-        builder.append(", Hour: ");
-        builder.append(TimeUtil.formatDatabaseDateTimeTZ(this.getDayAndHour()));
-        builder.append(", Hall: ");
-        builder.append(this.getHall());
-        builder.append(", ABU: ");
-        builder.append(abuSeconds);
-        builder.append(", BANU: ");
-        builder.append(banuSeconds);
-        builder.append(", BNA: ");
-        builder.append(bnaSeconds);
-        builder.append(", ACC: ");
-        builder.append(accSeconds);
-        builder.append(", ER: ");
-        builder.append(erSeconds);
-        builder.append(", PCC: ");
-        builder.append(pccSeconds);
-        builder.append(", UED: ");
-        builder.append(uedSeconds);
-        builder.append(", Scheduled: ");
-        builder.append(schedSeconds);
-        builder.append(", Studies: ");
-        builder.append(studiesSeconds);
-        builder.append(", Off: ");
-        builder.append(offSeconds);
+        String builder = "ID: " +
+                this.getExpHallHourId() +
+                ", Hour: " +
+                TimeUtil.formatDatabaseDateTimeTZ(this.getDayAndHour()) +
+                ", Hall: " +
+                this.getHall() +
+                ", ABU: " +
+                abuSeconds +
+                ", BANU: " +
+                banuSeconds +
+                ", BNA: " +
+                bnaSeconds +
+                ", ACC: " +
+                accSeconds +
+                ", ER: " +
+                erSeconds +
+                ", PCC: " +
+                pccSeconds +
+                ", UED: " +
+                uedSeconds +
+                ", Scheduled: " +
+                schedSeconds +
+                ", Studies: " +
+                studiesSeconds +
+                ", Off: " +
+                offSeconds;
 
-        return builder.toString();
+        return builder;
     }
 }

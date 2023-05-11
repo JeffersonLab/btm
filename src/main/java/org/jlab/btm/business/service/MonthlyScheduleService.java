@@ -400,7 +400,7 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
 
         for(ScheduleDay sd: daysBefore) {
             //LOGGER.log(Level.WARNING, "Day: " + sd);
-            if(inverse ? !"OFF".equals(sd.getAccProgram()) : "OFF".equals(sd.getAccProgram())) {
+            if(inverse != "OFF".equals(sd.getAccProgram())) {
                 //LOGGER.log(Level.WARNING, "Found boundary! " + sd);
                 previousOff = sd.getDayMonthYear();
                 break;

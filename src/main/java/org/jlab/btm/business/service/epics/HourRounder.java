@@ -114,8 +114,8 @@ public class HourRounder {
         // Add amount to statuses relatively evenly not to push status outside of range 0 - 3600
         for (int i = 0; amount != 0; i = (i + 1) % statuses.length) {
             if (statuses[i] != 0 && statuses[i] != SECONDS_PER_HOUR) { // Don't add/substract time to full or empty status
-                statuses[i] = (short) (statuses[i] + (1 * sign));
-                amount = amount - (1 * sign);
+                statuses[i] = (short) (statuses[i] + (sign));
+                amount = amount - (sign);
                 skipped = 0;
             } else {
                 if (skipped > statuses.length) {

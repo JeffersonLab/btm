@@ -158,19 +158,18 @@ public class ExpHallShiftPurpose implements Comparable<ExpHallShiftPurpose>, Ser
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
 
-        builder.append("ID: ");
-        builder.append(this.getExpHallShiftPurposeId());
-        builder.append(", Hall: ");
-        builder.append(this.getHall());
-        builder.append(", Name: ");
-        builder.append(this.getName());
-        builder.append(", Experiment: ");
-        builder.append(this.isExperiment());
-        builder.append(", Active: ");
-        builder.append(this.isActive());
+        String builder = "ID: " +
+                this.getExpHallShiftPurposeId() +
+                ", Hall: " +
+                this.getHall() +
+                ", Name: " +
+                this.getName() +
+                ", Experiment: " +
+                this.isExperiment() +
+                ", Active: " +
+                this.isActive();
 
-        return builder.toString();
+        return builder;
     }
 }
