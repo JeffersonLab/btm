@@ -10,7 +10,7 @@
         <link rel="stylesheet" type="text/css"
               href="${cdnContextPath}/jquery-plugins/timepicker/jquery-ui-timepicker-1.3.1.css"/>
         <link rel="stylesheet" type="text/css"
-              href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/charge.css"/>
+              href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/charge.css"/>
     </jsp:attribute>
     <jsp:attribute name="scripts">
         <script type="text/javascript"
@@ -25,9 +25,9 @@
         <script type="text/javascript"
                 src="${cdnContextPath}/jquery-plugins/flot/0.8.3/jquery.flot.resize.min.js"></script>
         <script type="text/javascript"
-                src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/jquery.flot.dashes.js"></script>
+                src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/jquery.flot.dashes.js"></script>
         <script type="text/javascript"
-                src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/charge.js"></script>
+                src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/charge.js"></script>
         <script>
             var dataA = jlab.series.charge.scheduled.a.data,
                 dataB = jlab.series.charge.scheduled.b.data,

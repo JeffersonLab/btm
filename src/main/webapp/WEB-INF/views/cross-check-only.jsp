@@ -11,7 +11,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title><c:out value="${initParam.appShortName}"/> - ${title}</title>
     <link rel="shortcut icon"
-          href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/img/favicon.ico"/>
+          href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/img/favicon.ico"/>
 </head>
 <body>
 <jsp:include page="/WEB-INF/includes/cross-check-panel.jsp"/>

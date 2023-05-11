@@ -12,24 +12,12 @@
         <param-value>BTM</param-value>
     </context-param>
     <context-param>
-        <param-name>resourceVersionNumber</param-name>
-        <param-value>95</param-value>
-    </context-param>
-    <context-param>
         <param-name>releaseNumber</param-name>
-        <param-value>2.19.0</param-value>
+        <param-value>@VERSION@</param-value>
     </context-param>
     <context-param>
         <param-name>releaseDate</param-name>
-        <param-value>11 May 2023</param-value>
-    </context-param>
-    <context-param>
-        <param-name>contentContact</param-name>
-        <param-value>Paul Vasilauskis (vasilaus)</param-value>
-    </context-param>
-    <context-param>
-        <param-name>technicalContact</param-name>
-        <param-value>Ryan Slominski (ryans)</param-value>
+        <param-value>@RELEASE_DATE@</param-value>
     </context-param>
     <filter>
         <filter-name>UrlRewriteFilter</filter-name>
@@ -67,28 +55,37 @@
             <url-pattern>/sso</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>ipausers</role-name>
+            <role-name>**</role-name>
         </auth-constraint>
         <user-data-constraint>
             <description/>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
+    <security-constraint>
+        <display-name>Enforce Admin on setup pages</display-name>
+        <web-resource-collection>
+            <web-resource-name>Setup Pages</web-resource-name>
+            <url-pattern>/setup/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>btm-admin</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
     <login-config>
-        <auth-method>KEYCLOAK</auth-method>
-        <realm-name>jlab</realm-name>
+        <auth-method>OIDC</auth-method>
     </login-config>
     <security-role>
-        <role-name>oabiltiy</role-name>
+        <role-name>btm-admin</role-name>
     </security-role>
     <security-role>
         <role-name>cc</role-name>
     </security-role>
     <security-role>
         <role-name>schcom</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ipausers</role-name>
     </security-role>
     <distributable/>
 </web-app>

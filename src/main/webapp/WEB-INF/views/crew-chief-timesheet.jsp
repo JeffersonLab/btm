@@ -9,7 +9,7 @@
 <t:page title="${title}">  
     <jsp:attribute name="stylesheets">
         <link rel="stylesheet" type="text/css"
-              href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/crew-chief-timesheet.css"/>
+              href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/crew-chief-timesheet.css"/>
         <style type="text/css">
             #comparison-table .ui-icon {
                 background-image: url("${cdnContextPath}/jquery-ui/1.10.3/theme/smoothness/images/ui-icons_2e83ff_256x240.png");
@@ -18,7 +18,7 @@
     </jsp:attribute>
     <jsp:attribute name="scripts">       
         <script type="text/javascript"
-                src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/crew-chief-timesheet.js"></script>
+                src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/crew-chief-timesheet.js"></script>
     </jsp:attribute>
     <jsp:body>
         <fmt:formatDate value="${day}" pattern="dd MMM yyyy" var="formattedDate"/>

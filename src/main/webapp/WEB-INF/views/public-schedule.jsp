@@ -12,13 +12,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title><c:out value="${title}"/></title>
     <link rel="shortcut icon"
-          href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/img/favicon.ico"/>
+          href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/img/favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="${externalCdnPrefix}/jquery-ui/1.10.3/theme/smoothness/jquery-ui.min.css"/>
     <link rel="stylesheet" type="text/css" href="${externalCdnPrefix}/jlab-theme/smoothness/1.6/css/smoothness.min.css"/>
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/btm.css"/>
+          href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/btm.css"/>
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/schedule.css"/>
+          href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/schedule.css"/>
     <style type="text/css">
         header {
             overflow: auto;
@@ -79,11 +79,11 @@
 <script type="text/javascript" src="${externalCdnPrefix}/jquery-ui/1.10.3/jquery-ui.min.js"></script>
 <script type="text/javascript" src="${externalCdnPrefix}/jlab-theme/smoothness/1.6/js/smoothness.min.js"></script>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/btm.js"></script>
+        src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/btm.js"></script>
 <script type="text/javascript">
     jlab.contextPath = '${pageContext.request.contextPath}';
 </script>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/schedule.js"></script>
+        src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/schedule.js"></script>
 </body>
 </html>

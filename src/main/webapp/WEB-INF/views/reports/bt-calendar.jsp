@@ -10,7 +10,7 @@
         <link rel="stylesheet" type="text/css"
               href="${cdnContextPath}/jquery-plugins/timepicker/jquery-ui-timepicker-1.3.1.css"/>
         <link rel="stylesheet" type="text/css"
-              href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/bt-calendar.css"/>
+              href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/bt-calendar.css"/>
     </jsp:attribute>
     <jsp:attribute name="scripts">
         <script type="text/javascript"
@@ -18,7 +18,7 @@
         <script type="text/javascript"
                 src="${cdnContextPath}/jquery-plugins/maskedinput/jquery.maskedinput-1.3.1.min.js"></script>
         <script type="text/javascript"
-                src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/bt-calendar.js"></script>
+                src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/bt-calendar.js"></script>
     </jsp:attribute>
     <jsp:body>
         <section>

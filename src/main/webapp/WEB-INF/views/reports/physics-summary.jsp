@@ -10,7 +10,7 @@
         <link rel="stylesheet" type="text/css"
               href="${cdnContextPath}/jquery-plugins/timepicker/jquery-ui-timepicker-1.3.1.css"/>
         <link rel="stylesheet" type="text/css"
-              href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/physics-summary.css"/>
+              href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/physics-summary.css"/>
     </jsp:attribute>
     <jsp:attribute name="scripts">
         <script type="text/javascript"
@@ -24,11 +24,11 @@
                 src="${cdnContextPath}/jquery-plugins/flot/0.8.3/jquery.flot.resize.min.js"></script>
         <!-- Order bars must come before stack plugin! -->
         <script type="text/javascript"
-                src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/flot-order-bars.js"></script>
+                src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/flot-order-bars.js"></script>
         <script type="text/javascript"
                 src="${cdnContextPath}/jquery-plugins/flot/0.8.3/jquery.flot.stack.min.js"></script>
         <script type="text/javascript"
-                src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/physics-summary.js"></script>
+                src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/physics-summary.js"></script>
     </jsp:attribute>
     <jsp:body>
         <section>

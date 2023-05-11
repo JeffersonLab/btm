@@ -10,7 +10,7 @@
         <link rel="stylesheet" type="text/css"
               href="${cdnContextPath}/jquery-plugins/timepicker/jquery-ui-timepicker-1.3.1.css"/>
         <link rel="stylesheet" type="text/css"
-              href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/hall-availability.css"/>
+              href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/hall-availability.css"/>
     </jsp:attribute>
     <jsp:attribute name="scripts">
         <script type="text/javascript"
@@ -23,9 +23,9 @@
         <script type="text/javascript"
                 src="${cdnContextPath}/jquery-plugins/flot/0.8.3/jquery.flot.resize.min.js"></script>
         <script type="text/javascript"
-                src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/flot-order-bars.js"></script>
+                src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/flot-order-bars.js"></script>
         <script type="text/javascript"
-                src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/hall-availability.js"></script>
+                src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/hall-availability.js"></script>
     </jsp:attribute>
     <jsp:body>
         <section>

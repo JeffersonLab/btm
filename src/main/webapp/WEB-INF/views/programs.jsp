@@ -7,11 +7,11 @@
 <t:page title="${title}">  
     <jsp:attribute name="stylesheets"> 
         <link rel="stylesheet" type="text/css"
-              href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/programs.css"/>
+              href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/programs.css"/>
     </jsp:attribute>
     <jsp:attribute name="scripts"> 
         <script type="text/javascript"
-                src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/programs.js"></script>
+                src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/programs.js"></script>
     </jsp:attribute>
     <jsp:body>
         <section>
