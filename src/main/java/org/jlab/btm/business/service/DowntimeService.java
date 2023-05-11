@@ -41,8 +41,8 @@ public class DowntimeService extends AbstractService<OpAccHour> {
     public DowntimeSummaryTotals reportTotals(Date start, Date end) {
         Query q = em.createNativeQuery(
                 "select sum(downtime_seconds) as downtime_seconds " + "from (select "
-                        + "dtm_owner.interval_to_seconds(least(nvl(a.time_up, sysdate), :end) - greatest(a.time_down, :start)) as downtime_seconds "
-                        + "from dtm_owner.event_first_incident a " + "where a.event_type_id = 1 "
+                        + "btm_owner.interval_to_seconds(least(nvl(a.time_up, sysdate), :end) - greatest(a.time_down, :start)) as downtime_seconds "
+                        + "from btm_owner.event_first_incident a " + "where a.event_type_id = 1 "
                         + "and a.time_down < :end " + "and nvl(a.time_up, sysdate) >= :start "
                         + "union all (select 0 from dual))"
         );

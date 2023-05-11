@@ -156,7 +156,8 @@ CREATE TABLE BTM_OWNER.SCHEDULE_DAY
     CONSTRAINT SCHEDULE_DAY_AK1 UNIQUE (DAY_MONTH_YEAR, MONTHLY_SCHEDULE_ID),
     CONSTRAINT SCHEDULE_DAY_FK1 FOREIGN KEY (MONTHLY_SCHEDULE_ID) REFERENCES BTM_OWNER.MONTHLY_SCHEDULE (MONTHLY_SCHEDULE_ID) ON DELETE CASCADE,
     CONSTRAINT SCHEDULE_DAY_CK1 CHECK (DAY_MONTH_YEAR = TRUNC(DAY_MONTH_YEAR)),
-    CONSTRAINT SCHEDULE_DAY_CK2 CHECK (ACC_PROGRAM IN ('PHYSICS', 'STUDIES', 'RESTORE', 'ACC', 'DOWN', 'OFF', 'TBD', 'FACDEV')),
+    CONSTRAINT SCHEDULE_DAY_CK2 CHECK (ACC_PROGRAM IN
+                                       ('PHYSICS', 'STUDIES', 'RESTORE', 'ACC', 'DOWN', 'OFF', 'TBD', 'FACDEV')),
     CONSTRAINT SCHEDULE_DAY_CK3 CHECK (HALL_A_POLARIZED IN (0, 1)),
     CONSTRAINT SCHEDULE_DAY_CK4 CHECK (HALL_B_POLARIZED IN (0, 1)),
     CONSTRAINT SCHEDULE_DAY_CK5 CHECK (HALL_C_POLARIZED IN (0, 1)),
@@ -490,3 +491,133 @@ CREATE TABLE BTM_OWNER.EXP_HALL_EMAIL_RECIPIENT
     CONSTRAINT EXP_HALL_EMAIL_RECIPIENT_AK1 UNIQUE (HALL, EMAIL),
     CONSTRAINT EXP_HALL_EMAIL_RECIPIENT_CK1 CHECK (HALL IN ('A', 'B', 'C', 'D'))
 );
+
+CREATE TABLE BTM_OWNER.PD_SHIFT_PLAN
+(
+    START_DAY_AND_HOUR  DATE                   NOT NULL,
+    PHYSICS_SECONDS     NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    STUDIES_SECONDS     NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    RESTORE_SECONDS     NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    ACC_SECONDS         NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    DOWN_SECONDS        NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    SAD_SECONDS         NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_A_UP_SECONDS   NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_A_TUNE_SECONDS NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_A_BNR_SECONDS  NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_A_DOWN_SECONDS NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_A_OFF_SECONDS  NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_B_UP_SECONDS   NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_B_TUNE_SECONDS NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_B_BNR_SECONDS  NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_B_DOWN_SECONDS NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_B_OFF_SECONDS  NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_C_UP_SECONDS   NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_C_TUNE_SECONDS NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_C_BNR_SECONDS  NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_C_DOWN_SECONDS NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_C_OFF_SECONDS  NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_D_UP_SECONDS   NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_D_TUNE_SECONDS NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_D_BNR_SECONDS  NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_D_DOWN_SECONDS NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    HALL_D_OFF_SECONDS  NUMBER(4, 0) DEFAULT 0 NOT NULL
+);
+
+/*
+CREATE OR REPLACE FORCE VIEW "BTM_OWNER"."PD_SHIFT_PLAN" ("START_DAY_AND_HOUR", "PHYSICS_SECONDS", "STUDIES_SECONDS",
+                                                           "RESTORE_SECONDS", "ACC_SECONDS", "DOWN_SECONDS",
+                                                           "SAD_SECONDS", "HALL_A_UP_SECONDS", "HALL_A_TUNE_SECONDS",
+                                                           "HALL_A_BNR_SECONDS", "HALL_A_DOWN_SECONDS",
+                                                           "HALL_A_OFF_SECONDS", "HALL_B_UP_SECONDS",
+                                                           "HALL_B_TUNE_SECONDS", "HALL_B_BNR_SECONDS",
+                                                           "HALL_B_DOWN_SECONDS", "HALL_B_OFF_SECONDS",
+                                                           "HALL_C_UP_SECONDS", "HALL_C_TUNE_SECONDS",
+                                                           "HALL_C_BNR_SECONDS", "HALL_C_DOWN_SECONDS",
+                                                           "HALL_C_OFF_SECONDS", "HALL_D_UP_SECONDS",
+                                                           "HALL_D_TUNE_SECONDS", "HALL_D_BNR_SECONDS",
+                                                           "HALL_D_DOWN_SECONDS", "HALL_D_OFF_SECONDS") AS
+    SELECT begins_at               AS start_day_and_hour,
+           physics * 60 * 60       AS physics_seconds,
+           beam_studies * 60 * 60  AS studies_seconds,
+           restore * 60 * 60       AS restore_seconds,
+           config_change * 60 * 60 AS acc_seconds,
+           NULL                    AS down_seconds,
+           OFF * 60 * 60           AS sad_seconds,
+           a_hours * 60 * 60       AS hall_a_up_seconds,
+           NULL                    AS hall_a_tune_seconds,
+           NULL                    AS hall_a_bnr_seconds,
+           NULL                    AS hall_a_down_seconds,
+           NULL                    AS hall_a_off_seconds,
+           b_hours * 60 * 60       AS hall_b_up_seconds,
+           NULL                    AS hall_b_tune_seconds,
+           NULL                    AS hall_b_bnr_seconds,
+           NULL                    AS hall_b_down_seconds,
+           NULL                    AS hall_b_off_seconds,
+           c_hours * 60 * 60       AS hall_c_up_seconds,
+           NULL                    AS hall_c_tune_seconds,
+           NULL                    AS hall_c_bnr_seconds,
+           NULL                    AS hall_c_down_seconds,
+           NULL                    AS hall_c_off_seconds,
+           d_hours * 60 * 60       AS hall_d_up_seconds,
+           NULL                    AS hall_d_tune_seconds,
+           NULL                    AS hall_d_bnr_seconds,
+           NULL                    AS hall_d_down_seconds,
+           NULL                    AS hall_d_off_seconds
+    FROM PD_OWNER.shift_plans
+    WHERE begins_at >= to_date('2016-01-01', 'YYYY-MM-DD')
+    UNION ALL
+    SELECT start_time                  AS start_day_and_hour,
+           NULL                        AS physics_seconds,
+           beam_studies * 60 * 60      AS studies_seconds,
+           acc_restore * 60 * 60       AS restore_seconds,
+           acc_config_change * 60 * 60 AS acc_seconds,
+           NULL                        AS down_seconds,
+           downtime * 60 * 60          AS sad_seconds,
+           halla_hours * 60 * 60       AS hall_a_up_seconds,
+           NULL                        AS hall_a_tune_seconds,
+           NULL                        AS hall_a_bnr_seconds,
+           NULL                        AS hall_a_down_seconds,
+           NULL                        AS hall_a_off_seconds,
+           hallb_hours * 60 * 60       AS hall_b_up_seconds,
+           NULL                        AS hall_b_tune_seconds,
+           NULL                        AS hall_b_bnr_seconds,
+           NULL                        AS hall_b_down_seconds,
+           NULL                        AS hall_b_off_seconds,
+           hallc_hours * 60 * 60       AS hall_c_up_seconds,
+           NULL                        AS hall_c_tune_seconds,
+           NULL                        AS hall_c_bnr_seconds,
+           NULL                        AS hall_c_down_seconds,
+           NULL                        AS hall_c_off_seconds,
+           halld_hours * 60 * 60       AS hall_d_up_seconds,
+           NULL                        AS hall_d_tune_seconds,
+           NULL                        AS hall_d_bnr_seconds,
+           NULL                        AS hall_d_down_seconds,
+           NULL                        AS hall_d_off_seconds
+    FROM BTA_OWNER.shift_plans
+    WHERE start_time < to_date('2016-01-01', 'YYYY-MM-DD');
+*/
+
+
+CREATE TABLE BTM_OWNER.EVENT_FIRST_INCIDENT
+(
+    EVENT_ID             INTEGER NOT NULL ,
+    EVENT_TITLE          VARCHAR2(128 CHAR) NOT NULL ,
+    TIME_UP              TIMESTAMP(0) WITH LOCAL TIME ZONE NULL ,
+    EVENT_TYPE_ID        INTEGER NOT NULL ,
+    INCIDENT_ID          INTEGER NOT NULL ,
+    TITLE                VARCHAR2(128 CHAR) NOT NULL ,
+    TIME_DOWN            TIMESTAMP(0) WITH LOCAL TIME ZONE NOT NULL ,
+    NUMBER_OF_INCIDENTS  INTEGER NOT NULL
+);
+
+/*
+CREATE OR REPLACE PUBLIC SYNONYM BTM_OWNER.EVENT_FIRST_INCIDENT
+FOR DTM_OWNER.EVENT_FIRST_INCIDENT;
+*/
+
+-- Functions
+create FUNCTION BTM_OWNER.interval_to_seconds (p_interval INTERVAL DAY TO SECOND) RETURN NUMBER IS
+BEGIN
+    RETURN EXTRACT(DAY FROM p_interval)*86400 + EXTRACT(HOUR FROM p_interval)*3600 + EXTRACT(MINUTE FROM p_interval)*60 + EXTRACT(SECOND FROM p_interval);
+END interval_to_seconds;
+/
