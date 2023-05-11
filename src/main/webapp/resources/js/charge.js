@@ -337,7 +337,7 @@ jlab.fetchMultiple = function (params) {
         $("#busy-wait").show();
 
         /* Attempting to allow all */
-        Promise.all(promises.map(reflect)).then(values => {
+        Promise.all(promises).then(values => {
             $("#busy-wait").hide();
 
             jlab.doLineChart();
@@ -411,7 +411,7 @@ jlab.fetchMultiple = function (params) {
         }).catch(error => {
             console.log("Unable to query MYA data", error);
             $("#busy-wait").hide();
-            alert('Unable to query MYA: ' + error.reason.statusText);
+            alert('Unable to query MYA');
         });
     }
 };
