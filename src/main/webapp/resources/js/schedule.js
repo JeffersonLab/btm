@@ -138,7 +138,7 @@ jlab.btm.saveRow = function (row) {
         }
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to save schedule row: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to save schedule row: server did not handle request');
     });
@@ -191,7 +191,7 @@ jlab.btm.updateVersionList = function () {
         $("#version").prop("selectedIndex", 0);
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to update version list: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to update version list: server did not handle request');
     });
@@ -489,7 +489,7 @@ $(document).on("change", "#fileInput", function () {
         }
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to upload: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to upload: server did not handle request');
     });

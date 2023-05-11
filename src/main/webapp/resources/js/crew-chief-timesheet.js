@@ -160,7 +160,7 @@ jlab.btm.validateCrossCheckStatusThenSave = function () {
         }
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to reload cross check summary/details: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to reload cross check summary/details: server did not handle request');
 
@@ -293,7 +293,7 @@ jlab.btm.editAccHours = function (saveAll) {
 
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to save accelerator availability hours: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to save accelerator availability hours: server did not handle request');
     });
@@ -393,7 +393,7 @@ jlab.btm.editAccHour = function () {
 
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to save accelerator availability hours: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to save accelerator availability hours: server did not handle request');
     });
@@ -485,7 +485,7 @@ jlab.btm.editMultiHours = function (saveAll) {
 
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to save multiplicity hours: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to save multiplicity hours: server did not handle request');
     });
@@ -590,7 +590,7 @@ jlab.btm.editMultiHour = function () {
 
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to save multiplicity hours: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to save multiplicity hours: server did not handle request');
     });
@@ -636,7 +636,7 @@ jlab.btm.signTimesheet = function () {
         }
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to sign timesheet: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to sign timesheet: server did not handle request');
     });
@@ -728,7 +728,7 @@ jlab.btm.editHallHours = function ($table, $button, saveAll) {
         }
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to save hall ' + hall + ' availability hours: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to save hall ' + hall + ' availability hours: server did not handle request');
     });
@@ -826,7 +826,7 @@ jlab.btm.editHallHour = function () {
         }
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to save hall ' + hall + ' availability hours: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to save hall ' + hall + ' availability hours: server did not handle request');
     });
@@ -888,7 +888,7 @@ jlab.btm.editShiftInfo = function (saveAll) {
         }
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to save shift information: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to save shift information: server did not handle request');
     });
@@ -950,7 +950,7 @@ jlab.btm.editCrossComment = function () {
         }
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to save cross check comments: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to save cross check comments: server did not handle request');
     });
@@ -1001,7 +1001,7 @@ jlab.btm.editReviewerComment = function () {
         }
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to save reviewer comments: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to save reviewer comments: server did not handle request');
     });

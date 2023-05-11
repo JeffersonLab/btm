@@ -46,7 +46,7 @@ jlab.btm.addProgram = function () {
 
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to add program: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to add program: server did not handle request');
     });
@@ -104,7 +104,7 @@ jlab.btm.editProgram = function () {
 
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to edit program: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to edit program: server did not handle request');
     });
@@ -150,7 +150,7 @@ jlab.btm.removeProgram = function () {
 
     });
 
-    request.error(function (xhr, textStatus) {
+    request.fail(function (xhr, textStatus) {
         window.console && console.log('Unable to remove program: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to remove program: server did not handle request');
     });

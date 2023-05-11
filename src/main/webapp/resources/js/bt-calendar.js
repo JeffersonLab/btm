@@ -78,7 +78,7 @@ checkShift = function ($queue, index) {
             checkShift($queue, index + 1);
         });
 
-        request.error(function (xhr, textStatus) {
+        request.fail(function (xhr, textStatus) {
             window.console && console.log('Unable to query cross checks: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
             $anchor.text("?");
         });
