@@ -8,15 +8,9 @@
 <t:report-page title="${title}">  
     <jsp:attribute name="stylesheets">
         <link rel="stylesheet" type="text/css"
-              href="${cdnContextPath}/jquery-plugins/timepicker/jquery-ui-timepicker-1.3.1.css"/>
-        <link rel="stylesheet" type="text/css"
               href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/bt-calendar.css"/>
     </jsp:attribute>
     <jsp:attribute name="scripts">
-        <script type="text/javascript"
-                src="${cdnContextPath}/jquery-plugins/timepicker/jquery-ui-timepicker-1.3.1.js"></script>
-        <script type="text/javascript"
-                src="${cdnContextPath}/jquery-plugins/maskedinput/jquery.maskedinput-1.3.1.min.js"></script>
         <script type="text/javascript"
                 src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/bt-calendar.js"></script>
     </jsp:attribute>
