@@ -37,7 +37,7 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
     private final static Logger logger = Logger.getLogger(OpHallHourService.class.getName());
     @EJB
     EpicsOpHallHourService epicsService;
-    @PersistenceContext(unitName = "jbtaPU")
+    @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
     public OpHallHourService() {

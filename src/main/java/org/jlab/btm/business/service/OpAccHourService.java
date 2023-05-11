@@ -39,7 +39,7 @@ public class OpAccHourService extends AbstractService<OpAccHour> {
     @EJB
     EpicsOpAccHourService epicsService;
 
-    @PersistenceContext(unitName = "jbtaPU")
+    @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
     public OpAccHourService() {

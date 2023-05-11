@@ -12,7 +12,7 @@ import java.util.Date;
  * @author ryans
  */
 @Entity
-@Table(name = "SCHEDULE_DAY", schema = "JBTA_OWNER", uniqueConstraints
+@Table(name = "SCHEDULE_DAY", schema = "BTM_OWNER", uniqueConstraints
         = {
         @UniqueConstraint(columnNames = {"DAY_MONTH_YEAR", "MONTHLY_SCHEDULE_ID"})})
 public class ScheduleDay implements Serializable, Comparable<ScheduleDay> {

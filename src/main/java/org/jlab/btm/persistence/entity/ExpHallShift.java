@@ -15,7 +15,7 @@ import java.util.Date;
  * @author ryans
  */
 @Entity
-@Table(name = "EXP_HALL_SHIFT", schema = "JBTA_OWNER", uniqueConstraints = {
+@Table(name = "EXP_HALL_SHIFT", schema = "BTM_OWNER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"HALL", "START_DAY_AND_HOUR"})})
 public class ExpHallShift implements Serializable {
     private static final long serialVersionUID = 1L;

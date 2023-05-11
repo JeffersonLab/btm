@@ -16,7 +16,7 @@ import java.util.Date;
  * @author ryans
  */
 @Entity
-@Table(name = "OP_HALL_HOUR", schema = "JBTA_OWNER", uniqueConstraints
+@Table(name = "OP_HALL_HOUR", schema = "BTM_OWNER", uniqueConstraints
         = {
         @UniqueConstraint(columnNames = {"HALL", "DAY_AND_HOUR"})})
 @NamedNativeQueries({

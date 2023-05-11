@@ -39,7 +39,7 @@ public class OpMultiplicityHourService extends AbstractService<OpMultiplicityHou
     private final static Logger logger = Logger.getLogger(OpMultiplicityHourService.class.getName());
     @EJB
     EpicsOpMultiplicityHourService epicsService;
-    @PersistenceContext(unitName = "jbtaPU")
+    @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
     public OpMultiplicityHourService() {

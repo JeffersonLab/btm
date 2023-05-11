@@ -25,7 +25,7 @@ public class DowntimeService extends AbstractService<OpAccHour> {
 
     private final static Logger LOGGER = Logger.getLogger(DowntimeService.class.getName());
 
-    @PersistenceContext(unitName = "jbtaPU")
+    @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
     public DowntimeService() {

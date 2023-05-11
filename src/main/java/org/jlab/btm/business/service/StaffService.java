@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Stateless
 public class StaffService extends AbstractService<Staff> {
-    @PersistenceContext(unitName = "jbtaPU")
+    @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
     public StaffService() {

@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * @author ryans
  */
 @Entity
-@Table(name = "MONTHLY_SCHEDULE", schema = "JBTA_OWNER", uniqueConstraints
+@Table(name = "MONTHLY_SCHEDULE", schema = "BTM_OWNER", uniqueConstraints
         = {
         @UniqueConstraint(columnNames = {"START_DAY", "VERSION"})})
 public class MonthlySchedule implements Serializable {

@@ -14,7 +14,7 @@ import java.math.BigInteger;
  * @author ryans
  */
 @Entity
-@Table(name = "EXP_HALL_SHIFT_PURPOSE", schema = "JBTA_OWNER", uniqueConstraints = {
+@Table(name = "EXP_HALL_SHIFT_PURPOSE", schema = "BTM_OWNER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"HALL", "NAME"}),
         @UniqueConstraint(columnNames = {"HALL", "EXP_HALL_SHIFT_PURPOSE_ID"})})
 @NamedQueries({

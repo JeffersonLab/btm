@@ -17,7 +17,7 @@ import java.util.List;
 @Stateless
 public class PdShiftPlanService extends AbstractService<PdShiftPlan> {
 
-    @PersistenceContext(unitName = "jbtaPU")
+    @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
     public PdShiftPlanService() {

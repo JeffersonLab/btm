@@ -9,7 +9,7 @@ import java.util.Date;
  * @author ryans
  */
 @Entity
-@Table(name = "PD_SHIFT_PLAN", schema = "JBTA_OWNER")
+@Table(name = "PD_SHIFT_PLAN", schema = "BTM_OWNER")
 public class PdShiftPlan implements Serializable {
     private static final long serialVersionUID = 1L;
     @Column(name = "START_DAY_AND_HOUR")

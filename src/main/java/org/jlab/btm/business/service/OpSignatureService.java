@@ -33,7 +33,7 @@ public class OpSignatureService extends AbstractService<OpSignature> {
     OpMultiplicityHourService multiHourService;
     @EJB
     OpShiftService shiftService;
-    @PersistenceContext(unitName = "jbtaPU")
+    @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
     public OpSignatureService() {

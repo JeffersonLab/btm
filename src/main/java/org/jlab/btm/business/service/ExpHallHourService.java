@@ -29,7 +29,7 @@ public class ExpHallHourService {
 
     private final static Logger logger = Logger.getLogger(ExpHallHourService.class.getName());
 
-    @PersistenceContext(unitName = "jbtaPU")
+    @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
     /**

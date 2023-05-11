@@ -22,7 +22,7 @@ import java.util.List;
 @Stateless
 public class ScheduleDayService extends AbstractService<ScheduleDay> {
 
-    @PersistenceContext(unitName = "jbtaPU")
+    @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
     public ScheduleDayService() {

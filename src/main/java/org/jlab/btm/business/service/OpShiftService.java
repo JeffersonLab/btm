@@ -25,7 +25,7 @@ public class OpShiftService extends AbstractService<OpShift> {
 
     @EJB
     EpicsShiftService epicsService;
-    @PersistenceContext(unitName = "jbtaPU")
+    @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
     public OpShiftService() {

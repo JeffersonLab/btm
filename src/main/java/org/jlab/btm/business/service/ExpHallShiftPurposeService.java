@@ -23,7 +23,7 @@ import java.util.Map;
 @Stateless
 public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurpose> {
 
-    @PersistenceContext(unitName = "jbtaPU")
+    @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
     public ExpHallShiftPurposeService() {

@@ -22,7 +22,7 @@ public class OpCrossCheckCommentService extends AbstractService<OpCrossCheckComm
 
     @EJB
     EpicsShiftService epicsService;
-    @PersistenceContext(unitName = "jbtaPU")
+    @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
     public OpCrossCheckCommentService() {
