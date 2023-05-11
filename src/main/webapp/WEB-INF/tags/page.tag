@@ -14,7 +14,6 @@
         <jsp:invoke fragment="stylesheets"/>
     </jsp:attribute>
     <jsp:attribute name="scripts">
-        <script type="text/javascript" src="${cdnContextPath}/uri/uri-1.14.1.min.js"></script>
         <script type="text/javascript"
                 src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/btm.js"></script>
         <jsp:invoke fragment="scripts"/>
