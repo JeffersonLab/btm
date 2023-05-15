@@ -361,7 +361,7 @@
                         <tbody>
                         <c:forEach items="${signatureList}" var="signature">
                             <tr>
-                                <td><c:out value="${btm:formatStaff(signature.signedBy)}"/></td>
+                                <td><c:out value="${s:formatUsername(signature.signedBy)}"/></td>
                                 <td><c:out value="${signature.signedRole.label}"/></td>
                                 <td><fmt:formatDate value="${signature.signedDate}" pattern="dd MMM yyyy HH:mm"/></td>
                             </tr>

@@ -32,9 +32,8 @@ public class OpSignature implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDayAndHour;
     @NotNull
-    @JoinColumn(name = "SIGNED_BY", referencedColumnName = "STAFF_ID", nullable = false)
-    @ManyToOne(optional = false)
-    private Staff signedBy;
+    @Column(name = "SIGNED_BY", nullable = false, length = 64)
+    private String signedBy;
     @Basic(optional = false)
     @NotNull
     @Column(name = "SIGNED_ROLE", nullable = false, length = 20)
@@ -62,11 +61,11 @@ public class OpSignature implements Serializable {
         this.startDayAndHour = startDayAndHour;
     }
 
-    public Staff getSignedBy() {
+    public String getSignedBy() {
         return signedBy;
     }
 
-    public void setSignedBy(Staff signedBy) {
+    public void setSignedBy(String signedBy) {
         this.signedBy = signedBy;
     }
 

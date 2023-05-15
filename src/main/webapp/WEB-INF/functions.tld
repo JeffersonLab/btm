@@ -20,11 +20,6 @@
         </function-signature>
     </function>
     <function>
-        <name>formatStaff</name>
-        <function-class>org.jlab.btm.presentation.util.BtmFunctions</function-class>
-        <function-signature>java.lang.String formatStaff(org.jlab.btm.persistence.entity.Staff)</function-signature>
-    </function>
-    <function>
         <name>formatBoolean</name>
         <function-class>org.jlab.btm.presentation.util.BtmFunctions</function-class>
         <function-signature>java.lang.String formatBoolean(java.lang.Boolean)</function-signature>

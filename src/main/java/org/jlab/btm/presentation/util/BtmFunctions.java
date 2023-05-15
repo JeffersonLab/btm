@@ -1,7 +1,6 @@
 package org.jlab.btm.presentation.util;
 
 import org.jlab.btm.business.util.BtmTimeUtil;
-import org.jlab.btm.persistence.entity.Staff;
 import org.jlab.btm.persistence.enumeration.DurationUnits;
 import org.jlab.btm.persistence.projection.HallPriority;
 import org.jlab.smoothness.persistence.enumeration.Hall;
@@ -70,21 +69,6 @@ public final class BtmFunctions {
         }
 
         return value;
-    }
-
-    public static String formatStaff(Staff staff) {
-        StringBuilder builder = new StringBuilder();
-
-        if (staff != null) {
-            builder.append(staff.getLastname());
-            builder.append(", ");
-            builder.append(staff.getFirstname());
-            builder.append(" (");
-            builder.append(staff.getUsername());
-            builder.append(")");
-        }
-
-        return builder.toString();
     }
 
     public static String formatBoolean(Boolean value) {

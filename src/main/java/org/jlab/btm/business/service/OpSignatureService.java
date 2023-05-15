@@ -24,8 +24,6 @@ import java.util.List;
 public class OpSignatureService extends AbstractService<OpSignature> {
 
     @EJB
-    StaffService staffService;
-    @EJB
     OpAccHourService accHourService;
     @EJB
     OpHallHourService hallHourService;
@@ -139,17 +137,11 @@ public class OpSignatureService extends AbstractService<OpSignature> {
 
         String username = context.getCallerPrincipal().getName();
 
-        Staff staff = staffService.findByUsername(username);
-
-        if (staff == null) {
-            throw new UserFriendlyException("User not found in staff database: " + username);
-        }
-
         List<OpSignature> signatureList = find(startDayAndHour);
 
         for (OpSignature sig : signatureList) {
             if (sig.getStartDayAndHour().getTime() == startDayAndHour.getTime()
-                    && sig.getSignedBy().equals(staff) && sig.getSignedRole() == role) {
+                    && sig.getSignedBy().equals(username) && sig.getSignedRole() == role) {
                 throw new UserFriendlyException("User has already signed the timesheet");
             }
         }
@@ -188,7 +180,7 @@ public class OpSignatureService extends AbstractService<OpSignature> {
         signature.setStartDayAndHour(startDayAndHour);
         signature.setSignedDate(new Date());
         signature.setSignedRole(role);
-        signature.setSignedBy(staff);
+        signature.setSignedBy(username);
 
         create(signature);
     }
