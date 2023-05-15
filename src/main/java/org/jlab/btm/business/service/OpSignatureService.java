@@ -139,8 +139,6 @@ public class OpSignatureService extends AbstractService<OpSignature> {
 
         String username = context.getCallerPrincipal().getName();
 
-        username = username.split(":")[2];
-
         Staff staff = staffService.findByUsername(username);
 
         if (staff == null) {

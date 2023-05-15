@@ -31,8 +31,6 @@ public class LogbookService {
         if (username == null || username.isEmpty() || username.equalsIgnoreCase("ANONYMOUS")) {
             throw new EJBAccessException(
                     "You must be authenticated to perform the requested operation.  Your session may have expired.  Please re-login.");
-        } else {
-            username = username.split(":")[2];
         }
 
         return username;
