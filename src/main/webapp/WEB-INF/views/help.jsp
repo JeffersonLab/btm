@@ -14,9 +14,6 @@
     </jsp:attribute>
     <jsp:body>
         <s:help-panel title="${title}">
-            <ul>
-                <li><a href="https://accwiki.acc.jlab.org/pub/SWDocs/BeamTimeAccounting/Machine_Time_Accounting_User_Guide.pdf">User Guide</a></li>
-            </ul>
         </s:help-panel>
     </jsp:body>
 </t:page>

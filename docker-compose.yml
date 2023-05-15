@@ -46,4 +46,4 @@ services:
       BTM_FEEDBACK_TO_ADDRESS_CSV: 'recipient1@example.com,recipient2@example.com'
       BTM_CONTENT_CONTACT: 'bob@example.com'
       BTM_TECHNICAL_CONTACT: 'larry@example.com'
-      BTM_DOC_CSV: 'https://github.com/JeffersonLab/btm|BTM Home'
+      BTM_DOC_CSV: 'https://github.com/JeffersonLab/btm|BTM Home,https://ace.jlab.org/cdn/doc/btm/userguide.pdf|User Guide'

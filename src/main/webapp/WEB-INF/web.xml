@@ -12,6 +12,10 @@
         <param-value>BTM</param-value>
     </context-param>
     <context-param>
+        <param-name>appSpecificEnvPrefix</param-name>
+        <param-value>BTM</param-value>
+    </context-param>
+    <context-param>
         <param-name>releaseNumber</param-name>
         <param-value>@VERSION@</param-value>
     </context-param>
