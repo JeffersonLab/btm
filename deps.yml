@@ -67,4 +67,6 @@ services:
       - "5064:5064/udp"
     volumes:
       - ./docker/softioc/db:/db
-    command: "/db/st.cmd"
+    entrypoint: "/db/init.sh"
+    environment:
+      TZ: 'America/New_York'
