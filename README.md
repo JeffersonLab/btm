@@ -50,7 +50,12 @@ This application requires a Java 11+ JVM and standard library to run, plus a Jav
 Wildfly must be pre-configured before the first deployment of the app. The [wildfly bash scripts](https://github.com/JeffersonLab/wildfly#configure) can be used to accomplish this. See the [Dockerfile](https://github.com/JeffersonLab/btm/blob/main/Dockerfile) for an example.
 
 ### Runtime
-Uses the [Smoothness Environment Variables](https://github.com/JeffersonLab/smoothness#environment-variables).
+Uses the [Smoothness Environment Variables](https://github.com/JeffersonLab/smoothness#environment-variables) plus the following application specific:
+
+| Name                              | Description                                                                                                                                 |
+|-----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| BTM_BOOKS_CSV                     | Comma separated list of Jefferson Lab Logbook names to log to when timesheets are signed.                                                   |
+| BAM_EPICS_ADDR_LIST               | EPICS CA Address List for obtaining time keeping measurements.                                                                              |
 
 ## Build
 This project is built with [Java 17](https://adoptium.net/) (compiled to Java 11 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
