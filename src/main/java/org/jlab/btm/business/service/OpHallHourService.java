@@ -143,7 +143,7 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
         return totals;
     }
 
-    @RolesAllowed({"cc", "oability"})
+    @RolesAllowed({"cc", "btm-admin"})
     public void editHallHours(Hall hall, Date[] hourArray, Short[] upArray, Short[] tuneArray,
                               Short[] bnrArray, Short[] downArray, Short[] offArray) throws UserFriendlyException {
         if (hourArray == null || upArray == null || tuneArray == null || bnrArray == null

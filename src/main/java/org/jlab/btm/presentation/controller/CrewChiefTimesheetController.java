@@ -165,7 +165,7 @@ public class CrewChiefTimesheetController extends HttpServlet {
                 dbShiftInfo, signatureList);
 
         boolean editable =
-                request.isUserInRole("oability") || request.isUserInRole("cc");
+                request.isUserInRole("btm-admin") || request.isUserInRole("cc");
 
         /*Cross Check*/
         HourlyCrossCheckService crossCheckService = new HourlyCrossCheckService();

@@ -69,7 +69,7 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
         return count > 0;
     }
 
-    @RolesAllowed({"cc", "oability", "schcom"})
+    @RolesAllowed({"cc", "btm-admin", "schcom"})
     public void add(Hall hall, String name, String alias, String url, Boolean experiment, Boolean active) throws
             UserFriendlyException {
         ExpHallShiftPurpose purpose = new ExpHallShiftPurpose();
@@ -101,7 +101,7 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
         return count > 0;
     }
 
-    @RolesAllowed({"cc", "oability", "schcom"})
+    @RolesAllowed({"cc", "btm-admin", "schcom"})
     public void remove(BigInteger programId) throws UserFriendlyException {
         ExpHallShiftPurpose purpose = find(programId);
 
@@ -113,7 +113,7 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
         this.remove(purpose);
     }
 
-    @RolesAllowed({"cc", "oability", "schcom"})
+    @RolesAllowed({"cc", "btm-admin", "schcom"})
     public void edit(BigInteger programId, String name, String alias, String url, Boolean experiment, Boolean active) throws
             UserFriendlyException {
         if (programId == null) {

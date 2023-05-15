@@ -51,7 +51,7 @@ public class OpCrossCheckCommentService extends AbstractService<OpCrossCheckComm
         return comment;
     }
 
-    @RolesAllowed({"cc", "oability"})
+    @RolesAllowed({"cc", "btm-admin"})
     public void editCrewChiefRemark(Date startDayAndHour, String remark) throws UserFriendlyException {
         OpCrossCheckComment comment = findInDatabase(startDayAndHour);
 
@@ -65,7 +65,7 @@ public class OpCrossCheckCommentService extends AbstractService<OpCrossCheckComm
         super.edit(comment);
     }
 
-    @RolesAllowed({"oability"})
+    @RolesAllowed({"btm-admin"})
     public void editReviewerRemark(Date startDayAndHour, String remark) {
         OpCrossCheckComment comment = findInDatabase(startDayAndHour);
 

@@ -66,7 +66,7 @@ public class OpShiftService extends AbstractService<OpShift> {
         }
     }
 
-    @RolesAllowed({"cc", "oability"})
+    @RolesAllowed({"cc", "btm-admin"})
     public void editShift(Date startDayAndHour, String crewChief, String operators, String program,
                           String programDeputy, String comments) throws UserFriendlyException {
         OpShift shift = findInDatabase(startDayAndHour);

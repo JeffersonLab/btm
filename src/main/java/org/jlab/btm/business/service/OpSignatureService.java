@@ -129,11 +129,11 @@ public class OpSignatureService extends AbstractService<OpSignature> {
                 hallDHourList, multiHourList, shift, signatureList);
     }
 
-    @RolesAllowed({"cc", "oability"})
+    @RolesAllowed({"cc", "btm-admin"})
     public void signTimesheet(Date startDayAndHour) throws UserFriendlyException {
         Role role = Role.CREW_CHIEF;
 
-        if (context.isCallerInRole("oability")) {
+        if (context.isCallerInRole("btm-admin")) {
             role = Role.OPERABILITY_MANAGER;
         }
 

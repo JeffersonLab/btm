@@ -41,7 +41,7 @@ public class ProgramsController extends HttpServlet {
         List<ExpHallShiftPurpose> hallDPurposeList = purposeService.findByHall(Hall.D, null);
 
         boolean editable = request.isUserInRole("schcom")
-                || request.isUserInRole("oability") || request.isUserInRole("cc");
+                || request.isUserInRole("btm-admin") || request.isUserInRole("cc");
 
         request.setAttribute("hallAPurposeList", hallAPurposeList);
         request.setAttribute("hallBPurposeList", hallBPurposeList);

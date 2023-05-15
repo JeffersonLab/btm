@@ -156,7 +156,7 @@ public class OpAccHourService extends AbstractService<OpAccHour> {
         return totals;
     }
 
-    @RolesAllowed({"cc", "oability"})
+    @RolesAllowed({"cc", "btm-admin"})
     public void editAccHours(Date[] hourArray, Short[] upArray, Short[] sadArray,
                              Short[] downArray, Short[] studiesArray, Short[] restoreArray, Short[] accArray) throws
             UserFriendlyException {

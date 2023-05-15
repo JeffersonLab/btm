@@ -120,7 +120,7 @@ public class OpMultiplicityHourService extends AbstractService<OpMultiplicityHou
         return totals;
     }
 
-    @RolesAllowed({"cc", "oability"})
+    @RolesAllowed({"cc", "btm-admin"})
     public void editMultiHours(Date[] hourArray, Short[] fourUpArray, Short[] threeUpArray, Short[] twoUpArray,
                                Short[] oneUpArray, Short[] anyUpArray, Short[] allUpArray, Short[] downHardArray) throws
             UserFriendlyException {
