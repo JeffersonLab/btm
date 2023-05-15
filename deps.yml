@@ -53,3 +53,12 @@ services:
       - "8025:8025"
     environment:
       TZ: 'America/New_York'
+
+  softioc:
+    image: jeffersonlab/softioc:1.1.0
+    tty: true
+    stdin_open: true
+    hostname: softioc
+    container_name: softioc
+    volumes:
+      - ./docker/softioc/db:/db

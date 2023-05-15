@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * <p>
  * This class wraps around a ContextPool and provides life cycle management.
  *
- * <p>A resource bundle named epics.properties is consulted to determine
+ * <p>An environment variable BTM_EPICS_ADDR_LIST is consulted to determine
  * the EPICS addr_list value.</p>
  *
  * <p>This class is a singleton which is created on application startup and
@@ -64,9 +64,13 @@ public class ContextFactory {
         logger.log(Level.FINEST, "Constructing ContextPoolFactory");
         DefaultConfiguration config = new DefaultConfiguration("btm");
 
-        ResourceBundle bundle = ResourceBundle.getBundle("epics");
+        String addrList = System.getenv("BTM_EPICS_ADDR_LIST");
 
-        config.setAttribute("addr_list", bundle.getString("addr_list"));
+        if(addrList == null || addrList.isBlank()) {
+            throw new IllegalArgumentException("BTM_EPICS_ADDR_LIST must not be empty");
+        }
+
+        config.setAttribute("addr_list", addrList);
         config.setAttribute("auto_addr_list", "false");
 
         try {
