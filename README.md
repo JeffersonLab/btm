@@ -55,7 +55,7 @@ Uses the [Smoothness Environment Variables](https://github.com/JeffersonLab/smoo
 | Name                              | Description                                                                                                                                 |
 |-----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
 | BTM_BOOKS_CSV                     | Comma separated list of Jefferson Lab Logbook names to log to when timesheets are signed.                                                   |
-| BAM_EPICS_ADDR_LIST               | EPICS CA Address List for obtaining time keeping measurements.                                                                              |
+| BTM_EPICS_ADDR_LIST               | EPICS CA Address List for obtaining time keeping measurements.                                                                              |
 
 ## Build
 This project is built with [Java 17](https://adoptium.net/) (compiled to Java 11 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
