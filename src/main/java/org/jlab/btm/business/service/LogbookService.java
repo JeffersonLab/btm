@@ -42,11 +42,11 @@ public class LogbookService {
 
         String username = checkAuthorized(); /*Must be logged in*/
 
-        String logbookHostname = System.getenv("LOGBOOK_HOSTNAME");
+        String logbookServerUrl = System.getenv("LOGBOOK_SERVER_URL");
 
-        String logbooks = System.getenv("LOGBOOK_OPS_BOOKS_CSV");
+        String logbooks = System.getenv("BTM_BOOKS_CSV");
 
-        if (logbookHostname == null) {
+        if (logbookServerUrl == null) {
             throw new IOException("logbook server not configured");
         }
 
@@ -56,7 +56,7 @@ public class LogbookService {
 
         Properties config = Library.getConfiguration();
 
-        config.setProperty("SUBMIT_URL", "https://" + logbookHostname + "/incoming");
+        config.setProperty("SUBMIT_URL", logbookServerUrl + "/incoming");
 
         logger.log(Level.INFO, "Sending elog to logbook: {}", logbooks);
 
