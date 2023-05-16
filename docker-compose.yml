@@ -19,6 +19,11 @@ services:
       file: deps.yml
       service: mailhog
 
+  softioc:
+    extends:
+      file: deps.yml
+      service: softioc
+
   btm:
     hostname: btm
     container_name: btm

@@ -21,6 +21,11 @@ services:
       file: docker-compose.yml
       service: mailhog
 
+  softioc:
+    extends:
+      file: deps.yml
+      service: softioc
+
   btm:
     extends:
       file: docker-compose.yml
