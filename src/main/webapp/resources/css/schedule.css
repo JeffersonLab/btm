@@ -27,18 +27,10 @@ body.fullscreen {
 }
 
 /*.fullscreen #sticky-header,*/
-.fullscreen .filter-flyout-ribbon:before {
+.fullscreen .ribbon-breadbox {
     display: none;
 }
 
-.fullscreen .filterable-breadcrumb {
-    left: -12px;
-}
-
-/*body:not(.fullscreen) #fullscreen-title,
-.fullscreen .filterable-breadcrumb {
-    display: none;
-}*/
 body:not(.fullscreen) #table-wrap {
     height: 500px;
     overflow: auto;
@@ -67,9 +59,8 @@ body:not(.fullscreen) #table-wrap {
 #schedule-table {
     font-size: 12px;
 }
-
-h2 {
-    margin: 16px 0 0 16px;
+section {
+    clear: both;
 }
 
 .ui-datepicker {

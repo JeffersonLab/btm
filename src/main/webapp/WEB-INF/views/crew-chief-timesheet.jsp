@@ -22,65 +22,69 @@
     </jsp:attribute>
     <jsp:body>
         <fmt:formatDate value="${day}" pattern="dd MMM yyyy" var="formattedDate"/>
-        <div>
-            <ul class="fork-option-pair quick-nav">
-                <li>
-                    <a href="${previousUrl}" class="right-fork-option">Previous</a>
-                </li>
-                <li>
-                    <a href="${nextUrl}" class="left-fork-option">Next</a>
-                </li>
-            </ul>
+        <section>
+            <div class="float-breadbox">
+                <ul>
+                    <li>
+                        <a href="${previousUrl}">Previous</a>
+                    </li>
+                    <li>
+                        <a href="${nextUrl}">Next</a>
+                    </li>
+                </ul>
+            </div>
             <h2><c:out value="${title}"/></h2>
-        </div>
+        </section>
         <section class="${editable ? 'editable-timesheet' : ''}">
-            <div>
-                <s:filter-flyout-widget ribbon="true">
-                    <form id="filter-form" action="crew-chief-timesheet" method="get">
-                        <fieldset>
-                            <legend>Filter</legend>
-                            <ul class="key-value-list">
-                                <li>
-                                    <div class="li-key"><label for="date">Date</label></div>
-                                    <div class="li-value"><input id="date" class="datepicker" placeholder="MMM DD YYYY"
-                                                                 type="text" value="${formattedDate}"/></div>
-                                </li>
-                                <li>
-                                    <div class="li-key"><label for="shift">Shift</label></div>
-                                    <div class="li-value">
-                                        <select id="shift">
-                                            <option value="owl"${shift eq 'OWL' ? ' selected="selected"' : ''}>Owl
-                                            </option>
-                                            <option value="day"${shift eq 'DAY' ? ' selected="selected"' : ''}>Day
-                                            </option>
-                                            <option value="swing"${shift eq 'SWING' ? ' selected="selected"' : ''}>
-                                                Swing
-                                            </option>
-                                        </select>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="li-key"><label for="units">Units</label></div>
-                                    <div class="li-value">
-                                        <select id="units" data-units="${durationUnits}">
-                                            <option value="hours"${durationUnits eq 'HOURS' ? ' selected="selected"' : ''}>
-                                                Hours
-                                            </option>
-                                            <option value="minutes"${durationUnits eq 'MINUTES' ? ' selected="selected"' : ''}>
-                                                Minutes
-                                            </option>
-                                            <option value="seconds"${durationUnits eq 'SECONDS' ? ' selected="selected"' : ''}>
-                                                Seconds
-                                            </option>
-                                        </select>
-                                    </div>
-                                </li>
-                            </ul>
-                        </fieldset>
-                        <button id="filter-form-submit-button">Apply</button>
-                    </form>
-                </s:filter-flyout-widget>
-                <ul class="filterable-breadcrumb">
+            <div class="ribbon-breadbox">
+                <ul>
+                    <li>
+                        <s:filter-flyout-widget>
+                            <form id="filter-form" action="crew-chief-timesheet" method="get">
+                                <fieldset>
+                                    <legend>Filter</legend>
+                                    <ul class="key-value-list">
+                                        <li>
+                                            <div class="li-key"><label for="date">Date</label></div>
+                                            <div class="li-value"><input id="date" class="datepicker" placeholder="MMM DD YYYY"
+                                                                         type="text" value="${formattedDate}"/></div>
+                                        </li>
+                                        <li>
+                                            <div class="li-key"><label for="shift">Shift</label></div>
+                                            <div class="li-value">
+                                                <select id="shift">
+                                                    <option value="owl"${shift eq 'OWL' ? ' selected="selected"' : ''}>Owl
+                                                    </option>
+                                                    <option value="day"${shift eq 'DAY' ? ' selected="selected"' : ''}>Day
+                                                    </option>
+                                                    <option value="swing"${shift eq 'SWING' ? ' selected="selected"' : ''}>
+                                                        Swing
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="li-key"><label for="units">Units</label></div>
+                                            <div class="li-value">
+                                                <select id="units" data-units="${durationUnits}">
+                                                    <option value="hours"${durationUnits eq 'HOURS' ? ' selected="selected"' : ''}>
+                                                        Hours
+                                                    </option>
+                                                    <option value="minutes"${durationUnits eq 'MINUTES' ? ' selected="selected"' : ''}>
+                                                        Minutes
+                                                    </option>
+                                                    <option value="seconds"${durationUnits eq 'SECONDS' ? ' selected="selected"' : ''}>
+                                                        Seconds
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </fieldset>
+                                <button id="filter-form-submit-button">Apply</button>
+                            </form>
+                        </s:filter-flyout-widget>
+                    </li>
                     <li>
                         <span class="crumb"><c:out value="${formattedDate}"/></span>
                     </li>

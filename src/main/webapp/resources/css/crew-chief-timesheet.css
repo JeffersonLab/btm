@@ -6,14 +6,6 @@ tfoot th:first-child {
     text-align: center;
 }
 
-span.crumb {
-    font-weight: bold;
-}
-
-h2 {
-    margin: 16px 0 0 16px;
-}
-
 h3 {
     border-bottom: 1px dashed black;
 }
@@ -36,7 +28,7 @@ ul.ui-tabs-nav li a {
     margin-top: 0.1em;
 }
 
-.dialog .breadcrumb {
+.dialog .ribbon-breadbox {
     top: 0;
     left: 0;
 }

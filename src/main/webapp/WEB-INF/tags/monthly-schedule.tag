@@ -11,17 +11,19 @@
 <%@attribute name="schedule" required="true" type="org.jlab.btm.persistence.entity.MonthlySchedule" %>
 <%@attribute name="fullscreenAvailable" required="true" type="java.lang.Boolean" %>
 <fmt:formatDate value="${month}" pattern="MMMM yyyy" var="formattedDate"/>
-<div>
-    <ul class="fork-option-pair quick-nav">
-        <li>
-            <a href="${previousUrl}" class="right-fork-option">Previous</a>
-        </li>
-        <li>
-            <a href="${nextUrl}" class="left-fork-option">Next</a>
-        </li>
-    </ul>
+<section>
+    <div class="float-breadbox">
+        <ul>
+            <li>
+                <a href="${previousUrl}">Previous</a>
+            </li>
+            <li>
+                <a href="${nextUrl}">Next</a>
+            </li>
+        </ul>
+    </div>
     <h2><c:out value="${title}"/></h2>
-</div>
+</section>
 <section>
     <div id="report-page-actions">
         <select id="view-select" name="view" form="filter-form">
@@ -32,61 +34,62 @@
             <button id="fullscreen-button">Full Screen</button>
         </c:if>
     </div>
-    <div>
-        <s:filter-flyout-widget ribbon="true">
-            <form id="filter-form" action="schedule" method="get">
-                <fieldset>
-                    <legend>Filter</legend>
-                    <ul class="key-value-list">
-                        <li>
-                            <div class="li-key"><label for="date">Date</label></div>
-                            <div class="li-value"><input id="date" class="monthpicker" placeholder="MMMM YYYY"
-                                                         type="text" value="${formattedDate}"/></div>
-                        </li>
-                        <li>
-                            <div class="li-key"><label for="version">Version #</label></div>
-                            <div class="li-value">
-                                <select id="version">
-                                    <c:choose>
-                                        <c:when test="${fn:length(scheduleList) eq 0}">
-                                            <option value=" ">None</option>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <c:forEach items="${scheduleList}" var="s">
-                                                <c:choose>
-                                                    <c:when test="${s.publishedDate ne null}">
-                                                        <fmt:formatDate pattern="'Published' dd MMM yyyy"
-                                                                        value="${s.publishedDate}"
-                                                                        var="publishedDateStr"/>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <c:set value="Tentative" var="publishedDateStr"/>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <option value="${s.version}"${version eq s.version ? ' selected="selected"' : ''}>${s.version}
-                                                    (${publishedDateStr})
-                                                </option>
-                                            </c:forEach>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </select>
-                                <span id="version-indicator" class="form-control-indicator"></span>
-                            </div>
-                        </li>
-                    </ul>
-                </fieldset>
-                <input id="print-input" type="hidden" name="print" value="${param.print}"/>
-                <input id="fullscreen-input" type="hidden" name="fullscreen" value="${param.fullscreen}"/>
-                <button id="filter-form-submit-button">Apply</button>
-            </form>
-        </s:filter-flyout-widget>
-
-        <ul class="filterable-breadcrumb">
+    <div class="ribbon-breadbox">
+        <ul>
             <li>
-                <span class="crumb"><c:out value="${formattedDate}"/></span>
+                <s:filter-flyout-widget>
+                    <form id="filter-form" action="schedule" method="get">
+                        <fieldset>
+                            <legend>Filter</legend>
+                            <ul class="key-value-list">
+                                <li>
+                                    <div class="li-key"><label for="date">Date</label></div>
+                                    <div class="li-value"><input id="date" class="monthpicker" placeholder="MMMM YYYY"
+                                                                 type="text" value="${formattedDate}"/></div>
+                                </li>
+                                <li>
+                                    <div class="li-key"><label for="version">Version #</label></div>
+                                    <div class="li-value">
+                                        <select id="version">
+                                            <c:choose>
+                                                <c:when test="${fn:length(scheduleList) eq 0}">
+                                                    <option value=" ">None</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:forEach items="${scheduleList}" var="s">
+                                                        <c:choose>
+                                                            <c:when test="${s.publishedDate ne null}">
+                                                                <fmt:formatDate pattern="'Published' dd MMM yyyy"
+                                                                                value="${s.publishedDate}"
+                                                                                var="publishedDateStr"/>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <c:set value="Tentative" var="publishedDateStr"/>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                        <option value="${s.version}"${version eq s.version ? ' selected="selected"' : ''}>${s.version}
+                                                            (${publishedDateStr})
+                                                        </option>
+                                                    </c:forEach>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </select>
+                                        <span id="version-indicator" class="form-control-indicator"></span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </fieldset>
+                        <input id="print-input" type="hidden" name="print" value="${param.print}"/>
+                        <input id="fullscreen-input" type="hidden" name="fullscreen" value="${param.fullscreen}"/>
+                        <button id="filter-form-submit-button">Apply</button>
+                    </form>
+                </s:filter-flyout-widget>
             </li>
             <li>
-                <span class="crumb">Version ${version}
+                <span><c:out value="${formattedDate}"/></span>
+            </li>
+            <li>
+                <span>Version ${version}
                     <c:if test="${schedule ne null}">
                         <c:choose>
                             <c:when test="${schedule.publishedDate ne null}">
