@@ -82,3 +82,10 @@ body.print:not(.fullscreen) #content {
 #calendar-table {
     width: 100%;
 }
+
+section {
+    clear: both;
+}
+.float-breadbox li {
+    background-color: white;
+}

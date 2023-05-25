@@ -19,6 +19,20 @@
             <fmt:formatDate var="todayFmt" value="${today}" pattern="dd-MMM-yyyy HH:mm"/>
             <fmt:formatDate var="sevenDaysAgoFmt" value="${sevenDaysAgo}" pattern="dd-MMM-yyyy HH:mm"/>
             <fmt:formatDate var="formattedDate" value="${start}" pattern="MMMM yyyy"/>
+            <fmt:formatDate var="previousMonthFmt" value="${previousMonth}" pattern="MMMM yyyy"/>
+            <fmt:formatDate var="nextMonthFmt" value="${nextMonth}" pattern="MMMM yyyy"/>
+            <c:url var="previousUrl" value="/reports/bt-calendar">
+                <c:param name="date" value="${previousMonthFmt}"/>
+                <c:param name="print" value="${param.print}"/>
+                <c:param name="fullscreen" value="${param.fullscreen}"/>
+                <c:param name="qualified" value=""/>
+            </c:url>
+            <c:url var="nextUrl" value="/reports/bt-calendar">
+                <c:param name="date" value="${nextMonthFmt}"/>
+                <c:param name="print" value="${param.print}"/>
+                <c:param name="fullscreen" value="${param.fullscreen}"/>
+                <c:param name="qualified" value=""/>
+            </c:url>
             <div id="report-page-actions">
                 <button id="fullscreen-button">Full Screen</button>
                 <div id="export-widget">
@@ -50,36 +64,24 @@
                 </form>
             </s:filter-flyout-widget>
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
+        </section>
+        <section>
+            <div class="float-breadbox">
+                <ul>
+                    <li>
+                        <a href="${previousUrl}">Previous</a>
+                    </li>
+                    <li>
+                        <a href="${nextUrl}">Next</a>
+                    </li>
+                </ul>
+            </div>
             <c:choose>
                 <c:when test="${start == null}">
                     <div class="message-box">Select a month to continue</div>
                 </c:when>
                 <c:otherwise>
-                    <fmt:formatDate var="previousMonthFmt" value="${previousMonth}" pattern="MMMM yyyy"/>
-                    <fmt:formatDate var="nextMonthFmt" value="${nextMonth}" pattern="MMMM yyyy"/>
-                    <c:url var="previousUrl" value="/reports/bt-calendar">
-                        <c:param name="date" value="${previousMonthFmt}"/>
-                        <c:param name="print" value="${param.print}"/>
-                        <c:param name="fullscreen" value="${param.fullscreen}"/>
-                        <c:param name="qualified" value=""/>
-                    </c:url>
-                    <c:url var="nextUrl" value="/reports/bt-calendar">
-                        <c:param name="date" value="${nextMonthFmt}"/>
-                        <c:param name="print" value="${param.print}"/>
-                        <c:param name="fullscreen" value="${param.fullscreen}"/>
-                        <c:param name="qualified" value=""/>
-                    </c:url>
-                    <div>
-                        <ul class="fork-option-pair quick-nav">
-                            <li>
-                                <a href="${previousUrl}" class="right-fork-option">Previous</a>
-                            </li>
-                            <li>
-                                <a href="${nextUrl}" class="left-fork-option">Next</a>
-                            </li>
-                        </ul>
-                        <div class="message-box"><c:out value="${selectionMessage}"/></div>
-                    </div>
+                    <div class="message-box"><c:out value="${selectionMessage}"/></div>
                     <table id="calendar-table" class="data-table">
                         <thead>
                         <tr>
