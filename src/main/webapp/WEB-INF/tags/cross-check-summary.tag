@@ -36,13 +36,13 @@
     </tr>
     </thead>
     <tbody>
-    <fmt:formatDate pattern="yyyy-MM-dd" value="${day}" var="expDate"/>
+    <fmt:formatDate pattern="dd-MMM-yyyy" value="${day}" var="expDate"/>
     <c:forEach items="${hallAvailabilityList}" var="availability" varStatus="status">
         <c:set var="expHallShift" value="${expHallHourTotalsList.get(status.index)}"/>
         <tr>
             <th>Hall ${availability.hall}</th>
-            <c:set var="expUrl"
-                   value="https://bta.acc.jlab.org/experimenter/${fn:toLowerCase(availability.hall)}/${expDate}/${fn:toLowerCase(shift)}"/>
+            <c:url var="expUrl"
+                   value="/timesheet/e${fn:toLowerCase(availability.hall)}/${expDate}/${fn:toLowerCase(shift)}/${fn:toLowerCase(durationUnits)}"/>
             <c:choose>
                 <c:when test="${expHallShift.hourCount eq hoursInShift}">
                     <td><a target="_blank" href="${expUrl}">Complete<span class="ui-icon ui-icon-extlink"></span></a>

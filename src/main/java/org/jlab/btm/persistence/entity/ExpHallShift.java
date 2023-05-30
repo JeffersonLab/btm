@@ -17,6 +17,9 @@ import java.util.Date;
 @Entity
 @Table(name = "EXP_HALL_SHIFT", schema = "BTM_OWNER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"HALL", "START_DAY_AND_HOUR"})})
+@NamedQueries({
+        @NamedQuery(name = "ExpHallShift.findByExpHallShiftId", query = "SELECT e FROM ExpHallShift e WHERE e.expHallShiftId = :expHallShiftId"),
+        @NamedQuery(name = "ExpHallShift.findByHallAndStartDayAndHour", query = "SELECT e FROM ExpHallShift e WHERE e.expHallShiftPurpose.hall = :hall AND e.startDayAndHour = :startDayAndHour")})
 public class ExpHallShift implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -63,6 +66,14 @@ public class ExpHallShift implements Serializable {
 
     public BigInteger getExpHallShiftId() {
         return expHallShiftId;
+    }
+
+    public Date getStartDayAndHour() {
+        return startDayAndHour;
+    }
+
+    public void setStartDayAndHour(Date startDayAndHour) {
+        this.startDayAndHour = startDayAndHour;
     }
 
     public void setExpHallShiftId(BigInteger expHallShiftId) {

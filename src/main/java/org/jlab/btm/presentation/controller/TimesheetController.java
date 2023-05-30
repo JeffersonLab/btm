@@ -44,11 +44,15 @@ public class TimesheetController extends HttpServlet {
     @EJB
     ExpHallHourService expHallHourService;
     @EJB
-    OpShiftService shiftService;
+    OpShiftService ccShiftService;
+    @EJB
+    ExpHallShiftService expShiftService;
     @EJB
     OpCrossCheckCommentService crossCheckCommentService;
     @EJB
-    OpSignatureService signatureService;
+    OpSignatureService ccSignatureService;
+    @EJB
+    ExpSignatureService expSignatureService;
     @EJB
     PdShiftPlanService planService;
     @EJB
@@ -119,7 +123,61 @@ public class TimesheetController extends HttpServlet {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH");
         String shiftStartHourStr = dateFormat.format(startHour);
+        Date startOfNextShift = TimeUtil.addHours(endHour, 1);
 
+        if(TimesheetType.CC.equals(type)) {
+            handleCCTimesheet(request, startHour, endHour, startOfNextShift);
+        } else {
+            Hall hall;
+
+            switch(type) {
+                case EA:
+                hall = Hall.A;
+                    break;
+                case EB:
+                    hall = Hall.B;
+                    break;
+                case EC:
+                    hall = Hall.C;
+                    break;
+                case ED:
+                    hall = Hall.D;
+                    break;
+                default:
+                    throw new RuntimeException("Unknown hall: " + type);
+            }
+
+            handleExpTimesheet(request, hall, startHour);
+        }
+
+        dateFormat = new SimpleDateFormat("dd MMM yyyy");
+
+        String message = "Type \"" + type.getLabel() + "\" and Date \"" + dateFormat.format(day) + "\" and Shift \"" + shift + "\" and Units \"" + units.toString().toLowerCase() + "\"";
+
+        request.setAttribute("type", type);
+        request.setAttribute("day", day);
+        request.setAttribute("durationUnits", units);
+        request.setAttribute("startHour", startHour);
+        request.setAttribute("shiftStartHourStr", shiftStartHourStr);
+        request.setAttribute("startOfNextShift", startOfNextShift);
+        request.setAttribute("endHour", endHour);
+        request.setAttribute("shift", shift);
+        request.setAttribute("previousUrl", previousUrl);
+        request.setAttribute("nextUrl", nextUrl);
+        request.setAttribute("message", message);
+        request.setAttribute("now", new Date());
+        request.setAttribute("hoursInShift", hoursInShift);
+
+        if ("Y".equals(request.getParameter("crosscheck"))) {
+            request.getRequestDispatcher("/WEB-INF/views/cross-check-only.jsp").forward(
+                    request, response);
+        } else {
+            request.getRequestDispatcher("/WEB-INF/views/timesheet.jsp").forward(
+                    request, response);
+        }
+    }
+
+    private void handleCCTimesheet(HttpServletRequest request, Date startHour, Date endHour, Date startOfNextShift) {
         PdShiftPlan plan = planService.findInDatabase(startHour);
 
         /*ACCELERATOR AVAILABILITY*/
@@ -149,11 +207,11 @@ public class TimesheetController extends HttpServlet {
         List<ExpHallShiftAvailability> expHallAvailabilityList = expHallHourService.findAvailability(startHour, endHour);
 
         /*SHIFT INFORMATION*/
-        OpShift dbShiftInfo = shiftService.findInDatabase(startHour);
+        OpShift dbShiftInfo = ccShiftService.findInDatabase(startHour);
         OpShift epicsShiftInfo = null;
 
         try {
-            epicsShiftInfo = shiftService.findInEpics(startHour);
+            epicsShiftInfo = ccShiftService.findInEpics(startHour);
         } catch (UserFriendlyException e) {
             logger.log(Level.FINEST, "Unable to obtain EPICS shift info data", e);
         }
@@ -168,8 +226,8 @@ public class TimesheetController extends HttpServlet {
         OpCrossCheckComment crossCheckComment = crossCheckCommentService.findInDatabase(startHour);
 
         /*SIGNATURES*/
-        List<OpSignature> signatureList = signatureService.find(startHour);
-        TimesheetStatus status = signatureService.calculateStatus(startHour, endHour,
+        List<OpSignature> signatureList = ccSignatureService.find(startHour);
+        TimesheetStatus status = ccSignatureService.calculateStatus(startHour, endHour,
                 accAvailability.getDbHourList(), hallAvailabilityList.get(0).getDbHourList(),
                 hallAvailabilityList.get(1).getDbHourList(),
                 hallAvailabilityList.get(2).getDbHourList(),
@@ -214,40 +272,21 @@ public class TimesheetController extends HttpServlet {
                 multiplicityAvailability.getShiftTotals());
 
         // Downtime check
-        Date startOfNextShift = TimeUtil.addHours(endHour, 1);
-
         DowntimeSummaryTotals dtmTotals = downService.reportTotals(startHour, startOfNextShift);
 
         CrewChiefDowntimeCrossCheck downCrossCheck = new CrewChiefDowntimeCrossCheck(accAvailability.getShiftTotals(), dtmTotals.getEventSeconds());
 
-        dateFormat = new SimpleDateFormat("dd MMM yyyy");
-
-        String message = "Type \"" + type.getLabel() + "\" and Date \"" + dateFormat.format(day) + "\" and Shift \"" + shift + "\" and Units \"" + units.toString().toLowerCase() + "\"";
-
-        request.setAttribute("type", type);
-        request.setAttribute("day", day);
-        request.setAttribute("startHour", startHour);
-        request.setAttribute("startOfNextShift", startOfNextShift);
-        request.setAttribute("endHour", endHour);
-        request.setAttribute("shift", shift);
-        request.setAttribute("previousUrl", previousUrl);
-        request.setAttribute("nextUrl", nextUrl);
-        request.setAttribute("message", message);
         request.setAttribute("plan", plan);
         request.setAttribute("accAvailability", accAvailability);
         request.setAttribute("hallAvailabilityList", hallAvailabilityList);
         request.setAttribute("multiplicityAvailability", multiplicityAvailability);
         request.setAttribute("expHallHourTotalsList", expHallHourTotalsList);
-        request.setAttribute("durationUnits", units);
         request.setAttribute("crossCheckComment", crossCheckComment);
         request.setAttribute("shiftInfo", shiftInfo);
         request.setAttribute("epicsShiftInfo", epicsShiftInfo);
-        request.setAttribute("shiftStartHourStr", shiftStartHourStr);
         request.setAttribute("signatureList", signatureList);
         request.setAttribute("status", status);
         request.setAttribute("editable", editable);
-        request.setAttribute("hoursInShift", hoursInShift);
-        request.setAttribute("now", new Date());
         request.setAttribute("modeCrossCheck", modeCrossCheck);
         request.setAttribute("accCrossCheck", accCrossCheck);
         request.setAttribute("hallCrossCheck", hallCrossCheck);
@@ -258,14 +297,17 @@ public class TimesheetController extends HttpServlet {
         request.setAttribute("hallBHourCrossCheckList", hallBHourCrossCheckList);
         request.setAttribute("hallCHourCrossCheckList", hallCHourCrossCheckList);
         request.setAttribute("hallDHourCrossCheckList", hallDHourCrossCheckList);
+    }
 
-        if ("Y".equals(request.getParameter("crosscheck"))) {
-            request.getRequestDispatcher("/WEB-INF/views/cross-check-only.jsp").forward(
-                    request, response);
-        } else {
-            request.getRequestDispatcher("/WEB-INF/views/timesheet.jsp").forward(
-                    request, response);
-        }
+    private void handleExpTimesheet(HttpServletRequest request, Hall hall, Date startHour) {
+        /*SHIFT INFORMATION*/
+        ExpHallShift shiftInfo = expShiftService.find(hall, startHour);
+
+        /*SIGNATURES*/
+        List<ExpHallSignature> signatureList = expSignatureService.find(hall, startHour);
+
+        request.setAttribute("shiftInfo", shiftInfo);
+        request.setAttribute("signatureList", signatureList);
     }
 
     private String getCurrentUrl(HttpServletRequest request, TimesheetType type, Date day, Shift shift,
