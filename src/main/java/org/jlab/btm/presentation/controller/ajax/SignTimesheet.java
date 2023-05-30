@@ -137,7 +137,7 @@ public class SignTimesheet extends HttpServlet {
                 request.setAttribute("timesheetUrl", timesheetUrl);
 
                 String html = InternalHtmlRequestExecutor.execute(
-                        "/WEB-INF/views/log-crew-chief-timesheet.jsp", request, response);
+                        "/WEB-INF/views/log-timesheet.jsp", request, response);
 
                 String[] tokens = html.split("<body>");
 

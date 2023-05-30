@@ -5,23 +5,23 @@
 <%@taglib prefix="btm" uri="http://jlab.org/btm/functions" %>
 <%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<c:set var="title" value="Crew Chief Timesheet"/>
-<t:page title="${title}">  
+<c:set var="title" value="${type.label} Timesheet"/>
+<fmt:formatDate value="${day}" pattern="dd MMM yyyy" var="formattedDate"/>
+<t:page title="${title}">
     <jsp:attribute name="stylesheets">
         <link rel="stylesheet" type="text/css"
-              href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/crew-chief-timesheet.css"/>
+              href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/timesheet.css"/>
         <style type="text/css">
             #comparison-table .ui-icon {
                 background-image: url("${pageContext.request.contextPath}/resources/jquery-ui-1.13.2/images/ui-icons_2e83ff_256x240.png");
             }
         </style>
     </jsp:attribute>
-    <jsp:attribute name="scripts">       
+    <jsp:attribute name="scripts">
         <script type="text/javascript"
-                src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/crew-chief-timesheet.js"></script>
+                src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/timesheet.js"></script>
     </jsp:attribute>
     <jsp:body>
-        <fmt:formatDate value="${day}" pattern="dd MMM yyyy" var="formattedDate"/>
         <section>
             <div class="float-breadbox">
                 <ul>
@@ -33,71 +33,67 @@
                     </li>
                 </ul>
             </div>
-            <h2><c:out value="${title}"/></h2>
+            <s:filter-flyout-widget ribbon="true">
+                <form id="filter-form" action="timesheet" method="get">
+                    <fieldset>
+                        <legend>Filter</legend>
+                        <ul class="key-value-list">
+                            <li>
+                                <div class="li-key"><label for="type">Type</label></div>
+                                <div class="li-value">
+                                    <select id="type">
+                                        <option value="cc"${type eq 'CC' ? ' selected="selected"' : ''}>Crew Chief</option>
+                                        <option value="ea"${type eq 'EA' ? ' selected="selected"' : ''}>Experimenter A</option>
+                                        <option value="eb"${type eq 'EB' ? ' selected="selected"' : ''}>Experimenter B</option>
+                                        <option value="ec"${type eq 'EC' ? ' selected="selected"' : ''}>Experimenter C</option>
+                                        <option value="ed"${type eq 'ED' ? ' selected="selected"' : ''}>Experimenter D</option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="li-key"><label for="date">Date</label></div>
+                                <div class="li-value"><input id="date" class="datepicker" placeholder="DD MMM YYYY"
+                                                             type="text" value="${formattedDate}"/></div>
+                            </li>
+                            <li>
+                                <div class="li-key"><label for="shift">Shift</label></div>
+                                <div class="li-value">
+                                    <select id="shift">
+                                        <option value="owl"${shift eq 'OWL' ? ' selected="selected"' : ''}>Owl
+                                        </option>
+                                        <option value="day"${shift eq 'DAY' ? ' selected="selected"' : ''}>Day
+                                        </option>
+                                        <option value="swing"${shift eq 'SWING' ? ' selected="selected"' : ''}>
+                                            Swing
+                                        </option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="li-key"><label for="units">Units</label></div>
+                                <div class="li-value">
+                                    <select id="units" data-units="${durationUnits}">
+                                        <option value="hours"${durationUnits eq 'HOURS' ? ' selected="selected"' : ''}>
+                                            Hours
+                                        </option>
+                                        <option value="minutes"${durationUnits eq 'MINUTES' ? ' selected="selected"' : ''}>
+                                            Minutes
+                                        </option>
+                                        <option value="seconds"${durationUnits eq 'SECONDS' ? ' selected="selected"' : ''}>
+                                            Seconds
+                                        </option>
+                                    </select>
+                                </div>
+                            </li>
+                        </ul>
+                    </fieldset>
+                    <button id="filter-form-submit-button">Apply</button>
+                </form>
+            </s:filter-flyout-widget>
+            <h2 id="page-header-title">Timesheet</h2>
+            <div class="message-box"><c:out value="${message}"/></div>
         </section>
         <section class="${editable ? 'editable-timesheet' : ''}">
-            <div class="ribbon-breadbox">
-                <ul>
-                    <li>
-                        <s:filter-flyout-widget>
-                            <form id="filter-form" action="crew-chief-timesheet" method="get">
-                                <fieldset>
-                                    <legend>Filter</legend>
-                                    <ul class="key-value-list">
-                                        <li>
-                                            <div class="li-key"><label for="date">Date</label></div>
-                                            <div class="li-value"><input id="date" class="datepicker" placeholder="MMM DD YYYY"
-                                                                         type="text" value="${formattedDate}"/></div>
-                                        </li>
-                                        <li>
-                                            <div class="li-key"><label for="shift">Shift</label></div>
-                                            <div class="li-value">
-                                                <select id="shift">
-                                                    <option value="owl"${shift eq 'OWL' ? ' selected="selected"' : ''}>Owl
-                                                    </option>
-                                                    <option value="day"${shift eq 'DAY' ? ' selected="selected"' : ''}>Day
-                                                    </option>
-                                                    <option value="swing"${shift eq 'SWING' ? ' selected="selected"' : ''}>
-                                                        Swing
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="li-key"><label for="units">Units</label></div>
-                                            <div class="li-value">
-                                                <select id="units" data-units="${durationUnits}">
-                                                    <option value="hours"${durationUnits eq 'HOURS' ? ' selected="selected"' : ''}>
-                                                        Hours
-                                                    </option>
-                                                    <option value="minutes"${durationUnits eq 'MINUTES' ? ' selected="selected"' : ''}>
-                                                        Minutes
-                                                    </option>
-                                                    <option value="seconds"${durationUnits eq 'SECONDS' ? ' selected="selected"' : ''}>
-                                                        Seconds
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </fieldset>
-                                <button id="filter-form-submit-button">Apply</button>
-                            </form>
-                        </s:filter-flyout-widget>
-                    </li>
-                    <li>
-                        <span class="crumb"><c:out value="${formattedDate}"/></span>
-                    </li>
-                    <li>
-                        <span class="crumb"
-                              title="Crew Chief shifts start and end one hour before Operator and Experimenter shifts"><c:out
-                                value="${shift.label}"/>*</span>
-                    </li>
-                    <li>
-                        <span class="crumb"><c:out value="${durationUnits.label}"/></span>
-                    </li>
-                </ul>
-            </div>
             <fmt:formatDate pattern="yyyy" value="${endHour}" var="endOfShiftYear"/>
             <fmt:formatDate pattern="MM" value="${endHour}" var="endOfShiftMonth"/>
             <fmt:formatDate pattern="dd" value="${endHour}" var="endOfShiftDay"/>

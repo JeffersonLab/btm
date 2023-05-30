@@ -1354,7 +1354,7 @@ $(document).on("click", "#filter-form-submit-button", function () {
         urlDay = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()),
         urlDate = urlDay + "-" + urlMonth + "-" + date.getFullYear();
 
-    window.location.href = jlab.contextPath + '/crew-chief-timesheet/' + urlDate + '/' + $("#shift").val() + '/' + $("#units").val();
+    window.location.href = jlab.contextPath + '/timesheet/' + $("#type").val() + '/' + urlDate + '/' + $("#shift").val() + '/' + $("#units").val();
     return false;
 });
 

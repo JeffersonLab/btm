@@ -3,6 +3,7 @@ package org.jlab.btm.presentation.controller;
 import org.jlab.btm.business.service.*;
 import org.jlab.btm.persistence.entity.*;
 import org.jlab.btm.persistence.enumeration.DurationUnits;
+import org.jlab.btm.persistence.enumeration.TimesheetType;
 import org.jlab.btm.persistence.projection.*;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
@@ -28,12 +29,11 @@ import java.util.logging.Logger;
 /**
  * @author ryans
  */
-@WebServlet(name = "CrewChiefTimesheetController", urlPatterns
-        = {"/crew-chief-timesheet"})
-public class CrewChiefTimesheetController extends HttpServlet {
+@WebServlet(name = "TimesheetController", urlPatterns = {"/timesheet"})
+public class TimesheetController extends HttpServlet {
 
     private final static Logger logger = Logger.getLogger(
-            CrewChiefTimesheetController.class.getName());
+            TimesheetController.class.getName());
 
     @EJB
     OpAccHourService accHourService;
@@ -66,6 +66,15 @@ public class CrewChiefTimesheetController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        boolean redirect = false;
+
+        TimesheetType type = BtmParamConverter.convertTimesheetType(request, "type");
+
+        if(type == null) {
+            type = TimesheetType.CC;
+            redirect = true;
+        }
+
         Date now = new Date();
         Date day;
         try {
@@ -91,13 +100,17 @@ public class CrewChiefTimesheetController extends HttpServlet {
                 }
             }
 
-            response.sendRedirect(response.encodeRedirectURL(this.getCurrentUrl(request, day, shift,
+            redirect = true;
+        }
+
+        if(redirect) {
+            response.sendRedirect(response.encodeRedirectURL(this.getCurrentUrl(request, type, day, shift,
                     units)));
             return;
         }
 
-        String previousUrl = getPreviousUrl(request, day, shift, units);
-        String nextUrl = getNextUrl(request, day, shift, units);
+        String previousUrl = getPreviousUrl(request, type, day, shift, units);
+        String nextUrl = getNextUrl(request, type, day, shift, units);
 
         Date startHour = TimeUtil.getCrewChiefStartDayAndHour(day, shift);
         Date endHour = TimeUtil.getCrewChiefEndDayAndHour(day, shift);
@@ -207,6 +220,11 @@ public class CrewChiefTimesheetController extends HttpServlet {
 
         CrewChiefDowntimeCrossCheck downCrossCheck = new CrewChiefDowntimeCrossCheck(accAvailability.getShiftTotals(), dtmTotals.getEventSeconds());
 
+        dateFormat = new SimpleDateFormat("dd MMM yyyy");
+
+        String message = "Type \"" + type.getLabel() + "\" and Date \"" + dateFormat.format(day) + "\" and Shift \"" + shift + "\" and Units \"" + units.toString().toLowerCase() + "\"";
+
+        request.setAttribute("type", type);
         request.setAttribute("day", day);
         request.setAttribute("startHour", startHour);
         request.setAttribute("startOfNextShift", startOfNextShift);
@@ -214,6 +232,7 @@ public class CrewChiefTimesheetController extends HttpServlet {
         request.setAttribute("shift", shift);
         request.setAttribute("previousUrl", previousUrl);
         request.setAttribute("nextUrl", nextUrl);
+        request.setAttribute("message", message);
         request.setAttribute("plan", plan);
         request.setAttribute("accAvailability", accAvailability);
         request.setAttribute("hallAvailabilityList", hallAvailabilityList);
@@ -244,21 +263,21 @@ public class CrewChiefTimesheetController extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/cross-check-only.jsp").forward(
                     request, response);
         } else {
-            request.getRequestDispatcher("/WEB-INF/views/crew-chief-timesheet.jsp").forward(
+            request.getRequestDispatcher("/WEB-INF/views/timesheet.jsp").forward(
                     request, response);
         }
     }
 
-    private String getCurrentUrl(HttpServletRequest request, Date day, Shift shift,
+    private String getCurrentUrl(HttpServletRequest request, TimesheetType type, Date day, Shift shift,
                                  DurationUnits units) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 
-        return request.getContextPath() + "/crew-chief-timesheet/" + dateFormat.format(
+        return request.getContextPath() + "/timesheet/" + type.toString().toLowerCase() + "/" + dateFormat.format(
                 day).toLowerCase() + "/" + shift.toString().toLowerCase() + "/"
                 + units.toString().toLowerCase();
     }
 
-    private String getPreviousUrl(HttpServletRequest request, Date day, Shift shift,
+    private String getPreviousUrl(HttpServletRequest request, TimesheetType type, Date day, Shift shift,
                                   DurationUnits units) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 
@@ -270,12 +289,12 @@ public class CrewChiefTimesheetController extends HttpServlet {
             previousDay = TimeUtil.addDays(day, -1);
         }
 
-        return request.getContextPath() + "/crew-chief-timesheet/" + dateFormat.format(
+        return request.getContextPath() + "/timesheet/" + type.toString().toLowerCase() + "/" + dateFormat.format(
                 previousDay).toLowerCase() + "/" + previousShift.toString().toLowerCase() + "/"
                 + units.toString().toLowerCase();
     }
 
-    private String getNextUrl(HttpServletRequest request, Date day, Shift shift,
+    private String getNextUrl(HttpServletRequest request, TimesheetType type, Date day, Shift shift,
                               DurationUnits units) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 
@@ -287,7 +306,7 @@ public class CrewChiefTimesheetController extends HttpServlet {
             nextDay = TimeUtil.addDays(day, 1);
         }
 
-        return request.getContextPath() + "/crew-chief-timesheet/" + dateFormat.format(
+        return request.getContextPath() + "/timesheet/" + type.toString().toLowerCase() + "/" + dateFormat.format(
                 nextDay).toLowerCase() + "/" + nextShift.toString().toLowerCase() + "/"
                 + units.toString().toLowerCase();
     }
