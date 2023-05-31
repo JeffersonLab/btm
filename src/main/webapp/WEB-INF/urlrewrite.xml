@@ -13,6 +13,11 @@
     </rule>
 
     <rule>
+        <from>^/timesheet/(cc|ea|eb|ec|ed)$</from>
+        <to>/timesheet?type=$1</to>
+    </rule>
+
+    <rule>
         <from>^/schedule/([a-zA-Z]*-\d{4})$</from>
         <to>/schedule?date=$1</to>
     </rule>
