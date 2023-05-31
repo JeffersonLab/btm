@@ -21,15 +21,13 @@
                     <th rowspan="2">Hour Total</th>
                     <th colspan="4">Experiment Beam Time</th>
                     <th rowspan="2">Hour Total</th>
-                    <th rowspan="2">Source</th>
-                    <th rowspan="2" style="width: 50px;"></th>
                 </tr>
                 <tr>
-                    <th class="duration-header">ABU {UP/TUNE}</th>
-                    <th class="duration-header">BANU {BNR}</th>
-                    <th class="duration-header">BNA {PHYSICS DOWN}</th>
-                    <th class="duration-header">ACC {OFF}</th>
-                    <th class="duration-header">OFF {OFF}</th>
+                    <th class="duration-header">ABU</th>
+                    <th class="duration-header">BANU</th>
+                    <th class="duration-header">BNA</th>
+                    <th class="duration-header">ACC</th>
+                    <th class="duration-header">OFF</th>
                     <th class="duration-header">ER</th>
                     <th class="duration-header">PCC</th>
                     <th class="duration-header">UED</th>
@@ -50,8 +48,6 @@
                     <th>${btm:formatDuration(epicsTotals.uedSeconds, durationUnits)}</th>
                     <th>${btm:formatDuration(epicsTotals.offSeconds, durationUnits)}</th>
                     <th></th>
-                    <th></th>
-                    <th></th>
                 </tr>
                 </tfoot>
                 <tbody>
@@ -66,9 +62,12 @@
                         <td>${btm:formatDuration(hour.bnaSeconds, durationUnits)}</td>
                         <td>${btm:formatDuration(hour.accSeconds, durationUnits)}</td>
                         <td>${btm:formatDuration(hour.offSeconds, durationUnits)}</td>
+                        <td></td>
                         <td>${btm:formatDuration(hour.erSeconds, durationUnits)}</td>
                         <td>${btm:formatDuration(hour.pccSeconds, durationUnits)}</td>
                         <td>${btm:formatDuration(hour.uedSeconds, durationUnits)}</td>
+                        <td>${btm:formatDuration(hour.offSeconds, durationUnits)}</td>
+                        <td></td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -95,11 +94,11 @@
                 <th rowspan="2" style="width: 50px;"></th>
             </tr>
             <tr>
-                <th class="duration-header">ABU {UP/TUNE}</th>
-                <th class="duration-header">BANU {BNR}</th>
-                <th class="duration-header">BNA {PHYSICS DOWN}</th>
-                <th class="duration-header">ACC {OFF}</th>
-                <th class="duration-header">OFF {OFF}</th>
+                <th class="duration-header">ABU</th>
+                <th class="duration-header">BANU</th>
+                <th class="duration-header">BNA</th>
+                <th class="duration-header">ACC</th>
+                <th class="duration-header">OFF</th>
                 <th class="duration-header">ER</th>
                 <th class="duration-header">PCC</th>
                 <th class="duration-header">UED</th>
