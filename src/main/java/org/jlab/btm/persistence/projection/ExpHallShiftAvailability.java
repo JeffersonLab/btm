@@ -14,6 +14,11 @@ public class ExpHallShiftAvailability {
     private List<ExpHallHour> dbHourList;
     private List<ExpHallHour> epicsHourList;
 
+    private ExpHallHourTotals hourTotals;
+
+    private ExpHallHourTotals epicsHourTotals;
+
+
     public ExpHallShiftAvailability() {
     }
 
@@ -47,5 +52,21 @@ public class ExpHallShiftAvailability {
 
     public void setEpicsHourList(List<ExpHallHour> epicsHourList) {
         this.epicsHourList = epicsHourList;
+    }
+
+    public void setShiftTotals(ExpHallHourTotals totals) {
+        this.hourTotals = totals;
+    }
+
+    public void setEpicsShiftTotals(ExpHallHourTotals epicsTotals) {
+        this.epicsHourTotals = epicsTotals;
+    }
+
+    public ExpHallHourTotals getShiftTotals() {
+        return hourTotals;
+    }
+
+    public ExpHallHourTotals getEpicsShiftTotals() {
+        return epicsHourTotals;
     }
 }

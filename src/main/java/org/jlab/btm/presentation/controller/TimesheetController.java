@@ -147,7 +147,7 @@ public class TimesheetController extends HttpServlet {
                     throw new RuntimeException("Unknown hall: " + type);
             }
 
-            handleExpTimesheet(request, hall, startHour);
+            handleExpTimesheet(request, hall, startHour, endHour);
         }
 
         dateFormat = new SimpleDateFormat("dd MMM yyyy");
@@ -299,13 +299,19 @@ public class TimesheetController extends HttpServlet {
         request.setAttribute("hallDHourCrossCheckList", hallDHourCrossCheckList);
     }
 
-    private void handleExpTimesheet(HttpServletRequest request, Hall hall, Date startHour) {
+    private void handleExpTimesheet(HttpServletRequest request, Hall hall, Date startHour, Date endHour) {
+        /*AVAILABILITY*/
+        ExpHallShiftAvailability expAvailability = expHallHourService.getHallAvailability(hall,
+                startHour,
+                endHour, true);
+
         /*SHIFT INFORMATION*/
         ExpHallShift shiftInfo = expShiftService.find(hall, startHour);
 
         /*SIGNATURES*/
         List<ExpHallSignature> signatureList = expSignatureService.find(hall, startHour);
 
+        request.setAttribute("availability", expAvailability);
         request.setAttribute("shiftInfo", shiftInfo);
         request.setAttribute("signatureList", signatureList);
     }

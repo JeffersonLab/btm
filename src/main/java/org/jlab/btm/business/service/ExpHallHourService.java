@@ -1,5 +1,8 @@
 package org.jlab.btm.business.service;
 
+import gov.aps.jca.CAException;
+import gov.aps.jca.TimeoutException;
+import org.jlab.btm.business.service.epics.EpicsExpHourService;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.ExpHallHour;
 import org.jlab.btm.persistence.enumeration.DataSource;
@@ -7,11 +10,13 @@ import org.jlab.btm.persistence.projection.ExpHallHourTotals;
 import org.jlab.btm.persistence.projection.ExpHallShiftAvailability;
 import org.jlab.btm.persistence.projection.ExpHallShiftTotals;
 import org.jlab.btm.persistence.projection.PhysicsSummaryTotals;
+import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.DateIterator;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 import org.jlab.smoothness.persistence.util.JPAUtil;
 
 import javax.annotation.security.PermitAll;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,6 +36,9 @@ public class ExpHallHourService {
 
     @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
+
+    @EJB
+    EpicsExpHourService epicsHourService;
 
     /**
      * WARNING WARNING WARING: "end" is INCLUSIVE here; unlike pretty much
@@ -110,38 +118,38 @@ public class ExpHallHourService {
         return JPAUtil.getResultList(q, PhysicsSummaryTotals.class);
     }
 
-    private ExpHallShiftAvailability getHallAvailability(Hall hall, Date startHour, Date endHour,
+    @PermitAll
+    public ExpHallShiftAvailability getHallAvailability(Hall hall, Date startHour, Date endHour,
                                                          boolean queryEpics) {
         List<ExpHallHour> dbHourList
                 = findInDatabase(hall, startHour, endHour);
         List<ExpHallHour> epicsHourList;
 
-        /*if (queryEpics) {
+        if (queryEpics) {
             try {
-                epicsHourList = findInEpics(hall, startHour, endHour);
+                epicsHourList = findInEpics(hall, startHour, endHour, true);
             } catch (UserFriendlyException e) {
                 logger.log(Level.FINEST, "Unable to obtain EPICS hall hour data", e);
                 epicsHourList = new ArrayList<>();
             }
-        } else {*/
-        epicsHourList = new ArrayList<>();
-        //}
+        } else {
+            epicsHourList = new ArrayList<>();
+        }
 
         Map<Date, ExpHallHour> dbHourMap = HourUtil.createHourMap(dbHourList);
         Map<Date, ExpHallHour> epicsHourMap = HourUtil.createHourMap(epicsHourList);
         List<ExpHallHour> hourList = fillMissingHoursAndSetSource(dbHourMap,
                 epicsHourMap, hall, startHour, endHour);
 
-        //ExpHallShiftTotals totals = calculateTotals(hourList);
-        //ExpHallShiftTotals epicsTotals = calculateTotals(epicsHourList);
+        ExpHallHourTotals totals = calculateTotals(hall, hourList);
+        ExpHallHourTotals epicsTotals = calculateTotals(hall, epicsHourList);
 
         ExpHallShiftAvailability availability = new ExpHallShiftAvailability();
         availability.setHall(hall);
         availability.setHourList(hourList);
         availability.setEpicsHourList(epicsHourList);
-        //availability.setShiftTotals(totals);
-        //availability.setEpicsShiftTotals(epicsTotals);
-        //availability.setPdShiftTotals(pdShiftTotals);
+        availability.setShiftTotals(totals);
+        availability.setEpicsShiftTotals(epicsTotals);
         availability.setDbHourList(dbHourList);
 
         return availability;
@@ -194,31 +202,31 @@ public class ExpHallHourService {
         return filledList;
     }
 
-    /*public ExpHallShiftTotals calculateTotals(List<ExpHallHour> hourList) {
-        ExpHallShiftTotals totals = new ExpHallShiftTotals();
+    public ExpHallHourTotals calculateTotals(Hall hall, List<ExpHallHour> hourList) {
+        Integer abuSeconds = 0;
+        Integer banuSeconds = 0;
+        Integer bnaSeconds = 0;
+        Integer accSeconds = 0;
+        Integer offSeconds = 0;
+        Integer erSeconds = 0;
+        Integer pccSeconds = 0;
+        Integer uedSeconds = 0;
 
         if (hourList != null) {
             for (ExpHallHour hour : hourList) {
-                totals.setUpSeconds(
-                        totals.getUpSeconds() == null ? hour.getUpSeconds() : totals.getUpSeconds()
-                        + hour.getUpSeconds());
-                totals.setTuneSeconds(
-                        totals.getTuneSeconds() == null ? hour.getTuneSeconds() : totals.getTuneSeconds()
-                        + hour.getTuneSeconds());
-                totals.setBnrSeconds(
-                        totals.getBnrSeconds() == null ? hour.getBnrSeconds() : totals.getBnrSeconds()
-                        + hour.getBnrSeconds());
-                totals.setDownSeconds(
-                        totals.getDownSeconds() == null ? hour.getDownSeconds() : totals.getDownSeconds()
-                        + hour.getDownSeconds());
-                totals.setOffSeconds(
-                        totals.getOffSeconds() == null ? hour.getOffSeconds() : totals.getOffSeconds()
-                        + hour.getOffSeconds());
+                abuSeconds = abuSeconds + hour.getAbuSeconds();
+                banuSeconds = banuSeconds + hour.getBanuSeconds();
+                bnaSeconds = bnaSeconds + hour.getBnaSeconds();
+                accSeconds = accSeconds + hour.getAccSeconds();
+                offSeconds = offSeconds + hour.getOffSeconds();
+                erSeconds = erSeconds + hour.getErSeconds();
+                pccSeconds = pccSeconds + hour.getPccSeconds();
+                uedSeconds = uedSeconds + hour.getUedSeconds();
             }
         }
 
-        return totals;
-    }    */
+        return new ExpHallHourTotals(hall.getLetter(), hourList.size(), abuSeconds, banuSeconds, bnaSeconds, accSeconds, offSeconds, erSeconds, pccSeconds, uedSeconds);
+    }
 
     /**
      * Fetch the experimenter hall hours for the specified hall, start day and
@@ -262,27 +270,21 @@ public class ExpHallHourService {
      * @param endDayAndHour the end day and hour.
      * @param round whether or not to round data.
      * @return the list of experimenter hall hours.
-     * @throws FindInEPICSException if unable to fetch the hours.
+     * @throws UserFriendlyException if unable to fetch the hours.
      */
-    /*@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @PermitAll
     public List<ExpHallHour> findInEpics(Hall hall, Date startDayAndHour, 
-    Date endDayAndHour, boolean round) throws FindInEPICSException {
+    Date endDayAndHour, boolean round) throws UserFriendlyException {
         
         List<ExpHallHour> hours = null;
         
-        String errorMsg = "Unable to find hours in Epics for hall " + hall;
-        
         try {
-            hours = epicsManager.loadAccounting(hall, startDayAndHour,
+            hours = epicsHourService.loadAccounting(hall, startDayAndHour,
                     endDayAndHour, round);
-        } catch (TimeoutException ex) {
-            throw new FindInEPICSException(errorMsg, ex);
-        } catch (InterruptedException ex) {
-            throw new FindInEPICSException(errorMsg, ex);
-        } catch (CAException ex) {
-            throw new FindInEPICSException(errorMsg, ex);
+        } catch (CAException | TimeoutException | InterruptedException e) {
+            throw new UserFriendlyException("Unable to query EPICS", e);
         }
         
         return hours;
-    }    */
+    }
 }

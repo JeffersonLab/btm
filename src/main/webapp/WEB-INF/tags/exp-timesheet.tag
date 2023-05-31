@@ -5,6 +5,18 @@
 <%@taglib prefix="btm" uri="http://jlab.org/btm/functions" %>
 <%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<h3>Utilization and Availability</h3>
+<div class="accordion">
+    <form>
+        <t:exp-hourly-availability hall="${availability.hall}"
+                                   hourList="${availability.hourList}"
+                                   epicsHourList="${availability.epicsHourList}"
+                                   totals="${availability.shiftTotals}"
+                                   epicsTotals="${availability.epicsShiftTotals}"/>
+    </form>
+</div>
+<h3>Reasons not Ready</h3>
+<p>TODO</p>
 <h3>Shift Information</h3>
 <div class="form-wrapper">
     <ul id="shift-info-key-value-list" class="key-value-list">

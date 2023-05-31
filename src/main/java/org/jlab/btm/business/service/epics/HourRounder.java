@@ -1,8 +1,10 @@
 package org.jlab.btm.business.service.epics;
 
+import org.jlab.btm.persistence.entity.ExpHallHour;
 import org.jlab.btm.persistence.entity.OpAccHour;
 import org.jlab.btm.persistence.entity.OpHallHour;
 import org.jlab.btm.persistence.entity.OpMultiplicityHour;
+import org.jlab.btm.persistence.projection.Hour;
 
 import java.util.List;
 
@@ -24,6 +26,81 @@ public class HourRounder {
     public static final int SECONDS_PER_HOUR = 3600;
 
     public static final int SECONDS_PER_HUNDRETH_OF_HOUR = 36;
+
+    /**
+     * Round a list of experimenter hall hour time accounting.
+     *
+     * @param hours the list of hours.
+     */
+    public void roundExpHourList(List<ExpHallHour> hours) {
+        for(ExpHallHour hour: hours) {
+            roundExpHour(hour);
+        }
+    }
+
+    /**
+     * Round an experimenter hall hour time accounting (both experimenter and
+     * accelerator statuses) to a whole hour.
+     *
+     * The status 'off' is a shared status of both experimenter and accelerator
+     * statuses so rounding to correct one set of statuses could affect the
+     * other set.  Therefore 'off' is simply truncated to range and then not
+     * further modified during rounding of each mutually exclusive set.
+     *
+     * @param hour the experimenter hall hour.
+     */
+    public void roundExpHour(ExpHallHour hour) {
+        //Make sure shared status Off is within range 0 - 3600
+        short[] statuses = new short[1];
+        statuses[0] = hour.getOffSeconds();
+        truncateToRange(statuses);
+        hour.setOffSeconds(statuses[0]);
+
+        roundAcceleratorSet(hour);
+        roundExperimenterSet(hour);
+    }
+
+    /**
+     * Rounds only the accelerator mutual exclusive set of statuses for an
+     * hour.
+     *
+     * @param hour the experimenter hall hour.
+     */
+    public void roundAcceleratorSet(ExpHallHour hour) {
+        // Won't modify off since it is a shared status
+        short[] statuses = new short[4];
+        statuses[0] = hour.getAbuSeconds();
+        statuses[1] = hour.getBanuSeconds();
+        statuses[2] = hour.getBnaSeconds();
+        statuses[3] = hour.getAccSeconds();
+
+        roundMutuallyExclusiveWithOff(statuses, hour.getOffSeconds());
+
+        hour.setAbuSeconds(statuses[0]);
+        hour.setBanuSeconds(statuses[1]);
+        hour.setBnaSeconds(statuses[2]);
+        hour.setAccSeconds(statuses[3]);
+    }
+
+    /**
+     * Rounds only the experimenter mutual exclusive set of statuses for an
+     * hour.
+     *
+     * @param hour the experimenter hall hour.
+     */
+    public void roundExperimenterSet(ExpHallHour hour) {
+        // Won't modify off since it is a shared status
+        short[] statuses = new short[3];
+        statuses[0] = hour.getErSeconds();
+        statuses[1] = hour.getPccSeconds();
+        statuses[2] = hour.getUedSeconds();
+
+        roundMutuallyExclusiveWithOff(statuses, hour.getOffSeconds());
+
+        hour.setErSeconds(statuses[0]);
+        hour.setPccSeconds(statuses[1]);
+        hour.setUedSeconds(statuses[2]);
+    }
 
     /**
      * Round a list of accelerator hour time accounting.
@@ -124,6 +201,28 @@ public class HourRounder {
 
                 skipped++;
             }
+        }
+    }
+
+
+    /**
+     * Truncates status seconds in a mutually exclusive set to fit in
+     * the allowable range (0 - 3600 seconds), then distributes left-overs /
+     * removes extras evenly as long as the difference is not more than the
+     * threshold.  The status off is shared between experimenter and
+     * accelerator sets so must be specified independently.
+     *
+     * @param statuses The time accounting statuses in seconds.
+     * @param off The amount of seconds of shared status 'off'.
+     */
+    protected void roundMutuallyExclusiveWithOff(short[] statuses, short off) {
+        truncateToRange(statuses);
+
+        int total = sum(statuses) + off;
+        int difference = Hour.SECONDS_PER_HOUR - total;
+
+        if(difference != 0 && Math.abs(difference) <= ROUND_THRESHOLD) {
+            distributeEvenly(statuses, difference);
         }
     }
 
