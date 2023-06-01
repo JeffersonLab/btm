@@ -179,7 +179,7 @@
                                 style="display: none;" type="text"
                                 value="${btm:formatDuration(hour.uedSeconds, durationUnits)}"/>
                     </td>
-                    <th>
+                    <th class="mirror-th">
                         <span><c:out value="${btm:formatDuration(hour.offSeconds, durationUnits)}"/></span>
                     </th>
                     <th></th>

@@ -149,6 +149,11 @@ jlab.btm.validateAndUpdateExpRowTotal = function ($tr, units) {
         error = true;
     }
 
+    // Second off column is just mirror image of first
+    var $th = $tr.find("th:nth-child(11)");
+    $th.text($tr.find("td:nth-child(6) input").val());
+    jlab.btm.updateMirrorColumnTotal($th);
+
     if (error === true) {
         $tr.addClass("ui-state-error");
     } else {
@@ -250,6 +255,20 @@ jlab.btm.editExpHour = function () {
         jlab.requestEnd();
     });
 };
+
+jlab.btm.updateMirrorColumnTotal = function ($th) {
+    var index = $th.parent().children().index($th),
+        $thList = $th.closest("tbody").find("tr th:nth-child(" + (index + 1) + ")"),
+        total = 0;
+
+    $thList.each(function () {
+        total = total + $(this).text() * 1;
+    });
+
+    total = total.toFixed(3) * 1;
+
+    $th.closest("table").find("tfoot th:nth-child(" + (index + 1) + ")").text(total);
+}
 
 $(document).on("click", "#edit-shift-info-button", function () {
     var $editButton = $(this),

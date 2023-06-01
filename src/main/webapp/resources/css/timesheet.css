@@ -132,6 +132,7 @@ table.editable-table tbody td span {
 #avail-util-tabset td input,
 #exp-avail-panel td,
 #exp-avail-panel tfoot th,
+#exp-avail-panel th.mirror-th,
 #exp-avail-panel td input,
 #dtm-btm-table td {
     text-align: right;
@@ -159,6 +160,7 @@ table.editable-table tbody td span {
     min-width: 150px;
 }
 
+#exp-avail-panel,
 .tabset {
     font-size: 0.75em;
 }
