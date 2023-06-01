@@ -89,6 +89,168 @@ jlab.btm.doSaveShiftSuccess = function () {
     $form.find(".li-value .input").hide();
 };
 
+jlab.btm.validateHourTableRowTotal = function ($table) {
+    var tableType = $table.attr("data-type"),
+        units = $("#units").attr("data-units");
+
+    if (tableType === 'exp') {
+        $table.find("tbody tr").each(function () {
+            jlab.btm.validateAndUpdateExpRowTotal($(this), units);
+        });
+    }
+};
+
+jlab.btm.validateAndUpdateExpRowTotal = function ($tr, units) {
+    var conversion;
+
+    if (units === 'HOURS') {
+        conversion = 3600;
+    } else if (units === 'MINUTES') {
+        conversion = 60;
+    } else { /*SECONDS*/
+        conversion = 1;
+    }
+
+    var abu = $tr.find("td:nth-child(2) input").val() * 1,
+        banu = $tr.find("td:nth-child(3) input").val() * 1,
+        bna = $tr.find("td:nth-child(4) input").val() * 1,
+        acc = $tr.find("td:nth-child(5) input").val() * 1,
+        off = $tr.find("td:nth-child(6) input").val() * 1,
+        abu = Math.round(abu * conversion),
+        banu = Math.round(banu * conversion),
+        bna = Math.round(bna * conversion),
+        acc = Math.round(acc * conversion),
+        off = Math.round(off * conversion),
+        total = (abu + banu + bna + acc + off) * 1,
+        totalForDisplay = (total / conversion).toFixed(4) * 1,
+        error = false;
+
+    $tr.find("th:nth-child(7)").text(totalForDisplay);
+
+    if (total !== 3600) {
+        error = true;
+    }
+
+
+    var er = $tr.find("td:nth-child(8) input").val() * 1,
+        pcc = $tr.find("td:nth-child(9) input").val() * 1,
+        ued = $tr.find("td:nth-child(10) input").val() * 1,
+        off = $tr.find("td:nth-child(6) input").val() * 1,
+        er = Math.round(er * conversion),
+        pcc = Math.round(pcc * conversion),
+        ued = Math.round(ued * conversion),
+        off = Math.round(off * conversion),
+        total = (er + pcc + ued + off) * 1,
+        totalForDisplay = (total / conversion).toFixed(4) * 1;
+
+    $tr.find("th:nth-child(12)").text(totalForDisplay);
+
+    if (total !== 3600) {
+        error = true;
+    }
+
+    if (error === true) {
+        $tr.addClass("ui-state-error");
+    } else {
+        $tr.removeClass("ui-state-error");
+    }
+};
+
+jlab.btm.editExpHour = function () {
+    if (jlab.isRequest()) {
+        window.console && console.log("Ajax already in progress");
+        return;
+    }
+
+    var $saveButton = $(this),
+        $row = $saveButton.closest("tr");
+
+    var hourArray = [],
+        abuArray = [],
+        banuArray = [],
+        bnaArray = [],
+        accArray = [],
+        offArray = [],
+        erArray = [],
+        pccArray = [],
+        uedArray = [],
+        commentsArray = [],
+        $table = $("#exp-hourly-table"),
+        success = false;
+
+    var units = $("#units").attr("data-units"),
+        hall = $table.attr("data-hall"),
+        hour = $row.find("th").attr("data-hour"),
+        abu = jlab.btm.parseSeconds($row.find("td:nth-child(2) input").val(), units),
+        banu = jlab.btm.parseSeconds($row.find("td:nth-child(3) input").val(), units),
+        bna = jlab.btm.parseSeconds($row.find("td:nth-child(4) input").val(), units),
+        acc = jlab.btm.parseSeconds($row.find("td:nth-child(5) input").val(), units),
+        off = jlab.btm.parseSeconds($row.find("td:nth-child(6) input").val(), units),
+        er = jlab.btm.parseSeconds($row.find("td:nth-child(8) input").val(), units),
+        pcc = jlab.btm.parseSeconds($row.find("td:nth-child(9) input").val(), units),
+        ued = jlab.btm.parseSeconds($row.find("td:nth-child(10) input").val(), units),
+        comments =  '';
+
+    hourArray.push(hour);
+    abuArray.push(abu);
+    banuArray.push(banu);
+    bnaArray.push(bna);
+    accArray.push(acc);
+    offArray.push(off);
+    erArray.push(er);
+    pccArray.push(pcc);
+    uedArray.push(ued);
+    commentsArray.push(comments);
+
+    jlab.requestStart();
+
+    var request = jQuery.ajax({
+        url: "/btm/ajax/edit-exp-hours",
+        type: "POST",
+        data: {
+            hall: hall,
+            'hour[]': hourArray,
+            'abu[]': abuArray,
+            'banu[]': banuArray,
+            'bna[]': bnaArray,
+            'acc[]': accArray,
+            'off[]': offArray,
+            'er[]': erArray,
+            'pcc[]': pccArray,
+            'ued[]': uedArray,
+            'comments[]': commentsArray
+        },
+        dataType: "html"
+    });
+
+    request.done(function (data) {
+        if ($(".status", data).html() !== "Success") {
+            alert('Unable to save availability hours: ' + $(".reason", data).html());
+        } else {
+            /* Success */
+            jlab.btm.doSaveHourRowSuccess($row, $saveButton);
+
+            var complete = $table.find(".source-td:contains('EPICS')").length === 0;
+
+            if (complete) {
+                $("#availability-status-value").text("Complete").removeClass("incomplete-status").addClass("complete-status");
+            }
+
+            success = true;
+        }
+
+    });
+
+    request.fail(function (xhr, textStatus) {
+        window.console && console.log('Unable to save availability hours: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
+        alert('Unable to save availability hours: server did not handle request');
+    });
+
+    request.always(function () {
+        jlab.requestEnd();
+    });
+};
+
 $(document).on("click", "#edit-shift-info-button", function () {
     var $editButton = $(this),
         $saveButton = $(this).next(),
@@ -123,4 +285,17 @@ $(document).on("click", "#cancel-shift-info-button", function () {
 
 $(document).on("click", "#save-shift-info-button", function () {
     jlab.btm.editShiftInfo();
+});
+
+$(document).on("click", "#exp-hourly-table .ui-icon-check", function () {
+    jlab.btm.editExpHour.call(this);
+});
+
+$(document).on("change", "#exp-hourly-table input[type=text]", function () {
+    jlab.btm.validateAndUpdateExpRowTotal($(this).closest("tr"), $("#units").attr("data-units"));
+    jlab.btm.updateColumnTotal($(this).closest("td"));
+});
+
+$(function () {
+    jlab.btm.validateHourTableRowTotal($("#exp-hourly-table"));
 });

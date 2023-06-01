@@ -81,8 +81,8 @@
 <h3 id="hall-${hall}-reported-hourly-detail" class="initially-open-header">Hall ${hall} Reported</h3>
 <div>
     <div class="accordion-table-wrapper">
-        <table id="hall-${fn:toLowerCase(hall)}-hourly-table"
-               class="data-table stripped-table hall-hourly-table editable-table" data-type="hall" data-hall="${hall}">
+        <table id="exp-hourly-table"
+               class="data-table stripped-table editable-table" data-type="exp" data-hall="${hall}">
             <thead>
             <tr>
                 <th rowspan="2"></th>
@@ -194,7 +194,7 @@
             </tbody>
         </table>
 
-        <table class="data-table stripped-table hall-hourly-table editable-table">
+        <table class="data-table stripped-table editable-table">
             <thead>
                 <tr>
                     <th></th>

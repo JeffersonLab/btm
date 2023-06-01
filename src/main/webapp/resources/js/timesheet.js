@@ -21,6 +21,18 @@ $(document).on("click", "#status-label", function () {
     return false;
 });
 
+jlab.btm.parseSeconds = function (duration, units) {
+    if (duration === '') {
+        return 0;
+    } else if (units === 'SECONDS') {
+        return duration;
+    } else if (units === 'MINUTES') {
+        return Math.round(duration * 60);
+    } else {
+        return Math.round(duration * 3600);
+    }
+};
+
 jlab.btm.showAccordionPanel = function (h3) {
     $(h3).removeClass("ui-state-default ui-corner-bottom").addClass("ui-accordion-header-active ui-state-active")
         .find("> .ui-icon").removeClass("ui-icon-triangle-1-e").addClass("ui-icon-triangle-1-s").end()
@@ -33,6 +45,81 @@ jlab.btm.resetAccordion = function () {
         .next().removeClass("ui-accordion-content-active").hide();
 
     jlab.btm.showAccordionPanel($(".accordion h3.initially-open-header"));
+};
+
+jlab.btm.doSaveHourRowSuccess = function ($row, $saveButton) {
+    var $cancelButton = $saveButton.next(),
+        $editButton = $saveButton.prev();
+
+    $editButton.css('display', 'inline-block');
+    $saveButton.hide();
+    $cancelButton.hide();
+
+    $row.find("td span").each(function () {
+        var newValue = $(this).next().val();
+
+        newValue = (newValue === '') ? 0 : newValue * 1;
+
+        $(this).text(newValue);
+    });
+
+    $row.find("td span").show();
+    $row.find("input").hide();
+
+    $row.find(".source-td").text("DATABASE");
+};
+
+$(document).on("click", ".ui-icon-pencil", function () {
+    var $editButton = $(this),
+        $saveButton = $(this).next(),
+        $cancelButton = $(this).next().next(),
+        $row = $(this).closest("tr");
+
+    $editButton.hide();
+    $saveButton.css('display', 'inline-block');
+    $cancelButton.css('display', 'inline-block');
+    $row.find("td span").hide();
+    $row.find("input").show();
+});
+
+$(document).on("click", ".ui-icon-close", function () {
+    var $cancelButton = $(this),
+        $saveButton = $(this).prev(),
+        $editButton = $(this).prev().prev(),
+        $row = $(this).closest("tr"),
+        $table = $row.closest("table");
+
+    $editButton.css('display', 'inline-block');
+    $saveButton.hide();
+    $cancelButton.hide();
+    $row.find("td span").show();
+    $row.find("input").hide();
+
+    $row.find("input").each(function () {
+        $(this).val($(this).prev().text());
+    });
+    jlab.btm.validateHourTableRowTotal($table);
+    jlab.btm.updateAllDurationColumnTotals($table);
+});
+
+jlab.btm.updateColumnTotal = function ($td) {
+    var index = $td.parent().children().index($td),
+        $tdList = $td.closest("tbody").find("tr td:nth-child(" + (index + 1) + ")"),
+        total = 0;
+
+    $tdList.each(function () {
+        total = total + $(this).find("input").val() * 1;
+    });
+
+    total = total.toFixed(3) * 1;
+
+    $td.closest("table").find("tfoot th:nth-child(" + (index + 1) + ")").text(total);
+}
+
+jlab.btm.updateAllDurationColumnTotals = function ($table) {
+    $table.find("tbody tr:first-child td input").each(function () {
+        jlab.btm.updateColumnTotal($(this).closest("td"));
+    });
 };
 
 $(function () {

@@ -5,6 +5,8 @@ import gov.aps.jca.TimeoutException;
 import org.jlab.btm.business.service.epics.EpicsExpHourService;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.ExpHallHour;
+import org.jlab.btm.persistence.entity.ExpHallShiftPurpose;
+import org.jlab.btm.persistence.entity.OpAccHour;
 import org.jlab.btm.persistence.enumeration.DataSource;
 import org.jlab.btm.persistence.projection.ExpHallHourTotals;
 import org.jlab.btm.persistence.projection.ExpHallShiftAvailability;
@@ -12,6 +14,7 @@ import org.jlab.btm.persistence.projection.ExpHallShiftTotals;
 import org.jlab.btm.persistence.projection.PhysicsSummaryTotals;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.DateIterator;
+import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 import org.jlab.smoothness.persistence.util.JPAUtil;
 
@@ -22,6 +25,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +36,7 @@ import java.util.logging.Logger;
  * @author ryans
  */
 @Stateless
-public class ExpHallHourService {
+public class ExpHallHourService extends AbstractService<ExpHallHour> {
 
     private final static Logger logger = Logger.getLogger(ExpHallHourService.class.getName());
 
@@ -39,6 +45,18 @@ public class ExpHallHourService {
 
     @EJB
     EpicsExpHourService epicsHourService;
+
+    @EJB
+    ExpSecurityRuleService ruleService;
+
+    public ExpHallHourService() {
+        super(ExpHallHour.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
 
     /**
      * WARNING WARNING WARING: "end" is INCLUSIVE here; unlike pretty much
@@ -286,5 +304,146 @@ public class ExpHallHourService {
         }
         
         return hours;
+    }
+
+    @PermitAll
+    public void editExpHours(Hall hall, Date[] hourArray, Short[] abuArray, Short[] banuArray, Short[] bnaArray, Short[] accArray, Short[] offArray, Short[] erArray, Short[] pccArray, Short[] uedArray, String[] commentsArray) throws UserFriendlyException {
+        if (hourArray == null || abuArray == null || banuArray == null || bnaArray == null
+                    || accArray == null || offArray == null || erArray == null || pccArray == null || uedArray == null || commentsArray == null) {
+                throw new UserFriendlyException("Some columns of data are missing");
+            }
+
+            if (hourArray.length == 0) {
+                throw new UserFriendlyException("No data");
+            }
+
+            if (hourArray.length > 9) {
+                throw new UserFriendlyException("Only a single shift of data can be edited at a time");
+            }
+
+            if (hourArray.length != abuArray.length ||
+                hourArray.length != banuArray.length ||
+                hourArray.length != bnaArray.length ||
+                hourArray.length != accArray.length ||
+                hourArray.length != offArray.length ||
+                hourArray.length != erArray.length ||
+                hourArray.length != pccArray.length ||
+                hourArray.length != uedArray.length ||
+                hourArray.length != commentsArray.length) {
+                throw new UserFriendlyException("Column data does not line up in equal number of rows");
+            }
+
+            Date previous = null;
+            for (Date hour : hourArray) {
+                if (previous == null) {
+                    previous = hour;
+                } else {
+                    if (hour == null) {
+                        throw new UserFriendlyException("Day and hour cannot be empty");
+                    }
+                    if (!TimeUtil.addHours(hour, -1).equals(previous)) {
+                        throw new UserFriendlyException("Hours must be contiguous");
+                    }
+                    previous = hour;
+                }
+            }
+
+            List<ExpHallHour> hourList = findInDatabase(hall, hourArray[0], hourArray[hourArray.length - 1]);
+            Map<Date, ExpHallHour> hourMap = HourUtil.createHourMap(hourList);
+
+
+            ruleService.editCheck(hall, hourArray[0]);
+
+            // We probably could consolidate with previous loop... (performance vs maintainability)
+            for (int i = 0; i < hourArray.length; i++) {
+                Date hour = hourArray[i];
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy HH:mm z");
+                logger.log(Level.FINEST, "Editing hour: {0}", dateFormat.format(hour));
+                ExpHallHour expHour = hourMap.get(hour);
+
+                int total = abuArray[i] + banuArray[i] + bnaArray[i] + accArray[i] + offArray[i];
+
+                if (total != 3600) {
+                    SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
+                    throw new UserFriendlyException("Hour " + hourFormat.format(hourArray[i])
+                            + " accelerator beam time must total 1 hour");
+                }
+
+                total = erArray[i] + pccArray[i] + uedArray[i] + offArray[i];
+
+                if (total != 3600) {
+                    SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
+                    throw new UserFriendlyException("Hour " + hourFormat.format(hourArray[i])
+                            + " experiment beam time must total 1 hour");
+                }
+
+                if (expHour == null) {
+                    expHour = new ExpHallHour();
+                    expHour.setDayAndHour(hour);
+                    expHour.setHall(hall);
+                }
+
+                expHour.setAbuSeconds(abuArray[i]);
+                expHour.setBanuSeconds(banuArray[i]);
+                expHour.setBnaSeconds(bnaArray[i]);
+                expHour.setAccSeconds(accArray[i]);
+                expHour.setOffSeconds(offArray[i]);
+                expHour.setErSeconds(erArray[i]);
+                expHour.setPccSeconds(pccArray[i]);
+                expHour.setUedSeconds(uedArray[i]);
+                expHour.setRemark(commentsArray[i]);
+
+                edit(expHour);
+            }
+    }
+
+    @Override
+    protected void edit(ExpHallHour hour) {
+        if (hour.getExpHallHourId() == null) {
+            this.manualInsert(hour);
+        } else {
+            super.edit(hour);
+        }
+    }
+
+    private ExpHallHour manualInsert(ExpHallHour hour) {
+
+        String dayAndHourStr = TimeUtil.formatDatabaseDateTimeTZ(hour.getDayAndHour());
+
+        Query idq = em.createNativeQuery("select exp_hall_hour_id.nextval from dual");
+
+        BigDecimal idDec = (BigDecimal) idq.getSingleResult();
+
+        BigInteger id = idDec.toBigInteger();
+
+        Query q = em.createNamedQuery("ExpHallHour.insertNATIVE");
+
+        q.setParameter("id", id);
+        q.setParameter("hall", hour.getHall().getLetter());
+        q.setParameter("dayAndHour", dayAndHourStr);
+        q.setParameter("abu", hour.getAbuSeconds());
+        q.setParameter("banu", hour.getBanuSeconds());
+        q.setParameter("bna", hour.getBnaSeconds());
+        q.setParameter("acc", hour.getAccSeconds());
+        q.setParameter("off", hour.getOffSeconds());
+        q.setParameter("er", hour.getErSeconds());
+        q.setParameter("pcc", hour.getPccSeconds());
+        q.setParameter("ued", hour.getUedSeconds());
+        q.setParameter("remark", hour.getRemark());
+
+        int count = q.executeUpdate();
+
+        if (count == 0) {
+            logger.log(Level.WARNING, "Insert count is zero");
+        }
+
+        hour = this.find(id);
+
+        if (hour == null) {
+            logger.log(Level.WARNING, "Unable to find hour after insert");
+        }
+
+        return hour;
     }
 }

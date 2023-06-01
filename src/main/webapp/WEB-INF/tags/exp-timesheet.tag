@@ -6,7 +6,7 @@
 <%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <h3>Utilization and Availability</h3>
-<div class="accordion">
+<div id="exp-avail-panel" class="accordion">
     <form>
         <t:exp-hourly-availability hall="${availability.hall}"
                                    hourList="${availability.hourList}"
@@ -108,10 +108,10 @@
                 <div class="li-value">
                     <c:choose>
                         <c:when test="${status.availabilityComplete}">
-                            <span id="availability-value" class="complete-status">Complete</span>
+                            <span id="availability-status-value" class="complete-status">Complete</span>
                         </c:when>
                         <c:otherwise>
-                            <span id="availability-value" class="incomplete-status">Incomplete</span>
+                            <span id="availability-status-value" class="incomplete-status">Incomplete</span>
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -121,10 +121,10 @@
                 <div class="li-value">
                     <c:choose>
                         <c:when test="${status.reasonsNotReadyComplete}">
-                            <span id="reasons-not-ready-value" class="complete-status">Complete</span>
+                            <span id="reasons-not-ready-status-value" class="complete-status">Complete</span>
                         </c:when>
                         <c:otherwise>
-                            <span id="reasons-not-ready-value" class="incomplete-status">Incomplete</span>
+                            <span id="reasons-not-ready-status-value" class="incomplete-status">Incomplete</span>
                         </c:otherwise>
                     </c:choose>
                 </div>
