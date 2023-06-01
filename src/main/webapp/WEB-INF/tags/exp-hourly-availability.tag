@@ -16,7 +16,7 @@
             <table class="data-table stripped-table hall-hourly-epics-table">
                 <thead>
                 <tr>
-                    <th rowspan="2"></th>
+                    <th rowspan="2" class="hour-header"></th>
                     <th colspan="5">Accelerator Beam Time</th>
                     <th rowspan="2">Hour Total</th>
                     <th colspan="4">Experiment Beam Time</th>
@@ -85,7 +85,7 @@
                class="data-table stripped-table editable-table" data-type="exp" data-hall="${hall}">
             <thead>
             <tr>
-                <th rowspan="2"></th>
+                <th rowspan="2" class="hour-header"></th>
                 <th colspan="5">Accelerator Beam Time</th>
                 <th rowspan="2">Hour Total</th>
                 <th colspan="4">Experiment Beam Time</th>
@@ -194,10 +194,10 @@
             </tbody>
         </table>
 
-        <table class="data-table stripped-table editable-table">
+        <table id="comments-table" class="data-table stripped-table editable-table">
             <thead>
                 <tr>
-                    <th></th>
+                    <th class="hour-header"></th>
                     <th>Comments</th>
                 </tr>
             </thead>
@@ -210,9 +210,7 @@
                                                                                    pattern="HH"/></th>
                     <td>
                         <span><c:out value="${hour.remark}"/></span>
-                        <input
-                                style="display: none;" type="text"
-                                value="${hour.remark}"/>
+                        <textarea style="display: none;">${hour.remark}</textarea>
                     </td>
                 </tr>
                 </c:forEach>

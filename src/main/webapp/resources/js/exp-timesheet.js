@@ -315,6 +315,16 @@ $(document).on("change", "#exp-hourly-table input[type=text]", function () {
     jlab.btm.updateColumnTotal($(this).closest("td"));
 });
 
+$(document).on("click", ".ui-icon-pencil", function () {
+    var $row = $(this).closest("tr"),
+        index = $row.parent().children().index($row),
+        $table = $("#comments-table"),
+        $commentRow = $table.find("tbody tr:nth-child(" + (index + 1) + ")");
+
+    $commentRow.find("td span").hide();
+    $commentRow.find("textarea").show();
+});
+
 $(function () {
     jlab.btm.validateHourTableRowTotal($("#exp-hourly-table"));
 });
