@@ -193,13 +193,6 @@
             </c:forEach>
             </tbody>
         </table>
-        <div class="accordion-button-panel">
-            <button type="button" class="hour-edit-button"${editable ? '' : ' disabled="disabled"'}>Edit</button>
-            <button type="button" class="save-hall-button ajax-submit" style="display: none;"
-                    id="hall-${fn:toLowerCase(hall)}-save-button">Save
-            </button>
-            <button type="button" class="hour-cancel-button" style="display: none;">Cancel</button>
-        </div>
 
         <table class="data-table stripped-table hall-hourly-table editable-table">
             <thead>
@@ -225,5 +218,13 @@
                 </c:forEach>
             </tbody>
         </table>
+
+        <div class="accordion-button-panel">
+            <button type="button" class="hour-edit-button"${editable ? '' : ' disabled="disabled"'}>Edit</button>
+            <button type="button" class="save-hall-button ajax-submit" style="display: none;"
+                    id="hall-${fn:toLowerCase(hall)}-save-button">Save
+            </button>
+            <button type="button" class="hour-cancel-button" style="display: none;">Cancel</button>
+        </div>
     </div>
 </div>

@@ -1,9 +1,11 @@
 package org.jlab.btm.presentation.controller.ajax;
 
-import org.jlab.btm.business.service.OpShiftService;
+import org.jlab.btm.business.service.ExpHallShiftService;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.ExceptionUtil;
+import org.jlab.smoothness.persistence.enumeration.Hall;
+import org.jlab.smoothness.presentation.util.ParamConverter;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.logging.Level;
@@ -23,14 +26,14 @@ import java.util.logging.Logger;
 /**
  * @author ryans
  */
-@WebServlet(name = "EditShiftInfo", urlPatterns = {"/ajax/edit-shift-info"})
-public class EditShiftInfo extends HttpServlet {
+@WebServlet(name = "EditExpShiftInfo", urlPatterns = {"/ajax/edit-exp-shift-info"})
+public class EditExpShiftInfo extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(
-            EditShiftInfo.class.getName());
+            EditExpShiftInfo.class.getName());
 
     @EJB
-    OpShiftService shiftService;
+    ExpHallShiftService shiftService;
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -52,14 +55,13 @@ public class EditShiftInfo extends HttpServlet {
             }
 
             Date startDayAndHour = BtmParamConverter.convertDayAndHour(request, "startDayAndHour");
-            String crewChief = request.getParameter("crewChief");
-            String operators = request.getParameter("operators");
-            String program = request.getParameter("program");
-            String programDeputy = request.getParameter("programDeputy");
+            Hall hall = BtmParamConverter.convertHall(request, "hall");
+            String leader = request.getParameter("leader");
+            String workers = request.getParameter("workers");
+            BigInteger purposeId = ParamConverter.convertBigInteger(request, "program");
             String comments = request.getParameter("comments");
 
-            shiftService.editShift(startDayAndHour, crewChief, operators, program, programDeputy,
-                    comments);
+            shiftService.editShift(hall, startDayAndHour, leader, workers, purposeId, comments);
         } catch (EJBAccessException e) {
             logger.log(Level.WARNING,
                     "Unable to edit shift info due to access exception", e);

@@ -18,8 +18,21 @@
         </style>
     </jsp:attribute>
     <jsp:attribute name="scripts">
-        <script type="text/javascript"
-                src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/timesheet.js"></script>
+            <script type="text/javascript"
+                    src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/timesheet.js">
+            </script>
+            <c:choose>
+                <c:when test="${type eq 'CC'}">
+                    <script type="text/javascript"
+                            src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/cc-timesheet.js">
+                    </script>
+                </c:when>
+                <c:otherwise>
+                    <script type="text/javascript"
+                            src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/exp-timesheet.js">
+                    </script>
+                </c:otherwise>
+            </c:choose>
     </jsp:attribute>
     <jsp:body>
         <section>

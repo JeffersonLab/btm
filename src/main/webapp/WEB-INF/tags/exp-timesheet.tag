@@ -24,7 +24,7 @@
             <div class="li-key"><span>Leader:</span></div>
             <div class="li-value">
                 <span><c:out value="${shiftInfo.leader}"/></span>
-                <input id="leader" type="text" value="${fn:escapeXml(shiftInfo.leader)}"
+                <input class="input" id="leader" type="text" value="${fn:escapeXml(shiftInfo.leader)}"
                        style="display: none;"/>
             </div>
         </li>
@@ -32,28 +32,39 @@
             <div class="li-key"><span>Workers:</span></div>
             <div class="li-value">
                 <span><c:out value="${shiftInfo.workers}"/></span>
-                <input id="workers" type="text" value="${fn:escapeXml(shiftInfo.workers)}"
+                <input class="input" id="workers" type="text" value="${fn:escapeXml(shiftInfo.workers)}"
                        style="display: none;"/>
             </div>
         </li>
         <li>
             <div class="li-key"><span>Program:</span></div>
             <div class="li-value">
-                <span><c:out value="${shiftInfo.program}"/></span>
-                <input id="program" type="text" value="${fn:escapeXml(shiftInfo.program)}"
-                       style="display: none;"/>
+                <span id="program-span"><c:out value="${shiftInfo.expHallShiftPurpose.name}"/></span>
+                <select class="input" id="program" style="display: none;" data-purpose-id="${shiftInfo.expHallShiftPurpose.expHallShiftPurposeId}">
+                    <option></option>
+                    <optgroup label="General">
+                        <c:forEach items="${nonexperimentList}" var="purpose">
+                            <option value="${purpose.expHallShiftPurposeId}"${purpose.expHallShiftPurposeId eq shiftInfo.expHallShiftPurpose.expHallShiftPurposeId ? ' selected="selected"' : ''}>${purpose.name}</option>
+                        </c:forEach>
+                    </optgroup>
+                    <optgroup label="Experiments">
+                        <c:forEach items="${experimentList}" var="purpose">
+                            <option value="${purpose.expHallShiftPurposeId}"${purpose.expHallShiftPurposeId eq shiftInfo.expHallShiftPurpose.expHallShiftPurposeId ? ' selected="selected"' : ''}>${purpose.name}${purpose.alias eq null ? '' : ' ('.concat(purpose.alias).concat(')')}</option>
+                        </c:forEach>
+                    </optgroup>
+                </select>
             </div>
         </li>
         <li>
             <div class="li-key"><span>Comments:</span></div>
             <div class="li-value">
                 <span><c:out value="${shiftInfo.remark}"/></span>
-                <input id="comments" type="text" value="${fn:escapeXml(shiftInfo.remark)}"
-                       style="display: none;"/>
+                <textarea class="input" id="comments" style="display: none;">${fn:escapeXml(shiftInfo.remark)}</textarea>
             </div>
         </li>
     </ul>
     <input type="hidden" id="shift-start-hour" value="${shiftStartHourStr}"/>
+    <input type="hidden" id="shift-hall" value="${availability.hall}"/>
     <div class="form-button-panel">
         <button id="edit-shift-info-button" type="button"${editable ? '' : ' disabled="disabled"'}>Edit
         </button>

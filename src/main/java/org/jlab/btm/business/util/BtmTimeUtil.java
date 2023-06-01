@@ -1,6 +1,7 @@
 package org.jlab.btm.business.util;
 
 import org.jlab.smoothness.business.util.TimeUtil;
+import org.jlab.smoothness.persistence.enumeration.Shift;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -87,4 +88,97 @@ public class BtmTimeUtil {
 
         return c.getTime();
     }
+
+    public static Shift calculateExperimenterShift(Date dayAndHour) {
+        Calendar cal = Calendar.getInstance();
+        int hour;
+        Shift shift;
+
+        cal.setTime(dayAndHour);
+        hour = cal.get(Calendar.HOUR_OF_DAY);
+
+        if (hour <= 7) {
+            shift = Shift.OWL;
+        } else if (hour <= 15) {
+            shift = Shift.DAY;
+        } else {
+            shift = Shift.SWING;
+        }
+
+        return shift;
+    }
+
+    public static Date getCurrentExperimenterShiftDay(Date date) {
+        Calendar cal = Calendar.getInstance();
+
+        cal.setTime(date);
+
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        return cal.getTime();
+    }
+
+    public static boolean isFirstHourOfExperimenterShift(Date now) {
+        boolean firstHour = false;
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(now);
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+
+        if (hour == 0 || hour == 8 || hour == 16) {
+            firstHour = true;
+        }
+
+        return firstHour;
+    }
+
+    public static Date getExperimenterStartDayAndHour(Date day, Shift shift) {
+        int hour;
+        switch (shift) {
+            case OWL:
+                hour = 0;
+                break;
+            case DAY:
+                hour = 8;
+                break;
+            case SWING:
+                hour = 16;
+                break;
+            default:
+                throw new IllegalArgumentException("Unrecognized shift: " + shift);
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(day);
+        cal.set(Calendar.HOUR_OF_DAY, hour);
+
+        return cal.getTime();
+    }
+
+    public static Date getExperimenterEndDayAndHour(Date day, Shift shift) {
+        int hour;
+        switch (shift) {
+            case OWL:
+                hour = 7;
+                break;
+            case DAY:
+                hour = 15;
+                break;
+            case SWING:
+                hour = 23;
+                break;
+            default:
+                throw new IllegalArgumentException("Unrecognized shift: " + shift);
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(day);
+        cal.set(Calendar.HOUR_OF_DAY, hour);
+
+        return cal.getTime();
+    }
 }
+

@@ -1,6 +1,7 @@
 package org.jlab.btm.presentation.controller;
 
 import org.jlab.btm.business.service.*;
+import org.jlab.btm.business.util.BtmTimeUtil;
 import org.jlab.btm.persistence.entity.*;
 import org.jlab.btm.persistence.enumeration.DurationUnits;
 import org.jlab.btm.persistence.enumeration.TimesheetType;
@@ -57,6 +58,10 @@ public class TimesheetController extends HttpServlet {
     PdShiftPlanService planService;
     @EJB
     DowntimeService downService;
+    @EJB
+    ExpSecurityRuleService ruleService;
+    @EJB
+    ExpHallShiftPurposeService purposeService;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -87,21 +92,51 @@ public class TimesheetController extends HttpServlet {
             throw new ServletException("Unable to parse date", ex);
         }
 
-        Shift shift = BtmParamConverter.convertShift(request, "shift",
-                TimeUtil.calculateCrewChiefShift(now));
+        Shift shift = BtmParamConverter.convertShift(request, "shift", null);
 
-        DurationUnits units = BtmParamConverter.convertDurationUnits(request, "units",
-                DurationUnits.HOURS);
+        if(shift == null) {
+            if(TimesheetType.CC == type) {
+                shift = TimeUtil.calculateCrewChiefShift(now);
+            } else {
+                shift = BtmTimeUtil.calculateExperimenterShift(now);
+            }
+
+            redirect = true;
+        }
 
         if (day == null) {
-            day = TimeUtil.getCurrentCrewChiefShiftDay(now);
+            if(TimesheetType.CC == type) {
+                day = TimeUtil.getCurrentCrewChiefShiftDay(now);
 
-            if (TimeUtil.isFirstHourOfCrewChiefShift(now)) {
-                shift = shift.getPrevious();
+                if (TimeUtil.isFirstHourOfCrewChiefShift(now)) {
+                    shift = shift.getPrevious();
 
-                if (shift == Shift.SWING) {
-                    day = TimeUtil.addDays(day, -1);
+                    if (shift == Shift.SWING) {
+                        day = TimeUtil.addDays(day, -1);
+                    }
                 }
+            } else {
+                day = BtmTimeUtil.getCurrentExperimenterShiftDay(now);
+
+                /*if (BtmTimeUtil.isFirstHourOfExperimenterShift(now)) {
+                    shift = shift.getPrevious();
+
+                    if (shift == Shift.SWING) {
+                        day = TimeUtil.addDays(day, -1);
+                    }
+                }*/
+            }
+
+            redirect = true;
+        }
+
+        DurationUnits units = BtmParamConverter.convertDurationUnits(request, "units",null);
+
+        if(units == null) {
+            if(TimesheetType.CC == type) {
+                units = DurationUnits.HOURS;
+            } else {
+                units = DurationUnits.MINUTES;
             }
 
             redirect = true;
@@ -116,8 +151,15 @@ public class TimesheetController extends HttpServlet {
         String previousUrl = getPreviousUrl(request, type, day, shift, units);
         String nextUrl = getNextUrl(request, type, day, shift, units);
 
-        Date startHour = TimeUtil.getCrewChiefStartDayAndHour(day, shift);
-        Date endHour = TimeUtil.getCrewChiefEndDayAndHour(day, shift);
+        Date startHour, endHour;
+
+        if(TimesheetType.CC == type) {
+            startHour = TimeUtil.getCrewChiefStartDayAndHour(day, shift);
+            endHour = TimeUtil.getCrewChiefEndDayAndHour(day, shift);
+        } else {
+            startHour = BtmTimeUtil.getExperimenterStartDayAndHour(day, shift);
+            endHour = BtmTimeUtil.getExperimenterEndDayAndHour(day, shift);
+        }
 
         long hoursInShift = TimeUtil.differenceInHours(startHour, endHour) + 1;
 
@@ -311,9 +353,18 @@ public class TimesheetController extends HttpServlet {
         /*SIGNATURES*/
         List<ExpHallSignature> signatureList = expSignatureService.find(hall, startHour);
 
+        /*Purposes*/
+        List<ExpHallShiftPurpose> experimentList = purposeService.findActiveExperimentsByHall(hall);
+        List<ExpHallShiftPurpose> nonexperimentList = purposeService.findActiveNonExperimentsByHall(hall);
+
+        boolean editable = ruleService.isEditAllowed(hall, startHour);
+
+        request.setAttribute("editable", editable);
         request.setAttribute("availability", expAvailability);
         request.setAttribute("shiftInfo", shiftInfo);
         request.setAttribute("signatureList", signatureList);
+        request.setAttribute("experimentList", experimentList);
+        request.setAttribute("nonexperimentList", nonexperimentList);
     }
 
     private String getCurrentUrl(HttpServletRequest request, TimesheetType type, Date day, Shift shift,

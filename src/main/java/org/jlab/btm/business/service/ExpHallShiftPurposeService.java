@@ -36,6 +36,12 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
     }
 
     @PermitAll
+    @Override
+    public ExpHallShiftPurpose find(Object id) {
+        return super.find(id);
+    }
+
+    @PermitAll
     public List<ExpHallShiftPurpose> findByHall(Hall hall, Boolean active) {
         String query = "select a from ExpHallShiftPurpose a where hall = :hall ";
         String order = "order by experiment desc, active desc, name asc";
@@ -43,6 +49,38 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
         if (active != null) {
             query = query + "and active = " + (active ? "'1' " : "'0' ");
         }
+
+        query = query + order;
+
+        TypedQuery<ExpHallShiftPurpose> q = em.createQuery(
+                query,
+                ExpHallShiftPurpose.class);
+
+        q.setParameter("hall", hall);
+
+        return q.getResultList();
+    }
+
+    @PermitAll
+    public List<ExpHallShiftPurpose> findActiveExperimentsByHall(Hall hall) {
+        String query = "select a from ExpHallShiftPurpose a where hall = :hall and active = true and experiment = true ";
+        String order = "order by name asc";
+
+        query = query + order;
+
+        TypedQuery<ExpHallShiftPurpose> q = em.createQuery(
+                query,
+                ExpHallShiftPurpose.class);
+
+        q.setParameter("hall", hall);
+
+        return q.getResultList();
+    }
+
+    @PermitAll
+    public List<ExpHallShiftPurpose> findActiveNonExperimentsByHall(Hall hall) {
+        String query = "select a from ExpHallShiftPurpose a where hall = :hall and active = true and experiment = false ";
+        String order = "order by name asc";
 
         query = query + order;
 

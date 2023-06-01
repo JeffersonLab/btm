@@ -84,5 +84,4 @@ public class OpShiftService extends AbstractService<OpShift> {
 
         super.edit(shift);
     }
-
 }

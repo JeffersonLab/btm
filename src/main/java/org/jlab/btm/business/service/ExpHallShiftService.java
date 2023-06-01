@@ -1,15 +1,20 @@
 package org.jlab.btm.business.service;
 
 import org.jlab.btm.persistence.entity.ExpHallShift;
+import org.jlab.btm.persistence.entity.ExpHallShiftPurpose;
+import org.jlab.btm.persistence.entity.OpShift;
+import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +37,9 @@ public class ExpHallShiftService extends AbstractService<ExpHallShift> {
 
     @EJB
     ExpSecurityRuleService ruleService;
+
+    @EJB
+    ExpHallShiftPurposeService purposeService;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -92,26 +100,29 @@ public class ExpHallShiftService extends AbstractService<ExpHallShift> {
         return shiftMap;
     }
 
-    @Override
     @PermitAll
-    public void create(ExpHallShift shift) {
-        ruleService.editCheck(shift.getHall(), shift.getStartDayAndHour());
+    public void editShift(Hall hall, Date startDayAndHour, String leader, String workers, BigInteger purposeId,
+                          String comments) throws UserFriendlyException {
+        ruleService.editCheck(hall, startDayAndHour);
 
-        super.create(shift);
-    }
+        ExpHallShift shift = find(hall, startDayAndHour);
 
-    @Override
-    @PermitAll
-    public void remove(ExpHallShift shift) {
-        ruleService.editCheck(shift.getHall(), shift.getStartDayAndHour());
+        if (shift == null) {
+            shift = new ExpHallShift();
+            shift.setStartDayAndHour(startDayAndHour);
+            shift.setHall(hall);
+        }
 
-        super.remove(shift);
-    }
+        ExpHallShiftPurpose purpose = purposeService.find(purposeId);
 
-    @Override
-    @PermitAll
-    public void edit(ExpHallShift shift) {
-        ruleService.editCheck(shift.getHall(), shift.getStartDayAndHour());
+        if(purpose == null) {
+            throw new UserFriendlyException("Purpose not found");
+        }
+
+        shift.setLeader(leader);
+        shift.setWorkers(workers);
+        shift.setExpHallShiftPurpose(purpose);
+        shift.setRemark(comments);
 
         super.edit(shift);
     }
