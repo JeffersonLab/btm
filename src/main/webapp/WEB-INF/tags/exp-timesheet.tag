@@ -100,3 +100,64 @@
     </c:otherwise>
 </c:choose>
 <button id="sign-button" type="button" class="ajax-submit"${editable ? '' : ' disabled="disabled"'}>Sign</button>
+<div id="status-dialog" class="dialog" title="Timesheet Status">
+    <form>
+        <ul class="key-value-list">
+            <li>
+                <div class="li-key"><span>Utilization and Availability:</span></div>
+                <div class="li-value">
+                    <c:choose>
+                        <c:when test="${status.availabilityComplete}">
+                            <span id="availability-value" class="complete-status">Complete</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span id="availability-value" class="incomplete-status">Incomplete</span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </li>
+            <li>
+                <div class="li-key"><span>Reasons not Ready:</span></div>
+                <div class="li-value">
+                    <c:choose>
+                        <c:when test="${status.reasonsNotReadyComplete}">
+                            <span id="reasons-not-ready-value" class="complete-status">Complete</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span id="reasons-not-ready-value" class="incomplete-status">Incomplete</span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </li>
+            <li>
+                <div class="li-key"><span>Shift Information:</span></div>
+                <div class="li-value">
+                    <c:choose>
+                        <c:when test="${status.shiftInfoComplete}">
+                            <span id="shift-status-value" class="complete-status">Complete</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span id="shift-status-value" class="incomplete-status">Incomplete</span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </li>
+            <li>
+                <div class="li-key"><span>Signature:</span></div>
+                <div class="li-value">
+                    <c:choose>
+                        <c:when test="${status.signatureComplete}">
+                            <span id="signature-status-value" class="complete-status">Complete</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span id="signature-status-value" class="incomplete-status">Incomplete</span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </li>
+        </ul>
+        <div class="dialog-button-panel">
+            <button class="dialog-close-button" type="button">OK</button>
+        </div>
+    </form>
+</div>

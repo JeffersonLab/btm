@@ -1453,11 +1453,6 @@ $(document).on("click", "#view-epics-shift-info-link", function () {
     return false;
 });
 
-$(document).on("click", "#status-label", function () {
-    $("#status-dialog").dialog("open");
-    return false;
-});
-
 $(document).on("click", "#comparison-table .ui-state-error", function () {
     /*$("#cross-check-section").tabs("option", "active", 2);*/
     $('#cross-check-section a[href="#cross-check-details-tab"]')[0].click();

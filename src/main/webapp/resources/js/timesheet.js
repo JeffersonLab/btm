@@ -16,6 +16,11 @@ $(document).on("click", "#filter-form-submit-button", function () {
     return false;
 });
 
+$(document).on("click", "#status-label", function () {
+    $("#status-dialog").dialog("open");
+    return false;
+});
+
 jlab.btm.showAccordionPanel = function (h3) {
     $(h3).removeClass("ui-state-default ui-corner-bottom").addClass("ui-accordion-header-active ui-state-active")
         .find("> .ui-icon").removeClass("ui-icon-triangle-1-e").addClass("ui-icon-triangle-1-s").end()
@@ -29,7 +34,6 @@ jlab.btm.resetAccordion = function () {
 
     jlab.btm.showAccordionPanel($(".accordion h3.initially-open-header"));
 };
-
 
 $(function () {
     $(".tabset").tabs();
