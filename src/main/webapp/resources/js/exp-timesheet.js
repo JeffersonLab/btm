@@ -409,6 +409,70 @@ jlab.btm.updateMirrorColumnTotal = function ($th) {
     $th.closest("table").find("tfoot th:nth-child(" + (index + 1) + ")").text(total);
 }
 
+jlab.btm.signTimesheet = function () {
+    if (jlab.isRequest()) {
+        window.console && console.log("Ajax already in progress");
+        return;
+    }
+
+    var $button = $("#sign-button"),
+        hall = $("#exp-hourly-table").attr("data-hall"),
+        startDayAndHour = $("#shift-start-hour").val(),
+        leaveSpinning = false;
+
+    jlab.requestStart();
+
+    $button.html("<span class=\"button-indicator\"></span>");
+    $button.attr("disabled", "disabled");
+
+    var request = jQuery.ajax({
+        url: "/btm/ajax/sign-exp-timesheet",
+        type: "POST",
+        data: {
+            hall: hall,
+            startDayAndHour: startDayAndHour
+        },
+        dataType: "html"
+    });
+
+    request.done(function (data) {
+        if ($(".status", data).html() !== "Success") {
+            alert('Unable to sign timesheet: ' + $(".reason", data).html());
+        } else {
+            /* Success */
+            /*$("#signature-status-value").text("Complete").removeClass("incomplete-status").addClass("complete-status");*/
+            /*$("#status-div span").text("Complete").removeClass("incomplete-status").addClass("complete-status");*/
+            leaveSpinning = true;
+            window.location.reload(true);
+        }
+    });
+
+    request.fail(function (xhr, textStatus) {
+        window.console && console.log('Unable to sign timesheet: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
+        alert('Unable to sign timesheet: server did not handle request');
+    });
+
+    request.always(function () {
+        jlab.requestEnd();
+        if (!leaveSpinning) {
+            $button.html("Sign");
+            $button.removeAttr("disabled");
+        }
+    });
+};
+
+$(document).on("click", "#sign-button", function () {
+    if (!jlab.btm.validateSaveFutureShift()) {
+        return;
+    }
+
+    var $button = $("#sign-button");
+    $button.html("<span class=\"button-indicator\"></span>");
+    $button.attr("disabled", "disabled");
+
+    jlab.btm.signTimesheet();
+});
+
 $(document).on("click", "#edit-all-button", function () {
     var $editButton = $(this),
         $saveButton = $(this).next(),

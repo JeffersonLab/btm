@@ -96,6 +96,23 @@ jlab.btm.doSaveHourTableSuccess = function ($table, $saveButton) {
     });
 };
 
+jlab.btm.validateSaveFutureShift = function () {
+    var now = new Date(),
+        year = $("#endOfShift").attr("data-year"),
+        month = $("#endOfShift").attr("data-month") - 1, /*Javascript starts at zero / Java starts at 1*/
+        day = $("#endOfShift").attr("data-day"),
+        hour = $("#endOfShift").attr("data-hour"),
+        endOfCurrentShift = new Date(year, month, day, hour, 0, 0, 0),
+        result = true;
+    /*console.log('now: ' + now);
+     console.log('endOfCurrentShift: ' + endOfCurrentShift);*/
+    if (now.getTime() < endOfCurrentShift.getTime()) {
+        result = confirm('The shift covered by this timesheet has not ended yet (is this the correct timesheet?).  Are you sure you want to save?');
+    }
+
+    return result;
+};
+
 $(document).on("click", ".ui-icon-pencil", function () {
     var $editButton = $(this),
         $saveButton = $(this).next(),

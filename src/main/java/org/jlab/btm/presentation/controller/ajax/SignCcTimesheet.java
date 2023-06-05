@@ -36,11 +36,11 @@ import java.util.logging.Logger;
 /**
  * @author ryans
  */
-@WebServlet(name = "SignTimesheet", urlPatterns = {"/ajax/sign-timesheet"})
-public class SignTimesheet extends HttpServlet {
+@WebServlet(name = "SignCcTimesheet", urlPatterns = {"/ajax/sign-cc-timesheet"})
+public class SignCcTimesheet extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(
-            SignTimesheet.class.getName());
+            SignCcTimesheet.class.getName());
 
     @EJB
     OpSignatureService signatureService;

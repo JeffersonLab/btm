@@ -113,6 +113,10 @@ public class ExpHallShiftService extends AbstractService<ExpHallShift> {
             shift.setHall(hall);
         }
 
+        if(purposeId == null) {
+            throw new UserFriendlyException("Program is required");
+        }
+
         ExpHallShiftPurpose purpose = purposeService.find(purposeId);
 
         if(purpose == null) {

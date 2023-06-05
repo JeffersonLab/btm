@@ -156,23 +156,6 @@ jlab.btm.validateCrossCheckStatusThenSave = function () {
     });
 };
 
-jlab.btm.validateSaveFutureShift = function () {
-    var now = new Date(),
-        year = $("#endOfShift").attr("data-year"),
-        month = $("#endOfShift").attr("data-month") - 1, /*Javascript starts at zero / Java starts at 1*/
-        day = $("#endOfShift").attr("data-day"),
-        hour = $("#endOfShift").attr("data-hour"),
-        endOfCurrentShift = new Date(year, month, day, hour, 0, 0, 0),
-        result = true;
-    /*console.log('now: ' + now);
-     console.log('endOfCurrentShift: ' + endOfCurrentShift);*/
-    if (now.getTime() < endOfCurrentShift.getTime()) {
-        result = confirm('The shift covered by this timesheet has not ended yet (is this the correct timesheet?).  Are you sure you want to save?');
-    }
-
-    return result;
-};
-
 jlab.btm.validateShiftInfoForm = function () {
     return true;
 };
@@ -590,7 +573,7 @@ jlab.btm.signTimesheet = function () {
     $button.attr("disabled", "disabled");
 
     var request = jQuery.ajax({
-        url: "/btm/ajax/sign-timesheet",
+        url: "/btm/ajax/sign-cc-timesheet",
         type: "POST",
         data: {
             startDayAndHour: startDayAndHour
