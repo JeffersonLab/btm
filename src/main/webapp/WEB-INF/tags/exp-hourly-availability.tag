@@ -94,14 +94,14 @@
                 <th rowspan="2" style="width: 50px;"></th>
             </tr>
             <tr>
-                <th class="duration-header">ABU</th>
-                <th class="duration-header">BANU</th>
-                <th class="duration-header">BNA</th>
-                <th class="duration-header">ACC</th>
+                <th class="duration-header" title="Acceptable Beam in Use">ABU</th>
+                <th class="duration-header" title="Beam Available, but Not Used">BANU</th>
+                <th class="duration-header" title="Beam Not Available or unacceptable">BNA</th>
+                <th class="duration-header" title="Accelerator Configuration Change">ACC</th>
                 <th class="duration-header">OFF</th>
-                <th class="duration-header">ER</th>
-                <th class="duration-header">PCC</th>
-                <th class="duration-header">UED</th>
+                <th class="duration-header" title="Experiment Ready">ER</th>
+                <th class="duration-header" title="Planned Configuration Change">PCC</th>
+                <th class="duration-header" title="Unplanned Experiment Down">UED</th>
                 <th class="duration-header">OFF</th>
             </tr>
             </thead>
