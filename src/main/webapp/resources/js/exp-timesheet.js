@@ -161,14 +161,13 @@ jlab.btm.validateAndUpdateExpRowTotal = function ($tr, units) {
     }
 };
 
-jlab.btm.editExpHours = function (saveAll) {
+jlab.btm.editExpHours = function ($button, ccOnly, saveAllSections) {
     if (jlab.isRequest()) {
         window.console && console.log("Ajax already in progress");
         return;
     }
 
-    var $button = $("#exp-save-button"),
-        $table = $("#exp-hourly-table"),
+    var $table = $("#exp-hourly-table"),
         success = false,
         $commentsTable = $("#comments-table"),
         units = $("#units").attr("data-units"),
@@ -185,7 +184,15 @@ jlab.btm.editExpHours = function (saveAll) {
         uedArray = [],
         commentsArray = [];
 
-    $table.find("tbody tr").each(function () {
+    var $rows;
+
+    if(ccOnly) {
+        $rows = $table.find("tbody tr").not(":last");
+    } else {
+        $rows = $table.find("tbody tr");
+    }
+
+    $rows.each(function () {
         var $row = $(this),
             hour = $row.find("th").attr("data-hour"),
             abu = jlab.btm.parseSeconds($row.find("td:nth-child(2) input").val(), units),
@@ -245,6 +252,9 @@ jlab.btm.editExpHours = function (saveAll) {
             /* Success */
             jlab.btm.doSaveHourTableSuccess($table, $button);
 
+            $("#edit-all-button").show();
+            $("#edit-cc-only-button").show();
+
             $commentsTable.find("tbody span").show();
             $commentsTable.find("textarea").hide();
 
@@ -271,7 +281,7 @@ jlab.btm.editExpHours = function (saveAll) {
 
         if (success) {
             $("#availability-status-value").text("Complete").removeClass("incomplete-status").addClass("complete-status");
-            if (saveAll) {
+            if (saveAllSections) {
                 jlab.btm.doSaveAll();
             }
         } else {
@@ -399,12 +409,14 @@ jlab.btm.updateMirrorColumnTotal = function ($th) {
     $th.closest("table").find("tfoot th:nth-child(" + (index + 1) + ")").text(total);
 }
 
-$(document).on("click", ".hour-edit-button", function () {
+$(document).on("click", "#edit-all-button", function () {
     var $editButton = $(this),
         $saveButton = $(this).next(),
         $cancelButton = $(this).next().next(),
         $table = $("#exp-hourly-table"),
         $commentsTable = $("#comments-table");
+
+    $("#edit-cc-only-button").hide();
 
     $editButton.hide();
     $saveButton.show();
@@ -413,6 +425,24 @@ $(document).on("click", ".hour-edit-button", function () {
     $table.find("input").show();
     $commentsTable.find("td span").hide();
     $commentsTable.find("textarea").show();
+});
+
+$(document).on("click", "#edit-cc-only-button", function () {
+    var $editButton = $(this),
+        $saveButton = $(this).next(),
+        $cancelButton = $(this).next().next(),
+        $table = $("#exp-hourly-table"),
+        $commentsTable = $("#comments-table");
+
+    $("#edit-all-button").hide();
+
+    $editButton.hide();
+    $saveButton.show();
+    $cancelButton.show();
+    $table.find("tbody span").hide();
+    $table.find("tbody tr").not(":last").find("input").show();
+    $commentsTable.find("td span").hide();
+    $commentsTable.find("textarea").not(":last").show();
 });
 
 $(document).on("click", ".hour-cancel-button", function () {
@@ -425,7 +455,10 @@ $(document).on("click", ".hour-cancel-button", function () {
     $table.find(".ui-icon-pencil").css('display', 'inline-block');
     $table.find(".ui-icon-close, .ui-icon-check").hide();
 
-    $editButton.show();
+
+    $("#edit-all-button").show();
+    $("#edit-cc-only-button").show();
+
     $saveButton.hide();
     $cancelButton.hide();
     $table.find("tbody td span").show();
@@ -481,8 +514,12 @@ $(document).on("click", "#save-shift-info-button", function () {
     jlab.btm.editShiftInfo();
 });
 
-$(document).on("click", ".save-hall-button", function () {
-    jlab.btm.editExpHours();
+$(document).on("click", "#exp-save-button", function () {
+    jlab.btm.editExpHours($(this),false);
+});
+
+$(document).on("click", "#exp-save-cc-button", function () {
+    jlab.btm.editExpHours($(this),true);
 });
 
 $(document).on("click", "#exp-hourly-table .ui-icon-check", function () {
