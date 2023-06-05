@@ -168,7 +168,11 @@ jlab.btm.editExpHour = function () {
     }
 
     var $saveButton = $(this),
-        $row = $saveButton.closest("tr");
+        $row = $saveButton.closest("tr"),
+        index = $row.parent().children().index($row),
+        $commentsTable = $("#comments-table"),
+        $commentRow = $commentsTable.find("tbody tr:nth-child(" + (index + 1) + ")"),
+        $textarea = $commentRow.find("textarea");
 
     var hourArray = [],
         abuArray = [],
@@ -194,7 +198,7 @@ jlab.btm.editExpHour = function () {
         er = jlab.btm.parseSeconds($row.find("td:nth-child(8) input").val(), units),
         pcc = jlab.btm.parseSeconds($row.find("td:nth-child(9) input").val(), units),
         ued = jlab.btm.parseSeconds($row.find("td:nth-child(10) input").val(), units),
-        comments =  '';
+        comments =  $textarea.val();
 
     hourArray.push(hour);
     abuArray.push(abu);
@@ -234,6 +238,10 @@ jlab.btm.editExpHour = function () {
         } else {
             /* Success */
             jlab.btm.doSaveHourRowSuccess($row, $saveButton);
+
+            $commentRow.find("td span").text(comments);
+            $commentRow.find("td span").show();
+            $textarea.hide();
 
             var complete = $table.find(".source-td:contains('EPICS')").length === 0;
 

@@ -6,6 +6,12 @@
 }
 #comments-table textarea {
     resize: none;
+}
+#comments-table td span {
+    text-align: left;
+}
+#comments-table span,
+#comments-table textarea {
     position: absolute;
     top: 2px;
     bottom: 2px;
