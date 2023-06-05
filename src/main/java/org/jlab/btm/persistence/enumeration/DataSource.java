@@ -6,9 +6,9 @@ package org.jlab.btm.persistence.enumeration;
  * @author ryans
  */
 public enum DataSource {
-    DATABASE("Database"),
-    EPICS("Epics"),
-    NONE("None");
+    DATABASE("DB"),
+    EPICS("EPICS"),
+    NONE("NONE");
 
     private final String label;
 

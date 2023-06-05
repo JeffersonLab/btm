@@ -66,7 +66,7 @@ jlab.btm.doSaveHourRowSuccess = function ($row, $saveButton) {
     $row.find("td span").show();
     $row.find("input").hide();
 
-    $row.find(".source-td").text("DATABASE");
+    $row.find(".source-td").text("DB");
 };
 
 $(document).on("click", ".ui-icon-pencil", function () {

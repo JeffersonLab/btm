@@ -62,12 +62,12 @@
                         <td>${btm:formatDuration(hour.bnaSeconds, durationUnits)}</td>
                         <td>${btm:formatDuration(hour.accSeconds, durationUnits)}</td>
                         <td>${btm:formatDuration(hour.offSeconds, durationUnits)}</td>
-                        <td></td>
+                        <th>${btm:formatDuration(hour.calculateAcceleratorTotal(), durationUnits)}</th>
                         <td>${btm:formatDuration(hour.erSeconds, durationUnits)}</td>
                         <td>${btm:formatDuration(hour.pccSeconds, durationUnits)}</td>
                         <td>${btm:formatDuration(hour.uedSeconds, durationUnits)}</td>
                         <td>${btm:formatDuration(hour.offSeconds, durationUnits)}</td>
-                        <td></td>
+                        <th>${btm:formatDuration(hour.calculateExperimentTotal(), durationUnits)}</th>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -183,7 +183,7 @@
                         <span><c:out value="${btm:formatDuration(hour.offSeconds, durationUnits)}"/></span>
                     </th>
                     <th></th>
-                    <th class="source-td"><c:out value="${hour.source}"/></th>
+                    <th class="source-td"><c:out value="${hour.source.label}"/></th>
                     <th>
                         <span title="Edit (Single Row)" class="ui-icon ui-icon-pencil"></span>
                         <span title="Save" class="ui-icon ui-icon-check"></span>

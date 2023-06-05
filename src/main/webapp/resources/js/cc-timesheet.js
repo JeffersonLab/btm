@@ -1072,7 +1072,7 @@ jlab.btm.doSaveHourTableSuccess = function ($table, $saveButton) {
     $table.find("input").hide();
 
     $table.find("tbody tr").each(function () {
-        $(this).find(".source-td").text("DATABASE");
+        $(this).find(".source-td").text("DB");
     });
 };
 
@@ -1092,7 +1092,7 @@ jlab.btm.doSaveShiftSuccess = function () {
     $form.find(".li-value span").show();
     $form.find(".li-value input").hide();
 
-    $("#shift-info-source-value").text("DATABASE");
+    $("#shift-info-source-value").text("DB");
     $("#view-epics-shift-info-link").show();
 };
 
