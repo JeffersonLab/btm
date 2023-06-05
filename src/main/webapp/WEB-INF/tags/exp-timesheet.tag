@@ -6,17 +6,14 @@
 <%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <h3>Utilization and Availability</h3>
-<div id="exp-avail-panel" class="accordion">
-    <form>
-        <t:exp-hourly-availability hall="${availability.hall}"
-                                   hourList="${availability.hourList}"
-                                   epicsHourList="${availability.epicsHourList}"
-                                   totals="${availability.shiftTotals}"
-                                   epicsTotals="${availability.epicsShiftTotals}"/>
-    </form>
-</div>
+<t:exp-hourly-availability hall="${availability.hall}"
+                           hourList="${availability.hourList}"
+                           epicsHourList="${availability.epicsHourList}"
+                           totals="${availability.shiftTotals}"
+                           epicsTotals="${availability.epicsShiftTotals}"/>
 <h3>Reasons not Ready</h3>
-<p>TODO</p>
+<t:exp-hourly-reasons hall="${reasons.hall}"
+                      hourList="${reasons.hourList}"/>
 <h3>Shift Information</h3>
 <div class="form-wrapper">
     <ul id="shift-info-key-value-list" class="key-value-list">

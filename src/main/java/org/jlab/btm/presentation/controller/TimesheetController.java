@@ -62,6 +62,8 @@ public class TimesheetController extends HttpServlet {
     ExpSecurityRuleService ruleService;
     @EJB
     ExpHallShiftPurposeService purposeService;
+    @EJB
+    ExpHallHourReasonTimeService reasonTimeService;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -348,7 +350,7 @@ public class TimesheetController extends HttpServlet {
                 endHour, true);
 
         /*REASONS NOT READY*/
-        List<Object> reasonsNotReady = null;
+        List<ExpHallHourReasonTime> reasonsNotReady = reasonTimeService.find(hall, startHour, endHour);
 
         /*SHIFT INFORMATION*/
         ExpHallShift shiftInfo = expShiftService.find(hall, startHour);

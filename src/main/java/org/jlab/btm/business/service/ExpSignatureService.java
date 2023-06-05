@@ -3,12 +3,14 @@ package org.jlab.btm.business.service;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.security.PermitAll;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.jlab.btm.persistence.entity.ExpHallHour;
+import org.jlab.btm.persistence.entity.ExpHallHourReasonTime;
 import org.jlab.btm.persistence.entity.ExpHallShift;
 import org.jlab.btm.persistence.entity.ExpHallSignature;
 import org.jlab.btm.persistence.projection.CcTimesheetStatus;
@@ -27,6 +29,9 @@ public class ExpSignatureService extends AbstractService<ExpHallSignature> {
 
     @PersistenceContext(unitName = "btmPU")
     protected EntityManager em;
+
+    @EJB
+    ExpHallHourReasonTimeService reasonTimeService;
 
     public ExpSignatureService() {
         super(ExpHallSignature.class);
@@ -49,7 +54,7 @@ public class ExpSignatureService extends AbstractService<ExpHallSignature> {
 
     @PermitAll
     public ExpTimesheetStatus calculateStatus(Date startDayAndHour, Date endDayAndHour, List<ExpHallHour> expAvailabilityList,
-                                              List<Object> reasonsNotReadyList, ExpHallShift shiftInfo,
+                                              List<ExpHallHourReasonTime> reasonsNotReadyList, ExpHallShift shiftInfo,
                                               List<ExpHallSignature> signatureList) {
         ExpTimesheetStatus status = new ExpTimesheetStatus();
 
@@ -57,6 +62,14 @@ public class ExpSignatureService extends AbstractService<ExpHallSignature> {
 
         if (expAvailabilityList != null && expAvailabilityList.size() == hoursInShift) {
             status.setAvailabilityComplete(true);
+        }
+
+        List<String> discrepancies = reasonTimeService.validateUED(expAvailabilityList, reasonsNotReadyList);
+
+        status.setUedDiscrepancies(discrepancies);
+
+        if(discrepancies.isEmpty()) {
+            status.setReasonsNotReadyComplete(true);
         }
 
         if (shiftInfo != null) {

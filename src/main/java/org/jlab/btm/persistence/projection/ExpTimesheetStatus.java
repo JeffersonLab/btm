@@ -1,5 +1,8 @@
 package org.jlab.btm.persistence.projection;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author ryans
  */
@@ -9,6 +12,7 @@ public class ExpTimesheetStatus {
     private boolean reasonsNotReadyComplete = false;
     private boolean shiftInfoComplete = false;
     private boolean signatureComplete = false;
+    private List<String> uedDiscrepancies = new ArrayList<>();
 
     public boolean isAvailabilityComplete() {
         return availabilityComplete;
@@ -40,5 +44,13 @@ public class ExpTimesheetStatus {
 
     public void setSignatureComplete(boolean signature) {
         this.signatureComplete = signature;
+    }
+
+    public void setUedDiscrepancies(List<String> discrepancies) {
+        this.uedDiscrepancies = discrepancies;
+    }
+
+    public List<String> getUedDiscrepancies() {
+        return uedDiscrepancies;
     }
 }
