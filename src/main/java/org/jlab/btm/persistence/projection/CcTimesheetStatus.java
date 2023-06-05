@@ -3,7 +3,7 @@ package org.jlab.btm.persistence.projection;
 /**
  * @author ryans
  */
-public class TimesheetStatus {
+public class CcTimesheetStatus {
     private boolean acceleratorComplete = false;
     private boolean hallAComplete = false;
     private boolean hallBComplete = false;

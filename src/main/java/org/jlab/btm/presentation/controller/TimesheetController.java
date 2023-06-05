@@ -269,7 +269,7 @@ public class TimesheetController extends HttpServlet {
 
         /*SIGNATURES*/
         List<OpSignature> signatureList = ccSignatureService.find(startHour);
-        TimesheetStatus status = ccSignatureService.calculateStatus(startHour, endHour,
+        CcTimesheetStatus status = ccSignatureService.calculateStatus(startHour, endHour,
                 accAvailability.getDbHourList(), hallAvailabilityList.get(0).getDbHourList(),
                 hallAvailabilityList.get(1).getDbHourList(),
                 hallAvailabilityList.get(2).getDbHourList(),
@@ -347,11 +347,18 @@ public class TimesheetController extends HttpServlet {
                 startHour,
                 endHour, true);
 
+        /*REASONS NOT READY*/
+        List<Object> reasonsNotReady = null;
+
         /*SHIFT INFORMATION*/
         ExpHallShift shiftInfo = expShiftService.find(hall, startHour);
 
         /*SIGNATURES*/
         List<ExpHallSignature> signatureList = expSignatureService.find(hall, startHour);
+        ExpTimesheetStatus status = expSignatureService.calculateStatus(startHour, endHour,
+                expAvailability.getDbHourList(),
+                reasonsNotReady,
+                shiftInfo, signatureList);
 
         /*Purposes*/
         List<ExpHallShiftPurpose> experimentList = purposeService.findActiveExperimentsByHall(hall);
@@ -359,6 +366,7 @@ public class TimesheetController extends HttpServlet {
 
         boolean editable = ruleService.isEditAllowed(hall, startHour);
 
+        request.setAttribute("status", status);
         request.setAttribute("editable", editable);
         request.setAttribute("availability", expAvailability);
         request.setAttribute("shiftInfo", shiftInfo);

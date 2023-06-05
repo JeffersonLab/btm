@@ -2,7 +2,7 @@ package org.jlab.btm.business.service;
 
 import org.jlab.btm.persistence.entity.*;
 import org.jlab.btm.persistence.enumeration.Role;
-import org.jlab.btm.persistence.projection.TimesheetStatus;
+import org.jlab.btm.persistence.projection.CcTimesheetStatus;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.enumeration.Hall;
@@ -55,12 +55,12 @@ public class OpSignatureService extends AbstractService<OpSignature> {
     }
 
     @PermitAll
-    public TimesheetStatus calculateStatus(Date startDayAndHour, Date endDayAndHour,
-                                           List<OpAccHour> accHourList, List<OpHallHour> hallAHourList,
-                                           List<OpHallHour> hallBHourList, List<OpHallHour> hallCHourList,
-                                           List<OpHallHour> hallDHourList, List<OpMultiplicityHour> multiHourList, OpShift shift,
-                                           List<OpSignature> signatureList) {
-        TimesheetStatus status = new TimesheetStatus();
+    public CcTimesheetStatus calculateStatus(Date startDayAndHour, Date endDayAndHour,
+                                             List<OpAccHour> accHourList, List<OpHallHour> hallAHourList,
+                                             List<OpHallHour> hallBHourList, List<OpHallHour> hallCHourList,
+                                             List<OpHallHour> hallDHourList, List<OpMultiplicityHour> multiHourList, OpShift shift,
+                                             List<OpSignature> signatureList) {
+        CcTimesheetStatus status = new CcTimesheetStatus();
 
         long hoursInShift = TimeUtil.differenceInHours(startDayAndHour, endDayAndHour) + 1;
 
@@ -100,7 +100,7 @@ public class OpSignatureService extends AbstractService<OpSignature> {
     }
 
     @PermitAll
-    public TimesheetStatus calculateStatus(Date startDayAndHour) {
+    public CcTimesheetStatus calculateStatus(Date startDayAndHour) {
 
         Date endDayAndHour = TimeUtil.calculateCrewChiefShiftEndDayAndHour(startDayAndHour);
 
@@ -146,7 +146,7 @@ public class OpSignatureService extends AbstractService<OpSignature> {
             }
         }
 
-        TimesheetStatus status = this.calculateStatus(startDayAndHour);
+        CcTimesheetStatus status = this.calculateStatus(startDayAndHour);
 
         if (!status.isAcceleratorComplete()) {
             throw new UserFriendlyException("You must save all accelerator availability hours");

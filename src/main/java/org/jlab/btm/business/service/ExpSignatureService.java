@@ -8,7 +8,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.jlab.btm.persistence.entity.ExpHallHour;
+import org.jlab.btm.persistence.entity.ExpHallShift;
 import org.jlab.btm.persistence.entity.ExpHallSignature;
+import org.jlab.btm.persistence.projection.CcTimesheetStatus;
+import org.jlab.btm.persistence.projection.ExpHallShiftAvailability;
+import org.jlab.btm.persistence.projection.ExpTimesheetStatus;
+import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 /**
@@ -39,5 +45,28 @@ public class ExpSignatureService extends AbstractService<ExpHallSignature> {
         q.setParameter("startDayAndHour", startDayAndHour);
 
         return q.getResultList();
+    }
+
+    @PermitAll
+    public ExpTimesheetStatus calculateStatus(Date startDayAndHour, Date endDayAndHour, List<ExpHallHour> expAvailabilityList,
+                                              List<Object> reasonsNotReadyList, ExpHallShift shiftInfo,
+                                              List<ExpHallSignature> signatureList) {
+        ExpTimesheetStatus status = new ExpTimesheetStatus();
+
+        long hoursInShift = TimeUtil.differenceInHours(startDayAndHour, endDayAndHour) + 1;
+
+        if (expAvailabilityList != null && expAvailabilityList.size() == hoursInShift) {
+            status.setAvailabilityComplete(true);
+        }
+
+        if (shiftInfo != null) {
+            status.setShiftInfoComplete(true);
+        }
+
+        if (signatureList != null && !signatureList.isEmpty()) {
+            status.setSignatureComplete(true);
+        }
+
+        return status;
     }
 }
