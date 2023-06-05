@@ -161,6 +161,127 @@ jlab.btm.validateAndUpdateExpRowTotal = function ($tr, units) {
     }
 };
 
+jlab.btm.editExpHours = function (saveAll) {
+    if (jlab.isRequest()) {
+        window.console && console.log("Ajax already in progress");
+        return;
+    }
+
+    var $button = $("#exp-save-button"),
+        $table = $("#exp-hourly-table"),
+        success = false,
+        $commentsTable = $("#comments-table"),
+        units = $("#units").attr("data-units"),
+        hall = $table.attr("data-hall");
+
+    var hourArray = [],
+        abuArray = [],
+        banuArray = [],
+        bnaArray = [],
+        accArray = [],
+        offArray = [],
+        erArray = [],
+        pccArray = [],
+        uedArray = [],
+        commentsArray = [];
+
+    $table.find("tbody tr").each(function () {
+        var $row = $(this),
+            hour = $row.find("th").attr("data-hour"),
+            abu = jlab.btm.parseSeconds($row.find("td:nth-child(2) input").val(), units),
+            banu = jlab.btm.parseSeconds($row.find("td:nth-child(3) input").val(), units),
+            bna = jlab.btm.parseSeconds($row.find("td:nth-child(4) input").val(), units),
+            acc = jlab.btm.parseSeconds($row.find("td:nth-child(5) input").val(), units),
+            off = jlab.btm.parseSeconds($row.find("td:nth-child(6) input").val(), units),
+            er = jlab.btm.parseSeconds($row.find("td:nth-child(8) input").val(), units),
+            pcc = jlab.btm.parseSeconds($row.find("td:nth-child(9) input").val(), units),
+            ued = jlab.btm.parseSeconds($row.find("td:nth-child(10) input").val(), units),
+            index = $row.parent().children().index($row),
+            $commentRow = $commentsTable.find("tbody tr:nth-child(" + (index + 1) + ")"),
+            $textarea = $commentRow.find("textarea"),
+            comments =  $textarea.val();
+
+        hourArray.push(hour);
+        abuArray.push(abu);
+        banuArray.push(banu);
+        bnaArray.push(bna);
+        accArray.push(acc);
+        offArray.push(off);
+        erArray.push(er);
+        pccArray.push(pcc);
+        uedArray.push(ued);
+        commentsArray.push(comments);
+    });
+
+    jlab.requestStart();
+
+    $button.html("<span class=\"button-indicator\"></span>");
+    $button.attr("disabled", "disabled");
+    $button.next().attr("disabled", "disabled");
+
+    var request = jQuery.ajax({
+        url: "/btm/ajax/edit-exp-hours",
+        type: "POST",
+        data: {
+            hall: hall,
+            'hour[]': hourArray,
+            'abu[]': abuArray,
+            'banu[]': banuArray,
+            'bna[]': bnaArray,
+            'acc[]': accArray,
+            'off[]': offArray,
+            'er[]': erArray,
+            'pcc[]': pccArray,
+            'ued[]': uedArray,
+            'comments[]': commentsArray
+        },
+        dataType: "html"
+    });
+
+    request.done(function (data) {
+        if ($(".status", data).html() !== "Success") {
+            alert('Unable to save hall ' + hall + ' availability hours: ' + $(".reason", data).html());
+        } else {
+            /* Success */
+            jlab.btm.doSaveHourTableSuccess($table, $button);
+
+            $commentsTable.find("tbody span").show();
+            $commentsTable.find("textarea").hide();
+
+            $commentsTable.find("tbody span").each(function () {
+                var newValue = $(this).next().val();
+
+                $(this).text(newValue);
+            });
+
+            success = true;
+        }
+    });
+
+    request.fail(function (xhr, textStatus) {
+        window.console && console.log('Unable to save hall ' + hall + ' availability hours: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
+        alert('Unable to save hall ' + hall + ' availability hours: server did not handle request');
+    });
+
+    request.always(function () {
+        jlab.requestEnd();
+        $button.html("Save");
+        $button.removeAttr("disabled");
+        $button.next().removeAttr("disabled");
+
+        if (success) {
+            $("#availability-status-value").text("Complete").removeClass("incomplete-status").addClass("complete-status");
+            if (saveAll) {
+                jlab.btm.doSaveAll();
+            }
+        } else {
+            var $signButton = $("#sign-button");
+            $signButton.html("Sign");
+            $signButton.removeAttr("disabled");
+        }
+    });
+};
+
 jlab.btm.editExpHour = function () {
     if (jlab.isRequest()) {
         window.console && console.log("Ajax already in progress");
@@ -358,6 +479,10 @@ $(document).on("click", "#cancel-shift-info-button", function () {
 
 $(document).on("click", "#save-shift-info-button", function () {
     jlab.btm.editShiftInfo();
+});
+
+$(document).on("click", ".save-hall-button", function () {
+    jlab.btm.editExpHours();
 });
 
 $(document).on("click", "#exp-hourly-table .ui-icon-check", function () {

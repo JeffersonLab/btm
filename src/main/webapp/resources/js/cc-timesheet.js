@@ -1049,33 +1049,6 @@ jlab.btm.copyMultiShiftTotalToSummary = function () {
     $summaryRow.find("td:nth-child(7)").text($hourlyRow.find("th:nth-child(7)").text());
 };
 
-jlab.btm.doSaveHourTableSuccess = function ($table, $saveButton) {
-    var $cancelButton = $saveButton.next(),
-        $editButton = $saveButton.prev();
-
-    $editButton.show();
-    $saveButton.hide();
-    $cancelButton.hide();
-
-    $table.find("tbody span").each(function () {
-        var newValue = $(this).next().val();
-
-        newValue = (newValue === '') ? 0 : newValue * 1;
-
-        $(this).text(newValue);
-    });
-
-    $table.find(".ui-icon-pencil").css('display', 'inline-block');
-    $table.find(".ui-icon-close, .ui-icon-check").hide();
-
-    $table.find("tbody td span").show();
-    $table.find("input").hide();
-
-    $table.find("tbody tr").each(function () {
-        $(this).find(".source-td").text("DB");
-    });
-};
-
 jlab.btm.doSaveShiftSuccess = function () {
     var $cancelButton = $("#cancel-shift-info-button"),
         $saveButton = $cancelButton.prev(),
