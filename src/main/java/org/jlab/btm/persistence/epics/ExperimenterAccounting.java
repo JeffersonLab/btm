@@ -25,6 +25,7 @@ public class ExperimenterAccounting {
     private double[] er = null;
     private double[] pcc = null;
     private double[] ued = null;
+    private double[] off = null;
 
     public Hall getHall() {
         return hall;
@@ -98,6 +99,14 @@ public class ExperimenterAccounting {
         this.ued = ued;
     }
 
+    public void setOFF(double[] off) {
+        this.off = off;
+    }
+
+    public double[] getOFF() {
+        return off;
+    }
+
     /**
      * Determine if the data in this ExperimenterAccounting is valid.
      *
@@ -109,7 +118,7 @@ public class ExperimenterAccounting {
      */
     public boolean isValidValue() {
         if (time == null || abu == null || banu == null || bna == null
-                || acc == null || er == null || pcc == null || ued == null) {
+                || acc == null || er == null || pcc == null || ued == null || off == null) {
             return false;
         }
 
@@ -120,7 +129,8 @@ public class ExperimenterAccounting {
                 && acc.length == Constant.NUMBER_OF_HOURS_IN_HISTORY
                 && er.length == Constant.NUMBER_OF_HOURS_IN_HISTORY
                 && pcc.length == Constant.NUMBER_OF_HOURS_IN_HISTORY
-                && ued.length == Constant.NUMBER_OF_HOURS_IN_HISTORY;
+                && ued.length == Constant.NUMBER_OF_HOURS_IN_HISTORY
+                && off.length == Constant.NUMBER_OF_HOURS_IN_HISTORY;
 
     }
 
@@ -161,6 +171,9 @@ public class ExperimenterAccounting {
             hour.setErSeconds((short) er[i]);
             hour.setPccSeconds((short) pcc[i]);
             hour.setUedSeconds((short) ued[i]);
+
+            // This is really part of CC PVS...
+            hour.setOffSeconds((short) off[i]);
 
             hours.add(hour);
         }
