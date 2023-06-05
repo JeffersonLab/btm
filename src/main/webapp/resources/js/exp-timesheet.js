@@ -325,6 +325,19 @@ $(document).on("click", ".ui-icon-pencil", function () {
     $commentRow.find("textarea").show();
 });
 
+$(document).on("click", ".ui-icon-close", function () {
+    var $row = $(this).closest("tr"),
+        index = $row.parent().children().index($row),
+        $table = $("#comments-table"),
+        $commentRow = $table.find("tbody tr:nth-child(" + (index + 1) + ")"),
+        $textarea = $commentRow.find("textarea");
+
+    $commentRow.find("td span").show();
+    $textarea.hide();
+
+    $textarea.val($textarea.prev().text());
+});
+
 $(function () {
     jlab.btm.validateHourTableRowTotal($("#exp-hourly-table"));
 });

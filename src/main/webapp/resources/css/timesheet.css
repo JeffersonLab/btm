@@ -1,6 +1,17 @@
 .hour-header {
     width: 50px;
 }
+#comments-table td {
+    position: relative;
+}
+#comments-table textarea {
+    resize: none;
+    position: absolute;
+    top: 2px;
+    bottom: 2px;
+    left: 2px;
+    right: 2px;
+}
 .banner-buttonbox {
     background-color: #f0f0f0;
     margin: 1em;
