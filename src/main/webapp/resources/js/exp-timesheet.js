@@ -278,6 +278,52 @@ jlab.btm.updateMirrorColumnTotal = function ($th) {
     $th.closest("table").find("tfoot th:nth-child(" + (index + 1) + ")").text(total);
 }
 
+$(document).on("click", ".hour-edit-button", function () {
+    var $editButton = $(this),
+        $saveButton = $(this).next(),
+        $cancelButton = $(this).next().next(),
+        $table = $("#exp-hourly-table"),
+        $commentsTable = $("#comments-table");
+
+    $editButton.hide();
+    $saveButton.show();
+    $cancelButton.show();
+    $table.find("tbody span").hide();
+    $table.find("input").show();
+    $commentsTable.find("td span").hide();
+    $commentsTable.find("textarea").show();
+});
+
+$(document).on("click", ".hour-cancel-button", function () {
+    var $cancelButton = $(this),
+        $saveButton = $(this).prev(),
+        $editButton = $(this).prev().prev(),
+        $table = $("#exp-hourly-table"),
+        $commentsTable = $("#comments-table");
+
+    $table.find(".ui-icon-pencil").css('display', 'inline-block');
+    $table.find(".ui-icon-close, .ui-icon-check").hide();
+
+    $editButton.show();
+    $saveButton.hide();
+    $cancelButton.hide();
+    $table.find("tbody td span").show();
+    $table.find("input").hide();
+    $commentsTable.find("td span").show();
+    $commentsTable.find("textarea").hide();
+
+    $table.find("input").each(function () {
+        $(this).val($(this).prev().text());
+    });
+
+    $commentsTable.find("textarea").each(function () {
+        $(this).val($(this).prev().text());
+    });
+
+    jlab.btm.validateHourTableRowTotal($table);
+    jlab.btm.updateAllDurationColumnTotals($table);
+});
+
 $(document).on("click", "#edit-shift-info-button", function () {
     var $editButton = $(this),
         $saveButton = $(this).next(),
