@@ -1,15 +1,21 @@
 package org.jlab.btm.business.service;
 
+import org.jlab.btm.business.util.BtmTimeUtil;
 import org.jlab.btm.persistence.entity.ExpHour;
 import org.jlab.btm.persistence.entity.ExpHourReasonTime;
+import org.jlab.btm.persistence.entity.ExpReason;
 import org.jlab.btm.persistence.projection.HourReasonDiscrepancy;
+import org.jlab.smoothness.business.exception.UserFriendlyException;
+import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 import javax.annotation.security.PermitAll;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.xml.registry.infomodel.User;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,6 +33,15 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
 
     @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
+
+    @EJB
+    ExpHourService hourService;
+
+    @EJB
+    ExpSecurityRuleService ruleService;
+
+    @EJB
+    ExpReasonService reasonService;
 
     public ExpHourReasonTimeService() {
         super(ExpHourReasonTime.class);
@@ -95,5 +110,47 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
         }
 
         return total;
+    }
+
+    @PermitAll
+    public void add(Hall hall, Date dayAndHour, BigInteger reasonId, Short durationSeconds) throws UserFriendlyException {
+        if(dayAndHour == null) {
+            throw new UserFriendlyException("Hour must not be empty");
+        }
+
+        ruleService.editCheck(hall, BtmTimeUtil.getExpShiftStart(dayAndHour));
+
+        if(durationSeconds == null) {
+            throw new UserFriendlyException("Duration must not be empty");
+        }
+
+        // This find method uses inclusive on both start and end!  Should have exclusive end.  Doh!
+        List<ExpHour> hourList = hourService.findInDatabase(hall, dayAndHour, dayAndHour);
+
+        ExpHour hour = null;
+
+        if(hourList.size() == 1) {
+            hour = hourList.get(0);
+        } else {
+            throw new UserFriendlyException("Unable to obtain hour " + dayAndHour);
+        }
+
+        if(reasonId == null) {
+            throw new UserFriendlyException("Reason must not be empty");
+        }
+
+        ExpReason reason = reasonService.find(reasonId);
+
+        if(reason == null) {
+            throw new UserFriendlyException("Reason not found with ID: " + reasonId);
+        }
+
+        ExpHourReasonTime explanation = new ExpHourReasonTime();
+        explanation.setHall(hall);
+        explanation.setExpHallHour(hour);
+        explanation.setSeconds(durationSeconds);
+        explanation.setExpHallReason(reason);
+
+        super.edit(explanation);
     }
 }

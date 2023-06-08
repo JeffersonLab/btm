@@ -258,4 +258,15 @@ public final class BtmParamConverter {
 
         return value;
     }
+
+    public static Short convertShort(HttpServletRequest request, String name) {
+        String valueStr = request.getParameter(name);
+        Short value = null;
+
+        if (valueStr != null && !valueStr.isEmpty()) {
+            value = Short.valueOf(valueStr);
+        }
+
+        return value;
+    }
 }

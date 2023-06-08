@@ -1,6 +1,59 @@
 var jlab = jlab || {};
 jlab.btm = jlab.btm || {};
 
+jlab.btm.addReason = function () {
+    if (jlab.isRequest()) {
+        window.console && console.log("Ajax already in progress");
+        return;
+    }
+
+    var dayAndHour = $("#reason-hour").val(),
+        hall = $("#shift-hall").val(),
+        reason = $("#reason").val(),
+        duration = $("#reason-duration").val(),
+        units = $("#units").attr("data-units"),
+        durationSeconds = jlab.btm.parseSeconds(duration, units),
+        success = false;
+
+    jlab.requestStart();
+
+    $("#save-reason-button").html("<span class=\"button-indicator\"></span>");
+    $("#save-reason-button").attr("disabled", "disabled");
+
+    var request = jQuery.ajax({
+        url: "/btm/ajax/add-ued-explanation",
+        type: "POST",
+        data: {
+            dayAndHour: dayAndHour,
+            hall: hall,
+            reason: reason,
+            durationSeconds: durationSeconds
+        },
+        dataType: "html"
+    });
+
+    request.done(function (data) {
+        if ($(".status", data).html() !== "Success") {
+            alert('Unable to save UED explanation: ' + $(".reason", data).html());
+        } else {
+            /* Success */
+            success = true;
+            window.location.reload();
+        }
+    });
+
+    request.fail(function (xhr, textStatus) {
+        window.console && console.log('Unable to save UED explanation: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
+        alert('Unable to save UED explanation: server did not handle request');
+    });
+
+    request.always(function () {
+        jlab.requestEnd();
+        $("#save-reason-button").html("Save");
+        $("#save-reason-button").removeAttr("disabled");
+    });
+};
+
 jlab.btm.editShiftInfo = function (saveAll) {
     if (jlab.isRequest()) {
         window.console && console.log("Ajax already in progress");
@@ -576,6 +629,10 @@ $(document).on("click", "#cancel-shift-info-button", function () {
 
 $(document).on("click", "#save-shift-info-button", function () {
     jlab.btm.editShiftInfo();
+});
+
+$(document).on("click", "#save-reason-button", function () {
+    jlab.btm.addReason();
 });
 
 $(document).on("click", "#exp-save-button", function () {

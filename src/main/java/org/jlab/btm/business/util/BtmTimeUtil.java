@@ -180,5 +180,26 @@ public class BtmTimeUtil {
 
         return cal.getTime();
     }
+
+    public static Date getExpShiftStart(Date dateInShift) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateInShift);
+
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+
+        if (hour <= 7) {
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+        } else if (hour <= 15) {
+            cal.set(Calendar.HOUR_OF_DAY, 8);
+        } else {
+            cal.set(Calendar.HOUR_OF_DAY, 16);
+        }
+
+        return cal.getTime();
+    }
 }
 

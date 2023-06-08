@@ -31,6 +31,12 @@ public class ExpReasonService extends AbstractService<ExpReason> {
     }
 
     @PermitAll
+    @Override
+    public ExpReason find(Object id) {
+        return super.find(id);
+    }
+
+    @PermitAll
     public List<ExpReason> findByActive(Hall hall, boolean active) {
         TypedQuery<ExpReason> q = em.createNamedQuery("ExpReason.findByHallAndActive", ExpReason.class);
 

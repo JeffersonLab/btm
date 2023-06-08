@@ -92,7 +92,7 @@
                     <select id="reason-hour">
                         <option></option>
                         <c:forEach items="${status.reasonDiscrepancyList}" var="discrepancy">
-                            <fmt:formatDate pattern="dd MMM yyyy HH" value="${discrepancy.dayAndHour}" var="dayAndHour"/>
+                            <fmt:formatDate pattern="yyyy-MM-dd HH" value="${discrepancy.dayAndHour}" var="dayAndHour"/>
                             <fmt:formatDate pattern="HH" value="${discrepancy.dayAndHour}" var="hour"/>
                             <option value="${dayAndHour}">${hour}</option>
                         </c:forEach>
