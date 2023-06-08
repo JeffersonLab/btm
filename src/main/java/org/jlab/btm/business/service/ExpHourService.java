@@ -415,7 +415,7 @@ public class ExpHourService extends AbstractService<ExpHour> {
 
         BigInteger id = idDec.toBigInteger();
 
-        Query q = em.createNamedQuery("ExpHallHour.insertNATIVE");
+        Query q = em.createNamedQuery("ExpHour.insertNATIVE");
 
         q.setParameter("id", id);
         q.setParameter("hall", hour.getHall().getLetter());
