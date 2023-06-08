@@ -24,7 +24,7 @@ import java.util.List;
 public class ReviewCalendarService {
 
     @EJB
-    OpAccHourService accHourService;
+    CcAccHourService accHourService;
     @EJB
     DowntimeService downService;
 
@@ -37,7 +37,7 @@ public class ReviewCalendarService {
         // We want to actually include the end of the range (instead of typical open ended interval) so we add one day!
         Date inclusiveEnd = TimeUtil.addDays(range.getEnd(), 1);
 
-        List<OpAccHourService.DayTotals> accTotals = accHourService.dayTotals(range.getStart(), inclusiveEnd);
+        List<CcAccHourService.DayTotals> accTotals = accHourService.dayTotals(range.getStart(), inclusiveEnd);
         List<DowntimeService.DayTotals> downTotals = downService.dayTotals(range.getStart(), inclusiveEnd);
 
         int i = 0;
@@ -46,7 +46,7 @@ public class ReviewCalendarService {
 
             review.setDay(d);
 
-            OpAccHourService.DayTotals accTotal = accTotals.get(i);
+            CcAccHourService.DayTotals accTotal = accTotals.get(i);
             BeamSummaryTotals at = accTotal.totals;
             review.setAccTotal(at);
 

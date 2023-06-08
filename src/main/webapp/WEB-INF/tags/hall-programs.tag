@@ -27,7 +27,7 @@
     </thead>
     <tbody>
     <c:forEach items="${purposeList}" var="purpose">
-        <tr data-program-id="${purpose.expHallShiftPurposeId}">
+        <tr data-program-id="${purpose.expShiftPurposeId}">
             <td><c:out value="${purpose.name}"/></td>
             <td><c:out value="${purpose.alias}"/></td>
             <td>

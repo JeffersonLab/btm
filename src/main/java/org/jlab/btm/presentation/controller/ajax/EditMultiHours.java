@@ -1,7 +1,7 @@
 package org.jlab.btm.presentation.controller.ajax;
 
-import org.jlab.btm.business.service.OpMultiplicityHourService;
-import org.jlab.btm.persistence.entity.OpMultiplicityHour;
+import org.jlab.btm.business.service.CcMultiplicityHourService;
+import org.jlab.btm.persistence.entity.CcMultiplicityHour;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.ExceptionUtil;
@@ -35,7 +35,7 @@ public class EditMultiHours extends HttpServlet {
             EditMultiHours.class.getName());
 
     @EJB
-    OpMultiplicityHourService multiHourService;
+    CcMultiplicityHourService multiHourService;
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -100,8 +100,8 @@ public class EditMultiHours extends HttpServlet {
                 errorReason = "";
                 for (ConstraintViolation<?> violation : violations) {
                     Object bean = violation.getRootBean();
-                    if (bean instanceof OpMultiplicityHour) {
-                        OpMultiplicityHour hour = (OpMultiplicityHour) bean;
+                    if (bean instanceof CcMultiplicityHour) {
+                        CcMultiplicityHour hour = (CcMultiplicityHour) bean;
                         String msg = "Hour " + dateFormat.format(hour.getDayAndHour()) + " "
                                 + violation.getMessage();
                         errorReason = errorReason + msg + ", ";

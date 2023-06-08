@@ -33,4 +33,19 @@ public class Constant {
     public static final String MULTI_ANY_UP = "BOOMANYHALLUP_h";
     public static final String MULTI_ALL_UP = "BOOMALLSCHHALLUP_h";
     public static final String MULTI_DOWN = "BOOMDOWNHARD_h";
+
+
+    // Experimenter PVS
+    public static final String EXP_HALL_PREFIX = "HL";
+    public static final String EXP_RESET_SUFFIX = ":bta_reset_recs";
+    public static final String EXP_TIME_SUFFIX = ":bta_uxtime_h";
+    public static final String EXP_ABU_SUFFIX = ":bta_sec_w_bm_w_daq_h";
+    public static final String EXP_BANU_SUFFIX = ":bta_sec_w_bm_wo_daq_h";
+    public static final String EXP_BNA_SUFFIX = ":bta_sec_wo_bm_h";
+    public static final String EXP_ACC_SUFFIX = ":bta_sec_conf_chg_h";
+    public static final String EXP_ER_SUFFIX = ":bta_sec_er_h";
+    public static final String EXP_PCC_SUFFIX = ":bta_sec_cc_h";
+    public static final String EXP_UED_SUFFIX = ":bta_sec_enr_h";
 }
+
+

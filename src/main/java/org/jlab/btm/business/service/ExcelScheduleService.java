@@ -3,7 +3,7 @@ package org.jlab.btm.business.service;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.jlab.btm.persistence.entity.ExpHallShiftPurpose;
+import org.jlab.btm.persistence.entity.ExpShiftPurpose;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
 import org.jlab.btm.persistence.entity.ScheduleDay;
 import org.jlab.btm.persistence.enumeration.AcceleratorProgram;
@@ -33,10 +33,10 @@ import java.util.logging.Logger;
 @Stateless
 public class ExcelScheduleService {
 
-    private final static Logger LOGGER = Logger.getLogger(ExpHallHourService.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(ExpHourService.class.getName());
 
     @EJB
-    ExpHallShiftPurposeService purposeService;
+    ExpShiftPurposeService purposeService;
     @EJB
     MonthlyScheduleService scheduleService;
 
@@ -54,10 +54,10 @@ public class ExcelScheduleService {
 
         MonthlySchedule schedule = null;
 
-        Map<String, ExpHallShiftPurpose> hallAPurposeMap = purposeService.findPurposeByHallNameMap(Hall.A);
-        Map<String, ExpHallShiftPurpose> hallBPurposeMap = purposeService.findPurposeByHallNameMap(Hall.B);
-        Map<String, ExpHallShiftPurpose> hallCPurposeMap = purposeService.findPurposeByHallNameMap(Hall.C);
-        Map<String, ExpHallShiftPurpose> hallDPurposeMap = purposeService.findPurposeByHallNameMap(Hall.D);
+        Map<String, ExpShiftPurpose> hallAPurposeMap = purposeService.findPurposeByHallNameMap(Hall.A);
+        Map<String, ExpShiftPurpose> hallBPurposeMap = purposeService.findPurposeByHallNameMap(Hall.B);
+        Map<String, ExpShiftPurpose> hallCPurposeMap = purposeService.findPurposeByHallNameMap(Hall.C);
+        Map<String, ExpShiftPurpose> hallDPurposeMap = purposeService.findPurposeByHallNameMap(Hall.D);
 
         if (hallAPurposeMap.get("OFF") == null) {
             throw new UserFriendlyException("Hall A must have a program named 'OFF', please update program list");
@@ -75,10 +75,10 @@ public class ExcelScheduleService {
             throw new UserFriendlyException("Hall D must have a program named 'OFF', please update program list");
         }
 
-        Integer hallAOffId = hallAPurposeMap.get("OFF").getExpHallShiftPurposeId().intValue();
-        Integer hallBOffId = hallBPurposeMap.get("OFF").getExpHallShiftPurposeId().intValue();
-        Integer hallCOffId = hallCPurposeMap.get("OFF").getExpHallShiftPurposeId().intValue();
-        Integer hallDOffId = hallDPurposeMap.get("OFF").getExpHallShiftPurposeId().intValue();
+        Integer hallAOffId = hallAPurposeMap.get("OFF").getExpShiftPurposeId().intValue();
+        Integer hallBOffId = hallBPurposeMap.get("OFF").getExpShiftPurposeId().intValue();
+        Integer hallCOffId = hallCPurposeMap.get("OFF").getExpShiftPurposeId().intValue();
+        Integer hallDOffId = hallDPurposeMap.get("OFF").getExpShiftPurposeId().intValue();
 
         for (Row row : sheet) {
 
@@ -327,7 +327,7 @@ public class ExcelScheduleService {
         return properties;
     }
 
-    private Integer parseHallProgram(Cell cell, Map<String, ExpHallShiftPurpose> purposeMap, Hall hall) throws UserFriendlyException {
+    private Integer parseHallProgram(Cell cell, Map<String, ExpShiftPurpose> purposeMap, Hall hall) throws UserFriendlyException {
         String purposeName = null;
         Integer programId = null;
 
@@ -336,13 +336,13 @@ public class ExcelScheduleService {
         }
 
         if (purposeName != null) {
-            ExpHallShiftPurpose hallProgram = purposeMap.get(purposeName);
+            ExpShiftPurpose hallProgram = purposeMap.get(purposeName);
 
             if (hallProgram == null) {
                 throw new UserFriendlyException("Could not find hall " + hall + " program: '" + purposeName + "', please update Program list");
             }
 
-            programId = hallProgram.getExpHallShiftPurposeId().intValue();
+            programId = hallProgram.getExpShiftPurposeId().intValue();
         }
 
         return programId;
@@ -350,7 +350,7 @@ public class ExcelScheduleService {
 
     @PermitAll
     public void export(OutputStream out, MonthlySchedule schedule,
-                       Map<Integer, ExpHallShiftPurpose> purposeMap) throws IOException {
+                       Map<Integer, ExpShiftPurpose> purposeMap) throws IOException {
         Workbook wb = new XSSFWorkbook();
         Sheet sheet1 = wb.createSheet("Schedule");
 
@@ -565,7 +565,7 @@ public class ExcelScheduleService {
         return micro * 1000.0;
     }
 
-    private String purposeName(ExpHallShiftPurpose purpose) {
+    private String purposeName(ExpShiftPurpose purpose) {
         String name = "";
 
         if (purpose != null) {

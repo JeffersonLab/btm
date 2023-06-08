@@ -1,6 +1,6 @@
 package org.jlab.btm.persistence.projection;
 
-import org.jlab.btm.persistence.entity.OpAccHour;
+import org.jlab.btm.persistence.entity.CcAccHour;
 
 import java.util.List;
 
@@ -8,58 +8,58 @@ import java.util.List;
  * @author ryans
  */
 public class AcceleratorShiftAvailability {
-    private OpAccShiftTotals shiftTotals;
-    private OpAccShiftTotals epicsShiftTotals;
-    private OpAccShiftTotals pdShiftTotals;
-    private List<OpAccHour> hourList;
-    private List<OpAccHour> epicsHourList;
-    private List<OpAccHour> dbHourList;
+    private CcAccShiftTotals shiftTotals;
+    private CcAccShiftTotals epicsShiftTotals;
+    private CcAccShiftTotals pdShiftTotals;
+    private List<CcAccHour> hourList;
+    private List<CcAccHour> epicsHourList;
+    private List<CcAccHour> dbHourList;
 
-    public OpAccShiftTotals getShiftTotals() {
+    public CcAccShiftTotals getShiftTotals() {
         return shiftTotals;
     }
 
-    public void setShiftTotals(OpAccShiftTotals shiftTotals) {
+    public void setShiftTotals(CcAccShiftTotals shiftTotals) {
         this.shiftTotals = shiftTotals;
     }
 
-    public OpAccShiftTotals getEpicsShiftTotals() {
+    public CcAccShiftTotals getEpicsShiftTotals() {
         return epicsShiftTotals;
     }
 
-    public void setEpicsShiftTotals(OpAccShiftTotals epicsShiftTotals) {
+    public void setEpicsShiftTotals(CcAccShiftTotals epicsShiftTotals) {
         this.epicsShiftTotals = epicsShiftTotals;
     }
 
-    public OpAccShiftTotals getPdShiftTotals() {
+    public CcAccShiftTotals getPdShiftTotals() {
         return pdShiftTotals;
     }
 
-    public void setPdShiftTotals(OpAccShiftTotals pdShiftTotals) {
+    public void setPdShiftTotals(CcAccShiftTotals pdShiftTotals) {
         this.pdShiftTotals = pdShiftTotals;
     }
 
-    public List<OpAccHour> getHourList() {
+    public List<CcAccHour> getHourList() {
         return hourList;
     }
 
-    public void setHourList(List<OpAccHour> hourList) {
+    public void setHourList(List<CcAccHour> hourList) {
         this.hourList = hourList;
     }
 
-    public List<OpAccHour> getEpicsHourList() {
+    public List<CcAccHour> getEpicsHourList() {
         return epicsHourList;
     }
 
-    public void setEpicsHourList(List<OpAccHour> epicsHourList) {
+    public void setEpicsHourList(List<CcAccHour> epicsHourList) {
         this.epicsHourList = epicsHourList;
     }
 
-    public List<OpAccHour> getDbHourList() {
+    public List<CcAccHour> getDbHourList() {
         return dbHourList;
     }
 
-    public void setDbHourList(List<OpAccHour> dbHourList) {
+    public void setDbHourList(List<CcAccHour> dbHourList) {
         this.dbHourList = dbHourList;
     }
 }

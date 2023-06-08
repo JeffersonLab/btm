@@ -1,14 +1,13 @@
 package org.jlab.btm.presentation.controller.reports;
 
-import org.jlab.btm.business.service.ExpHallHourService;
-import org.jlab.btm.business.service.OpMultiplicityHourService;
+import org.jlab.btm.business.service.ExpHourService;
+import org.jlab.btm.business.service.CcMultiplicityHourService;
 import org.jlab.btm.business.service.PdShiftPlanService;
 import org.jlab.btm.persistence.projection.MultiplicitySummaryTotals;
 import org.jlab.btm.persistence.projection.PhysicsSummaryTotals;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.btm.presentation.util.FilterSelectionMessage;
 import org.jlab.smoothness.business.util.TimeUtil;
-import org.jlab.smoothness.persistence.enumeration.Shift;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -34,10 +33,10 @@ import java.util.List;
 public class PhysicsSummary extends HttpServlet {
 
     @EJB
-    OpMultiplicityHourService multiplicityService;
+    CcMultiplicityHourService multiplicityService;
 
     @EJB
-    ExpHallHourService expHourService;
+    ExpHourService expHourService;
 
     @EJB
     PdShiftPlanService planService;

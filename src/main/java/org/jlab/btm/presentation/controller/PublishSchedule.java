@@ -1,10 +1,10 @@
 package org.jlab.btm.presentation.controller;
 
-import org.jlab.btm.business.service.ExpHallShiftPurposeService;
+import org.jlab.btm.business.service.ExpShiftPurposeService;
 import org.jlab.btm.business.service.MonthlyScheduleService;
 import org.jlab.btm.business.service.ScheduleArchiveService;
 import org.jlab.btm.business.service.ScheduleDayService;
-import org.jlab.btm.persistence.entity.ExpHallShiftPurpose;
+import org.jlab.btm.persistence.entity.ExpShiftPurpose;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
 import org.jlab.btm.persistence.entity.ScheduleDay;
 import org.jlab.btm.presentation.util.InternalHtmlRequestExecutor;
@@ -44,7 +44,7 @@ public class PublishSchedule extends HttpServlet {
     @EJB
     ScheduleArchiveService archiveService;
     @EJB
-    ExpHallShiftPurposeService purposeService;
+    ExpShiftPurposeService purposeService;
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -64,7 +64,7 @@ public class PublishSchedule extends HttpServlet {
             MonthlySchedule schedule = scheduleService.publish(scheduleId);
 
             try {
-                Map<Integer, ExpHallShiftPurpose> purposeMap = purposeService.findPurposeByIdMap();
+                Map<Integer, ExpShiftPurpose> purposeMap = purposeService.findPurposeByIdMap();
 
                 if (schedule != null) {
                     Date start = schedule.getStartDay();

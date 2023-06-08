@@ -1,8 +1,8 @@
 package org.jlab.btm.presentation.controller.rest;
 
-import org.jlab.btm.business.service.ExpHallShiftPurposeService;
+import org.jlab.btm.business.service.ExpShiftPurposeService;
 import org.jlab.btm.business.service.MonthlyScheduleService;
-import org.jlab.btm.persistence.entity.ExpHallShiftPurpose;
+import org.jlab.btm.persistence.entity.ExpShiftPurpose;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
 import org.jlab.btm.persistence.entity.ScheduleDay;
 import org.jlab.btm.presentation.util.BtmParamConverter;
@@ -39,10 +39,10 @@ public class ScheduleEndpoint {
         }
     }
 
-    private ExpHallShiftPurposeService lookupPurposeService() {
+    private ExpShiftPurposeService lookupPurposeService() {
         try {
             InitialContext ic = new InitialContext();
-            return (ExpHallShiftPurposeService) ic.lookup("java:global/btm/ExpHallShiftPurposeService");
+            return (ExpShiftPurposeService) ic.lookup("java:global/btm/ExpHallShiftPurposeService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
@@ -59,7 +59,7 @@ public class ScheduleEndpoint {
             public void write(OutputStream out) {
                 try (JsonGenerator gen = Json.createGenerator(out)) {
                     MonthlyScheduleService scheduleService = lookupScheduleService();
-                    ExpHallShiftPurposeService purposeService = lookupPurposeService();
+                    ExpShiftPurposeService purposeService = lookupPurposeService();
 
                     Date start;
                     Date end;
@@ -80,7 +80,7 @@ public class ScheduleEndpoint {
 
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-                    Map<Integer, ExpHallShiftPurpose> purposeMap = purposeService.findPurposeByIdMap();
+                    Map<Integer, ExpShiftPurpose> purposeMap = purposeService.findPurposeByIdMap();
 
                     gen.writeStartArray();
                     for (ScheduleDay day : scheduleDays) {
@@ -91,28 +91,28 @@ public class ScheduleEndpoint {
                         String hallDProgram = "OFF";
 
                         if(day.getHallAProgramId() != null) {
-                            ExpHallShiftPurpose purpose = purposeMap.get(day.getHallAProgramId());
+                            ExpShiftPurpose purpose = purposeMap.get(day.getHallAProgramId());
                             if(purpose != null) {
                                 hallAProgram = purpose.getName();
                             }
                         }
 
                         if(day.getHallBProgramId() != null) {
-                            ExpHallShiftPurpose purpose = purposeMap.get(day.getHallBProgramId());
+                            ExpShiftPurpose purpose = purposeMap.get(day.getHallBProgramId());
                             if(purpose != null) {
                                 hallBProgram = purpose.getName();
                             }
                         }
 
                         if(day.getHallCProgramId() != null) {
-                            ExpHallShiftPurpose purpose = purposeMap.get(day.getHallCProgramId());
+                            ExpShiftPurpose purpose = purposeMap.get(day.getHallCProgramId());
                             if(purpose != null) {
                                 hallCProgram = purpose.getName();
                             }
                         }
 
                         if(day.getHallDProgramId() != null) {
-                            ExpHallShiftPurpose purpose = purposeMap.get(day.getHallDProgramId());
+                            ExpShiftPurpose purpose = purposeMap.get(day.getHallDProgramId());
                             if(purpose != null) {
                                 hallDProgram = purpose.getName();
                             }

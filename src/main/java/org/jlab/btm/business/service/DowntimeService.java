@@ -1,6 +1,6 @@
 package org.jlab.btm.business.service;
 
-import org.jlab.btm.persistence.entity.OpAccHour;
+import org.jlab.btm.persistence.entity.CcAccHour;
 import org.jlab.btm.persistence.projection.DowntimeSummaryTotals;
 import org.jlab.smoothness.business.util.DateIterator;
 import org.jlab.smoothness.business.util.TimeUtil;
@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * @author ryans
  */
 @Stateless
-public class DowntimeService extends AbstractService<OpAccHour> {
+public class DowntimeService extends AbstractService<CcAccHour> {
 
     private final static Logger LOGGER = Logger.getLogger(DowntimeService.class.getName());
 
@@ -29,7 +29,7 @@ public class DowntimeService extends AbstractService<OpAccHour> {
     private EntityManager em;
 
     public DowntimeService() {
-        super(OpAccHour.class);
+        super(CcAccHour.class);
     }
 
     @Override

@@ -120,7 +120,7 @@
                             style="display: none;" type="text"
                             value="${btm:formatDuration(hour.sadSeconds, durationUnits)}"/></td>
                     <th></th>
-                    <th class="source-td"><c:out value="${hour.source}"/></th>
+                    <th class="source-td"><c:out value="${hour.source.label}"/></th>
                     <th>
                         <span title="Edit (Single Row)" class="ui-icon ui-icon-pencil"></span>
                         <span title="Save" class="ui-icon ui-icon-check"></span>

@@ -1,6 +1,6 @@
 package org.jlab.btm.presentation.controller.ajax;
 
-import org.jlab.btm.business.service.OpCrossCheckCommentService;
+import org.jlab.btm.business.service.CcCrossCheckCommentService;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.ExceptionUtil;
@@ -29,7 +29,7 @@ public class EditReviewerComment extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(EditReviewerComment.class.getName());
 
     @EJB
-    OpCrossCheckCommentService crossCheckCommentService;
+    CcCrossCheckCommentService crossCheckCommentService;
 
     /**
      * Handles the HTTP <code>POST</code> method.

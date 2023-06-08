@@ -1,10 +1,10 @@
 package org.jlab.btm.presentation.controller.rest;
 
-import org.jlab.btm.business.service.ExpHallHourService;
-import org.jlab.btm.business.service.OpAccHourService;
+import org.jlab.btm.business.service.ExpHourService;
+import org.jlab.btm.business.service.CcAccHourService;
 import org.jlab.btm.business.service.PdShiftPlanService;
 import org.jlab.btm.persistence.projection.BeamSummaryTotals;
-import org.jlab.btm.persistence.projection.ExpHallHourTotals;
+import org.jlab.btm.persistence.projection.ExpHourTotals;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.util.ObjectUtil;
 import org.jlab.smoothness.business.util.TimeUtil;
@@ -33,19 +33,19 @@ import java.util.Map;
 @Path("week-summary")
 public class WeekSummary {
 
-    private ExpHallHourService lookupHourService() {
+    private ExpHourService lookupHourService() {
         try {
             InitialContext ic = new InitialContext();
-            return (ExpHallHourService) ic.lookup("java:global/btm/ExpHallHourService");
+            return (ExpHourService) ic.lookup("java:global/btm/ExpHallHourService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
     }
 
-    private OpAccHourService lookupOpAccHourService() {
+    private CcAccHourService lookupOpAccHourService() {
         try {
             InitialContext ic = new InitialContext();
-            return (OpAccHourService) ic.lookup("java:global/btm/OpAccHourService");
+            return (CcAccHourService) ic.lookup("java:global/btm/OpAccHourService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
@@ -69,8 +69,8 @@ public class WeekSummary {
             @Override
             public void write(OutputStream out) {
                 try (JsonGenerator gen = Json.createGenerator(out)) {
-                    ExpHallHourService expHourService = lookupHourService();
-                    OpAccHourService opAccHourService = lookupOpAccHourService();
+                    ExpHourService expHourService = lookupHourService();
+                    CcAccHourService ccAccHourService = lookupOpAccHourService();
                     PdShiftPlanService pdShiftService = lookupPdShiftService();
 
                     Date ccStart;
@@ -99,10 +99,10 @@ public class WeekSummary {
 
                     Long[] accScheduledArray = pdShiftService.findAcceleratorScheduled(ccStart, ccEnd);
 
-                    List<ExpHallHourTotals> expHallHourTotals
+                    List<ExpHourTotals> expHourTotals
                             = expHourService.findExpHallHourTotals(ccStart, ccEnd);
 
-                    BeamSummaryTotals accTotals = opAccHourService.reportTotals(ccStart, ccEnd);
+                    BeamSummaryTotals accTotals = ccAccHourService.reportTotals(ccStart, ccEnd);
 
                     Map<Hall, Long> hallScheduledMap = new HashMap<>();
 
@@ -144,7 +144,7 @@ public class WeekSummary {
                             .write("plan-sad-seconds", ObjectUtil.coalesce(
                                     accScheduledMap.get("sad"), 0L));
                     gen.writeStartArray("halls");
-                    for (ExpHallHourTotals totals : expHallHourTotals) {
+                    for (ExpHourTotals totals : expHourTotals) {
 
                         gen.writeStartObject()
                                 .write("hall", totals.getHall().name().toLowerCase())

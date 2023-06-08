@@ -50,7 +50,7 @@
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
     <welcome-file-list>
-        <welcome-file>crew-chief-timesheet</welcome-file>
+        <welcome-file>timesheet</welcome-file>
     </welcome-file-list>
     <security-constraint>
         <display-name>Enforce Authenticated on SSO Redirect Page</display-name>

@@ -1,11 +1,10 @@
 package org.jlab.btm.presentation.controller.reports;
 
-import org.jlab.btm.business.service.ExpHallHourService;
+import org.jlab.btm.business.service.ExpHourService;
 import org.jlab.btm.business.service.PdShiftPlanService;
-import org.jlab.btm.persistence.projection.ExpHallHourTotals;
+import org.jlab.btm.persistence.projection.ExpHourTotals;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.util.TimeUtil;
-import org.jlab.smoothness.persistence.enumeration.Shift;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -31,7 +30,7 @@ import java.util.List;
 public class HallAvailability extends HttpServlet {
 
     @EJB
-    ExpHallHourService expHourService;
+    ExpHourService expHourService;
     @EJB
     PdShiftPlanService pdShiftService;
 
@@ -116,7 +115,7 @@ public class HallAvailability extends HttpServlet {
 
         Double period = null;
         String selectionMessage = null;
-        List<ExpHallHourTotals> totalsList = null;
+        List<ExpHourTotals> totalsList = null;
         List<Double> expUnknownList = new ArrayList<>();
         Long[] hallScheduledArray = null;
 
@@ -129,7 +128,7 @@ public class HallAvailability extends HttpServlet {
 
             totalsList = expHourService.findExpHallHourTotals(start, end);
 
-            for (ExpHallHourTotals totals : totalsList) {
+            for (ExpHourTotals totals : totalsList) {
                 Double unknown = period - (totals.getAbuSeconds() + totals.getBanuSeconds() + totals.getBnaSeconds() + totals.getAccSeconds() + totals.getOffSeconds()) / 3600;
                 expUnknownList.add(unknown);
             }

@@ -20,11 +20,8 @@
     </jsp:attribute>
     <jsp:attribute name="primaryNavigation">
                     <ul>
-                        <li${fn:startsWith(currentPath, '/crew-chief-timesheet') ? ' class="current-primary"' : ''}>
-                            <a href="${pageContext.request.contextPath}/crew-chief-timesheet">Crew Chief Timesheet</a>
-                        </li>
-                        <li${'/pd-shift-plan' eq currentPath ? ' class="current-primary"' : ''} style="display:none;">
-                            <a href="${pageContext.request.contextPath}/pd-shift-plan">PD Shift Plan</a>
+                        <li${fn:startsWith(currentPath, '/timesheet') ? ' class="current-primary"' : ''}>
+                            <a href="${pageContext.request.contextPath}/timesheet">Timesheets</a>
                         </li>
                         <li${fn:startsWith(currentPath, '/schedule') ? ' class="current-primary"' : ''}>
                             <a href="${pageContext.request.contextPath}/schedule">Schedule</a>

@@ -7,8 +7,8 @@
 <%@attribute name="hall" required="true" type="org.jlab.smoothness.persistence.enumeration.Hall" %>
 <%@attribute name="hourList" required="true" type="java.util.List" %>
 <%@attribute name="epicsHourList" required="true" type="java.util.List" %>
-<%@attribute name="totals" required="true" type="org.jlab.btm.persistence.projection.OpHallShiftTotals" %>
-<%@attribute name="epicsTotals" required="true" type="org.jlab.btm.persistence.projection.OpHallShiftTotals" %>
+<%@attribute name="totals" required="true" type="org.jlab.btm.persistence.projection.CcHallShiftTotals" %>
+<%@attribute name="epicsTotals" required="true" type="org.jlab.btm.persistence.projection.CcHallShiftTotals" %>
 <h3>Hall ${hall} Measured</h3>
 <div>
     <c:choose>
@@ -110,7 +110,7 @@
                             style="display: none;" type="text"
                             value="${btm:formatDuration(hour.offSeconds, durationUnits)}"/></td>
                     <th></th>
-                    <th class="source-td"><c:out value="${hour.source}"/></th>
+                    <th class="source-td"><c:out value="${hour.source.label}"/></th>
                     <th>
                         <span title="Edit (Single Row)" class="ui-icon ui-icon-pencil"></span>
                         <span title="Save" class="ui-icon ui-icon-check"></span>

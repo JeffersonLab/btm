@@ -1,6 +1,7 @@
 package org.jlab.btm.presentation.util;
 
 import org.jlab.btm.persistence.enumeration.DurationUnits;
+import org.jlab.btm.persistence.enumeration.TimesheetType;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 import org.jlab.smoothness.persistence.enumeration.Shift;
 
@@ -242,6 +243,28 @@ public final class BtmParamConverter {
 
         if (valueStr != null && !valueStr.isEmpty()) {
             value = Hall.valueOf(valueStr.toUpperCase());
+        }
+
+        return value;
+    }
+
+    public static TimesheetType convertTimesheetType(HttpServletRequest request, String name) {
+        String valueStr = request.getParameter(name);
+        TimesheetType value = null;
+
+        if(valueStr != null) {
+            value = TimesheetType.valueOf(valueStr.toUpperCase());
+        }
+
+        return value;
+    }
+
+    public static Short convertShort(HttpServletRequest request, String name) {
+        String valueStr = request.getParameter(name);
+        Short value = null;
+
+        if (valueStr != null && !valueStr.isEmpty()) {
+            value = Short.valueOf(valueStr);
         }
 
         return value;

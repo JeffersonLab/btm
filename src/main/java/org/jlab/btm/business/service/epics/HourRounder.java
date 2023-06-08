@@ -1,8 +1,10 @@
 package org.jlab.btm.business.service.epics;
 
-import org.jlab.btm.persistence.entity.OpAccHour;
-import org.jlab.btm.persistence.entity.OpHallHour;
-import org.jlab.btm.persistence.entity.OpMultiplicityHour;
+import org.jlab.btm.persistence.entity.ExpHour;
+import org.jlab.btm.persistence.entity.CcAccHour;
+import org.jlab.btm.persistence.entity.CcHallHour;
+import org.jlab.btm.persistence.entity.CcMultiplicityHour;
+import org.jlab.btm.persistence.projection.Hour;
 
 import java.util.List;
 
@@ -26,12 +28,87 @@ public class HourRounder {
     public static final int SECONDS_PER_HUNDRETH_OF_HOUR = 36;
 
     /**
+     * Round a list of experimenter hall hour time accounting.
+     *
+     * @param hours the list of hours.
+     */
+    public void roundExpHourList(List<ExpHour> hours) {
+        for(ExpHour hour: hours) {
+            roundExpHour(hour);
+        }
+    }
+
+    /**
+     * Round an experimenter hall hour time accounting (both experimenter and
+     * accelerator statuses) to a whole hour.
+     *
+     * The status 'off' is a shared status of both experimenter and accelerator
+     * statuses so rounding to correct one set of statuses could affect the
+     * other set.  Therefore 'off' is simply truncated to range and then not
+     * further modified during rounding of each mutually exclusive set.
+     *
+     * @param hour the experimenter hall hour.
+     */
+    public void roundExpHour(ExpHour hour) {
+        //Make sure shared status Off is within range 0 - 3600
+        short[] statuses = new short[1];
+        statuses[0] = hour.getOffSeconds();
+        truncateToRange(statuses);
+        hour.setOffSeconds(statuses[0]);
+
+        roundAcceleratorSet(hour);
+        roundExperimenterSet(hour);
+    }
+
+    /**
+     * Rounds only the accelerator mutual exclusive set of statuses for an
+     * hour.
+     *
+     * @param hour the experimenter hall hour.
+     */
+    public void roundAcceleratorSet(ExpHour hour) {
+        // Won't modify off since it is a shared status
+        short[] statuses = new short[4];
+        statuses[0] = hour.getAbuSeconds();
+        statuses[1] = hour.getBanuSeconds();
+        statuses[2] = hour.getBnaSeconds();
+        statuses[3] = hour.getAccSeconds();
+
+        roundMutuallyExclusiveWithOff(statuses, hour.getOffSeconds());
+
+        hour.setAbuSeconds(statuses[0]);
+        hour.setBanuSeconds(statuses[1]);
+        hour.setBnaSeconds(statuses[2]);
+        hour.setAccSeconds(statuses[3]);
+    }
+
+    /**
+     * Rounds only the experimenter mutual exclusive set of statuses for an
+     * hour.
+     *
+     * @param hour the experimenter hall hour.
+     */
+    public void roundExperimenterSet(ExpHour hour) {
+        // Won't modify off since it is a shared status
+        short[] statuses = new short[3];
+        statuses[0] = hour.getErSeconds();
+        statuses[1] = hour.getPccSeconds();
+        statuses[2] = hour.getUedSeconds();
+
+        roundMutuallyExclusiveWithOff(statuses, hour.getOffSeconds());
+
+        hour.setErSeconds(statuses[0]);
+        hour.setPccSeconds(statuses[1]);
+        hour.setUedSeconds(statuses[2]);
+    }
+
+    /**
      * Round a list of accelerator hour time accounting.
      *
      * @param hours the list of hours.
      */
-    public void roundAcceleratorHourList(List<OpAccHour> hours) {
-        for (OpAccHour hour : hours) {
+    public void roundAcceleratorHourList(List<CcAccHour> hours) {
+        for (CcAccHour hour : hours) {
             roundAcceleratorHour(hour);
         }
     }
@@ -41,19 +118,19 @@ public class HourRounder {
      *
      * @param hours the list of hours.
      */
-    public void roundHallHourList(List<OpHallHour> hours) {
-        for (OpHallHour hour : hours) {
+    public void roundHallHourList(List<CcHallHour> hours) {
+        for (CcHallHour hour : hours) {
             roundHallHour(hour);
         }
     }
 
-    public void roundMultiplicityHourList(List<OpMultiplicityHour> multiHours, List<List<OpHallHour>> hallHoursList) {
+    public void roundMultiplicityHourList(List<CcMultiplicityHour> multiHours, List<List<CcHallHour>> hallHoursList) {
         for (int i = 0; i < multiHours.size(); i++) {
-            OpMultiplicityHour multiHour = multiHours.get(i);
-            OpHallHour hallAHour = hallHoursList.get(0).get(i);
-            OpHallHour hallBHour = hallHoursList.get(1).get(i);
-            OpHallHour hallCHour = hallHoursList.get(2).get(i);
-            OpHallHour hallDHour = hallHoursList.get(3).get(i);
+            CcMultiplicityHour multiHour = multiHours.get(i);
+            CcHallHour hallAHour = hallHoursList.get(0).get(i);
+            CcHallHour hallBHour = hallHoursList.get(1).get(i);
+            CcHallHour hallCHour = hallHoursList.get(2).get(i);
+            CcHallHour hallDHour = hallHoursList.get(3).get(i);
             short maxUp = (short) Math.max(Math.max(hallAHour.getUpSeconds(), hallBHour.getUpSeconds()), Math.max(hallCHour.getUpSeconds(), hallDHour.getUpSeconds()));
             roundMultiplicityHour(multiHour, maxUp);
         }
@@ -124,6 +201,28 @@ public class HourRounder {
 
                 skipped++;
             }
+        }
+    }
+
+
+    /**
+     * Truncates status seconds in a mutually exclusive set to fit in
+     * the allowable range (0 - 3600 seconds), then distributes left-overs /
+     * removes extras evenly as long as the difference is not more than the
+     * threshold.  The status off is shared between experimenter and
+     * accelerator sets so must be specified independently.
+     *
+     * @param statuses The time accounting statuses in seconds.
+     * @param off The amount of seconds of shared status 'off'.
+     */
+    protected void roundMutuallyExclusiveWithOff(short[] statuses, short off) {
+        truncateToRange(statuses);
+
+        int total = sum(statuses) + off;
+        int difference = Hour.SECONDS_PER_HOUR - total;
+
+        if(difference != 0 && Math.abs(difference) <= ROUND_THRESHOLD) {
+            distributeEvenly(statuses, difference);
         }
     }
 
@@ -232,7 +331,7 @@ public class HourRounder {
      *
      * @param hour the experimenter hall hour.
      */
-    public void roundAcceleratorHour(OpAccHour hour) {
+    public void roundAcceleratorHour(CcAccHour hour) {
         // Won't modify off since it is a shared status
         short[] statuses = new short[6];
         statuses[0] = hour.getUpSeconds();
@@ -264,7 +363,7 @@ public class HourRounder {
      *
      * @param hour the experimenter hall hour.
      */
-    public void roundHallHour(OpHallHour hour) {
+    public void roundHallHour(CcHallHour hour) {
         // Won't modify off since it is a shared status
         short[] statuses = new short[5];
         statuses[0] = hour.getUpSeconds();
@@ -291,7 +390,7 @@ public class HourRounder {
      *
      * @param hour
      */
-    private void roundMultiplicityHour(OpMultiplicityHour hour, short maxUp) {
+    private void roundMultiplicityHour(CcMultiplicityHour hour, short maxUp) {
         /*System.out.println("maxUp: " + maxUp);*/
 
         hour.setOneHallUpSeconds(truncateToHourAndToNearest100thOfAnHour(hour.getOneHallUpSeconds()));

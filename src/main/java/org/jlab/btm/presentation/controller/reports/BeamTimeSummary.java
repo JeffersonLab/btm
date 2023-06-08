@@ -1,11 +1,10 @@
 package org.jlab.btm.presentation.controller.reports;
 
-import org.jlab.btm.business.service.OpAccHourService;
+import org.jlab.btm.business.service.CcAccHourService;
 import org.jlab.btm.business.service.PdShiftPlanService;
 import org.jlab.btm.persistence.projection.BeamSummaryTotals;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.util.TimeUtil;
-import org.jlab.smoothness.persistence.enumeration.Shift;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -29,7 +28,7 @@ import java.util.Date;
 public class BeamTimeSummary extends HttpServlet {
 
     @EJB
-    OpAccHourService accHourService;
+    CcAccHourService accHourService;
     @EJB
     PdShiftPlanService pdShiftService;
 
