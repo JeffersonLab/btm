@@ -49,7 +49,7 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
     public List<ExpHourReasonTime> find(Hall hall, Date startDayAndHour,
                                         Date endDayAndHour) {
         TypedQuery<ExpHourReasonTime> q = em.createNamedQuery(
-                "ExpHallHourReasonTime.findByHallAndHourRange", ExpHourReasonTime.class);
+                "ExpHourReasonTime.findByHallAndHourRange", ExpHourReasonTime.class);
 
         Calendar start = Calendar.getInstance();
         Calendar end = Calendar.getInstance();
@@ -70,7 +70,7 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
         if(availabilityList != null) {
             for(ExpHour hour: availabilityList) {
                 int uedSeconds = hour.getUedSeconds();
-                int explanationSeconds = calculateExplanationSeconds(hour.getExpHallHourId(), explanationList);
+                int explanationSeconds = calculateExplanationSeconds(hour.getExpHourId(), explanationList);
 
                 if(uedSeconds != explanationSeconds) {
                     discrepancies.add(explanationSeconds + " seconds of UED explanation for Hour " + hour.getDayAndHour() + " and expected " + uedSeconds);
@@ -86,7 +86,7 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
 
         if(explanationList != null) {
             for(ExpHourReasonTime explanation: explanationList) {
-                if(hourId.equals(explanation.getExpHallHour().getExpHallHourId())) {
+                if(hourId.equals(explanation.getExpHallHour().getExpHourId())) {
                     total = total + explanation.getSeconds();
                 }
             }

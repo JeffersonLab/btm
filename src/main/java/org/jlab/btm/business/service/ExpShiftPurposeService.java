@@ -129,7 +129,7 @@ public class ExpShiftPurposeService extends AbstractService<ExpShiftPurpose> {
     @PermitAll
     public boolean isInUse(BigInteger programId) {
         TypedQuery<Long> q = em.createQuery(
-                "select count(a.hall) from ExpShift a where a.expHallShiftPurpose.expHallShiftPurposeId = :id",
+                "select count(a.hall) from ExpShift a where a.expShiftPurpose.expShiftPurposeId = :id",
                 Long.class);
 
         q.setParameter("id", programId);
@@ -178,7 +178,7 @@ public class ExpShiftPurposeService extends AbstractService<ExpShiftPurpose> {
         List<ExpShiftPurpose> purposeList = findAll();
 
         for (ExpShiftPurpose purpose : purposeList) {
-            purposeMap.put(purpose.getExpHallShiftPurposeId().intValue(), purpose);
+            purposeMap.put(purpose.getExpShiftPurposeId().intValue(), purpose);
         }
 
         return purposeMap;

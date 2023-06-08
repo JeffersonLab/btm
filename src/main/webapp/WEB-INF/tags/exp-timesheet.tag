@@ -37,16 +37,16 @@
             <div class="li-key"><span>Program:</span></div>
             <div class="li-value">
                 <span id="program-span"><c:out value="${shiftInfo.expShiftPurpose.name}"/></span>
-                <select class="input" id="program" style="display: none;" data-purpose-id="${shiftInfo.expShiftPurpose.expHallShiftPurposeId}">
+                <select class="input" id="program" style="display: none;" data-purpose-id="${shiftInfo.expShiftPurpose.expShiftPurposeId}">
                     <option></option>
                     <optgroup label="General">
                         <c:forEach items="${nonexperimentList}" var="purpose">
-                            <option value="${purpose.expHallShiftPurposeId}"${purpose.expHallShiftPurposeId eq shiftInfo.expShiftPurpose.expHallShiftPurposeId ? ' selected="selected"' : ''}>${purpose.name}</option>
+                            <option value="${purpose.expShiftPurposeId}"${purpose.expShiftPurposeId eq shiftInfo.expShiftPurpose.expShiftPurposeId ? ' selected="selected"' : ''}>${purpose.name}</option>
                         </c:forEach>
                     </optgroup>
                     <optgroup label="Experiments">
                         <c:forEach items="${experimentList}" var="purpose">
-                            <option value="${purpose.expHallShiftPurposeId}"${purpose.expHallShiftPurposeId eq shiftInfo.expShiftPurpose.expHallShiftPurposeId ? ' selected="selected"' : ''}>${purpose.name}${purpose.alias eq null ? '' : ' ('.concat(purpose.alias).concat(')')}</option>
+                            <option value="${purpose.expShiftPurposeId}"${purpose.expShiftPurposeId eq shiftInfo.expShiftPurpose.expShiftPurposeId ? ' selected="selected"' : ''}>${purpose.name}${purpose.alias eq null ? '' : ' ('.concat(purpose.alias).concat(')')}</option>
                         </c:forEach>
                     </optgroup>
                 </select>

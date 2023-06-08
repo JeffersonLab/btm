@@ -204,7 +204,7 @@
                         <select>
                             <option> </option>
                             <c:forEach items="${hallAPurposeList}" var="purpose">
-                                <option value="${purpose.expHallShiftPurposeId}"><c:out value="${purpose.name}"/><c:out
+                                <option value="${purpose.expShiftPurposeId}"><c:out value="${purpose.name}"/><c:out
                                         value="${(purpose.alias ne null) ? ' ('.concat(purpose.alias).concat(')') : ''}"/></option>
                             </c:forEach>
                         </select>
@@ -215,7 +215,7 @@
                         <select>
                             <option> </option>
                             <c:forEach items="${hallBPurposeList}" var="purpose">
-                                <option value="${purpose.expHallShiftPurposeId}"><c:out value="${purpose.name}"/><c:out
+                                <option value="${purpose.expShiftPurposeId}"><c:out value="${purpose.name}"/><c:out
                                         value="${(purpose.alias ne null) ? ' ('.concat(purpose.alias).concat(')') : ''}"/></option>
                             </c:forEach>
                         </select>
@@ -226,7 +226,7 @@
                         <select>
                             <option> </option>
                             <c:forEach items="${hallCPurposeList}" var="purpose">
-                                <option value="${purpose.expHallShiftPurposeId}"><c:out value="${purpose.name}"/><c:out
+                                <option value="${purpose.expShiftPurposeId}"><c:out value="${purpose.name}"/><c:out
                                         value="${(purpose.alias ne null) ? ' ('.concat(purpose.alias).concat(')') : ''}"/></option>
                             </c:forEach>
                         </select>
@@ -237,7 +237,7 @@
                         <select>
                             <option> </option>
                             <c:forEach items="${hallDPurposeList}" var="purpose">
-                                <option value="${purpose.expHallShiftPurposeId}"><c:out value="${purpose.name}"/><c:out
+                                <option value="${purpose.expShiftPurposeId}"><c:out value="${purpose.name}"/><c:out
                                         value="${(purpose.alias ne null) ? ' ('.concat(purpose.alias).concat(')') : ''}"/></option>
                             </c:forEach>
                         </select>

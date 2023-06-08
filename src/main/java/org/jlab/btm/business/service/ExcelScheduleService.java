@@ -75,10 +75,10 @@ public class ExcelScheduleService {
             throw new UserFriendlyException("Hall D must have a program named 'OFF', please update program list");
         }
 
-        Integer hallAOffId = hallAPurposeMap.get("OFF").getExpHallShiftPurposeId().intValue();
-        Integer hallBOffId = hallBPurposeMap.get("OFF").getExpHallShiftPurposeId().intValue();
-        Integer hallCOffId = hallCPurposeMap.get("OFF").getExpHallShiftPurposeId().intValue();
-        Integer hallDOffId = hallDPurposeMap.get("OFF").getExpHallShiftPurposeId().intValue();
+        Integer hallAOffId = hallAPurposeMap.get("OFF").getExpShiftPurposeId().intValue();
+        Integer hallBOffId = hallBPurposeMap.get("OFF").getExpShiftPurposeId().intValue();
+        Integer hallCOffId = hallCPurposeMap.get("OFF").getExpShiftPurposeId().intValue();
+        Integer hallDOffId = hallDPurposeMap.get("OFF").getExpShiftPurposeId().intValue();
 
         for (Row row : sheet) {
 
@@ -342,7 +342,7 @@ public class ExcelScheduleService {
                 throw new UserFriendlyException("Could not find hall " + hall + " program: '" + purposeName + "', please update Program list");
             }
 
-            programId = hallProgram.getExpHallShiftPurposeId().intValue();
+            programId = hallProgram.getExpShiftPurposeId().intValue();
         }
 
         return programId;

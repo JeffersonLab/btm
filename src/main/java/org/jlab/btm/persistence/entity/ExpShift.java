@@ -18,16 +18,16 @@ import java.util.Date;
 @Table(name = "EXP_SHIFT", schema = "BTM_OWNER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"HALL", "START_DAY_AND_HOUR"})})
 @NamedQueries({
-        @NamedQuery(name = "ExpHallShift.findByExpHallShiftId", query = "SELECT e FROM ExpShift e WHERE e.expHallShiftId = :expHallShiftId"),
-        @NamedQuery(name = "ExpHallShift.findByHallAndStartDayAndHour", query = "SELECT e FROM ExpShift e WHERE e.expShiftPurpose.hall = :hall AND e.startDayAndHour = :startDayAndHour")})
+        @NamedQuery(name = "ExpShift.findByExpShiftId", query = "SELECT e FROM ExpShift e WHERE e.expShiftId = :expShiftId"),
+        @NamedQuery(name = "ExpShift.findByHallAndStartDayAndHour", query = "SELECT e FROM ExpShift e WHERE e.expShiftPurpose.hall = :hall AND e.startDayAndHour = :startDayAndHour")})
 public class ExpShift implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "ExpHallShiftId", sequenceName = "EXP_SHIFT_ID", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ExpHallShiftId")
+    @SequenceGenerator(name = "ExpShiftId", sequenceName = "EXP_SHIFT_ID", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ExpShiftId")
     @Basic(optional = false)
     @Column(name = "EXP_SHIFT_ID", nullable = false, precision = 38, scale = 0)
-    private BigInteger expHallShiftId;
+    private BigInteger expShiftId;
     @Basic(optional = false)
     @Column(name = "HALL", nullable = false, length = 1, columnDefinition = "char(1)")
     @Enumerated(EnumType.STRING)
@@ -55,17 +55,8 @@ public class ExpShift implements Serializable {
     public ExpShift() {
     }
 
-    public ExpShift(BigInteger expHallShiftId) {
-        this.expHallShiftId = expHallShiftId;
-    }
-
-    public ExpShift(BigInteger expHallShiftId, Date startDayAndHour) {
-        this.expHallShiftId = expHallShiftId;
-        this.startDayAndHour = startDayAndHour;
-    }
-
-    public BigInteger getExpHallShiftId() {
-        return expHallShiftId;
+    public BigInteger getExpShiftId() {
+        return expShiftId;
     }
 
     public Date getStartDayAndHour() {
@@ -76,8 +67,8 @@ public class ExpShift implements Serializable {
         this.startDayAndHour = startDayAndHour;
     }
 
-    public void setExpHallShiftId(BigInteger expHallShiftId) {
-        this.expHallShiftId = expHallShiftId;
+    public void setExpShiftId(BigInteger expShiftId) {
+        this.expShiftId = expShiftId;
     }
 
     public Hall getHall() {
@@ -88,11 +79,11 @@ public class ExpShift implements Serializable {
         this.hall = hall;
     }
 
-    public ExpShiftPurpose getExpHallShiftPurpose() {
+    public ExpShiftPurpose getExpShiftPurpose() {
         return expShiftPurpose;
     }
 
-    public void setExpHallShiftPurpose(ExpShiftPurpose expShiftPurpose) {
+    public void setExpShiftPurpose(ExpShiftPurpose expShiftPurpose) {
         this.expShiftPurpose = expShiftPurpose;
     }
 
@@ -123,7 +114,7 @@ public class ExpShift implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (expHallShiftId != null ? expHallShiftId.hashCode() : 0);
+        hash += (expShiftId != null ? expShiftId.hashCode() : 0);
         return hash;
     }
 
@@ -134,11 +125,11 @@ public class ExpShift implements Serializable {
             return false;
         }
         ExpShift other = (ExpShift) object;
-        return (this.expHallShiftId != null || other.expHallShiftId == null) && (this.expHallShiftId == null || this.expHallShiftId.equals(other.expHallShiftId));
+        return (this.expShiftId != null || other.expShiftId == null) && (this.expShiftId == null || this.expShiftId.equals(other.expShiftId));
     }
 
     @Override
     public String toString() {
-        return "org.jlab.bta.entity.ExpHallShift[expHallShiftId=" + expHallShiftId + "]";
+        return "org.jlab.bta.entity.ExpShift[expHallShiftId=" + expShiftId + "]";
     }
 }

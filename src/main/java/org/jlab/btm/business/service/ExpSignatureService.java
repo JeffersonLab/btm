@@ -45,7 +45,7 @@ public class ExpSignatureService extends AbstractService<ExpSignature> {
 
     @PermitAll
     public List<ExpSignature> find(Hall hall, Date startDayAndHour) {
-        TypedQuery<ExpSignature> q = em.createNamedQuery("ExpHallSignature.findByHallStartDayAndHour", ExpSignature.class);
+        TypedQuery<ExpSignature> q = em.createNamedQuery("ExpSignature.findByHallStartDayAndHour", ExpSignature.class);
 
         q.setParameter("hall", hall);
         q.setParameter("startDayAndHour", startDayAndHour);

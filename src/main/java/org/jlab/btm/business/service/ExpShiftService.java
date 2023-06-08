@@ -56,7 +56,7 @@ public class ExpShiftService extends AbstractService<ExpShift> {
 
         if (shiftList != null) {
             for (ExpShift shift : shiftList) {
-                shift.getExpHallShiftPurpose().getName();
+                shift.getExpShiftPurpose().getName();
             }
         }
 
@@ -65,7 +65,7 @@ public class ExpShiftService extends AbstractService<ExpShift> {
 
     @PermitAll
     public ExpShift find(Hall hall, Date startDayAndHour) {
-        TypedQuery<ExpShift> q = em.createNamedQuery("ExpHallShift.findByHallAndStartDayAndHour", ExpShift.class);
+        TypedQuery<ExpShift> q = em.createNamedQuery("ExpShift.findByHallAndStartDayAndHour", ExpShift.class);
 
         q.setParameter("hall", hall);
         q.setParameter("startDayAndHour", startDayAndHour);
@@ -123,7 +123,7 @@ public class ExpShiftService extends AbstractService<ExpShift> {
 
         shift.setLeader(leader);
         shift.setWorkers(workers);
-        shift.setExpHallShiftPurpose(purpose);
+        shift.setExpShiftPurpose(purpose);
         shift.setRemark(comments);
 
         super.edit(shift);

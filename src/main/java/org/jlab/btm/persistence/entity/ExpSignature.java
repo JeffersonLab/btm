@@ -18,17 +18,17 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
 @Table(name = "EXP_SIGNATURE", schema = "BTM_OWNER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"HALL", "START_DAY_AND_HOUR", "SIGNED_BY"})})
 @NamedQueries({
-        @NamedQuery(name = "ExpHallSignature.findByExpHallSignatureId", query = "SELECT e FROM ExpSignature e WHERE e.expHallSignatureId = :expHallSignatureId"),
-        @NamedQuery(name = "ExpHallSignature.findByHallStartDayAndHourSignedBy", query = "SELECT e FROM ExpSignature e WHERE e.hall = :hall AND e.startDayAndHour = :startDayAndHour AND e.signedBy = :signedBy"),
-        @NamedQuery(name = "ExpHallSignature.findByHallStartDayAndHour", query = "SELECT e FROM ExpSignature e WHERE e.hall = :hall AND e.startDayAndHour = :startDayAndHour ORDER BY e.signedDate DESC")})
+        @NamedQuery(name = "ExpSignature.findByExpSignatureId", query = "SELECT e FROM ExpSignature e WHERE e.expSignatureId = :expHallSignatureId"),
+        @NamedQuery(name = "ExpSignature.findByHallStartDayAndHourSignedBy", query = "SELECT e FROM ExpSignature e WHERE e.hall = :hall AND e.startDayAndHour = :startDayAndHour AND e.signedBy = :signedBy"),
+        @NamedQuery(name = "ExpSignature.findByHallStartDayAndHour", query = "SELECT e FROM ExpSignature e WHERE e.hall = :hall AND e.startDayAndHour = :startDayAndHour ORDER BY e.signedDate DESC")})
 public class ExpSignature implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="ExpHallSignatureId", sequenceName="EXP_SIGNATURE_ID", allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ExpHallSignatureId")
+    @SequenceGenerator(name="ExpSignatureId", sequenceName="EXP_SIGNATURE_ID", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ExpSignatureId")
     @Basic(optional = false)
     @Column(name = "EXP_SIGNATURE_ID", nullable = false, precision = 38, scale = 0)
-    private BigInteger expHallSignatureId;
+    private BigInteger expSignatureId;
     @Basic(optional = false)
     @Column(name = "HALL", nullable = false, length = 1, columnDefinition = "char(1)")
     @Enumerated(EnumType.STRING)
@@ -53,17 +53,14 @@ public class ExpSignature implements Serializable {
     public ExpSignature() {
     }
 
-    public ExpSignature(BigInteger expHallSignatureId) {
-        this.expHallSignatureId = expHallSignatureId;
+    public ExpSignature(BigInteger expSignatureId) {
+        this.expSignatureId = expSignatureId;
     }
 
-    public BigInteger getExpHallSignatureId() {
-        return expHallSignatureId;
+    public BigInteger getExpSignatureId() {
+        return expSignatureId;
     }
 
-    public void setExpHallShiftId(BigInteger expHallSignatureId) {
-        this.expHallSignatureId = expHallSignatureId;
-    }
 
     public Hall getHall() {
         return hall;
@@ -108,7 +105,7 @@ public class ExpSignature implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (expHallSignatureId != null ? expHallSignatureId.hashCode() : 0);
+        hash += (expSignatureId != null ? expSignatureId.hashCode() : 0);
         return hash;
     }
 
@@ -119,7 +116,7 @@ public class ExpSignature implements Serializable {
             return false;
         }
         ExpSignature other = (ExpSignature) object;
-        if ((this.expHallSignatureId == null && other.expHallSignatureId != null) || (this.expHallSignatureId != null && !this.expHallSignatureId.equals(other.expHallSignatureId))) {
+        if ((this.expSignatureId == null && other.expSignatureId != null) || (this.expSignatureId != null && !this.expSignatureId.equals(other.expSignatureId))) {
             return false;
         }
         return true;
@@ -127,6 +124,6 @@ public class ExpSignature implements Serializable {
 
     @Override
     public String toString() {
-        return "org.jlab.btm.entity.ExpHallSignature[expHallSignatureId=" + expHallSignatureId + "]";
+        return "org.jlab.btm.entity.ExpSignature[expSignatureId=" + expSignatureId + "]";
     }
 }

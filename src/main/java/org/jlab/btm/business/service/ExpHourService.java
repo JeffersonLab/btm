@@ -256,7 +256,7 @@ public class ExpHourService extends AbstractService<ExpHour> {
     @PermitAll
     public List<ExpHour> findInDatabase(Hall hall, Date startDayAndHour,
                                         Date endDayAndHour) {
-        TypedQuery<ExpHour> q = em.createNamedQuery("ExpHallHour.findByHallAndHourRange", ExpHour.class);
+        TypedQuery<ExpHour> q = em.createNamedQuery("ExpHour.findByHallAndHourRange", ExpHour.class);
 
         Calendar start = Calendar.getInstance();
         Calendar end = Calendar.getInstance();
@@ -398,7 +398,7 @@ public class ExpHourService extends AbstractService<ExpHour> {
 
     @Override
     protected void edit(ExpHour hour) {
-        if (hour.getExpHallHourId() == null) {
+        if (hour.getExpHourId() == null) {
             this.manualInsert(hour);
         } else {
             super.edit(hour);

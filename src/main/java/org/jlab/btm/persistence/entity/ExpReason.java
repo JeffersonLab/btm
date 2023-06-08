@@ -30,17 +30,17 @@ import javax.validation.constraints.Size;
         @UniqueConstraint(columnNames = {"HALL", "NAME"}),
         @UniqueConstraint(columnNames = {"HALL", "EXP_REASON_ID"})})
 @NamedQueries({
-        @NamedQuery(name = "ExpHallReason.findByExpHallReasonId", query = "SELECT e FROM ExpReason e WHERE e.expHallReasonId = :expHallReasonId"),
-        @NamedQuery(name = "ExpHallReason.findByHallAndName", query = "SELECT e FROM ExpReason e WHERE e.hall = :hall AND e.name = :name"),
-        @NamedQuery(name = "ExpHallReason.findByHallAndActive", query = "SELECT e FROM ExpReason e WHERE e.hall = :hall AND e.active = :active")})
+        @NamedQuery(name = "ExpReason.findByExpHallReasonId", query = "SELECT e FROM ExpReason e WHERE e.expReasonId = :expReasonId"),
+        @NamedQuery(name = "ExpReason.findByHallAndName", query = "SELECT e FROM ExpReason e WHERE e.hall = :hall AND e.name = :name"),
+        @NamedQuery(name = "ExpReason.findByHallAndActive", query = "SELECT e FROM ExpReason e WHERE e.hall = :hall AND e.active = :active")})
 public class ExpReason implements Comparable<ExpReason>, Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="ExpHallReasonId", sequenceName="EXP_REASON_ID", allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ExpHallReasonId")
+    @SequenceGenerator(name="ExpReasonId", sequenceName="EXP_REASON_ID", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ExpReasonId")
     @Basic(optional = false)
     @Column(name = "EXP_REASON_ID", nullable = false, precision = 38, scale = 0)
-    private BigInteger expHallReasonId;
+    private BigInteger expReasonId;
     @Basic(optional = false)
     @Column(name = "HALL", nullable = false, length = 1, columnDefinition = "char(1)")
     @Enumerated(EnumType.STRING)
@@ -59,23 +59,23 @@ public class ExpReason implements Comparable<ExpReason>, Serializable {
     public ExpReason() {
     }
 
-    public ExpReason(BigInteger expHallReasonId) {
-        this.expHallReasonId = expHallReasonId;
+    public ExpReason(BigInteger expReasonId) {
+        this.expReasonId = expReasonId;
     }
 
-    public ExpReason(BigInteger expHallReasonId, Hall hall, String name, boolean active) {
-        this.expHallReasonId = expHallReasonId;
+    public ExpReason(BigInteger expReasonId, Hall hall, String name, boolean active) {
+        this.expReasonId = expReasonId;
         this.hall = hall;
         this.name = name;
         this.active = active;
     }
 
-    public BigInteger getExpHallReasonId() {
-        return expHallReasonId;
+    public BigInteger getExpReasonId() {
+        return expReasonId;
     }
 
-    public void setExpHallReasonId(BigInteger expHallReasonId) {
-        this.expHallReasonId = expHallReasonId;
+    public void setExpReasonId(BigInteger expReasonId) {
+        this.expReasonId = expReasonId;
     }
 
     public Hall getHall() {
@@ -105,7 +105,7 @@ public class ExpReason implements Comparable<ExpReason>, Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (expHallReasonId != null ? expHallReasonId.hashCode() : 0);
+        hash += (expReasonId != null ? expReasonId.hashCode() : 0);
         return hash;
     }
 
@@ -116,7 +116,7 @@ public class ExpReason implements Comparable<ExpReason>, Serializable {
             return false;
         }
         ExpReason other = (ExpReason) object;
-        if ((this.expHallReasonId == null && other.expHallReasonId != null) || (this.expHallReasonId != null && !this.expHallReasonId.equals(other.expHallReasonId))) {
+        if ((this.expReasonId == null && other.expReasonId != null) || (this.expReasonId != null && !this.expReasonId.equals(other.expReasonId))) {
             return false;
         }
         return true;
@@ -135,6 +135,6 @@ public class ExpReason implements Comparable<ExpReason>, Serializable {
 
     @Override
     public String toString() {
-        return "org.jlab.btm.entity.ExpHallReason[expHallReasonId=" + expHallReasonId + "]";
+        return "org.jlab.btm.entity.ExpReason[expReasonId=" + expReasonId + "]";
     }
 }

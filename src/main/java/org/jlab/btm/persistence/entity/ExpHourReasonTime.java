@@ -34,17 +34,17 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
 @Table(name = "EXP_HOUR_REASON_TIME", schema = "BTM_OWNER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"HALL", "EXP_HOUR_ID", "EXP_REASON_ID"})})
 @NamedQueries({
-        @NamedQuery(name = "ExpHallHourReasonTime.findByExpHallHourReasonTimeId", query = "SELECT e FROM ExpHourReasonTime e WHERE e.expHallHourReasonTimeId = :expHallHourReasonTimeId"),
-        @NamedQuery(name = "ExpHallHourReasonTime.findByHallAndHourRange", query = "SELECT e FROM ExpHourReasonTime e WHERE e.hall = :hall AND e.expHour.dayAndHourCal BETWEEN :startDayAndHourCal AND :endDayAndHourCal ORDER BY e.expHour.dayAndHourCal ASC"),
-        @NamedQuery(name = "ExpHallHourReasonTime.sumByExpHallHourId", query = "SELECT NVL(SUM(e.seconds), 0) FROM ExpHourReasonTime e WHERE e.expHour.expHallHourId = :expHallHourId")})
+        @NamedQuery(name = "ExpHourReasonTime.findByExpHourReasonTimeId", query = "SELECT e FROM ExpHourReasonTime e WHERE e.expHourReasonTimeId = :expHallHourReasonTimeId"),
+        @NamedQuery(name = "ExpHourReasonTime.findByHallAndHourRange", query = "SELECT e FROM ExpHourReasonTime e WHERE e.hall = :hall AND e.expHour.dayAndHourCal BETWEEN :startDayAndHourCal AND :endDayAndHourCal ORDER BY e.expHour.dayAndHourCal ASC"),
+        @NamedQuery(name = "ExpHourReasonTime.sumByExpHallHourId", query = "SELECT NVL(SUM(e.seconds), 0) FROM ExpHourReasonTime e WHERE e.expHour.expHourId = :expHallHourId")})
 public class ExpHourReasonTime implements Comparable<ExpHourReasonTime>, Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="ExpHallHourReasonTimeId", sequenceName="EXP_HOUR_REASON_TIME_ID", allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ExpHallHourReasonTimeId")
+    @SequenceGenerator(name="ExpHourReasonTimeId", sequenceName="EXP_HOUR_REASON_TIME_ID", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ExpHourReasonTimeId")
     @Basic(optional = false)
     @Column(name = "EXP_HOUR_REASON_TIME_ID", nullable = false, precision = 38, scale = 0)
-    private BigInteger expHallHourReasonTimeId;
+    private BigInteger expHourReasonTimeId;
     @Basic(optional = false)
     @Column(name = "HALL", nullable = false, length = 1, columnDefinition = "char(1)")
     @NotNull
@@ -68,22 +68,22 @@ public class ExpHourReasonTime implements Comparable<ExpHourReasonTime>, Seriali
     public ExpHourReasonTime() {
     }
 
-    public ExpHourReasonTime(BigInteger expHallHourReasonTimeId) {
-        this.expHallHourReasonTimeId = expHallHourReasonTimeId;
+    public ExpHourReasonTime(BigInteger expHourReasonTimeId) {
+        this.expHourReasonTimeId = expHourReasonTimeId;
     }
 
-    public ExpHourReasonTime(BigInteger expHallHourReasonTimeId, Hall hall, short seconds) {
-        this.expHallHourReasonTimeId = expHallHourReasonTimeId;
+    public ExpHourReasonTime(BigInteger expHourReasonTimeId, Hall hall, short seconds) {
+        this.expHourReasonTimeId = expHourReasonTimeId;
         this.hall = hall;
         this.seconds = seconds;
     }
 
-    public BigInteger getExpHallHourReasonTimeId() {
-        return expHallHourReasonTimeId;
+    public BigInteger getExpHourReasonTimeId() {
+        return expHourReasonTimeId;
     }
 
-    public void setExpHallHourReasonTimeId(BigInteger expHallHourReasonTimeId) {
-        this.expHallHourReasonTimeId = expHallHourReasonTimeId;
+    public void setExpHourReasonTimeId(BigInteger expHourReasonTimeId) {
+        this.expHourReasonTimeId = expHourReasonTimeId;
     }
 
     public Hall getHall() {
@@ -121,7 +121,7 @@ public class ExpHourReasonTime implements Comparable<ExpHourReasonTime>, Seriali
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (expHallHourReasonTimeId != null ? expHallHourReasonTimeId.hashCode() : 0);
+        hash += (expHourReasonTimeId != null ? expHourReasonTimeId.hashCode() : 0);
         return hash;
     }
 
@@ -132,7 +132,7 @@ public class ExpHourReasonTime implements Comparable<ExpHourReasonTime>, Seriali
             return false;
         }
         ExpHourReasonTime other = (ExpHourReasonTime) object;
-        if ((this.expHallHourReasonTimeId == null && other.expHallHourReasonTimeId != null) || (this.expHallHourReasonTimeId != null && !this.expHallHourReasonTimeId.equals(other.expHallHourReasonTimeId))) {
+        if ((this.expHourReasonTimeId == null && other.expHourReasonTimeId != null) || (this.expHourReasonTimeId != null && !this.expHourReasonTimeId.equals(other.expHourReasonTimeId))) {
             return false;
         }
         return true;
@@ -151,6 +151,6 @@ public class ExpHourReasonTime implements Comparable<ExpHourReasonTime>, Seriali
 
     @Override
     public String toString() {
-        return "org.jlab.btm.entity.ExpHallHourReasonTime[expHallHourReasonTimeId=" + expHallHourReasonTimeId + "]";
+        return "org.jlab.btm.entity.ExpHallHourReasonTime[expHallHourReasonTimeId=" + expHourReasonTimeId + "]";
     }
 }
