@@ -16,7 +16,6 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
  * @author ryans
  */
 @Entity
-@Audited
 @Table(name = "EXP_HALL_SIGNATURE", schema = "BTM_OWNER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"HALL", "START_DAY_AND_HOUR", "SIGNED_BY"})})
 @NamedQueries({
