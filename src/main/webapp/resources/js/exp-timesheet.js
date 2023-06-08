@@ -1,7 +1,7 @@
 var jlab = jlab || {};
 jlab.btm = jlab.btm || {};
 
-jlab.btm.addReason = function () {
+jlab.btm.addExplanation = function () {
     if (jlab.isRequest()) {
         window.console && console.log("Ajax already in progress");
         return;
@@ -51,6 +51,50 @@ jlab.btm.addReason = function () {
         jlab.requestEnd();
         $("#save-reason-button").html("Save");
         $("#save-reason-button").removeAttr("disabled");
+    });
+};
+
+jlab.btm.removeExplanation = function ($tr) {
+    if (jlab.isRequest()) {
+        window.console && console.log("Ajax already in progress");
+        return;
+    }
+
+    var explanationId = $tr.attr("data-explanation-id"),
+        startDayAndHour = $("#shift-start-hour").val(),
+        hall = $("#shift-hall").val(),
+        success = false;
+
+    jlab.requestStart();
+
+    var request = jQuery.ajax({
+        url: "/btm/ajax/remove-ued-explanation",
+        type: "POST",
+        data: {
+            startDayAndHour: startDayAndHour,
+            hall: hall,
+            explanationId: explanationId
+        },
+        dataType: "html"
+    });
+
+    request.done(function (data) {
+        if ($(".status", data).html() !== "Success") {
+            alert('Unable to remove UED explanation: ' + $(".reason", data).html());
+        } else {
+            /* Success */
+            success = true;
+            window.location.reload();
+        }
+    });
+
+    request.fail(function (xhr, textStatus) {
+        window.console && console.log('Unable to remove UED explanation: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
+        alert('Unable to remove UED explanation: server did not handle request');
+    });
+
+    request.always(function () {
+        jlab.requestEnd();
     });
 };
 
@@ -632,7 +676,7 @@ $(document).on("click", "#save-shift-info-button", function () {
 });
 
 $(document).on("click", "#save-reason-button", function () {
-    jlab.btm.addReason();
+    jlab.btm.addExplanation();
 });
 
 $(document).on("click", "#exp-save-button", function () {
@@ -673,6 +717,12 @@ $(document).on("click", ".ui-icon-close", function () {
     $textarea.hide();
 
     $textarea.val($textarea.prev().text());
+});
+
+$(document).on("click", ".ui-icon-minusthick", function () {
+    var $row = $(this).closest("tr");
+    jlab.btm.removeExplanation($row);
+
 });
 
 $(document).on("click", "#add-reason-button", function () {

@@ -113,6 +113,25 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
     }
 
     @PermitAll
+    @Override
+    public ExpHourReasonTime find(Object id) {
+        return super.find(id);
+    }
+
+    @PermitAll
+    public void remove(Hall hall, Date startDayAndHour, BigInteger id) throws UserFriendlyException {
+        ruleService.editCheck(hall, startDayAndHour);
+
+        ExpHourReasonTime explanation = this.find(id);
+
+        if(explanation == null) {
+            throw new UserFriendlyException("Explanation not found with ID: " + id);
+        }
+
+        super.remove(explanation);
+    }
+
+    @PermitAll
     public void add(Hall hall, Date dayAndHour, BigInteger reasonId, Short durationSeconds) throws UserFriendlyException {
         if(dayAndHour == null) {
             throw new UserFriendlyException("Hour must not be empty");

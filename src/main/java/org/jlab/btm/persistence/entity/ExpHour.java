@@ -96,18 +96,6 @@ public class ExpHour extends HallHour {
     @Max(value = 3600, message = "{org.jlab.bta.maxTime}")
     private short uedSeconds;
     @Basic(optional = false)
-    @Column(name = "SCHED_SECONDS", nullable = false)
-    @NotNull
-    @Min(0)
-    @Max(value = 3600, message = "{org.jlab.bta.maxTime}")
-    private short schedSeconds;
-    @Basic(optional = false)
-    @Column(name = "STUDIES_SECONDS", nullable = false)
-    @NotNull
-    @Min(0)
-    @Max(value = 3600, message = "{org.jlab.bta.maxTime}")
-    private short studiesSeconds;
-    @Basic(optional = false)
     @Column(name = "OFF_SECONDS", nullable = false)
     @NotNull
     @Min(0)
@@ -135,8 +123,6 @@ public class ExpHour extends HallHour {
         this.erSeconds = erSeconds;
         this.pccSeconds = pccSeconds;
         this.uedSeconds = uedSeconds;
-        this.schedSeconds = schedSeconds;
-        this.studiesSeconds = studiesSeconds;
         this.offSeconds = offSeconds;
     }
 
@@ -154,8 +140,6 @@ public class ExpHour extends HallHour {
         this.setErSeconds(other.getErSeconds());
         this.setPccSeconds(other.getPccSeconds());
         this.setUedSeconds(other.getUedSeconds());
-        this.setSchedSeconds(other.getSchedSeconds());
-        this.setStudiesSeconds(other.getStudiesSeconds());
         this.setOffSeconds(other.getOffSeconds());
         this.setRemark(other.getRemark());
     }
@@ -258,22 +242,6 @@ public class ExpHour extends HallHour {
         this.uedSeconds = uedSeconds;
     }
 
-    public short getSchedSeconds() {
-        return schedSeconds;
-    }
-
-    public void setSchedSeconds(short schedSeconds) {
-        this.schedSeconds = schedSeconds;
-    }
-
-    public short getStudiesSeconds() {
-        return studiesSeconds;
-    }
-
-    public void setStudiesSeconds(short studiesSeconds) {
-        this.studiesSeconds = studiesSeconds;
-    }
-
     public short getOffSeconds() {
         return offSeconds;
     }
@@ -365,10 +333,6 @@ public class ExpHour extends HallHour {
                 pccSeconds +
                 ", UED: " +
                 uedSeconds +
-                ", Scheduled: " +
-                schedSeconds +
-                ", Studies: " +
-                studiesSeconds +
                 ", Off: " +
                 offSeconds;
 

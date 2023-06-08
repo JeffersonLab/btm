@@ -369,10 +369,10 @@ CREATE TABLE BTM_OWNER.EXP_SHIFT
 CREATE TABLE BTM_OWNER.EXP_HOUR_REASON_TIME_AUD
 (
     EXP_HOUR_REASON_TIME_ID NUMBER(38, 0)          NOT NULL,
-    REV                          NUMBER(38, 0)          NOT NULL,
-    REVTYPE                      NUMBER(3, 0)           NOT NULL,
-    HALL                         CHAR(1)                NOT NULL,
-    SECONDS                      NUMBER(4, 0) DEFAULT 0 NOT NULL,
+    REV                     NUMBER(38, 0)          NOT NULL,
+    REVTYPE                 NUMBER(3, 0)           NOT NULL,
+    HALL                    CHAR(1 CHAR)           NOT NULL,
+    SECONDS                 NUMBER(4, 0) DEFAULT 0 NOT NULL,
     EXP_HOUR_ID             NUMBER(38, 0)          NOT NULL,
     EXP_REASON_ID           NUMBER(38, 0)          NOT NULL,
     CONSTRAINT EXP_HOUR_REASON_TIME_AUD_PK PRIMARY KEY (EXP_HOUR_REASON_TIME_ID),

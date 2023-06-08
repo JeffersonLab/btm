@@ -46,7 +46,7 @@ public class ExpHourReasonTime implements Comparable<ExpHourReasonTime>, Seriali
     @Column(name = "EXP_HOUR_REASON_TIME_ID", nullable = false, precision = 38, scale = 0)
     private BigInteger expHourReasonTimeId;
     @Basic(optional = false)
-    @Column(name = "HALL", nullable = false, length = 1, columnDefinition = "char(1)")
+    @Column(name = "HALL", nullable = false, length = 1, columnDefinition = "char(1 char)")
     @NotNull
     @Enumerated(EnumType.STRING)
     private Hall hall;

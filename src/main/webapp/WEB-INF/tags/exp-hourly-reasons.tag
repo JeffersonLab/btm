@@ -30,7 +30,7 @@
                     <tbody>
                     <c:forEach items="${hourList}" var="explanation">
                         <c:set value="${explanation.expHour}" var="hour"/>
-                        <tr>
+                        <tr data-explanation-id="${explanation.expHourReasonTimeId}">
                             <fmt:formatDate value="${hour.dayAndHour}" pattern="dd MMM yyyy HH:mm z"
                                             var="fullDate"/>
                             <fmt:formatDate value="${hour.dayAndHour}" pattern="yyyy-MM-dd-HH-z" var="isoDate"/>
@@ -83,7 +83,7 @@
             </c:otherwise>
         </c:choose>
         <div class="form-button-panel">
-            <button id="add-reason-button" type="button"${reasonDiscrepancyList.size() > 0 ? '' : ' disabled="disabled"'}>Add</button>
+            <button id="add-reason-button" type="button"${status.reasonDiscrepancyList.size() > 0 ? '' : ' disabled="disabled"'}>Add</button>
         </div>
     </form>
 </div>
