@@ -11,17 +11,17 @@ import java.util.Date;
  * @author ryans
  */
 @Entity
-@Table(name = "OP_CROSS_CHECK_COMMENT", schema = "BTM_OWNER", uniqueConstraints
+@Table(name = "CC_CROSS_CHECK_COMMENT", schema = "BTM_OWNER", uniqueConstraints
         = {
         @UniqueConstraint(columnNames = {"START_DAY_AND_HOUR"})})
-public class OpCrossCheckComment implements Serializable {
+public class CcCrossCheckComment implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "OpCrossCheckCommentId", sequenceName = "OP_CROSS_CHECK_COMMENT_ID", allocationSize = 1)
+    @SequenceGenerator(name = "OpCrossCheckCommentId", sequenceName = "CC_CROSS_CHECK_COMMENT_ID", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OpCrossCheckCommentId")
     @Basic(optional = false)
     @NotNull
-    @Column(name = "OP_CHECK_COMMENT_ID", nullable = false, precision = 38, scale = 0)
+    @Column(name = "CC_CHECK_COMMENT_ID", nullable = false, precision = 38, scale = 0)
     private BigDecimal opCheckCommentId;
     @Basic(optional = false)
     @NotNull
@@ -35,14 +35,14 @@ public class OpCrossCheckComment implements Serializable {
     @Column(name = "REVIEWER_REMARK", length = 2048)
     private String reviewerRemark;
 
-    public OpCrossCheckComment() {
+    public CcCrossCheckComment() {
     }
 
-    public OpCrossCheckComment(BigDecimal opCheckCommentId) {
+    public CcCrossCheckComment(BigDecimal opCheckCommentId) {
         this.opCheckCommentId = opCheckCommentId;
     }
 
-    public OpCrossCheckComment(BigDecimal opCheckCommentId, Date startDayAndHour) {
+    public CcCrossCheckComment(BigDecimal opCheckCommentId, Date startDayAndHour) {
         this.opCheckCommentId = opCheckCommentId;
         this.startDayAndHour = startDayAndHour;
     }
@@ -81,10 +81,10 @@ public class OpCrossCheckComment implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof OpCrossCheckComment)) {
+        if (!(object instanceof CcCrossCheckComment)) {
             return false;
         }
-        OpCrossCheckComment other = (OpCrossCheckComment) object;
+        CcCrossCheckComment other = (CcCrossCheckComment) object;
         return (this.opCheckCommentId != null || other.opCheckCommentId == null) && (this.opCheckCommentId == null || this.opCheckCommentId.equals(other.opCheckCommentId));
     }
 

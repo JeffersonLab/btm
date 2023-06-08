@@ -1,13 +1,13 @@
 package org.jlab.btm.presentation.controller.ajax;
 
 import org.jlab.btm.business.service.*;
-import org.jlab.btm.persistence.entity.OpHallHour;
-import org.jlab.btm.persistence.entity.OpShift;
+import org.jlab.btm.persistence.entity.CcHallHour;
+import org.jlab.btm.persistence.entity.CcShift;
 import org.jlab.btm.persistence.entity.PdShiftPlan;
 import org.jlab.btm.persistence.enumeration.DurationUnits;
 import org.jlab.btm.persistence.projection.AcceleratorShiftAvailability;
 import org.jlab.btm.persistence.projection.MultiplicityShiftAvailability;
-import org.jlab.btm.persistence.projection.OpHallShiftAvailability;
+import org.jlab.btm.persistence.projection.CcHallShiftAvailability;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.btm.presentation.util.InternalHtmlRequestExecutor;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
@@ -43,15 +43,15 @@ public class SignCcTimesheet extends HttpServlet {
             SignCcTimesheet.class.getName());
 
     @EJB
-    OpSignatureService signatureService;
+    CcSignatureService signatureService;
     @EJB
-    OpAccHourService accHourService;
+    CcAccHourService accHourService;
     @EJB
-    OpHallHourService hallHourService;
+    CcHallHourService hallHourService;
     @EJB
-    OpMultiplicityHourService multiplicityHourService;
+    CcMultiplicityHourService multiplicityHourService;
     @EJB
-    OpShiftService shiftService;
+    CcShiftService shiftService;
     @EJB
     LogbookService logbookService;
     @EJB
@@ -99,11 +99,11 @@ public class SignCcTimesheet extends HttpServlet {
                         true, plan);
 
                 /*HALL AVAILABILITY*/
-                List<OpHallShiftAvailability> hallAvailabilityList
+                List<CcHallShiftAvailability> hallAvailabilityList
                         = hallHourService.getHallAvailablilityList(
                         startHour, endHour, true, plan);
 
-                List<List<OpHallHour>> hallHoursList = new ArrayList<>();
+                List<List<CcHallHour>> hallHoursList = new ArrayList<>();
                 hallHoursList.add(hallAvailabilityList.get(0).getEpicsHourList());
                 hallHoursList.add(hallAvailabilityList.get(1).getEpicsHourList());
                 hallHoursList.add(hallAvailabilityList.get(2).getEpicsHourList());
@@ -115,7 +115,7 @@ public class SignCcTimesheet extends HttpServlet {
                         endHour, true, hallHoursList);
 
                 /*SHIFT INFORMATION*/
-                OpShift dbShiftInfo = shiftService.findInDatabase(startHour);
+                CcShift dbShiftInfo = shiftService.findInDatabase(startHour);
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
                 SimpleDateFormat urlDateFormat = new SimpleDateFormat("dd-MMM-yyyy");

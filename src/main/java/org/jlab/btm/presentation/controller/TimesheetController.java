@@ -37,21 +37,21 @@ public class TimesheetController extends HttpServlet {
             TimesheetController.class.getName());
 
     @EJB
-    OpAccHourService accHourService;
+    CcAccHourService accHourService;
     @EJB
-    OpHallHourService hallHourService;
+    CcHallHourService hallHourService;
     @EJB
-    OpMultiplicityHourService multiplicityHourService;
+    CcMultiplicityHourService multiplicityHourService;
     @EJB
     ExpHallHourService expHallHourService;
     @EJB
-    OpShiftService ccShiftService;
+    CcShiftService ccShiftService;
     @EJB
     ExpHallShiftService expShiftService;
     @EJB
-    OpCrossCheckCommentService crossCheckCommentService;
+    CcCrossCheckCommentService crossCheckCommentService;
     @EJB
-    OpSignatureService ccSignatureService;
+    CcSignatureService ccSignatureService;
     @EJB
     ExpSignatureService expSignatureService;
     @EJB
@@ -230,10 +230,10 @@ public class TimesheetController extends HttpServlet {
                 endHour, true, plan);
 
         /*HALL AVAILABILITY*/
-        List<OpHallShiftAvailability> hallAvailabilityList = hallHourService.getHallAvailablilityList(
+        List<CcHallShiftAvailability> hallAvailabilityList = hallHourService.getHallAvailablilityList(
                 startHour, endHour, true, plan);
 
-        List<List<OpHallHour>> hallHoursList = new ArrayList<>();
+        List<List<CcHallHour>> hallHoursList = new ArrayList<>();
         hallHoursList.add(hallAvailabilityList.get(0).getEpicsHourList());
         hallHoursList.add(hallAvailabilityList.get(1).getEpicsHourList());
         hallHoursList.add(hallAvailabilityList.get(2).getEpicsHourList());
@@ -251,8 +251,8 @@ public class TimesheetController extends HttpServlet {
         List<ExpHallShiftAvailability> expHallAvailabilityList = expHallHourService.findAvailability(startHour, endHour);
 
         /*SHIFT INFORMATION*/
-        OpShift dbShiftInfo = ccShiftService.findInDatabase(startHour);
-        OpShift epicsShiftInfo = null;
+        CcShift dbShiftInfo = ccShiftService.findInDatabase(startHour);
+        CcShift epicsShiftInfo = null;
 
         try {
             epicsShiftInfo = ccShiftService.findInEpics(startHour);
@@ -260,17 +260,17 @@ public class TimesheetController extends HttpServlet {
             logger.log(Level.FINEST, "Unable to obtain EPICS shift info data", e);
         }
 
-        OpShift shiftInfo = dbShiftInfo;
+        CcShift shiftInfo = dbShiftInfo;
 
         if (dbShiftInfo == null) {
             shiftInfo = epicsShiftInfo;
         }
 
         /*CROSS CHECK COMMENT*/
-        OpCrossCheckComment crossCheckComment = crossCheckCommentService.findInDatabase(startHour);
+        CcCrossCheckComment crossCheckComment = crossCheckCommentService.findInDatabase(startHour);
 
         /*SIGNATURES*/
-        List<OpSignature> signatureList = ccSignatureService.find(startHour);
+        List<CcSignature> signatureList = ccSignatureService.find(startHour);
         CcTimesheetStatus status = ccSignatureService.calculateStatus(startHour, endHour,
                 accAvailability.getDbHourList(), hallAvailabilityList.get(0).getDbHourList(),
                 hallAvailabilityList.get(1).getDbHourList(),
@@ -289,18 +289,18 @@ public class TimesheetController extends HttpServlet {
         List<HallHourCrossCheck> hallCHourCrossCheckList = crossCheckService.getHourList(Hall.C, accAvailability, multiplicityAvailability, hallAvailabilityList.get(2), expHallAvailabilityList.get(2));
         List<HallHourCrossCheck> hallDHourCrossCheckList = crossCheckService.getHourList(Hall.D, accAvailability, multiplicityAvailability, hallAvailabilityList.get(3), expHallAvailabilityList.get(3));
 
-        CrewChiefBeamModeCrossCheck modeCrossCheck = new CrewChiefBeamModeCrossCheck(
+        CcBeamModeCrossCheck modeCrossCheck = new CcBeamModeCrossCheck(
                 accAvailability.getShiftTotals(), hallAvailabilityList.get(0).getShiftTotals(),
                 hallAvailabilityList.get(1).getShiftTotals(),
                 hallAvailabilityList.get(2).getShiftTotals(),
                 hallAvailabilityList.get(3).getShiftTotals());
 
-        CrewChiefAcceleratorCrossCheck accCrossCheck = new CrewChiefAcceleratorCrossCheck(
+        CcAcceleratorCrossCheck accCrossCheck = new CcAcceleratorCrossCheck(
                 accAvailability.getShiftTotals(),
                 expHallHourTotalsList.get(0), expHallHourTotalsList.get(1),
                 expHallHourTotalsList.get(2), expHallHourTotalsList.get(3));
 
-        CrewChiefHallCrossCheck hallCrossCheck = new CrewChiefHallCrossCheck(
+        CcHallCrossCheck hallCrossCheck = new CcHallCrossCheck(
                 hallAvailabilityList.get(0).getShiftTotals(),
                 hallAvailabilityList.get(1).getShiftTotals(),
                 hallAvailabilityList.get(2).getShiftTotals(),
@@ -308,7 +308,7 @@ public class TimesheetController extends HttpServlet {
                 expHallHourTotalsList.get(0), expHallHourTotalsList.get(1),
                 expHallHourTotalsList.get(2), expHallHourTotalsList.get(3));
 
-        CrewChiefMultiplicityCrossCheck multiCrossCheck = new CrewChiefMultiplicityCrossCheck(
+        CcMultiplicityCrossCheck multiCrossCheck = new CcMultiplicityCrossCheck(
                 hallAvailabilityList.get(0).getShiftTotals(),
                 hallAvailabilityList.get(1).getShiftTotals(),
                 hallAvailabilityList.get(2).getShiftTotals(),
@@ -318,7 +318,7 @@ public class TimesheetController extends HttpServlet {
         // Downtime check
         DowntimeSummaryTotals dtmTotals = downService.reportTotals(startHour, startOfNextShift);
 
-        CrewChiefDowntimeCrossCheck downCrossCheck = new CrewChiefDowntimeCrossCheck(accAvailability.getShiftTotals(), dtmTotals.getEventSeconds());
+        CcDowntimeCrossCheck downCrossCheck = new CcDowntimeCrossCheck(accAvailability.getShiftTotals(), dtmTotals.getEventSeconds());
 
         request.setAttribute("plan", plan);
         request.setAttribute("accAvailability", accAvailability);

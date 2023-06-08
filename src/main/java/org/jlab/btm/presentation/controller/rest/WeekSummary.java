@@ -1,7 +1,7 @@
 package org.jlab.btm.presentation.controller.rest;
 
 import org.jlab.btm.business.service.ExpHallHourService;
-import org.jlab.btm.business.service.OpAccHourService;
+import org.jlab.btm.business.service.CcAccHourService;
 import org.jlab.btm.business.service.PdShiftPlanService;
 import org.jlab.btm.persistence.projection.BeamSummaryTotals;
 import org.jlab.btm.persistence.projection.ExpHallHourTotals;
@@ -42,10 +42,10 @@ public class WeekSummary {
         }
     }
 
-    private OpAccHourService lookupOpAccHourService() {
+    private CcAccHourService lookupOpAccHourService() {
         try {
             InitialContext ic = new InitialContext();
-            return (OpAccHourService) ic.lookup("java:global/btm/OpAccHourService");
+            return (CcAccHourService) ic.lookup("java:global/btm/OpAccHourService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
@@ -70,7 +70,7 @@ public class WeekSummary {
             public void write(OutputStream out) {
                 try (JsonGenerator gen = Json.createGenerator(out)) {
                     ExpHallHourService expHourService = lookupHourService();
-                    OpAccHourService opAccHourService = lookupOpAccHourService();
+                    CcAccHourService ccAccHourService = lookupOpAccHourService();
                     PdShiftPlanService pdShiftService = lookupPdShiftService();
 
                     Date ccStart;
@@ -102,7 +102,7 @@ public class WeekSummary {
                     List<ExpHallHourTotals> expHallHourTotals
                             = expHourService.findExpHallHourTotals(ccStart, ccEnd);
 
-                    BeamSummaryTotals accTotals = opAccHourService.reportTotals(ccStart, ccEnd);
+                    BeamSummaryTotals accTotals = ccAccHourService.reportTotals(ccStart, ccEnd);
 
                     Map<Hall, Long> hallScheduledMap = new HashMap<>();
 

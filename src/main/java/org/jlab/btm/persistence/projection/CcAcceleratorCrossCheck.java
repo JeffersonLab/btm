@@ -6,7 +6,7 @@ import org.jlab.btm.presentation.util.BtmFunctions;
 /**
  * @author ryans
  */
-public class CrewChiefAcceleratorCrossCheck {
+public class CcAcceleratorCrossCheck {
 
     private static final int TEN_MINUTES_OF_SECONDS = 600;
     private final String[] halls = new String[]{"A", "B", "C", "D"};
@@ -22,8 +22,8 @@ public class CrewChiefAcceleratorCrossCheck {
     private final String[] highBnaMessage = new String[4];
     private final String[] highAccMessage = new String[4];
 
-    public CrewChiefAcceleratorCrossCheck(OpAccShiftTotals acc, ExpHallShiftTotals a,
-                                          ExpHallShiftTotals b, ExpHallShiftTotals c, ExpHallShiftTotals d) {
+    public CcAcceleratorCrossCheck(CcAccShiftTotals acc, ExpHallShiftTotals a,
+                                   ExpHallShiftTotals b, ExpHallShiftTotals c, ExpHallShiftTotals d) {
 
         ExpHallShiftTotals[] times = new ExpHallShiftTotals[]{a, b, c, d};
 

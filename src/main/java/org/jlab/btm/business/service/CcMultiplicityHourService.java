@@ -2,13 +2,13 @@ package org.jlab.btm.business.service;
 
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
-import org.jlab.btm.business.service.epics.EpicsOpMultiplicityHourService;
+import org.jlab.btm.business.service.epics.CcEpicsMultiplicityHourService;
 import org.jlab.btm.business.util.HourUtil;
-import org.jlab.btm.persistence.entity.OpHallHour;
-import org.jlab.btm.persistence.entity.OpMultiplicityHour;
+import org.jlab.btm.persistence.entity.CcHallHour;
+import org.jlab.btm.persistence.entity.CcMultiplicityHour;
 import org.jlab.btm.persistence.projection.MultiplicityShiftAvailability;
 import org.jlab.btm.persistence.projection.MultiplicitySummaryTotals;
-import org.jlab.btm.persistence.projection.OpMultiplicityShiftTotals;
+import org.jlab.btm.persistence.projection.CcMultiplicityShiftTotals;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.util.JPAUtil;
@@ -34,16 +34,16 @@ import java.util.logging.Logger;
  * @author ryans
  */
 @Stateless
-public class OpMultiplicityHourService extends AbstractService<OpMultiplicityHour> {
+public class CcMultiplicityHourService extends AbstractService<CcMultiplicityHour> {
 
-    private final static Logger logger = Logger.getLogger(OpMultiplicityHourService.class.getName());
+    private final static Logger logger = Logger.getLogger(CcMultiplicityHourService.class.getName());
     @EJB
-    EpicsOpMultiplicityHourService epicsService;
+    CcEpicsMultiplicityHourService epicsService;
     @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
-    public OpMultiplicityHourService() {
-        super(OpMultiplicityHour.class);
+    public CcMultiplicityHourService() {
+        super(CcMultiplicityHour.class);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class OpMultiplicityHourService extends AbstractService<OpMultiplicityHou
 
     @SuppressWarnings("unchecked")
     @PermitAll
-    public List<OpMultiplicityHour> findInDatabase(Date start, Date end) {
+    public List<CcMultiplicityHour> findInDatabase(Date start, Date end) {
         // The following don't work with daylight savings:
         // Use Date
         // Use Calendar
@@ -67,7 +67,7 @@ public class OpMultiplicityHourService extends AbstractService<OpMultiplicityHou
         query.setParameter("start", start);
         query.setParameter("end", end);*/
 
-        Query query = em.createNativeQuery("select * from OP_MULTIPLICITY_HOUR a where a.day_and_hour between to_timestamp_tz(:start, 'YYYY-MM-DD HH24 TZD') and to_timestamp_tz(:end, 'YYYY-MM-DD HH24 TZD')", OpMultiplicityHour.class);
+        Query query = em.createNativeQuery("select * from CC_MULTIPLICITY_HOUR a where a.day_and_hour between to_timestamp_tz(:start, 'YYYY-MM-DD HH24 TZD') and to_timestamp_tz(:end, 'YYYY-MM-DD HH24 TZD')", CcMultiplicityHour.class);
 
         String startStr = TimeUtil.formatDatabaseDateTimeTZ(start);
         String endStr = TimeUtil.formatDatabaseDateTimeTZ(end);
@@ -79,7 +79,7 @@ public class OpMultiplicityHourService extends AbstractService<OpMultiplicityHou
     }
 
     @PermitAll
-    public List<OpMultiplicityHour> findInEpics(Date start, Date end, List<List<OpHallHour>> hallHoursList) throws UserFriendlyException {
+    public List<CcMultiplicityHour> findInEpics(Date start, Date end, List<List<CcHallHour>> hallHoursList) throws UserFriendlyException {
         try {
             return epicsService.find(start, end, hallHoursList);
         } catch (TimeoutException | InterruptedException | CAException e) {
@@ -88,11 +88,11 @@ public class OpMultiplicityHourService extends AbstractService<OpMultiplicityHou
     }
 
     @PermitAll
-    public OpMultiplicityShiftTotals calculateTotals(List<OpMultiplicityHour> hourList) {
-        OpMultiplicityShiftTotals totals = new OpMultiplicityShiftTotals();
+    public CcMultiplicityShiftTotals calculateTotals(List<CcMultiplicityHour> hourList) {
+        CcMultiplicityShiftTotals totals = new CcMultiplicityShiftTotals();
 
         if (hourList != null) {
-            for (OpMultiplicityHour hour : hourList) {
+            for (CcMultiplicityHour hour : hourList) {
                 totals.setOneHallUpSeconds(
                         totals.getOneHallUpSeconds() == null ? hour.getOneHallUpSeconds() : totals.getOneHallUpSeconds()
                                 + hour.getOneHallUpSeconds());
@@ -159,19 +159,19 @@ public class OpMultiplicityHourService extends AbstractService<OpMultiplicityHou
             }
         }
 
-        List<OpMultiplicityHour> hourList = findInDatabase(hourArray[0], hourArray[hourArray.length
+        List<CcMultiplicityHour> hourList = findInDatabase(hourArray[0], hourArray[hourArray.length
                 - 1]);
-        Map<Date, OpMultiplicityHour> hourMap = HourUtil.createHourMap(hourList);
+        Map<Date, CcMultiplicityHour> hourMap = HourUtil.createHourMap(hourList);
 
         // We probably could consolidate with previous loop... (performance vs maintainability)
         for (int i = 0; i < hourArray.length; i++) {
             Date hour = hourArray[i];
             SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy HH:mm z");
             logger.log(Level.FINEST, "Editing hour: {0}", dateFormat.format(hour));
-            OpMultiplicityHour hourEntity = hourMap.get(hour);
+            CcMultiplicityHour hourEntity = hourMap.get(hour);
 
             if (hourEntity == null) {
-                hourEntity = new OpMultiplicityHour();
+                hourEntity = new CcMultiplicityHour();
                 hourEntity.setDayAndHour(hour);
             }
 
@@ -188,7 +188,7 @@ public class OpMultiplicityHourService extends AbstractService<OpMultiplicityHou
     }
 
     @Override
-    protected void edit(OpMultiplicityHour hour) {
+    protected void edit(CcMultiplicityHour hour) {
         if (hour.getOpMultiplicityHourId() == null) {
             this.manualInsert(hour);
         } else {
@@ -196,11 +196,11 @@ public class OpMultiplicityHourService extends AbstractService<OpMultiplicityHou
         }
     }
 
-    private OpMultiplicityHour manualInsert(OpMultiplicityHour hour) {
+    private CcMultiplicityHour manualInsert(CcMultiplicityHour hour) {
 
         String dayAndHourStr = TimeUtil.formatDatabaseDateTimeTZ(hour.getDayAndHour());
 
-        Query idq = em.createNativeQuery("select op_multiplicity_hour_id.nextval from dual");
+        Query idq = em.createNativeQuery("select CC_multiplicity_hour_id.nextval from dual");
 
         BigDecimal idDec = (BigDecimal) idq.getSingleResult();
 
@@ -235,10 +235,10 @@ public class OpMultiplicityHourService extends AbstractService<OpMultiplicityHou
 
     @PermitAll
     public MultiplicityShiftAvailability getMultiShiftAvailability(Date startHour, Date endHour,
-                                                                   boolean queryEpics, List<List<OpHallHour>> hallHoursList) {
-        List<OpMultiplicityHour> dbHourList = findInDatabase(startHour,
+                                                                   boolean queryEpics, List<List<CcHallHour>> hallHoursList) {
+        List<CcMultiplicityHour> dbHourList = findInDatabase(startHour,
                 endHour);
-        List<OpMultiplicityHour> epicsHourList;
+        List<CcMultiplicityHour> epicsHourList;
 
         if (queryEpics) {
             try {
@@ -251,15 +251,15 @@ public class OpMultiplicityHourService extends AbstractService<OpMultiplicityHou
             epicsHourList = new ArrayList<>();
         }
 
-        Map<Date, OpMultiplicityHour> dbMultiHourMap = HourUtil.createHourMap(dbHourList);
-        Map<Date, OpMultiplicityHour> epicsMultiHourMap = HourUtil.createHourMap(epicsHourList);
-        List<OpMultiplicityHour> multiHourList = HourUtil.fillMissingHoursAndSetSource(
+        Map<Date, CcMultiplicityHour> dbMultiHourMap = HourUtil.createHourMap(dbHourList);
+        Map<Date, CcMultiplicityHour> epicsMultiHourMap = HourUtil.createHourMap(epicsHourList);
+        List<CcMultiplicityHour> multiHourList = HourUtil.fillMissingHoursAndSetSource(
                 dbMultiHourMap,
-                epicsMultiHourMap, startHour, endHour, OpMultiplicityHour.class);
+                epicsMultiHourMap, startHour, endHour, CcMultiplicityHour.class);
 
-        OpMultiplicityShiftTotals shiftTotals = calculateTotals(
+        CcMultiplicityShiftTotals shiftTotals = calculateTotals(
                 multiHourList);
-        OpMultiplicityShiftTotals epicsShiftTotals = calculateTotals(
+        CcMultiplicityShiftTotals epicsShiftTotals = calculateTotals(
                 epicsHourList);
 
         MultiplicityShiftAvailability availability = new MultiplicityShiftAvailability();
@@ -278,7 +278,7 @@ public class OpMultiplicityHourService extends AbstractService<OpMultiplicityHou
         Query q = em.createNativeQuery(
                 "select sum(four_hall_up_seconds), sum(three_hall_up_seconds), sum(two_hall_up_seconds), sum(one_hall_up_seconds), sum(any_hall_up_seconds), sum(all_hall_up_seconds), sum(down_hard_seconds) "
                         + "from ("
-                        + "select four_hall_up_seconds, three_hall_up_seconds, two_hall_up_seconds, one_hall_up_seconds, any_hall_up_seconds, all_hall_up_seconds, down_hard_seconds from op_multiplicity_hour "
+                        + "select four_hall_up_seconds, three_hall_up_seconds, two_hall_up_seconds, one_hall_up_seconds, any_hall_up_seconds, all_hall_up_seconds, down_hard_seconds from CC_multiplicity_hour "
                         + "where day_and_hour >= :start and day_and_hour < :end "
                         + "union all select 0, 0, 0, 0, 0, 0, 0 from dual)");
 

@@ -7,8 +7,8 @@
 <%@attribute name="hall" required="true" type="org.jlab.smoothness.persistence.enumeration.Hall" %>
 <%@attribute name="hourList" required="true" type="java.util.List" %>
 <%@attribute name="epicsHourList" required="true" type="java.util.List" %>
-<%@attribute name="totals" required="true" type="org.jlab.btm.persistence.projection.OpHallShiftTotals" %>
-<%@attribute name="epicsTotals" required="true" type="org.jlab.btm.persistence.projection.OpHallShiftTotals" %>
+<%@attribute name="totals" required="true" type="org.jlab.btm.persistence.projection.CcHallShiftTotals" %>
+<%@attribute name="epicsTotals" required="true" type="org.jlab.btm.persistence.projection.CcHallShiftTotals" %>
 <h3>Hall ${hall} Measured</h3>
 <div>
     <c:choose>

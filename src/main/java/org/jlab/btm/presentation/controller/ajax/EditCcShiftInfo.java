@@ -1,6 +1,6 @@
 package org.jlab.btm.presentation.controller.ajax;
 
-import org.jlab.btm.business.service.OpShiftService;
+import org.jlab.btm.business.service.CcShiftService;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.ExceptionUtil;
@@ -30,7 +30,7 @@ public class EditCcShiftInfo extends HttpServlet {
             EditCcShiftInfo.class.getName());
 
     @EJB
-    OpShiftService shiftService;
+    CcShiftService shiftService;
 
     /**
      * Handles the HTTP <code>POST</code> method.

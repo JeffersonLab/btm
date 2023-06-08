@@ -6,7 +6,7 @@ import org.jlab.btm.presentation.util.BtmFunctions;
 /**
  * @author ryans
  */
-public class CrewChiefBeamModeCrossCheck {
+public class CcBeamModeCrossCheck {
 
     private static final int TEN_MINUTES_OF_SECONDS = 600;
     private final String[] halls = new String[]{"A", "B", "C", "D"};
@@ -16,10 +16,10 @@ public class CrewChiefBeamModeCrossCheck {
 
     private final String[] highHallPhysicsMessage = new String[4];
 
-    public CrewChiefBeamModeCrossCheck(OpAccShiftTotals acc, OpHallShiftTotals a,
-                                       OpHallShiftTotals b, OpHallShiftTotals c, OpHallShiftTotals d) {
+    public CcBeamModeCrossCheck(CcAccShiftTotals acc, CcHallShiftTotals a,
+                                CcHallShiftTotals b, CcHallShiftTotals c, CcHallShiftTotals d) {
 
-        OpHallShiftTotals[] times = new OpHallShiftTotals[]{a, b, c, d};
+        CcHallShiftTotals[] times = new CcHallShiftTotals[]{a, b, c, d};
 
         for (int i = 0; i < 4; i++) {
             highHallPhysicsMessage[i] = "Operations Hall " + halls[i] + " reports significantly more UP + TUNE + BNR + PHYSICS DOWN (" + BtmFunctions.formatDuration(times[i].getUpSeconds() + times[i].getTuneSeconds() + times[i].getBnrSeconds() + times[i].getDownSeconds(), DurationUnits.HOURS) + " hours) than the Operations Accelerator reported PHYSICS (" + BtmFunctions.formatDuration(acc.getUpSeconds(), DurationUnits.HOURS) + " hours)";

@@ -4,9 +4,10 @@ import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
 import org.jlab.btm.business.util.HourUtil;
-import org.jlab.btm.persistence.entity.OpAccHour;
-import org.jlab.btm.persistence.epics.AcceleratorBeamAvailability;
-import org.jlab.btm.persistence.epics.AcceleratorBeamAvailabilityDao;
+import org.jlab.btm.persistence.entity.CcHallHour;
+import org.jlab.btm.persistence.epics.HallBeamAvailability;
+import org.jlab.btm.persistence.epics.HallBeamAvailabilityDao;
+import org.jlab.smoothness.persistence.enumeration.Hall;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -22,9 +23,9 @@ import java.util.logging.Logger;
  * @author ryans
  */
 @Stateless
-public class EpicsOpAccHourService {
+public class CcEpicsHallHourService {
 
-    private static final Logger logger = Logger.getLogger(EpicsOpAccHourService.class.getName());
+    private static final Logger logger = Logger.getLogger(CcEpicsHallHourService.class.getName());
     @EJB
     ContextFactory factory;
 
@@ -38,6 +39,7 @@ public class EpicsOpAccHourService {
      * An empty list is returned if no data falls within the range. If EPICS does not contain data
      * for the entire range only the available data in the requested range is returned.</p>
      *
+     * @param hall
      * @param startDayAndHour the start day and hour.
      * @param endDayAndHour   the end day and hour.
      * @return a list of experimenter hall hours.
@@ -45,18 +47,18 @@ public class EpicsOpAccHourService {
      * @throws InterruptedException if a thread gets unexpectedly interrupted.
      * @throws CAException          if a channel access problem occurs.
      */
-    public List<OpAccHour> find(Date startDayAndHour,
-                                Date endDayAndHour) throws TimeoutException,
+    public List<CcHallHour> find(Hall hall, Date startDayAndHour,
+                                 Date endDayAndHour) throws TimeoutException,
             InterruptedException, CAException {
-        List<OpAccHour> hours;
+        List<CcHallHour> hours;
 
         if (HourUtil.isInEpicsWindow(endDayAndHour)) {
-            hours = loadAccounting();
+            hours = loadAccounting(hall);
 
             hours = HourUtil.subset(startDayAndHour, endDayAndHour, hours);
 
             HourRounder rounder = new HourRounder();
-            rounder.roundAcceleratorHourList(hours);
+            rounder.roundHallHourList(hours);
         } else {
             hours = new ArrayList<>();
         }
@@ -75,24 +77,24 @@ public class EpicsOpAccHourService {
      * @throws InterruptedException if a thread gets unexpectedly interrupted.
      * @throws CAException          if a channel access problem occurs.
      */
-    private List<OpAccHour> loadAccounting() throws TimeoutException,
+    private List<CcHallHour> loadAccounting(Hall hall) throws TimeoutException,
             InterruptedException, CAException {
 
-        AcceleratorBeamAvailability accounting;
+        HallBeamAvailability accounting;
 
         CAJContext context = factory.getContext();
 
         try {
-            AcceleratorBeamAvailabilityDao dao = new AcceleratorBeamAvailabilityDao(context);
+            HallBeamAvailabilityDao dao = new HallBeamAvailabilityDao(context);
 
             long start = System.currentTimeMillis();
-            accounting = dao.loadAccounting();
+            accounting = dao.loadAccounting(hall);
             long end = System.currentTimeMillis();
-            logger.log(Level.FINEST, "EPICS acc hours load time (milliseconds): {0}", (end - start));
+            logger.log(Level.FINEST, "EPICS hall hours load time (milliseconds): {0}", (end - start));
         } finally {
             factory.returnContext(context);
         }
 
-        return accounting.getOpAccHours();
+        return accounting.getOpHallHours();
     }
 }

@@ -1,6 +1,6 @@
 package org.jlab.btm.persistence.epics;
 
-import org.jlab.btm.persistence.entity.OpMultiplicityHour;
+import org.jlab.btm.persistence.entity.CcMultiplicityHour;
 import org.jlab.smoothness.business.util.TimeUtil;
 
 import java.util.ArrayList;
@@ -118,8 +118,8 @@ public class MultiplicityBeamAvailability {
      *
      * @return the list of experimenter hall hours.
      */
-    public List<OpMultiplicityHour> getOpMultiplicityHours() {
-        List<OpMultiplicityHour> hours = new ArrayList<>();
+    public List<CcMultiplicityHour> getOpMultiplicityHours() {
+        List<CcMultiplicityHour> hours = new ArrayList<>();
 
         if (!isValidValue()) {
             throw new IllegalStateException(
@@ -127,7 +127,7 @@ public class MultiplicityBeamAvailability {
         }
 
         for (int i = 0; i < time.length; i++) {
-            OpMultiplicityHour hour = new OpMultiplicityHour();
+            CcMultiplicityHour hour = new CcMultiplicityHour();
 
             // EPICS uses UNIX timestamps
             Date hourOfDay = TimeUtil.convertUNIXTimestampToDate(

@@ -2,12 +2,12 @@ package org.jlab.btm.presentation.controller.rest;
 
 import org.jlab.btm.business.service.*;
 import org.jlab.btm.persistence.entity.ExpHallShift;
-import org.jlab.btm.persistence.entity.OpShift;
+import org.jlab.btm.persistence.entity.CcShift;
 import org.jlab.btm.persistence.entity.PdShiftPlan;
 import org.jlab.btm.persistence.projection.AcceleratorShiftAvailability;
 import org.jlab.btm.persistence.projection.ExpHallShiftTotals;
-import org.jlab.btm.persistence.projection.OpHallShiftAvailability;
-import org.jlab.btm.persistence.projection.OpHallShiftTotals;
+import org.jlab.btm.persistence.projection.CcHallShiftAvailability;
+import org.jlab.btm.persistence.projection.CcHallShiftTotals;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.util.ObjectUtil;
 import org.jlab.smoothness.business.util.TimeUtil;
@@ -54,28 +54,28 @@ public class ShiftSummary {
         }
     }
 
-    private OpShiftService lookupOpShiftService() {
+    private CcShiftService lookupOpShiftService() {
         try {
             InitialContext ic = new InitialContext();
-            return (OpShiftService) ic.lookup("java:global/btm/OpShiftService");
+            return (CcShiftService) ic.lookup("java:global/btm/OpShiftService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
     }
 
-    private OpAccHourService lookupOpAccHourService() {
+    private CcAccHourService lookupOpAccHourService() {
         try {
             InitialContext ic = new InitialContext();
-            return (OpAccHourService) ic.lookup("java:global/btm/OpAccHourService");
+            return (CcAccHourService) ic.lookup("java:global/btm/OpAccHourService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
     }
 
-    private OpHallHourService lookupOpHallHourService() {
+    private CcHallHourService lookupOpHallHourService() {
         try {
             InitialContext ic = new InitialContext();
-            return (OpHallHourService) ic.lookup("java:global/btm/OpHallHourService");
+            return (CcHallHourService) ic.lookup("java:global/btm/OpHallHourService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
@@ -101,9 +101,9 @@ public class ShiftSummary {
                 try (JsonGenerator gen = Json.createGenerator(out)) {
                     ExpHallHourService expHourService = lookupHourService();
                     ExpHallShiftService expShiftService = lookupExpShiftService();
-                    OpShiftService opShiftService = lookupOpShiftService();
-                    OpAccHourService opAccHourService = lookupOpAccHourService();
-                    OpHallHourService hallHourService = lookupOpHallHourService();
+                    CcShiftService ccShiftService = lookupOpShiftService();
+                    CcAccHourService ccAccHourService = lookupOpAccHourService();
+                    CcHallHourService hallHourService = lookupOpHallHourService();
                     PdShiftPlanService pdShiftService = lookupPdShiftService();
 
                     Date ccStart;
@@ -135,9 +135,9 @@ public class ShiftSummary {
                     List<ExpHallShift> expShiftList
                             = expShiftService.findByShiftStartAndLoadPurpose(expStart);
                     Map<Hall, ExpHallShift> shiftMap = expShiftService.getMap(expShiftList);
-                    OpShift opShift = opShiftService.findInDatabase(ccStart);
-                    AcceleratorShiftAvailability accAvail = opAccHourService.getAcceleratorAvailability(ccStart, ccEnd, false, plan);
-                    List<OpHallShiftAvailability> hallAvailabilityList = hallHourService.getHallAvailablilityList(
+                    CcShift ccShift = ccShiftService.findInDatabase(ccStart);
+                    AcceleratorShiftAvailability accAvail = ccAccHourService.getAcceleratorAvailability(ccStart, ccEnd, false, plan);
+                    List<CcHallShiftAvailability> hallAvailabilityList = hallHourService.getHallAvailablilityList(
                             ccStart, ccEnd, false, plan);
 
                     String crewChief = null;
@@ -160,12 +160,12 @@ public class ShiftSummary {
                         scheduleMap.put(Hall.D, scheduled);
                     }
 
-                    if (opShift != null) {
-                        crewChief = opShift.getCrewChief();
-                        operators = opShift.getOperators();
-                        accProgram = opShift.getProgram();
-                        pd = opShift.getProgramDeputy();
-                        comments = opShift.getRemark();
+                    if (ccShift != null) {
+                        crewChief = ccShift.getCrewChief();
+                        operators = ccShift.getOperators();
+                        accProgram = ccShift.getProgram();
+                        pd = ccShift.getProgramDeputy();
+                        comments = ccShift.getRemark();
                     }
 
                     gen.writeStartObject()
@@ -190,8 +190,8 @@ public class ShiftSummary {
                     int i = 0;
                     for (ExpHallShiftTotals totals : expHourList) {
                         ExpHallShift expShift = shiftMap.get(totals.getHall());
-                        OpHallShiftAvailability opAvail = hallAvailabilityList.get(i++);
-                        OpHallShiftTotals opTotals = opAvail.getShiftTotals();
+                        CcHallShiftAvailability opAvail = hallAvailabilityList.get(i++);
+                        CcHallShiftTotals opTotals = opAvail.getShiftTotals();
 
                         String hallProgram = null;
 

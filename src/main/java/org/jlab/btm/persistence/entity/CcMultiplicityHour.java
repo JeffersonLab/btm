@@ -15,23 +15,23 @@ import java.util.Date;
  * @author ryans
  */
 @Entity
-@Table(name = "OP_MULTIPLICITY_HOUR", schema = "BTM_OWNER", uniqueConstraints
+@Table(name = "CC_MULTIPLICITY_HOUR", schema = "BTM_OWNER", uniqueConstraints
         = {
         @UniqueConstraint(columnNames = {"DAY_AND_HOUR"})})
 @NamedNativeQueries({
         @NamedNativeQuery(name = "OpMultiplicityHour.insertNATIVE", query
-                = "INSERT into OP_MULTIPLICITY_HOUR (OP_MULTIPLICITY_HOUR_ID, DAY_AND_HOUR, FOUR_HALL_UP_SECONDS, THREE_HALL_UP_SECONDS, TWO_HALL_UP_SECONDS, ONE_HALL_UP_SECONDS, ANY_HALL_UP_SECONDS, ALL_HALL_UP_SECONDS, DOWN_HARD_SECONDS) values (:id, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :fourUp, :threeUp, :twoUp, :oneUp, :anyUp, :allUp, :downHard)", resultClass
-                = OpMultiplicityHour.class)})
-public class OpMultiplicityHour implements Serializable, HourEntity {
+                = "INSERT into CC_MULTIPLICITY_HOUR (CC_MULTIPLICITY_HOUR_ID, DAY_AND_HOUR, FOUR_HALL_UP_SECONDS, THREE_HALL_UP_SECONDS, TWO_HALL_UP_SECONDS, ONE_HALL_UP_SECONDS, ANY_HALL_UP_SECONDS, ALL_HALL_UP_SECONDS, DOWN_HARD_SECONDS) values (:id, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :fourUp, :threeUp, :twoUp, :oneUp, :anyUp, :allUp, :downHard)", resultClass
+                = CcMultiplicityHour.class)})
+public class CcMultiplicityHour implements Serializable, HourEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "MultiplicityHourId", sequenceName = "OP_MULTIPLICITY_HOUR_ID", allocationSize
+    @SequenceGenerator(name = "MultiplicityHourId", sequenceName = "CC_MULTIPLICITY_HOUR_ID", allocationSize
             = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MultiplicityHourId")
     @Basic(optional = false)
     @NotNull
-    @Column(name = "OP_MULTIPLICITY_HOUR_ID", nullable = false, precision = 38, scale
+    @Column(name = "CC_MULTIPLICITY_HOUR_ID", nullable = false, precision = 38, scale
             = 0)
     private BigInteger opMultiplicityHourId;
     @Basic(optional = false)
@@ -177,10 +177,10 @@ public class OpMultiplicityHour implements Serializable, HourEntity {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof OpMultiplicityHour)) {
+        if (!(object instanceof CcMultiplicityHour)) {
             return false;
         }
-        OpMultiplicityHour other = (OpMultiplicityHour) object;
+        CcMultiplicityHour other = (CcMultiplicityHour) object;
         return (this.opMultiplicityHourId != null || other.opMultiplicityHourId == null)
                 && (this.opMultiplicityHourId == null || this.opMultiplicityHourId.equals(
                 other.opMultiplicityHourId));

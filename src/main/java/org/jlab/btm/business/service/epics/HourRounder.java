@@ -1,9 +1,9 @@
 package org.jlab.btm.business.service.epics;
 
 import org.jlab.btm.persistence.entity.ExpHallHour;
-import org.jlab.btm.persistence.entity.OpAccHour;
-import org.jlab.btm.persistence.entity.OpHallHour;
-import org.jlab.btm.persistence.entity.OpMultiplicityHour;
+import org.jlab.btm.persistence.entity.CcAccHour;
+import org.jlab.btm.persistence.entity.CcHallHour;
+import org.jlab.btm.persistence.entity.CcMultiplicityHour;
 import org.jlab.btm.persistence.projection.Hour;
 
 import java.util.List;
@@ -107,8 +107,8 @@ public class HourRounder {
      *
      * @param hours the list of hours.
      */
-    public void roundAcceleratorHourList(List<OpAccHour> hours) {
-        for (OpAccHour hour : hours) {
+    public void roundAcceleratorHourList(List<CcAccHour> hours) {
+        for (CcAccHour hour : hours) {
             roundAcceleratorHour(hour);
         }
     }
@@ -118,19 +118,19 @@ public class HourRounder {
      *
      * @param hours the list of hours.
      */
-    public void roundHallHourList(List<OpHallHour> hours) {
-        for (OpHallHour hour : hours) {
+    public void roundHallHourList(List<CcHallHour> hours) {
+        for (CcHallHour hour : hours) {
             roundHallHour(hour);
         }
     }
 
-    public void roundMultiplicityHourList(List<OpMultiplicityHour> multiHours, List<List<OpHallHour>> hallHoursList) {
+    public void roundMultiplicityHourList(List<CcMultiplicityHour> multiHours, List<List<CcHallHour>> hallHoursList) {
         for (int i = 0; i < multiHours.size(); i++) {
-            OpMultiplicityHour multiHour = multiHours.get(i);
-            OpHallHour hallAHour = hallHoursList.get(0).get(i);
-            OpHallHour hallBHour = hallHoursList.get(1).get(i);
-            OpHallHour hallCHour = hallHoursList.get(2).get(i);
-            OpHallHour hallDHour = hallHoursList.get(3).get(i);
+            CcMultiplicityHour multiHour = multiHours.get(i);
+            CcHallHour hallAHour = hallHoursList.get(0).get(i);
+            CcHallHour hallBHour = hallHoursList.get(1).get(i);
+            CcHallHour hallCHour = hallHoursList.get(2).get(i);
+            CcHallHour hallDHour = hallHoursList.get(3).get(i);
             short maxUp = (short) Math.max(Math.max(hallAHour.getUpSeconds(), hallBHour.getUpSeconds()), Math.max(hallCHour.getUpSeconds(), hallDHour.getUpSeconds()));
             roundMultiplicityHour(multiHour, maxUp);
         }
@@ -331,7 +331,7 @@ public class HourRounder {
      *
      * @param hour the experimenter hall hour.
      */
-    public void roundAcceleratorHour(OpAccHour hour) {
+    public void roundAcceleratorHour(CcAccHour hour) {
         // Won't modify off since it is a shared status
         short[] statuses = new short[6];
         statuses[0] = hour.getUpSeconds();
@@ -363,7 +363,7 @@ public class HourRounder {
      *
      * @param hour the experimenter hall hour.
      */
-    public void roundHallHour(OpHallHour hour) {
+    public void roundHallHour(CcHallHour hour) {
         // Won't modify off since it is a shared status
         short[] statuses = new short[5];
         statuses[0] = hour.getUpSeconds();
@@ -390,7 +390,7 @@ public class HourRounder {
      *
      * @param hour
      */
-    private void roundMultiplicityHour(OpMultiplicityHour hour, short maxUp) {
+    private void roundMultiplicityHour(CcMultiplicityHour hour, short maxUp) {
         /*System.out.println("maxUp: " + maxUp);*/
 
         hour.setOneHallUpSeconds(truncateToHourAndToNearest100thOfAnHour(hour.getOneHallUpSeconds()));

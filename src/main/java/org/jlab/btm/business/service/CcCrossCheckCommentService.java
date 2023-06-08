@@ -1,7 +1,7 @@
 package org.jlab.btm.business.service;
 
-import org.jlab.btm.business.service.epics.EpicsShiftService;
-import org.jlab.btm.persistence.entity.OpCrossCheckComment;
+import org.jlab.btm.business.service.epics.CcEpicsShiftService;
+import org.jlab.btm.persistence.entity.CcCrossCheckComment;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 
 import javax.annotation.security.PermitAll;
@@ -18,15 +18,15 @@ import java.util.List;
  * @author ryans
  */
 @Stateless
-public class OpCrossCheckCommentService extends AbstractService<OpCrossCheckComment> {
+public class CcCrossCheckCommentService extends AbstractService<CcCrossCheckComment> {
 
     @EJB
-    EpicsShiftService epicsService;
+    CcEpicsShiftService epicsService;
     @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
-    public OpCrossCheckCommentService() {
-        super(OpCrossCheckComment.class);
+    public CcCrossCheckCommentService() {
+        super(CcCrossCheckComment.class);
     }
 
     @Override
@@ -35,14 +35,14 @@ public class OpCrossCheckCommentService extends AbstractService<OpCrossCheckComm
     }
 
     @PermitAll
-    public OpCrossCheckComment findInDatabase(Date startDayAndHour) {
-        TypedQuery<OpCrossCheckComment> query = em.createQuery(
-                "select a from OpCrossCheckComment a where a.startDayAndHour = :startDayAndHour", OpCrossCheckComment.class);
+    public CcCrossCheckComment findInDatabase(Date startDayAndHour) {
+        TypedQuery<CcCrossCheckComment> query = em.createQuery(
+                "select a from CcCrossCheckComment a where a.startDayAndHour = :startDayAndHour", CcCrossCheckComment.class);
 
         query.setParameter("startDayAndHour", startDayAndHour);
 
-        List<OpCrossCheckComment> commentList = query.getResultList();
-        OpCrossCheckComment comment = null;
+        List<CcCrossCheckComment> commentList = query.getResultList();
+        CcCrossCheckComment comment = null;
 
         if (commentList != null && !commentList.isEmpty()) {
             comment = commentList.get(0);
@@ -53,10 +53,10 @@ public class OpCrossCheckCommentService extends AbstractService<OpCrossCheckComm
 
     @RolesAllowed({"cc", "btm-admin"})
     public void editCrewChiefRemark(Date startDayAndHour, String remark) throws UserFriendlyException {
-        OpCrossCheckComment comment = findInDatabase(startDayAndHour);
+        CcCrossCheckComment comment = findInDatabase(startDayAndHour);
 
         if (comment == null) {
-            comment = new OpCrossCheckComment();
+            comment = new CcCrossCheckComment();
             comment.setStartDayAndHour(startDayAndHour);
         }
 
@@ -67,10 +67,10 @@ public class OpCrossCheckCommentService extends AbstractService<OpCrossCheckComm
 
     @RolesAllowed({"btm-admin"})
     public void editReviewerRemark(Date startDayAndHour, String remark) {
-        OpCrossCheckComment comment = findInDatabase(startDayAndHour);
+        CcCrossCheckComment comment = findInDatabase(startDayAndHour);
 
         if (comment == null) {
-            comment = new OpCrossCheckComment();
+            comment = new CcCrossCheckComment();
             comment.setStartDayAndHour(startDayAndHour);
         }
 

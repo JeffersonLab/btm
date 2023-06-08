@@ -12,19 +12,19 @@ import java.util.Date;
  * @author ryans
  */
 @Entity
-@Table(name = "OP_SIGNATURE", schema = "BTM_OWNER", uniqueConstraints
+@Table(name = "CC_SIGNATURE", schema = "BTM_OWNER", uniqueConstraints
         = {
         @UniqueConstraint(columnNames = {"START_DAY_AND_HOUR", "SIGNED_BY", "SIGNED_ROLE"})})
 @NamedQueries({
-        @NamedQuery(name = "OpSignature.findAll", query = "SELECT o FROM OpSignature o")})
-public class OpSignature implements Serializable {
+        @NamedQuery(name = "OpSignature.findAll", query = "SELECT o FROM CcSignature o")})
+public class CcSignature implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "OpSignatureId", sequenceName = "OP_SIGNATURE_ID", allocationSize = 1)
+    @SequenceGenerator(name = "OpSignatureId", sequenceName = "CC_SIGNATURE_ID", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OpSignatureId")
     @Basic(optional = false)
     @NotNull
-    @Column(name = "OP_SIGNATURE_ID", nullable = false, precision = 22, scale = 0)
+    @Column(name = "CC_SIGNATURE_ID", nullable = false, precision = 22, scale = 0)
     private BigInteger opSignatureId;
     @Basic(optional = false)
     @NotNull
@@ -95,10 +95,10 @@ public class OpSignature implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof OpSignature)) {
+        if (!(object instanceof CcSignature)) {
             return false;
         }
-        OpSignature other = (OpSignature) object;
+        CcSignature other = (CcSignature) object;
         return (this.opSignatureId != null || other.opSignatureId == null) &&
                 (this.opSignatureId == null || this.opSignatureId.equals(other.opSignatureId));
     }

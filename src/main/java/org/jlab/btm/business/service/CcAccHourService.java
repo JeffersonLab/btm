@@ -2,13 +2,13 @@ package org.jlab.btm.business.service;
 
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
-import org.jlab.btm.business.service.epics.EpicsOpAccHourService;
+import org.jlab.btm.business.service.epics.CcEpicsAccHourService;
 import org.jlab.btm.business.util.HourUtil;
-import org.jlab.btm.persistence.entity.OpAccHour;
+import org.jlab.btm.persistence.entity.CcAccHour;
 import org.jlab.btm.persistence.entity.PdShiftPlan;
 import org.jlab.btm.persistence.projection.AcceleratorShiftAvailability;
 import org.jlab.btm.persistence.projection.BeamSummaryTotals;
-import org.jlab.btm.persistence.projection.OpAccShiftTotals;
+import org.jlab.btm.persistence.projection.CcAccShiftTotals;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.DateIterator;
 import org.jlab.smoothness.business.util.TimeUtil;
@@ -32,18 +32,18 @@ import java.util.logging.Logger;
  * @author ryans
  */
 @Stateless
-public class OpAccHourService extends AbstractService<OpAccHour> {
+public class CcAccHourService extends AbstractService<CcAccHour> {
 
-    private final static Logger logger = Logger.getLogger(OpAccHourService.class.getName());
+    private final static Logger logger = Logger.getLogger(CcAccHourService.class.getName());
 
     @EJB
-    EpicsOpAccHourService epicsService;
+    CcEpicsAccHourService epicsService;
 
     @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
-    public OpAccHourService() {
-        super(OpAccHour.class);
+    public CcAccHourService() {
+        super(CcAccHour.class);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class OpAccHourService extends AbstractService<OpAccHour> {
 
     @SuppressWarnings("unchecked")
     @PermitAll
-    public List<OpAccHour> findInDatabase(Date start, Date end) {
+    public List<CcAccHour> findInDatabase(Date start, Date end) {
 
         // The following don't work with daylight savings:
         // Use Date
@@ -61,7 +61,7 @@ public class OpAccHourService extends AbstractService<OpAccHour> {
         // Instead, use string and specify date format.
         // Example test case: if start and end are both daylight savings date such as 1 AM Nov. 4 2018 EST
 
-        //Query query = em.createNativeQuery("select * from OP_ACC_HOUR a where a.day_and_hour between :start and :end", OpAccHour.class);
+        //Query query = em.createNativeQuery("select * from CC_ACC_HOUR a where a.day_and_hour between :start and :end", OpAccHour.class);
   
         /*TypedQuery<OpAccHour> query = em.createQuery(
                 "select a from OpAccHour a where a.dayAndHour between :start and :end",
@@ -83,7 +83,7 @@ public class OpAccHourService extends AbstractService<OpAccHour> {
         Calendar endCal = Calendar.getInstance(TimeZone.getTimeZone(endTz), Locale.US);
         endCal.setTime(end);*/
 
-        Query query = em.createNativeQuery("select * from OP_ACC_HOUR a where a.day_and_hour between to_timestamp_tz(:start, 'YYYY-MM-DD HH24 TZD') and to_timestamp_tz(:end, 'YYYY-MM-DD HH24 TZD')", OpAccHour.class);
+        Query query = em.createNativeQuery("select * from CC_ACC_HOUR a where a.day_and_hour between to_timestamp_tz(:start, 'YYYY-MM-DD HH24 TZD') and to_timestamp_tz(:end, 'YYYY-MM-DD HH24 TZD')", CcAccHour.class);
 
         String startStr = TimeUtil.formatDatabaseDateTimeTZ(start);
         String endStr = TimeUtil.formatDatabaseDateTimeTZ(end);
@@ -95,7 +95,7 @@ public class OpAccHourService extends AbstractService<OpAccHour> {
     }
 
     @PermitAll
-    public List<OpAccHour> findInEpics(Date start, Date end) throws UserFriendlyException {
+    public List<CcAccHour> findInEpics(Date start, Date end) throws UserFriendlyException {
         try {
             return epicsService.find(start, end);
         } catch (TimeoutException | InterruptedException | CAException e) {
@@ -108,7 +108,7 @@ public class OpAccHourService extends AbstractService<OpAccHour> {
         Query q = em.createNativeQuery(
                 "select sum(up_seconds), sum(sad_seconds), sum(down_seconds), sum(studies_seconds), sum(restore_seconds), sum(acc_seconds) "
                         + "from ("
-                        + "select up_seconds, sad_seconds, down_seconds, studies_seconds, restore_seconds, acc_seconds from op_acc_hour "
+                        + "select up_seconds, sad_seconds, down_seconds, studies_seconds, restore_seconds, acc_seconds from CC_acc_hour "
                         + "where day_and_hour >= :start and day_and_hour < :end "
                         + "union all select 0, 0, 0, 0, 0, 0 from dual)");
 
@@ -127,11 +127,11 @@ public class OpAccHourService extends AbstractService<OpAccHour> {
     }
 
     @PermitAll
-    public OpAccShiftTotals calculateTotals(List<OpAccHour> accHourList) {
-        OpAccShiftTotals totals = new OpAccShiftTotals();
+    public CcAccShiftTotals calculateTotals(List<CcAccHour> accHourList) {
+        CcAccShiftTotals totals = new CcAccShiftTotals();
 
         if (accHourList != null) {
-            for (OpAccHour hour : accHourList) {
+            for (CcAccHour hour : accHourList) {
                 totals.setUpSeconds(
                         totals.getUpSeconds() == null ? hour.getUpSeconds() : totals.getUpSeconds()
                                 + hour.getUpSeconds());
@@ -195,15 +195,15 @@ public class OpAccHourService extends AbstractService<OpAccHour> {
             }
         }
 
-        List<OpAccHour> hourList = findInDatabase(hourArray[0], hourArray[hourArray.length - 1]);
-        Map<Date, OpAccHour> hourMap = HourUtil.createHourMap(hourList);
+        List<CcAccHour> hourList = findInDatabase(hourArray[0], hourArray[hourArray.length - 1]);
+        Map<Date, CcAccHour> hourMap = HourUtil.createHourMap(hourList);
 
         // We probably could consolidate with previous loop... (performance vs maintainability)
         for (int i = 0; i < hourArray.length; i++) {
             Date hour = hourArray[i];
             SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy HH:mm z");
             logger.log(Level.FINEST, "Editing hour: {0}", dateFormat.format(hour));
-            OpAccHour accHour = hourMap.get(hour);
+            CcAccHour accHour = hourMap.get(hour);
 
             int total = upArray[i] + sadArray[i] + downArray[i] + studiesArray[i] + restoreArray[i]
                     + accArray[i];
@@ -215,7 +215,7 @@ public class OpAccHourService extends AbstractService<OpAccHour> {
             }
 
             if (accHour == null) {
-                accHour = new OpAccHour();
+                accHour = new CcAccHour();
                 accHour.setDayAndHour(hour);
             }
 
@@ -231,7 +231,7 @@ public class OpAccHourService extends AbstractService<OpAccHour> {
     }
 
     @Override
-    protected void edit(OpAccHour hour) {
+    protected void edit(CcAccHour hour) {
         if (hour.getOpAccHourId() == null) {
             this.manualInsert(hour);
         } else {
@@ -239,11 +239,11 @@ public class OpAccHourService extends AbstractService<OpAccHour> {
         }
     }
 
-    private OpAccHour manualInsert(OpAccHour hour) {
+    private CcAccHour manualInsert(CcAccHour hour) {
 
         String dayAndHourStr = TimeUtil.formatDatabaseDateTimeTZ(hour.getDayAndHour());
 
-        Query idq = em.createNativeQuery("select op_acc_hour_id.nextval from dual");
+        Query idq = em.createNativeQuery("select CC_acc_hour_id.nextval from dual");
 
         BigDecimal idDec = (BigDecimal) idq.getSingleResult();
 
@@ -278,9 +278,9 @@ public class OpAccHourService extends AbstractService<OpAccHour> {
     @PermitAll
     public AcceleratorShiftAvailability getAcceleratorAvailability(Date startHour, Date endHour,
                                                                    boolean queryEpics, PdShiftPlan plan) {
-        List<OpAccHour> dbAccHourList = findInDatabase(
+        List<CcAccHour> dbAccHourList = findInDatabase(
                 startHour, endHour);
-        List<OpAccHour> epicsAccHourList;
+        List<CcAccHour> epicsAccHourList;
         if (queryEpics) {
             try {
                 epicsAccHourList = findInEpics(
@@ -292,15 +292,15 @@ public class OpAccHourService extends AbstractService<OpAccHour> {
         } else {
             epicsAccHourList = new ArrayList<>();
         }
-        Map<Date, OpAccHour> dbAccHourMap = HourUtil.createHourMap(dbAccHourList);
-        Map<Date, OpAccHour> epicsAccHourMap = HourUtil.createHourMap(
+        Map<Date, CcAccHour> dbAccHourMap = HourUtil.createHourMap(dbAccHourList);
+        Map<Date, CcAccHour> epicsAccHourMap = HourUtil.createHourMap(
                 epicsAccHourList);
-        List<OpAccHour> accHourList = HourUtil.fillMissingHoursAndSetSource(dbAccHourMap,
-                epicsAccHourMap, startHour, endHour, OpAccHour.class);
+        List<CcAccHour> accHourList = HourUtil.fillMissingHoursAndSetSource(dbAccHourMap,
+                epicsAccHourMap, startHour, endHour, CcAccHour.class);
 
-        OpAccShiftTotals accTotals = calculateTotals(accHourList);
-        OpAccShiftTotals epicsAccTotals = calculateTotals(epicsAccHourList);
-        OpAccShiftTotals pdShiftTotals = new OpAccShiftTotals();
+        CcAccShiftTotals accTotals = calculateTotals(accHourList);
+        CcAccShiftTotals epicsAccTotals = calculateTotals(epicsAccHourList);
+        CcAccShiftTotals pdShiftTotals = new CcAccShiftTotals();
 
         if (plan != null) {
             pdShiftTotals.setUpSeconds(plan.getPhysicsSeconds());

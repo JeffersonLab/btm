@@ -3,8 +3,8 @@ package org.jlab.btm.business.service.epics;
 import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
-import org.jlab.btm.business.service.OpAccHourService;
-import org.jlab.btm.persistence.entity.OpShift;
+import org.jlab.btm.business.service.CcAccHourService;
+import org.jlab.btm.persistence.entity.CcShift;
 import org.jlab.btm.persistence.epics.ShiftInfo;
 import org.jlab.btm.persistence.epics.ShiftInfoDao;
 import org.jlab.smoothness.business.util.TimeUtil;
@@ -22,13 +22,13 @@ import java.util.logging.Logger;
  * @author ryans
  */
 @Stateless
-public class EpicsShiftService {
+public class CcEpicsShiftService {
 
-    private static final Logger logger = Logger.getLogger(EpicsShiftService.class.getName());
+    private static final Logger logger = Logger.getLogger(CcEpicsShiftService.class.getName());
     @EJB
     ContextFactory factory;
     @EJB
-    OpAccHourService accHourService;
+    CcAccHourService accHourService;
 
     private boolean isCurrentLastOrNextShiftStart(Date startDayAndHour) {
         Date now = new Date();
@@ -78,9 +78,9 @@ public class EpicsShiftService {
      * @throws InterruptedException if a thread gets unexpectedly interrupted.
      * @throws CAException          if a channel access problem occurs.
      */
-    public OpShift find(Date startDayAndHour) throws TimeoutException,
+    public CcShift find(Date startDayAndHour) throws TimeoutException,
             InterruptedException, CAException {
-        OpShift shift = null;
+        CcShift shift = null;
 
         if (isCurrentLastOrNextShiftStart(startDayAndHour)) {
             shift = loadAccounting();
@@ -100,7 +100,7 @@ public class EpicsShiftService {
      * @throws InterruptedException if a thread gets unexpectedly interrupted.
      * @throws CAException          if a channel access problem occurs.
      */
-    private OpShift loadAccounting() throws TimeoutException,
+    private CcShift loadAccounting() throws TimeoutException,
             InterruptedException, CAException {
 
         ShiftInfo accounting;

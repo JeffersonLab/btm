@@ -3,7 +3,7 @@ package org.jlab.btm.persistence.projection;
 /**
  * @author ryans
  */
-public class OpAccShiftTotals {
+public class CcAccShiftTotals {
     private Integer upSeconds;
     private Integer sadSeconds;
     private Integer downSeconds;

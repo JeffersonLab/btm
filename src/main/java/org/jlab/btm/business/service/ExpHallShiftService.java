@@ -2,12 +2,10 @@ package org.jlab.btm.business.service;
 
 import org.jlab.btm.persistence.entity.ExpHallShift;
 import org.jlab.btm.persistence.entity.ExpHallShiftPurpose;
-import org.jlab.btm.persistence.entity.OpShift;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

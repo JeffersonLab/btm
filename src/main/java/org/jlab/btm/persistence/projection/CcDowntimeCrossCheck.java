@@ -6,7 +6,7 @@ import org.jlab.btm.presentation.util.BtmFunctions;
 /**
  * @author ryans
  */
-public class CrewChiefDowntimeCrossCheck {
+public class CcDowntimeCrossCheck {
 
 
     private final boolean passed;
@@ -16,7 +16,7 @@ public class CrewChiefDowntimeCrossCheck {
     private final String lowProgramMessage;
     private final String lowDownHardMessage;
 
-    public CrewChiefDowntimeCrossCheck(OpAccShiftTotals acc, long dtmEventDownSeconds) {
+    public CcDowntimeCrossCheck(CcAccShiftTotals acc, long dtmEventDownSeconds) {
 
         int programSeconds = acc.getUpSeconds() + acc.getDownSeconds() + acc.getRestoreSeconds() + acc.getStudiesSeconds() + acc.getAccSeconds();
 

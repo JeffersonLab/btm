@@ -1,7 +1,7 @@
 package org.jlab.btm.presentation.controller.ajax;
 
-import org.jlab.btm.business.service.OpHallHourService;
-import org.jlab.btm.persistence.entity.OpHallHour;
+import org.jlab.btm.business.service.CcHallHourService;
+import org.jlab.btm.persistence.entity.CcHallHour;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.ExceptionUtil;
@@ -36,7 +36,7 @@ public class EditHallHours extends HttpServlet {
             EditHallHours.class.getName());
 
     @EJB
-    OpHallHourService hallHourService;
+    CcHallHourService hallHourService;
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -98,8 +98,8 @@ public class EditHallHours extends HttpServlet {
                 errorReason = "";
                 for (ConstraintViolation<?> violation : violations) {
                     Object bean = violation.getRootBean();
-                    if (bean instanceof OpHallHour) {
-                        OpHallHour hour = (OpHallHour) bean;
+                    if (bean instanceof CcHallHour) {
+                        CcHallHour hour = (CcHallHour) bean;
                         String msg = "Hour " + dateFormat.format(hour.getDayAndHour()) + " "
                                 + violation.getMessage();
                         errorReason = errorReason + msg + ", ";

@@ -3,7 +3,7 @@ package org.jlab.btm.persistence.projection;
 /**
  * @author ryans
  */
-public class OpMultiplicityShiftTotals {
+public class CcMultiplicityShiftTotals {
     private Integer oneHallUpSeconds;
     private Integer twoHallUpSeconds;
     private Integer threeHallUpSeconds;

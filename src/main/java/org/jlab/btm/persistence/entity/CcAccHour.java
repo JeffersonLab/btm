@@ -15,24 +15,23 @@ import java.util.Date;
  * @author ryans
  */
 @Entity
-@Table(name = "OP_ACC_HOUR", schema = "BTM_OWNER", uniqueConstraints
+@Table(name = "CC_ACC_HOUR", schema = "BTM_OWNER", uniqueConstraints
         = {
         @UniqueConstraint(columnNames = {"DAY_AND_HOUR"})})
 @NamedQueries({
         @NamedQuery(name = "OpAccHour.findAll", query
-                = "SELECT o FROM OpAccHour o")})
+                = "SELECT o FROM CcAccHour o")})
 @NamedNativeQueries({
-        @NamedNativeQuery(name = "OpAccHour.insertNATIVE", query = "INSERT into OP_ACC_HOUR (OP_ACC_HOUR_ID, DAY_AND_HOUR, UP_SECONDS, SAD_SECONDS, DOWN_SECONDS, STUDIES_SECONDS, ACC_SECONDS, RESTORE_SECONDS) values (:id, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :up, :sad, :down, :studies, :acc, :restore)", resultClass = OpAccHour.class)})
-/*@NamedNativeQuery(name = "OpAccHour.updateNATIVE", query = "UPDATE OP_ACC_HOUR SET UP_SECONDS = :up, SAD_SECONDS = :sad, DOWN_SECONDS = :down, STUDIES_SECONDS = :studies, ACC_SECONDS = :acc, RESTORE_SECONDS = :restore WHERE OP_ACC_HOUR_ID = :id", resultClass=OpAccHour.class)})*/
-public class OpAccHour implements Serializable, HourEntity {
+        @NamedNativeQuery(name = "OpAccHour.insertNATIVE", query = "INSERT into CC_ACC_HOUR (CC_ACC_HOUR_ID, DAY_AND_HOUR, UP_SECONDS, SAD_SECONDS, DOWN_SECONDS, STUDIES_SECONDS, ACC_SECONDS, RESTORE_SECONDS) values (:id, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :up, :sad, :down, :studies, :acc, :restore)", resultClass = CcAccHour.class)})
+public class CcAccHour implements Serializable, HourEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "AccHourId", sequenceName = "OP_ACC_HOUR_ID", allocationSize = 1)
+    @SequenceGenerator(name = "AccHourId", sequenceName = "CC_ACC_HOUR_ID", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AccHourId")
     @Basic(optional = false)
     @NotNull
-    @Column(name = "OP_ACC_HOUR_ID", nullable = false, precision = 22, scale = 0)
+    @Column(name = "CC_ACC_HOUR_ID", nullable = false, precision = 22, scale = 0)
     private BigInteger opAccHourId;
     @Basic(optional = false)
     @NotNull
@@ -78,7 +77,7 @@ public class OpAccHour implements Serializable, HourEntity {
     @Transient
     private DataSource source;
 
-    public OpAccHour() {
+    public CcAccHour() {
     }
 
     public BigInteger getOpAccHourId() {
@@ -180,10 +179,10 @@ public class OpAccHour implements Serializable, HourEntity {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof OpAccHour)) {
+        if (!(object instanceof CcAccHour)) {
             return false;
         }
-        OpAccHour other = (OpAccHour) object;
+        CcAccHour other = (CcAccHour) object;
         return (this.getDayAndHour() != null || other.getDayAndHour() == null)
                 && (this.getDayAndHour() == null || this.getDayAndHour().equals(
                 other.getDayAndHour()));

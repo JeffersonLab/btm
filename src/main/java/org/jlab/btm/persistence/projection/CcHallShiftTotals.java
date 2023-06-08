@@ -3,7 +3,7 @@ package org.jlab.btm.persistence.projection;
 /**
  * @author ryans
  */
-public class OpHallShiftTotals {
+public class CcHallShiftTotals {
     private Integer upSeconds;
     private Integer tuneSeconds;
     private Integer bnrSeconds;

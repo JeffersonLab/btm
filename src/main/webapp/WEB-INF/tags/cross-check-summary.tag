@@ -6,12 +6,12 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@attribute name="hallAvailabilityList" required="true" type="java.util.List" %>
 <%@attribute name="expHallHourTotalsList" required="true" type="java.util.List" %>
-<%@attribute name="modeCheck" required="true" type="org.jlab.btm.persistence.projection.CrewChiefBeamModeCrossCheck" %>
+<%@attribute name="modeCheck" required="true" type="org.jlab.btm.persistence.projection.CcBeamModeCrossCheck" %>
 <%@attribute name="accCheck" required="true"
-             type="org.jlab.btm.persistence.projection.CrewChiefAcceleratorCrossCheck" %>
-<%@attribute name="hallCheck" required="true" type="org.jlab.btm.persistence.projection.CrewChiefHallCrossCheck" %>
+             type="org.jlab.btm.persistence.projection.CcAcceleratorCrossCheck" %>
+<%@attribute name="hallCheck" required="true" type="org.jlab.btm.persistence.projection.CcHallCrossCheck" %>
 <%@attribute name="multiCheck" required="true"
-             type="org.jlab.btm.persistence.projection.CrewChiefMultiplicityCrossCheck" %>
+             type="org.jlab.btm.persistence.projection.CcMultiplicityCrossCheck" %>
 <fmt:formatDate var="startFmt" value="${startHour}" pattern="dd-MMM-yyyy HH:mm"/>
 <fmt:formatDate var="endFmt" value="${startOfNextShift}" pattern="dd-MMM-yyyy HH:mm"/>
 <table id="comparison-table" class="data-table" data-start="${startFmt}" data-end="${endFmt}">

@@ -16,20 +16,20 @@ import java.util.Date;
  * @author ryans
  */
 @Entity
-@Table(name = "OP_HALL_HOUR", schema = "BTM_OWNER", uniqueConstraints
+@Table(name = "CC_HALL_HOUR", schema = "BTM_OWNER", uniqueConstraints
         = {
         @UniqueConstraint(columnNames = {"HALL", "DAY_AND_HOUR"})})
 @NamedNativeQueries({
-        @NamedNativeQuery(name = "OpHallHour.insertNATIVE", query = "INSERT into OP_HALL_HOUR (OP_HALL_HOUR_ID, HALL, DAY_AND_HOUR, UP_SECONDS, TUNE_SECONDS, BNR_SECONDS, DOWN_SECONDS, OFF_SECONDS) values (:id, :hall, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :up, :tune, :bnr, :down, :off)", resultClass = OpHallHour.class)})
-public class OpHallHour implements Serializable, HourEntity {
+        @NamedNativeQuery(name = "OpHallHour.insertNATIVE", query = "INSERT into CC_HALL_HOUR (CC_HALL_HOUR_ID, HALL, DAY_AND_HOUR, UP_SECONDS, TUNE_SECONDS, BNR_SECONDS, DOWN_SECONDS, OFF_SECONDS) values (:id, :hall, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :up, :tune, :bnr, :down, :off)", resultClass = CcHallHour.class)})
+public class CcHallHour implements Serializable, HourEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "HallHourId", sequenceName = "OP_HALL_HOUR_ID", allocationSize = 1)
+    @SequenceGenerator(name = "HallHourId", sequenceName = "CC_HALL_HOUR_ID", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "HallHourId")
     @Basic(optional = false)
     @NotNull
-    @Column(name = "OP_HALL_HOUR_ID", nullable = false, precision = 38, scale
+    @Column(name = "CC_HALL_HOUR_ID", nullable = false, precision = 38, scale
             = 0)
     private BigInteger opHallHourId;
     @Basic(optional = false)
@@ -160,10 +160,10 @@ public class OpHallHour implements Serializable, HourEntity {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof OpAccHour)) {
+        if (!(object instanceof CcAccHour)) {
             return false;
         }
-        OpAccHour other = (OpAccHour) object;
+        CcAccHour other = (CcAccHour) object;
         return (this.getDayAndHour() != null || other.getDayAndHour() == null)
                 && (this.getDayAndHour() == null || this.getDayAndHour().equals(
                 other.getDayAndHour()));

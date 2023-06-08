@@ -4,8 +4,8 @@ import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
 import org.jlab.btm.business.util.HourUtil;
-import org.jlab.btm.persistence.entity.OpHallHour;
-import org.jlab.btm.persistence.entity.OpMultiplicityHour;
+import org.jlab.btm.persistence.entity.CcHallHour;
+import org.jlab.btm.persistence.entity.CcMultiplicityHour;
 import org.jlab.btm.persistence.epics.MultiplicityBeamAvailability;
 import org.jlab.btm.persistence.epics.MultiplicityBeamAvailabilityDao;
 
@@ -23,16 +23,16 @@ import java.util.logging.Logger;
  * @author ryans
  */
 @Stateless
-public class EpicsOpMultiplicityHourService {
+public class CcEpicsMultiplicityHourService {
 
-    private static final Logger logger = Logger.getLogger(EpicsOpMultiplicityHourService.class.getName());
+    private static final Logger logger = Logger.getLogger(CcEpicsMultiplicityHourService.class.getName());
     @EJB
     ContextFactory factory;
 
-    public List<OpMultiplicityHour> find(Date startDayAndHour,
-                                         Date endDayAndHour, List<List<OpHallHour>> hallHoursList) throws TimeoutException,
+    public List<CcMultiplicityHour> find(Date startDayAndHour,
+                                         Date endDayAndHour, List<List<CcHallHour>> hallHoursList) throws TimeoutException,
             InterruptedException, CAException {
-        List<OpMultiplicityHour> hours;
+        List<CcMultiplicityHour> hours;
 
         if (HourUtil.isInEpicsWindow(endDayAndHour)) {
             hours = loadAccounting();
@@ -48,7 +48,7 @@ public class EpicsOpMultiplicityHourService {
         return hours;
     }
 
-    private List<OpMultiplicityHour> loadAccounting() throws TimeoutException,
+    private List<CcMultiplicityHour> loadAccounting() throws TimeoutException,
             InterruptedException, CAException {
 
         MultiplicityBeamAvailability accounting;

@@ -2,13 +2,13 @@ package org.jlab.btm.business.service;
 
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
-import org.jlab.btm.business.service.epics.EpicsOpHallHourService;
+import org.jlab.btm.business.service.epics.CcEpicsHallHourService;
 import org.jlab.btm.business.util.HourUtil;
-import org.jlab.btm.persistence.entity.OpHallHour;
+import org.jlab.btm.persistence.entity.CcHallHour;
 import org.jlab.btm.persistence.entity.PdShiftPlan;
 import org.jlab.btm.persistence.enumeration.DataSource;
-import org.jlab.btm.persistence.projection.OpHallShiftAvailability;
-import org.jlab.btm.persistence.projection.OpHallShiftTotals;
+import org.jlab.btm.persistence.projection.CcHallShiftAvailability;
+import org.jlab.btm.persistence.projection.CcHallShiftTotals;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.DateIterator;
 import org.jlab.smoothness.business.util.TimeUtil;
@@ -32,16 +32,16 @@ import java.util.logging.Logger;
  * @author ryans
  */
 @Stateless
-public class OpHallHourService extends AbstractService<OpHallHour> {
+public class CcHallHourService extends AbstractService<CcHallHour> {
 
-    private final static Logger logger = Logger.getLogger(OpHallHourService.class.getName());
+    private final static Logger logger = Logger.getLogger(CcHallHourService.class.getName());
     @EJB
-    EpicsOpHallHourService epicsService;
+    CcEpicsHallHourService epicsService;
     @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
-    public OpHallHourService() {
-        super(OpHallHour.class);
+    public CcHallHourService() {
+        super(CcHallHour.class);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
 
     @SuppressWarnings("unchecked")
     @PermitAll
-    public List<OpHallHour> findInDatabase(Hall hall, Date start, Date end) {
+    public List<CcHallHour> findInDatabase(Hall hall, Date start, Date end) {
         // The following don't work with daylight savings:
         // Use Date
         // Use Calendar
@@ -65,7 +65,7 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
         query.setParameter("hall", hall);
         query.setParameter("start", start);
         query.setParameter("end", end);*/
-        Query query = em.createNativeQuery("select * from OP_HALL_HOUR a where a.hall = :hall and a.day_and_hour between to_timestamp_tz(:start, 'YYYY-MM-DD HH24 TZD') and to_timestamp_tz(:end, 'YYYY-MM-DD HH24 TZD')", OpHallHour.class);
+        Query query = em.createNativeQuery("select * from CC_HALL_HOUR a where a.hall = :hall and a.day_and_hour between to_timestamp_tz(:start, 'YYYY-MM-DD HH24 TZD') and to_timestamp_tz(:end, 'YYYY-MM-DD HH24 TZD')", CcHallHour.class);
 
         String startStr = TimeUtil.formatDatabaseDateTimeTZ(start);
         String endStr = TimeUtil.formatDatabaseDateTimeTZ(end);
@@ -78,7 +78,7 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
     }
 
     @PermitAll
-    public List<OpHallHour> findInEpics(Hall hall, Date start, Date end) throws UserFriendlyException {
+    public List<CcHallHour> findInEpics(Hall hall, Date start, Date end) throws UserFriendlyException {
         try {
             return epicsService.find(hall, start, end);
         } catch (TimeoutException | InterruptedException | CAException e) {
@@ -87,14 +87,14 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
     }
 
     @PermitAll
-    public List<OpHallHour> fillMissingHoursAndSetSource(Map<Date, OpHallHour> dbHourMap,
-                                                         Map<Date, OpHallHour> epicsHourMap, Hall hall, Date start, Date end) {
-        List<OpHallHour> filledList = new ArrayList<>();
+    public List<CcHallHour> fillMissingHoursAndSetSource(Map<Date, CcHallHour> dbHourMap,
+                                                         Map<Date, CcHallHour> epicsHourMap, Hall hall, Date start, Date end) {
+        List<CcHallHour> filledList = new ArrayList<>();
 
         DateIterator iterator = new DateIterator(start, end,
                 Calendar.HOUR_OF_DAY);
 
-        OpHallHour hallHour;
+        CcHallHour hallHour;
 
         for (Date hour : iterator) {
             if (dbHourMap.containsKey(hour)) {
@@ -104,7 +104,7 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
                 hallHour = epicsHourMap.get(hour);
                 hallHour.setSource(DataSource.EPICS);
             } else {
-                hallHour = new OpHallHour();
+                hallHour = new CcHallHour();
                 hallHour.setDayAndHour(hour);
                 hallHour.setHall(hall);
                 hallHour.setSource(DataSource.NONE);
@@ -117,11 +117,11 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
     }
 
     @PermitAll
-    public OpHallShiftTotals calculateTotals(List<OpHallHour> hourList) {
-        OpHallShiftTotals totals = new OpHallShiftTotals();
+    public CcHallShiftTotals calculateTotals(List<CcHallHour> hourList) {
+        CcHallShiftTotals totals = new CcHallShiftTotals();
 
         if (hourList != null) {
-            for (OpHallHour hour : hourList) {
+            for (CcHallHour hour : hourList) {
                 totals.setUpSeconds(
                         totals.getUpSeconds() == null ? hour.getUpSeconds() : totals.getUpSeconds()
                                 + hour.getUpSeconds());
@@ -181,16 +181,16 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
             }
         }
 
-        List<OpHallHour> hourList = findInDatabase(hall, hourArray[0], hourArray[hourArray.length
+        List<CcHallHour> hourList = findInDatabase(hall, hourArray[0], hourArray[hourArray.length
                 - 1]);
-        Map<Date, OpHallHour> hourMap = HourUtil.createHourMap(hourList);
+        Map<Date, CcHallHour> hourMap = HourUtil.createHourMap(hourList);
 
         // We probably could consolidate with previous loop... (performance vs maintainability)
         for (int i = 0; i < hourArray.length; i++) {
             Date hour = hourArray[i];
             SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy HH:mm z");
             logger.log(Level.FINEST, "Editing hall hour: {0}", dateFormat.format(hour));
-            OpHallHour hallHour = hourMap.get(hour);
+            CcHallHour hallHour = hourMap.get(hour);
 
             int total = upArray[i] + tuneArray[i] + bnrArray[i] + downArray[i] + offArray[i];
 
@@ -201,7 +201,7 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
             }
 
             if (hallHour == null) {
-                hallHour = new OpHallHour();
+                hallHour = new CcHallHour();
                 hallHour.setDayAndHour(hour);
                 hallHour.setHall(hall);
             }
@@ -217,7 +217,7 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
     }
 
     @Override
-    protected void edit(OpHallHour hour) {
+    protected void edit(CcHallHour hour) {
         if (hour.getOpHallHourId() == null) {
             this.manualInsert(hour);
         } else {
@@ -225,11 +225,11 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
         }
     }
 
-    private OpHallHour manualInsert(OpHallHour hour) {
+    private CcHallHour manualInsert(CcHallHour hour) {
 
         String dayAndHourStr = TimeUtil.formatDatabaseDateTimeTZ(hour.getDayAndHour());
 
-        Query idq = em.createNativeQuery("select op_hall_hour_id.nextval from dual");
+        Query idq = em.createNativeQuery("select CC_hall_hour_id.nextval from dual");
 
         BigDecimal idDec = (BigDecimal) idq.getSingleResult();
 
@@ -262,12 +262,12 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
     }
 
     @PermitAll
-    public List<OpHallShiftAvailability> getHallAvailablilityList(Date startHour, Date endHour,
+    public List<CcHallShiftAvailability> getHallAvailablilityList(Date startHour, Date endHour,
                                                                   boolean queryEpics, PdShiftPlan plan) {
-        OpHallShiftTotals hallAPdTotals = new OpHallShiftTotals();
-        OpHallShiftTotals hallBPdTotals = new OpHallShiftTotals();
-        OpHallShiftTotals hallCPdTotals = new OpHallShiftTotals();
-        OpHallShiftTotals hallDPdTotals = new OpHallShiftTotals();
+        CcHallShiftTotals hallAPdTotals = new CcHallShiftTotals();
+        CcHallShiftTotals hallBPdTotals = new CcHallShiftTotals();
+        CcHallShiftTotals hallCPdTotals = new CcHallShiftTotals();
+        CcHallShiftTotals hallDPdTotals = new CcHallShiftTotals();
 
         if (plan != null) {
             hallAPdTotals.setUpSeconds(plan.getHallAUpSeconds());
@@ -295,7 +295,7 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
             hallDPdTotals.setOffSeconds(plan.getHallDOffSeconds());
         }
 
-        List<OpHallShiftAvailability> hallAvailabilityList = new ArrayList<>();
+        List<CcHallShiftAvailability> hallAvailabilityList = new ArrayList<>();
         hallAvailabilityList.add(getHallAvailability(Hall.A, startHour, endHour, queryEpics, hallAPdTotals));
         hallAvailabilityList.add(getHallAvailability(Hall.B, startHour, endHour, queryEpics, hallBPdTotals));
         hallAvailabilityList.add(getHallAvailability(Hall.C, startHour, endHour, queryEpics, hallCPdTotals));
@@ -304,11 +304,11 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
         return hallAvailabilityList;
     }
 
-    private OpHallShiftAvailability getHallAvailability(Hall hall, Date startHour, Date endHour,
-                                                        boolean queryEpics, OpHallShiftTotals pdShiftTotals) {
-        List<OpHallHour> dbHourList
+    private CcHallShiftAvailability getHallAvailability(Hall hall, Date startHour, Date endHour,
+                                                        boolean queryEpics, CcHallShiftTotals pdShiftTotals) {
+        List<CcHallHour> dbHourList
                 = findInDatabase(hall, startHour, endHour);
-        List<OpHallHour> epicsHourList;
+        List<CcHallHour> epicsHourList;
 
         if (queryEpics) {
             try {
@@ -321,15 +321,15 @@ public class OpHallHourService extends AbstractService<OpHallHour> {
             epicsHourList = new ArrayList<>();
         }
 
-        Map<Date, OpHallHour> dbHourMap = HourUtil.createHourMap(dbHourList);
-        Map<Date, OpHallHour> epicsHourMap = HourUtil.createHourMap(epicsHourList);
-        List<OpHallHour> hourList = fillMissingHoursAndSetSource(dbHourMap,
+        Map<Date, CcHallHour> dbHourMap = HourUtil.createHourMap(dbHourList);
+        Map<Date, CcHallHour> epicsHourMap = HourUtil.createHourMap(epicsHourList);
+        List<CcHallHour> hourList = fillMissingHoursAndSetSource(dbHourMap,
                 epicsHourMap, hall, startHour, endHour);
 
-        OpHallShiftTotals totals = calculateTotals(hourList);
-        OpHallShiftTotals epicsTotals = calculateTotals(epicsHourList);
+        CcHallShiftTotals totals = calculateTotals(hourList);
+        CcHallShiftTotals epicsTotals = calculateTotals(epicsHourList);
 
-        OpHallShiftAvailability availability = new OpHallShiftAvailability();
+        CcHallShiftAvailability availability = new CcHallShiftAvailability();
         availability.setHall(hall);
         availability.setHourList(hourList);
         availability.setEpicsHourList(epicsHourList);

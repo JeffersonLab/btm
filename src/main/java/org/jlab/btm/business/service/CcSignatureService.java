@@ -21,21 +21,21 @@ import java.util.List;
  * @author ryans
  */
 @Stateless
-public class OpSignatureService extends AbstractService<OpSignature> {
+public class CcSignatureService extends AbstractService<CcSignature> {
 
     @EJB
-    OpAccHourService accHourService;
+    CcAccHourService accHourService;
     @EJB
-    OpHallHourService hallHourService;
+    CcHallHourService hallHourService;
     @EJB
-    OpMultiplicityHourService multiHourService;
+    CcMultiplicityHourService multiHourService;
     @EJB
-    OpShiftService shiftService;
+    CcShiftService shiftService;
     @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
-    public OpSignatureService() {
-        super(OpSignature.class);
+    public CcSignatureService() {
+        super(CcSignature.class);
     }
 
     @Override
@@ -44,10 +44,10 @@ public class OpSignatureService extends AbstractService<OpSignature> {
     }
 
     @PermitAll
-    public List<OpSignature> find(Date startDayAndHour) {
-        TypedQuery<OpSignature> query = em.createQuery(
-                "select a from OpSignature a where a.startDayAndHour = :startDayAndHour order by a.signedDate asc",
-                OpSignature.class);
+    public List<CcSignature> find(Date startDayAndHour) {
+        TypedQuery<CcSignature> query = em.createQuery(
+                "select a from CcSignature a where a.startDayAndHour = :startDayAndHour order by a.signedDate asc",
+                CcSignature.class);
 
         query.setParameter("startDayAndHour", startDayAndHour);
 
@@ -56,10 +56,10 @@ public class OpSignatureService extends AbstractService<OpSignature> {
 
     @PermitAll
     public CcTimesheetStatus calculateStatus(Date startDayAndHour, Date endDayAndHour,
-                                             List<OpAccHour> accHourList, List<OpHallHour> hallAHourList,
-                                             List<OpHallHour> hallBHourList, List<OpHallHour> hallCHourList,
-                                             List<OpHallHour> hallDHourList, List<OpMultiplicityHour> multiHourList, OpShift shift,
-                                             List<OpSignature> signatureList) {
+                                             List<CcAccHour> accHourList, List<CcHallHour> hallAHourList,
+                                             List<CcHallHour> hallBHourList, List<CcHallHour> hallCHourList,
+                                             List<CcHallHour> hallDHourList, List<CcMultiplicityHour> multiHourList, CcShift shift,
+                                             List<CcSignature> signatureList) {
         CcTimesheetStatus status = new CcTimesheetStatus();
 
         long hoursInShift = TimeUtil.differenceInHours(startDayAndHour, endDayAndHour) + 1;
@@ -104,23 +104,23 @@ public class OpSignatureService extends AbstractService<OpSignature> {
 
         Date endDayAndHour = TimeUtil.calculateCrewChiefShiftEndDayAndHour(startDayAndHour);
 
-        List<OpAccHour> accHourList = accHourService.findInDatabase(startDayAndHour, endDayAndHour);
+        List<CcAccHour> accHourList = accHourService.findInDatabase(startDayAndHour, endDayAndHour);
 
-        List<OpHallHour> hallAHourList = hallHourService.findInDatabase(Hall.A, startDayAndHour,
+        List<CcHallHour> hallAHourList = hallHourService.findInDatabase(Hall.A, startDayAndHour,
                 endDayAndHour);
-        List<OpHallHour> hallBHourList = hallHourService.findInDatabase(Hall.B, startDayAndHour,
+        List<CcHallHour> hallBHourList = hallHourService.findInDatabase(Hall.B, startDayAndHour,
                 endDayAndHour);
-        List<OpHallHour> hallCHourList = hallHourService.findInDatabase(Hall.C, startDayAndHour,
+        List<CcHallHour> hallCHourList = hallHourService.findInDatabase(Hall.C, startDayAndHour,
                 endDayAndHour);
-        List<OpHallHour> hallDHourList = hallHourService.findInDatabase(Hall.D, startDayAndHour,
-                endDayAndHour);
-
-        List<OpMultiplicityHour> multiHourList = multiHourService.findInDatabase(startDayAndHour,
+        List<CcHallHour> hallDHourList = hallHourService.findInDatabase(Hall.D, startDayAndHour,
                 endDayAndHour);
 
-        OpShift shift = shiftService.findInDatabase(startDayAndHour);
+        List<CcMultiplicityHour> multiHourList = multiHourService.findInDatabase(startDayAndHour,
+                endDayAndHour);
 
-        List<OpSignature> signatureList = find(startDayAndHour);
+        CcShift shift = shiftService.findInDatabase(startDayAndHour);
+
+        List<CcSignature> signatureList = find(startDayAndHour);
 
         return this.calculateStatus(startDayAndHour, endDayAndHour, accHourList, hallAHourList,
                 hallBHourList, hallCHourList,
@@ -137,9 +137,9 @@ public class OpSignatureService extends AbstractService<OpSignature> {
 
         String username = context.getCallerPrincipal().getName();
 
-        List<OpSignature> signatureList = find(startDayAndHour);
+        List<CcSignature> signatureList = find(startDayAndHour);
 
-        for (OpSignature sig : signatureList) {
+        for (CcSignature sig : signatureList) {
             if (sig.getStartDayAndHour().getTime() == startDayAndHour.getTime()
                     && sig.getSignedBy().equals(username) && sig.getSignedRole() == role) {
                 throw new UserFriendlyException("User has already signed the timesheet");
@@ -176,7 +176,7 @@ public class OpSignatureService extends AbstractService<OpSignature> {
             throw new UserFriendlyException("You must save shift information");
         }
 
-        OpSignature signature = new OpSignature();
+        CcSignature signature = new CcSignature();
         signature.setStartDayAndHour(startDayAndHour);
         signature.setSignedDate(new Date());
         signature.setSignedRole(role);

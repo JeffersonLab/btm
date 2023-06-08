@@ -1,6 +1,6 @@
 package org.jlab.btm.persistence.epics;
 
-import org.jlab.btm.persistence.entity.OpShift;
+import org.jlab.btm.persistence.entity.CcShift;
 import org.jlab.btm.persistence.enumeration.DataSource;
 
 /**
@@ -62,8 +62,8 @@ public class ShiftInfo {
      *
      * @return The shift
      */
-    public OpShift getOpShift() {
-        OpShift shift = new OpShift();
+    public CcShift getOpShift() {
+        CcShift shift = new CcShift();
 
         shift.setCrewChief(crewChief);
         shift.setOperators(operators);

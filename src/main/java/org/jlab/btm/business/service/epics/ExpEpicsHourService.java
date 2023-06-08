@@ -23,13 +23,13 @@ import javax.ejb.Stateless;
  * @author ryans
  */
 @Stateless
-public class EpicsExpHourService {
+public class ExpEpicsHourService {
 
     @EJB
     ContextFactory factory;
 
     private static final Logger logger =
-            Logger.getLogger(EpicsExpHourService.class.getName());
+            Logger.getLogger(ExpEpicsHourService.class.getName());
 
 
     /**

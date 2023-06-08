@@ -6,7 +6,7 @@ import org.jlab.btm.presentation.util.BtmFunctions;
 /**
  * @author ryans
  */
-public class CrewChiefHallCrossCheck {
+public class CcHallCrossCheck {
 
     private static final int HALF_HOUR_OF_SECONDS = 1800;
     private static final int TEN_MINUTES_OF_SECONDS = 600;
@@ -29,11 +29,11 @@ public class CrewChiefHallCrossCheck {
     private final boolean[] highOff = new boolean[4];
     private final boolean[] highAcc = new boolean[4];
 
-    public CrewChiefHallCrossCheck(OpHallShiftTotals opA, OpHallShiftTotals opB,
-                                   OpHallShiftTotals opC, OpHallShiftTotals opD, ExpHallShiftTotals a,
-                                   ExpHallShiftTotals b, ExpHallShiftTotals c, ExpHallShiftTotals d) {
+    public CcHallCrossCheck(CcHallShiftTotals opA, CcHallShiftTotals opB,
+                            CcHallShiftTotals opC, CcHallShiftTotals opD, ExpHallShiftTotals a,
+                            ExpHallShiftTotals b, ExpHallShiftTotals c, ExpHallShiftTotals d) {
 
-        OpHallShiftTotals[] opTimes = new OpHallShiftTotals[]{opA, opB, opC, opD};
+        CcHallShiftTotals[] opTimes = new CcHallShiftTotals[]{opA, opB, opC, opD};
         ExpHallShiftTotals[] times = new ExpHallShiftTotals[]{a, b, c, d};
 
         for (int i = 0; i < 4; i++) {

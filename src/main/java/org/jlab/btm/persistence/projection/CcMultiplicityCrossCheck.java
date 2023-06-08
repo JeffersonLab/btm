@@ -6,7 +6,7 @@ import org.jlab.btm.presentation.util.BtmFunctions;
 /**
  * @author ryans
  */
-public class CrewChiefMultiplicityCrossCheck {
+public class CcMultiplicityCrossCheck {
 
     private static final int TEN_MINUTES_OF_SECONDS = 600;
     private final String[] halls = new String[]{"A", "B", "C", "D"};
@@ -16,10 +16,10 @@ public class CrewChiefMultiplicityCrossCheck {
     private final boolean[] hallPassed = new boolean[4];
     private final boolean[] highUp = new boolean[4];
 
-    public CrewChiefMultiplicityCrossCheck(OpHallShiftTotals opA, OpHallShiftTotals opB,
-                                           OpHallShiftTotals opC, OpHallShiftTotals opD, OpMultiplicityShiftTotals multi) {
+    public CcMultiplicityCrossCheck(CcHallShiftTotals opA, CcHallShiftTotals opB,
+                                    CcHallShiftTotals opC, CcHallShiftTotals opD, CcMultiplicityShiftTotals multi) {
 
-        OpHallShiftTotals[] opTimes = new OpHallShiftTotals[]{opA, opB, opC, opD};
+        CcHallShiftTotals[] opTimes = new CcHallShiftTotals[]{opA, opB, opC, opD};
 
         for (int i = 0; i < 4; i++) {
             highUpMessage[i] = "Operations reports significantly more UP ("

@@ -1,6 +1,6 @@
 package org.jlab.btm.persistence.projection;
 
-import org.jlab.btm.persistence.entity.OpMultiplicityHour;
+import org.jlab.btm.persistence.entity.CcMultiplicityHour;
 
 import java.util.List;
 
@@ -8,49 +8,49 @@ import java.util.List;
  * @author ryans
  */
 public class MultiplicityShiftAvailability {
-    private OpMultiplicityShiftTotals shiftTotals;
-    private OpMultiplicityShiftTotals epicsShiftTotals;
-    private List<OpMultiplicityHour> hourList;
-    private List<OpMultiplicityHour> epicsHourList;
-    private List<OpMultiplicityHour> dbHourList;
+    private CcMultiplicityShiftTotals shiftTotals;
+    private CcMultiplicityShiftTotals epicsShiftTotals;
+    private List<CcMultiplicityHour> hourList;
+    private List<CcMultiplicityHour> epicsHourList;
+    private List<CcMultiplicityHour> dbHourList;
 
-    public OpMultiplicityShiftTotals getShiftTotals() {
+    public CcMultiplicityShiftTotals getShiftTotals() {
         return shiftTotals;
     }
 
-    public void setShiftTotals(OpMultiplicityShiftTotals shiftTotals) {
+    public void setShiftTotals(CcMultiplicityShiftTotals shiftTotals) {
         this.shiftTotals = shiftTotals;
     }
 
-    public OpMultiplicityShiftTotals getEpicsShiftTotals() {
+    public CcMultiplicityShiftTotals getEpicsShiftTotals() {
         return epicsShiftTotals;
     }
 
-    public void setEpicsShiftTotals(OpMultiplicityShiftTotals epicsShiftTotals) {
+    public void setEpicsShiftTotals(CcMultiplicityShiftTotals epicsShiftTotals) {
         this.epicsShiftTotals = epicsShiftTotals;
     }
 
-    public List<OpMultiplicityHour> getHourList() {
+    public List<CcMultiplicityHour> getHourList() {
         return hourList;
     }
 
-    public void setHourList(List<OpMultiplicityHour> hourList) {
+    public void setHourList(List<CcMultiplicityHour> hourList) {
         this.hourList = hourList;
     }
 
-    public List<OpMultiplicityHour> getEpicsHourList() {
+    public List<CcMultiplicityHour> getEpicsHourList() {
         return epicsHourList;
     }
 
-    public void setEpicsHourList(List<OpMultiplicityHour> epicsHourList) {
+    public void setEpicsHourList(List<CcMultiplicityHour> epicsHourList) {
         this.epicsHourList = epicsHourList;
     }
 
-    public List<OpMultiplicityHour> getDbHourList() {
+    public List<CcMultiplicityHour> getDbHourList() {
         return dbHourList;
     }
 
-    public void setDbHourList(List<OpMultiplicityHour> dbHourList) {
+    public void setDbHourList(List<CcMultiplicityHour> dbHourList) {
         this.dbHourList = dbHourList;
     }
 }

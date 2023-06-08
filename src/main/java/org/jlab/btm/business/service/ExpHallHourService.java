@@ -2,11 +2,9 @@ package org.jlab.btm.business.service;
 
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
-import org.jlab.btm.business.service.epics.EpicsExpHourService;
+import org.jlab.btm.business.service.epics.ExpEpicsHourService;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.ExpHallHour;
-import org.jlab.btm.persistence.entity.ExpHallShiftPurpose;
-import org.jlab.btm.persistence.entity.OpAccHour;
 import org.jlab.btm.persistence.enumeration.DataSource;
 import org.jlab.btm.persistence.projection.ExpHallHourTotals;
 import org.jlab.btm.persistence.projection.ExpHallShiftAvailability;
@@ -44,7 +42,7 @@ public class ExpHallHourService extends AbstractService<ExpHallHour> {
     private EntityManager em;
 
     @EJB
-    EpicsExpHourService epicsHourService;
+    ExpEpicsHourService epicsHourService;
 
     @EJB
     ExpSecurityRuleService ruleService;
@@ -111,7 +109,7 @@ public class ExpHallHourService extends AbstractService<ExpHallHour> {
     @PermitAll
     public List<PhysicsSummaryTotals> reportTotals(Date start, Date end) {
         Query q = em.createNativeQuery(
-                "select a.hall, abu, banu, bna, acc, exp_off, up, tune, bnr, down, op_off from "
+                "select a.hall, abu, banu, bna, acc, exp_off, up, tune, bnr, down, CC_off from "
                         + "("
                         + "select hall, sum(abu_seconds) as abu, sum(banu_seconds) as banu, sum(bna_seconds) as bna, sum(acc_seconds) as acc, sum(off_seconds) as exp_off from "
                         + "(select hall, abu_seconds, banu_seconds, bna_seconds, acc_seconds, off_seconds "
@@ -121,9 +119,9 @@ public class ExpHallHourService extends AbstractService<ExpHallHour> {
                         + "union all select 'C', 0, 0, 0, 0, 0 from dual "
                         + "union all select 'D', 0, 0, 0, 0, 0 from dual) " + "group by hall " + ") a, "
                         + "("
-                        + "select hall, sum(up_seconds) as up, sum(tune_seconds) as tune, sum(bnr_seconds) as bnr, sum(down_seconds) as down, sum(off_seconds) as op_off from "
+                        + "select hall, sum(up_seconds) as up, sum(tune_seconds) as tune, sum(bnr_seconds) as bnr, sum(down_seconds) as down, sum(off_seconds) as CC_off from "
                         + "(select hall, up_seconds, tune_seconds, bnr_seconds, down_seconds, off_seconds "
-                        + "from op_hall_hour " + "where day_and_hour >= :start and day_and_hour < :end "
+                        + "from CC_hall_hour " + "where day_and_hour >= :start and day_and_hour < :end "
                         + "union all select 'A', 0, 0, 0, 0, 0 from dual "
                         + "union all select 'B', 0, 0, 0, 0, 0 from dual "
                         + "union all select 'C', 0, 0, 0, 0, 0 from dual "

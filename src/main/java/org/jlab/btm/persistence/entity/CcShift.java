@@ -13,20 +13,20 @@ import java.util.Date;
  * @author ryans
  */
 @Entity
-@Table(name = "OP_SHIFT", schema = "BTM_OWNER", uniqueConstraints
+@Table(name = "CC_SHIFT", schema = "BTM_OWNER", uniqueConstraints
         = {
         @UniqueConstraint(columnNames = {"START_DAY_AND_HOUR"})})
 @NamedQueries({
         @NamedQuery(name = "OpShift.findAll", query
-                = "SELECT o FROM OpShift o")})
-public class OpShift implements Serializable {
+                = "SELECT o FROM CcShift o")})
+public class CcShift implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "OpShiftId", sequenceName = "OP_SHIFT_ID", allocationSize = 1)
+    @SequenceGenerator(name = "OpShiftId", sequenceName = "CC_SHIFT_ID", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OpShiftId")
     @Basic(optional = false)
     @NotNull
-    @Column(name = "OP_SHIFT_ID", nullable = false, precision = 38, scale = 0)
+    @Column(name = "CC_SHIFT_ID", nullable = false, precision = 38, scale = 0)
     private BigDecimal opShiftId;
     @Basic(optional = false)
     @NotNull
@@ -51,14 +51,14 @@ public class OpShift implements Serializable {
     @Transient
     private DataSource source;
 
-    public OpShift() {
+    public CcShift() {
     }
 
-    public OpShift(BigDecimal opShiftId) {
+    public CcShift(BigDecimal opShiftId) {
         this.opShiftId = opShiftId;
     }
 
-    public OpShift(BigDecimal opShiftId, Date startDayAndHour) {
+    public CcShift(BigDecimal opShiftId, Date startDayAndHour) {
         this.opShiftId = opShiftId;
         this.startDayAndHour = startDayAndHour;
     }
@@ -137,10 +137,10 @@ public class OpShift implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof OpShift)) {
+        if (!(object instanceof CcShift)) {
             return false;
         }
-        OpShift other = (OpShift) object;
+        CcShift other = (CcShift) object;
         return (this.opShiftId != null || other.opShiftId == null) && (this.opShiftId == null || this.opShiftId.equals(other.opShiftId));
     }
 
