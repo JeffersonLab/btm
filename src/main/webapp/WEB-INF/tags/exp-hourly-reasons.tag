@@ -16,17 +16,20 @@
                         <th class="hour-header"></th>
                         <th>Reason</th>
                         <th class="duration-header">Duration</th>
+                        <th style="width: 50px;"></th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
                         <th></th>
                         <th>Shift Total</th>
+                        <th style="text-align: right;">${btm:formatDuration(explanationSecondsTotal, durationUnits)}</th>
                         <th></th>
                     </tr>
                     </tfoot>
                     <tbody>
-                    <c:forEach items="${hourList}" var="hour">
+                    <c:forEach items="${hourList}" var="explanation">
+                        <c:set value="${explanation.expHour}" var="hour"/>
                         <tr>
                             <fmt:formatDate value="${hour.dayAndHour}" pattern="dd MMM yyyy HH:mm z"
                                             var="fullDate"/>
@@ -34,8 +37,9 @@
                             <th title="${fullDate}" data-hour="${isoDate}"><fmt:formatDate
                                     value="${hour.dayAndHour}"
                                     pattern="HH"/></th>
-                            <td></td>
-                            <td></td>
+                            <td><c:out value="${explanation.expReason.name}"/></td>
+                            <td><c:out value="${btm:formatDuration(explanation.seconds, durationUnits)}"/></td>
+                            <th><span title="Delete" class="ui-icon ui-icon-minusthick"></span></th>
                         </tr>
                     </c:forEach>
                     </tbody>
@@ -79,7 +83,7 @@
             </c:otherwise>
         </c:choose>
         <div class="form-button-panel">
-            <button id="add-reason-button" type="button">Add</button>
+            <button id="add-reason-button" type="button"${reasonDiscrepancyList.size() > 0 ? '' : ' disabled="disabled"'}>Add</button>
         </div>
     </form>
 </div>

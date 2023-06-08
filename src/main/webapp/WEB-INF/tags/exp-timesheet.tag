@@ -12,8 +12,8 @@
                            totals="${availability.shiftTotals}"
                            epicsTotals="${availability.epicsShiftTotals}"/>
 <h3>Reasons not Ready</h3>
-<t:exp-hourly-reasons hall="${reasons.hall}"
-                      hourList="${reasons.hourList}"/>
+<t:exp-hourly-reasons hall="${availability.hall}"
+                      hourList="${explanationList}"/>
 <h3>Shift Information</h3>
 <div class="form-wrapper">
     <ul id="shift-info-key-value-list" class="key-value-list">

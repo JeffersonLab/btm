@@ -353,7 +353,12 @@ public class TimesheetController extends HttpServlet {
 
         /*REASONS NOT READY*/
         List<ExpReason> reasonList = reasonService.findByActive(hall, true);
-        List<ExpHourReasonTime> reasonsNotReady = reasonTimeService.find(hall, startHour, endHour);
+        List<ExpHourReasonTime> explanationList = reasonTimeService.find(hall, startHour, endHour);
+
+        int explanationSecondsTotal = 0;
+        for(ExpHourReasonTime explanation: explanationList) {
+            explanationSecondsTotal = explanationSecondsTotal + explanation.getSeconds();
+        }
 
         /*SHIFT INFORMATION*/
         ExpShift shiftInfo = expShiftService.find(hall, startHour);
@@ -362,7 +367,7 @@ public class TimesheetController extends HttpServlet {
         List<ExpSignature> signatureList = expSignatureService.find(hall, startHour);
         ExpTimesheetStatus status = expSignatureService.calculateStatus(startHour, endHour,
                 expAvailability.getDbHourList(),
-                reasonsNotReady,
+                explanationList,
                 shiftInfo, signatureList);
 
         /*Purposes*/
@@ -374,6 +379,8 @@ public class TimesheetController extends HttpServlet {
         request.setAttribute("status", status);
         request.setAttribute("editable", editable);
         request.setAttribute("reasonList", reasonList);
+        request.setAttribute("explanationList", explanationList);
+        request.setAttribute("explanationSecondsTotal", explanationSecondsTotal);
         request.setAttribute("availability", expAvailability);
         request.setAttribute("shiftInfo", shiftInfo);
         request.setAttribute("signatureList", signatureList);

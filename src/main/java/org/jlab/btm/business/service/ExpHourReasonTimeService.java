@@ -103,7 +103,7 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
 
         if(explanationList != null) {
             for(ExpHourReasonTime explanation: explanationList) {
-                if(hourId.equals(explanation.getExpHallHour().getExpHourId())) {
+                if(hourId.equals(explanation.getExpHour().getExpHourId())) {
                     total = total + explanation.getSeconds();
                 }
             }
@@ -147,9 +147,9 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
 
         ExpHourReasonTime explanation = new ExpHourReasonTime();
         explanation.setHall(hall);
-        explanation.setExpHallHour(hour);
+        explanation.setExpHour(hour);
         explanation.setSeconds(durationSeconds);
-        explanation.setExpHallReason(reason);
+        explanation.setExpReason(reason);
 
         super.edit(explanation);
     }

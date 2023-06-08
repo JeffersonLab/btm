@@ -102,19 +102,19 @@ public class ExpHourReasonTime implements Comparable<ExpHourReasonTime>, Seriali
         this.seconds = seconds;
     }
 
-    public ExpHour getExpHallHour() {
+    public ExpHour getExpHour() {
         return expHour;
     }
 
-    public void setExpHallHour(ExpHour expHour) {
+    public void setExpHour(ExpHour expHour) {
         this.expHour = expHour;
     }
 
-    public ExpReason getExpHallReason() {
+    public ExpReason getExpReason() {
         return expReason;
     }
 
-    public void setExpHallReason(ExpReason expReason) {
+    public void setExpReason(ExpReason expReason) {
         this.expReason = expReason;
     }
 
@@ -143,7 +143,7 @@ public class ExpHourReasonTime implements Comparable<ExpHourReasonTime>, Seriali
         int result = this.getHall().compareTo(o.getHall());
 
         if(result == 0) {
-            result = this.getExpHallHour().getDayAndHour().compareTo(o.getExpHallHour().getDayAndHour());
+            result = this.getExpHour().getDayAndHour().compareTo(o.getExpHour().getDayAndHour());
         }
 
         return result;
