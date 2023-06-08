@@ -26,20 +26,20 @@ import javax.validation.constraints.Size;
  * @author ryans
  */
 @Entity
-@Table(name = "EXP_HALL_REASON", schema = "BTM_OWNER", uniqueConstraints = {
+@Table(name = "EXP_REASON", schema = "BTM_OWNER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"HALL", "NAME"}),
-        @UniqueConstraint(columnNames = {"HALL", "EXP_HALL_REASON_ID"})})
+        @UniqueConstraint(columnNames = {"HALL", "EXP_REASON_ID"})})
 @NamedQueries({
-        @NamedQuery(name = "ExpHallReason.findByExpHallReasonId", query = "SELECT e FROM ExpHallReason e WHERE e.expHallReasonId = :expHallReasonId"),
-        @NamedQuery(name = "ExpHallReason.findByHallAndName", query = "SELECT e FROM ExpHallReason e WHERE e.hall = :hall AND e.name = :name"),
-        @NamedQuery(name = "ExpHallReason.findByHallAndActive", query = "SELECT e FROM ExpHallReason e WHERE e.hall = :hall AND e.active = :active")})
-public class ExpHallReason implements Comparable<ExpHallReason>, Serializable {
+        @NamedQuery(name = "ExpHallReason.findByExpHallReasonId", query = "SELECT e FROM ExpReason e WHERE e.expHallReasonId = :expHallReasonId"),
+        @NamedQuery(name = "ExpHallReason.findByHallAndName", query = "SELECT e FROM ExpReason e WHERE e.hall = :hall AND e.name = :name"),
+        @NamedQuery(name = "ExpHallReason.findByHallAndActive", query = "SELECT e FROM ExpReason e WHERE e.hall = :hall AND e.active = :active")})
+public class ExpReason implements Comparable<ExpReason>, Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="ExpHallReasonId", sequenceName="EXP_HALL_REASON_ID", allocationSize=1)
+    @SequenceGenerator(name="ExpHallReasonId", sequenceName="EXP_REASON_ID", allocationSize=1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ExpHallReasonId")
     @Basic(optional = false)
-    @Column(name = "EXP_HALL_REASON_ID", nullable = false, precision = 38, scale = 0)
+    @Column(name = "EXP_REASON_ID", nullable = false, precision = 38, scale = 0)
     private BigInteger expHallReasonId;
     @Basic(optional = false)
     @Column(name = "HALL", nullable = false, length = 1, columnDefinition = "char(1)")
@@ -56,14 +56,14 @@ public class ExpHallReason implements Comparable<ExpHallReason>, Serializable {
     @NotNull
     private boolean active;
 
-    public ExpHallReason() {
+    public ExpReason() {
     }
 
-    public ExpHallReason(BigInteger expHallReasonId) {
+    public ExpReason(BigInteger expHallReasonId) {
         this.expHallReasonId = expHallReasonId;
     }
 
-    public ExpHallReason(BigInteger expHallReasonId, Hall hall, String name, boolean active) {
+    public ExpReason(BigInteger expHallReasonId, Hall hall, String name, boolean active) {
         this.expHallReasonId = expHallReasonId;
         this.hall = hall;
         this.name = name;
@@ -112,10 +112,10 @@ public class ExpHallReason implements Comparable<ExpHallReason>, Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ExpHallReason)) {
+        if (!(object instanceof ExpReason)) {
             return false;
         }
-        ExpHallReason other = (ExpHallReason) object;
+        ExpReason other = (ExpReason) object;
         if ((this.expHallReasonId == null && other.expHallReasonId != null) || (this.expHallReasonId != null && !this.expHallReasonId.equals(other.expHallReasonId))) {
             return false;
         }
@@ -123,7 +123,7 @@ public class ExpHallReason implements Comparable<ExpHallReason>, Serializable {
     }
 
     @Override
-    public int compareTo(ExpHallReason o) {
+    public int compareTo(ExpReason o) {
         int result = this.getHall().compareTo(o.getHall());
 
         if(result == 0) {

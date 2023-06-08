@@ -3,14 +3,14 @@ package org.jlab.btm.persistence.projection;
 /**
  * @author ryans
  */
-public class ExpHallHourTotals extends ExpHallShiftTotals {
+public class ExpHourTotals extends ExpShiftTotals {
 
     private final Integer erSeconds;
     private final Integer pccSeconds;
     private final Integer uedSeconds;
 
-    public ExpHallHourTotals(Character hall, Number hourCount, Number abuSeconds, Number banuSeconds,
-                             Number bnaSeconds, Number accSeconds, Number offSeconds, Number erSeconds, Number pccSeconds, Number uedSeconds) {
+    public ExpHourTotals(Character hall, Number hourCount, Number abuSeconds, Number banuSeconds,
+                         Number bnaSeconds, Number accSeconds, Number offSeconds, Number erSeconds, Number pccSeconds, Number uedSeconds) {
         super(hall, hourCount, abuSeconds, banuSeconds, bnaSeconds, accSeconds, offSeconds);
 
         this.erSeconds = erSeconds.intValue();

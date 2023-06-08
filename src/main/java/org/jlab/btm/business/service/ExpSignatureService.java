@@ -11,8 +11,6 @@ import javax.persistence.TypedQuery;
 
 import org.jlab.btm.persistence.entity.*;
 import org.jlab.btm.persistence.enumeration.Role;
-import org.jlab.btm.persistence.projection.CcTimesheetStatus;
-import org.jlab.btm.persistence.projection.ExpHallShiftAvailability;
 import org.jlab.btm.persistence.projection.ExpTimesheetStatus;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.TimeUtil;
@@ -24,20 +22,20 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
  * @author ryans
  */
 @Stateless
-public class ExpSignatureService extends AbstractService<ExpHallSignature> {
+public class ExpSignatureService extends AbstractService<ExpSignature> {
 
     @PersistenceContext(unitName = "btmPU")
     protected EntityManager em;
 
     @EJB
-    ExpHallHourReasonTimeService reasonTimeService;
+    ExpHourReasonTimeService reasonTimeService;
     @EJB
-    ExpHallHourService expHourService;
+    ExpHourService expHourService;
     @EJB
-    ExpHallShiftService shiftService;
+    ExpShiftService shiftService;
 
     public ExpSignatureService() {
-        super(ExpHallSignature.class);
+        super(ExpSignature.class);
     }
 
     @Override
@@ -46,8 +44,8 @@ public class ExpSignatureService extends AbstractService<ExpHallSignature> {
     }
 
     @PermitAll
-    public List<ExpHallSignature> find(Hall hall, Date startDayAndHour) {
-        TypedQuery<ExpHallSignature> q = em.createNamedQuery("ExpHallSignature.findByHallStartDayAndHour", ExpHallSignature.class);
+    public List<ExpSignature> find(Hall hall, Date startDayAndHour) {
+        TypedQuery<ExpSignature> q = em.createNamedQuery("ExpHallSignature.findByHallStartDayAndHour", ExpSignature.class);
 
         q.setParameter("hall", hall);
         q.setParameter("startDayAndHour", startDayAndHour);
@@ -60,21 +58,21 @@ public class ExpSignatureService extends AbstractService<ExpHallSignature> {
 
         Date endDayAndHour = TimeUtil.calculateExperimenterShiftEndDayAndHour(startDayAndHour);
 
-        List<ExpHallHour> availabilityList = expHourService.findInDatabase(hall, startDayAndHour, endDayAndHour);
+        List<ExpHour> availabilityList = expHourService.findInDatabase(hall, startDayAndHour, endDayAndHour);
 
-        List<ExpHallHourReasonTime> explanationsList = reasonTimeService.find(hall, startDayAndHour, endDayAndHour);
+        List<ExpHourReasonTime> explanationsList = reasonTimeService.find(hall, startDayAndHour, endDayAndHour);
 
-        ExpHallShift shift = shiftService.find(hall, startDayAndHour);
+        ExpShift shift = shiftService.find(hall, startDayAndHour);
 
-        List<ExpHallSignature> signatureList = find(hall, startDayAndHour);
+        List<ExpSignature> signatureList = find(hall, startDayAndHour);
 
         return this.calculateStatus(startDayAndHour, endDayAndHour, availabilityList, explanationsList, shift, signatureList);
     }
 
     @PermitAll
-    public ExpTimesheetStatus calculateStatus(Date startDayAndHour, Date endDayAndHour, List<ExpHallHour> expAvailabilityList,
-                                              List<ExpHallHourReasonTime> reasonsNotReadyList, ExpHallShift shiftInfo,
-                                              List<ExpHallSignature> signatureList) {
+    public ExpTimesheetStatus calculateStatus(Date startDayAndHour, Date endDayAndHour, List<ExpHour> expAvailabilityList,
+                                              List<ExpHourReasonTime> reasonsNotReadyList, ExpShift shiftInfo,
+                                              List<ExpSignature> signatureList) {
         ExpTimesheetStatus status = new ExpTimesheetStatus();
 
         long hoursInShift = TimeUtil.differenceInHours(startDayAndHour, endDayAndHour) + 1;
@@ -112,9 +110,9 @@ public class ExpSignatureService extends AbstractService<ExpHallSignature> {
 
         String username = context.getCallerPrincipal().getName();
 
-        List<ExpHallSignature> signatureList = find(hall, startDayAndHour);
+        List<ExpSignature> signatureList = find(hall, startDayAndHour);
 
-        for (ExpHallSignature sig : signatureList) {
+        for (ExpSignature sig : signatureList) {
             if (sig.getStartDayAndHour().getTime() == startDayAndHour.getTime()
                     && sig.getSignedBy().equals(username) && sig.getSignedRole() == role) {
                 throw new UserFriendlyException("User has already signed the timesheet");
@@ -135,7 +133,7 @@ public class ExpSignatureService extends AbstractService<ExpHallSignature> {
             throw new UserFriendlyException("You must save shift information");
         }
 
-        ExpHallSignature signature = new ExpHallSignature();
+        ExpSignature signature = new ExpSignature();
         signature.setHall(hall);
         signature.setStartDayAndHour(startDayAndHour);
         signature.setSignedDate(new Date());

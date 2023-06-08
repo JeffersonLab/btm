@@ -1,9 +1,9 @@
 package org.jlab.btm.presentation.controller;
 
-import org.jlab.btm.business.service.ExpHallShiftPurposeService;
+import org.jlab.btm.business.service.ExpShiftPurposeService;
 import org.jlab.btm.business.service.MonthlyScheduleService;
 import org.jlab.btm.business.service.ScheduleDayService;
-import org.jlab.btm.persistence.entity.ExpHallShiftPurpose;
+import org.jlab.btm.persistence.entity.ExpShiftPurpose;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
 import org.jlab.btm.persistence.entity.ScheduleDay;
 import org.jlab.smoothness.business.util.TimeUtil;
@@ -33,7 +33,7 @@ public class ExportHtmlSchedule extends HttpServlet {
     @EJB
     ScheduleDayService scheduleDayService;
     @EJB
-    ExpHallShiftPurposeService purposeService;
+    ExpShiftPurposeService purposeService;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -60,7 +60,7 @@ public class ExportHtmlSchedule extends HttpServlet {
             schedule.setScheduleDayList(dayList);
         }
 
-        Map<Integer, ExpHallShiftPurpose> purposeMap = purposeService.findPurposeByIdMap();
+        Map<Integer, ExpShiftPurpose> purposeMap = purposeService.findPurposeByIdMap();
 
         response.setContentType("text/html");
         response.setHeader("content-disposition", "attachment;filename=\"schedule.html\"");

@@ -1,6 +1,6 @@
 package org.jlab.btm.presentation.controller.reports;
 
-import org.jlab.btm.business.service.ExpHallHourService;
+import org.jlab.btm.business.service.ExpHourService;
 import org.jlab.btm.business.service.CcMultiplicityHourService;
 import org.jlab.btm.business.service.PdShiftPlanService;
 import org.jlab.btm.persistence.projection.MultiplicitySummaryTotals;
@@ -36,7 +36,7 @@ public class PhysicsSummary extends HttpServlet {
     CcMultiplicityHourService multiplicityService;
 
     @EJB
-    ExpHallHourService expHourService;
+    ExpHourService expHourService;
 
     @EJB
     PdShiftPlanService planService;

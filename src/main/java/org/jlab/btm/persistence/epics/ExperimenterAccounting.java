@@ -1,6 +1,6 @@
 package org.jlab.btm.persistence.epics;
 
-import org.jlab.btm.persistence.entity.ExpHallHour;
+import org.jlab.btm.persistence.entity.ExpHour;
 import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
@@ -140,8 +140,8 @@ public class ExperimenterAccounting {
      *
      * @return the list of experimenter hall hours.
      */
-    public List<ExpHallHour> getExpHallHours() {
-        List<ExpHallHour> hours = new ArrayList<ExpHallHour>();
+    public List<ExpHour> getExpHallHours() {
+        List<ExpHour> hours = new ArrayList<ExpHour>();
 
         if (!isValidValue()) {
             throw new IllegalStateException(
@@ -149,7 +149,7 @@ public class ExperimenterAccounting {
         }
 
         for (int i = 0; i < time.length; i++) {
-            ExpHallHour hour = new ExpHallHour();
+            ExpHour hour = new ExpHour();
 
             // EPICS uses UNIX timestamps
             Date hourOfDay = TimeUtil.convertUNIXTimestampToDate(

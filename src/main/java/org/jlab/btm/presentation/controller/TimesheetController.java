@@ -43,11 +43,11 @@ public class TimesheetController extends HttpServlet {
     @EJB
     CcMultiplicityHourService multiplicityHourService;
     @EJB
-    ExpHallHourService expHallHourService;
+    ExpHourService expHourService;
     @EJB
     CcShiftService ccShiftService;
     @EJB
-    ExpHallShiftService expShiftService;
+    ExpShiftService expShiftService;
     @EJB
     CcCrossCheckCommentService crossCheckCommentService;
     @EJB
@@ -61,9 +61,9 @@ public class TimesheetController extends HttpServlet {
     @EJB
     ExpSecurityRuleService ruleService;
     @EJB
-    ExpHallShiftPurposeService purposeService;
+    ExpShiftPurposeService purposeService;
     @EJB
-    ExpHallHourReasonTimeService reasonTimeService;
+    ExpHourReasonTimeService reasonTimeService;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -245,10 +245,10 @@ public class TimesheetController extends HttpServlet {
                 endHour, true, hallHoursList);
 
         /*EXPERIMENTAL HALL PERSPECTIVE*/
-        List<ExpHallShiftTotals> expHallHourTotalsList = expHallHourService.findExpHallShiftTotals(
+        List<ExpShiftTotals> expHallHourTotalsList = expHourService.findExpHallShiftTotals(
                 startHour, endHour);
 
-        List<ExpHallShiftAvailability> expHallAvailabilityList = expHallHourService.findAvailability(startHour, endHour);
+        List<ExpShiftAvailability> expHallAvailabilityList = expHourService.findAvailability(startHour, endHour);
 
         /*SHIFT INFORMATION*/
         CcShift dbShiftInfo = ccShiftService.findInDatabase(startHour);
@@ -345,26 +345,26 @@ public class TimesheetController extends HttpServlet {
 
     private void handleExpTimesheet(HttpServletRequest request, Hall hall, Date startHour, Date endHour) {
         /*AVAILABILITY*/
-        ExpHallShiftAvailability expAvailability = expHallHourService.getHallAvailability(hall,
+        ExpShiftAvailability expAvailability = expHourService.getHallAvailability(hall,
                 startHour,
                 endHour, true);
 
         /*REASONS NOT READY*/
-        List<ExpHallHourReasonTime> reasonsNotReady = reasonTimeService.find(hall, startHour, endHour);
+        List<ExpHourReasonTime> reasonsNotReady = reasonTimeService.find(hall, startHour, endHour);
 
         /*SHIFT INFORMATION*/
-        ExpHallShift shiftInfo = expShiftService.find(hall, startHour);
+        ExpShift shiftInfo = expShiftService.find(hall, startHour);
 
         /*SIGNATURES*/
-        List<ExpHallSignature> signatureList = expSignatureService.find(hall, startHour);
+        List<ExpSignature> signatureList = expSignatureService.find(hall, startHour);
         ExpTimesheetStatus status = expSignatureService.calculateStatus(startHour, endHour,
                 expAvailability.getDbHourList(),
                 reasonsNotReady,
                 shiftInfo, signatureList);
 
         /*Purposes*/
-        List<ExpHallShiftPurpose> experimentList = purposeService.findActiveExperimentsByHall(hall);
-        List<ExpHallShiftPurpose> nonexperimentList = purposeService.findActiveNonExperimentsByHall(hall);
+        List<ExpShiftPurpose> experimentList = purposeService.findActiveExperimentsByHall(hall);
+        List<ExpShiftPurpose> nonexperimentList = purposeService.findActiveNonExperimentsByHall(hall);
 
         boolean editable = ruleService.isEditAllowed(hall, startHour);
 

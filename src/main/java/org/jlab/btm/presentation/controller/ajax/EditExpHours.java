@@ -1,6 +1,6 @@
 package org.jlab.btm.presentation.controller.ajax;
 
-import org.jlab.btm.business.service.ExpHallHourService;
+import org.jlab.btm.business.service.ExpHourService;
 import org.jlab.btm.persistence.entity.CcAccHour;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
@@ -36,7 +36,7 @@ public class EditExpHours extends HttpServlet {
             EditExpHours.class.getName());
 
     @EJB
-    ExpHallHourService expHourService;
+    ExpHourService expHourService;
 
     /**
      * Handles the HTTP <code>POST</code> method.

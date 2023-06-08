@@ -22,10 +22,10 @@ public class CcAcceleratorCrossCheck {
     private final String[] highBnaMessage = new String[4];
     private final String[] highAccMessage = new String[4];
 
-    public CcAcceleratorCrossCheck(CcAccShiftTotals acc, ExpHallShiftTotals a,
-                                   ExpHallShiftTotals b, ExpHallShiftTotals c, ExpHallShiftTotals d) {
+    public CcAcceleratorCrossCheck(CcAccShiftTotals acc, ExpShiftTotals a,
+                                   ExpShiftTotals b, ExpShiftTotals c, ExpShiftTotals d) {
 
-        ExpHallShiftTotals[] times = new ExpHallShiftTotals[]{a, b, c, d};
+        ExpShiftTotals[] times = new ExpShiftTotals[]{a, b, c, d};
 
         for (int i = 0; i < 4; i++) {
             highAbuMessage[i] = "Experimenter Hall " + halls[i] + " reports significantly more ABU (" + BtmFunctions.formatDuration(times[i].getAbuSeconds(), DurationUnits.HOURS) + " hours) than the Operations reported PHYSICS + STUDIES + RESTORE (" + BtmFunctions.formatDuration(acc.getUpSeconds() + acc.getRestoreSeconds() + acc.getStudiesSeconds(), DurationUnits.HOURS) + " hours)";

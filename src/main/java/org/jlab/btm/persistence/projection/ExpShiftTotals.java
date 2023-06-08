@@ -5,7 +5,7 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
 /**
  * @author ryans
  */
-public class ExpHallShiftTotals {
+public class ExpShiftTotals {
     private Hall hall;
     private Integer hourCount;
     private Integer abuSeconds;
@@ -14,8 +14,8 @@ public class ExpHallShiftTotals {
     private Integer accSeconds;
     private Integer offSeconds;
 
-    public ExpHallShiftTotals(Character hall, Number hourCount, Number abuSeconds, Number banuSeconds, Number bnaSeconds,
-                              Number accSeconds, Number offSeconds) {
+    public ExpShiftTotals(Character hall, Number hourCount, Number abuSeconds, Number banuSeconds, Number bnaSeconds,
+                          Number accSeconds, Number offSeconds) {
         this.hall = Hall.valueOf(hall.toString());
         this.hourCount = hourCount.intValue();
         this.abuSeconds = abuSeconds.intValue();

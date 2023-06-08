@@ -5,8 +5,7 @@ import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
+
 import org.jlab.btm.persistence.enumeration.Role;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
@@ -16,19 +15,19 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
  * @author ryans
  */
 @Entity
-@Table(name = "EXP_HALL_SIGNATURE", schema = "BTM_OWNER", uniqueConstraints = {
+@Table(name = "EXP_SIGNATURE", schema = "BTM_OWNER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"HALL", "START_DAY_AND_HOUR", "SIGNED_BY"})})
 @NamedQueries({
-        @NamedQuery(name = "ExpHallSignature.findByExpHallSignatureId", query = "SELECT e FROM ExpHallSignature e WHERE e.expHallSignatureId = :expHallSignatureId"),
-        @NamedQuery(name = "ExpHallSignature.findByHallStartDayAndHourSignedBy", query = "SELECT e FROM ExpHallSignature e WHERE e.hall = :hall AND e.startDayAndHour = :startDayAndHour AND e.signedBy = :signedBy"),
-        @NamedQuery(name = "ExpHallSignature.findByHallStartDayAndHour", query = "SELECT e FROM ExpHallSignature e WHERE e.hall = :hall AND e.startDayAndHour = :startDayAndHour ORDER BY e.signedDate DESC")})
-public class ExpHallSignature implements Serializable {
+        @NamedQuery(name = "ExpHallSignature.findByExpHallSignatureId", query = "SELECT e FROM ExpSignature e WHERE e.expHallSignatureId = :expHallSignatureId"),
+        @NamedQuery(name = "ExpHallSignature.findByHallStartDayAndHourSignedBy", query = "SELECT e FROM ExpSignature e WHERE e.hall = :hall AND e.startDayAndHour = :startDayAndHour AND e.signedBy = :signedBy"),
+        @NamedQuery(name = "ExpHallSignature.findByHallStartDayAndHour", query = "SELECT e FROM ExpSignature e WHERE e.hall = :hall AND e.startDayAndHour = :startDayAndHour ORDER BY e.signedDate DESC")})
+public class ExpSignature implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="ExpHallSignatureId", sequenceName="EXP_HALL_SIGNATURE_ID", allocationSize=1)
+    @SequenceGenerator(name="ExpHallSignatureId", sequenceName="EXP_SIGNATURE_ID", allocationSize=1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ExpHallSignatureId")
     @Basic(optional = false)
-    @Column(name = "EXP_HALL_SIGNATURE_ID", nullable = false, precision = 38, scale = 0)
+    @Column(name = "EXP_SIGNATURE_ID", nullable = false, precision = 38, scale = 0)
     private BigInteger expHallSignatureId;
     @Basic(optional = false)
     @Column(name = "HALL", nullable = false, length = 1, columnDefinition = "char(1)")
@@ -51,10 +50,10 @@ public class ExpHallSignature implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date signedDate;
 
-    public ExpHallSignature() {
+    public ExpSignature() {
     }
 
-    public ExpHallSignature(BigInteger expHallSignatureId) {
+    public ExpSignature(BigInteger expHallSignatureId) {
         this.expHallSignatureId = expHallSignatureId;
     }
 
@@ -116,10 +115,10 @@ public class ExpHallSignature implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ExpHallSignature)) {
+        if (!(object instanceof ExpSignature)) {
             return false;
         }
-        ExpHallSignature other = (ExpHallSignature) object;
+        ExpSignature other = (ExpSignature) object;
         if ((this.expHallSignatureId == null && other.expHallSignatureId != null) || (this.expHallSignatureId != null && !this.expHallSignatureId.equals(other.expHallSignatureId))) {
             return false;
         }

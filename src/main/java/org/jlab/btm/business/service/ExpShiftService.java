@@ -1,7 +1,7 @@
 package org.jlab.btm.business.service;
 
-import org.jlab.btm.persistence.entity.ExpHallShift;
-import org.jlab.btm.persistence.entity.ExpHallShiftPurpose;
+import org.jlab.btm.persistence.entity.ExpShift;
+import org.jlab.btm.persistence.entity.ExpShiftPurpose;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
@@ -24,20 +24,20 @@ import java.util.Map;
  * @author ryans
  */
 @Stateless
-public class ExpHallShiftService extends AbstractService<ExpHallShift> {
+public class ExpShiftService extends AbstractService<ExpShift> {
 
     @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
-    public ExpHallShiftService() {
-        super(ExpHallShift.class);
+    public ExpShiftService() {
+        super(ExpShift.class);
     }
 
     @EJB
     ExpSecurityRuleService ruleService;
 
     @EJB
-    ExpHallShiftPurposeService purposeService;
+    ExpShiftPurposeService purposeService;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -45,17 +45,17 @@ public class ExpHallShiftService extends AbstractService<ExpHallShift> {
     }
 
     @PermitAll
-    public List<ExpHallShift> findByShiftStartAndLoadPurpose(Date startDayAndHour) {
-        TypedQuery<ExpHallShift> q = em.createQuery(
-                "select a from ExpHallShift a where a.startDayAndHour = :startDayAndHour order by hall desc",
-                ExpHallShift.class);
+    public List<ExpShift> findByShiftStartAndLoadPurpose(Date startDayAndHour) {
+        TypedQuery<ExpShift> q = em.createQuery(
+                "select a from ExpShift a where a.startDayAndHour = :startDayAndHour order by hall desc",
+                ExpShift.class);
 
         q.setParameter("startDayAndHour", startDayAndHour);
 
-        List<ExpHallShift> shiftList = q.getResultList();
+        List<ExpShift> shiftList = q.getResultList();
 
         if (shiftList != null) {
-            for (ExpHallShift shift : shiftList) {
+            for (ExpShift shift : shiftList) {
                 shift.getExpHallShiftPurpose().getName();
             }
         }
@@ -64,16 +64,16 @@ public class ExpHallShiftService extends AbstractService<ExpHallShift> {
     }
 
     @PermitAll
-    public ExpHallShift find(Hall hall, Date startDayAndHour) {
-        TypedQuery<ExpHallShift> q = em.createNamedQuery("ExpHallShift.findByHallAndStartDayAndHour", ExpHallShift.class);
+    public ExpShift find(Hall hall, Date startDayAndHour) {
+        TypedQuery<ExpShift> q = em.createNamedQuery("ExpHallShift.findByHallAndStartDayAndHour", ExpShift.class);
 
         q.setParameter("hall", hall);
         q.setParameter("startDayAndHour", startDayAndHour);
 
         // We don't use q.getSingleResult() because it throws NoResultException,
         // and we simply want to return null if no result.
-        List<ExpHallShift> results = q.getResultList();
-        ExpHallShift result = null;
+        List<ExpShift> results = q.getResultList();
+        ExpShift result = null;
 
         if(results.size() > 1) {
             throw new NonUniqueResultException("There should only be one shift for a particular hall and start day and hour");
@@ -86,11 +86,11 @@ public class ExpHallShiftService extends AbstractService<ExpHallShift> {
     }
 
     @PermitAll
-    public Map<Hall, ExpHallShift> getMap(List<ExpHallShift> shiftList) {
-        Map<Hall, ExpHallShift> shiftMap = new HashMap<>();
+    public Map<Hall, ExpShift> getMap(List<ExpShift> shiftList) {
+        Map<Hall, ExpShift> shiftMap = new HashMap<>();
 
         if (shiftList != null) {
-            for (ExpHallShift shift : shiftList) {
+            for (ExpShift shift : shiftList) {
                 shiftMap.put(shift.getHall(), shift);
             }
         }
@@ -103,10 +103,10 @@ public class ExpHallShiftService extends AbstractService<ExpHallShift> {
                           String comments) throws UserFriendlyException {
         ruleService.editCheck(hall, startDayAndHour);
 
-        ExpHallShift shift = find(hall, startDayAndHour);
+        ExpShift shift = find(hall, startDayAndHour);
 
         if (shift == null) {
-            shift = new ExpHallShift();
+            shift = new ExpShift();
             shift.setStartDayAndHour(startDayAndHour);
             shift.setHall(hall);
         }
@@ -115,7 +115,7 @@ public class ExpHallShiftService extends AbstractService<ExpHallShift> {
             throw new UserFriendlyException("Program is required");
         }
 
-        ExpHallShiftPurpose purpose = purposeService.find(purposeId);
+        ExpShiftPurpose purpose = purposeService.find(purposeId);
 
         if(purpose == null) {
             throw new UserFriendlyException("Purpose not found");

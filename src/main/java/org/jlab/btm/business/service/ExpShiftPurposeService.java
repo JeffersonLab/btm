@@ -1,6 +1,6 @@
 package org.jlab.btm.business.service;
 
-import org.jlab.btm.persistence.entity.ExpHallShiftPurpose;
+import org.jlab.btm.persistence.entity.ExpShiftPurpose;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
@@ -21,13 +21,13 @@ import java.util.Map;
  * @author ryans
  */
 @Stateless
-public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurpose> {
+public class ExpShiftPurposeService extends AbstractService<ExpShiftPurpose> {
 
     @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
-    public ExpHallShiftPurposeService() {
-        super(ExpHallShiftPurpose.class);
+    public ExpShiftPurposeService() {
+        super(ExpShiftPurpose.class);
     }
 
     @Override
@@ -37,13 +37,13 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
 
     @PermitAll
     @Override
-    public ExpHallShiftPurpose find(Object id) {
+    public ExpShiftPurpose find(Object id) {
         return super.find(id);
     }
 
     @PermitAll
-    public List<ExpHallShiftPurpose> findByHall(Hall hall, Boolean active) {
-        String query = "select a from ExpHallShiftPurpose a where hall = :hall ";
+    public List<ExpShiftPurpose> findByHall(Hall hall, Boolean active) {
+        String query = "select a from ExpShiftPurpose a where hall = :hall ";
         String order = "order by experiment desc, active desc, name asc";
 
         if (active != null) {
@@ -52,9 +52,9 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
 
         query = query + order;
 
-        TypedQuery<ExpHallShiftPurpose> q = em.createQuery(
+        TypedQuery<ExpShiftPurpose> q = em.createQuery(
                 query,
-                ExpHallShiftPurpose.class);
+                ExpShiftPurpose.class);
 
         q.setParameter("hall", hall);
 
@@ -62,15 +62,15 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
     }
 
     @PermitAll
-    public List<ExpHallShiftPurpose> findActiveExperimentsByHall(Hall hall) {
-        String query = "select a from ExpHallShiftPurpose a where hall = :hall and active = true and experiment = true ";
+    public List<ExpShiftPurpose> findActiveExperimentsByHall(Hall hall) {
+        String query = "select a from ExpShiftPurpose a where hall = :hall and active = true and experiment = true ";
         String order = "order by name asc";
 
         query = query + order;
 
-        TypedQuery<ExpHallShiftPurpose> q = em.createQuery(
+        TypedQuery<ExpShiftPurpose> q = em.createQuery(
                 query,
-                ExpHallShiftPurpose.class);
+                ExpShiftPurpose.class);
 
         q.setParameter("hall", hall);
 
@@ -78,15 +78,15 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
     }
 
     @PermitAll
-    public List<ExpHallShiftPurpose> findActiveNonExperimentsByHall(Hall hall) {
-        String query = "select a from ExpHallShiftPurpose a where hall = :hall and active = true and experiment = false ";
+    public List<ExpShiftPurpose> findActiveNonExperimentsByHall(Hall hall) {
+        String query = "select a from ExpShiftPurpose a where hall = :hall and active = true and experiment = false ";
         String order = "order by name asc";
 
         query = query + order;
 
-        TypedQuery<ExpHallShiftPurpose> q = em.createQuery(
+        TypedQuery<ExpShiftPurpose> q = em.createQuery(
                 query,
-                ExpHallShiftPurpose.class);
+                ExpShiftPurpose.class);
 
         q.setParameter("hall", hall);
 
@@ -96,7 +96,7 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
     @PermitAll
     public boolean isDuplicate(Hall hall, String name) {
         TypedQuery<Long> q = em.createQuery(
-                "select count(a.name) from ExpHallShiftPurpose a where a.hall = :hall and a.name = :name",
+                "select count(a.name) from ExpShiftPurpose a where a.hall = :hall and a.name = :name",
                 Long.class);
 
         q.setParameter("hall", hall);
@@ -110,7 +110,7 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
     @RolesAllowed({"cc", "btm-admin", "schcom"})
     public void add(Hall hall, String name, String alias, String url, Boolean experiment, Boolean active) throws
             UserFriendlyException {
-        ExpHallShiftPurpose purpose = new ExpHallShiftPurpose();
+        ExpShiftPurpose purpose = new ExpShiftPurpose();
 
         if (isDuplicate(hall, name)) {
             throw new UserFriendlyException("Program with name " + name + " already exists");
@@ -129,7 +129,7 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
     @PermitAll
     public boolean isInUse(BigInteger programId) {
         TypedQuery<Long> q = em.createQuery(
-                "select count(a.hall) from ExpHallShift a where a.expHallShiftPurpose.expHallShiftPurposeId = :id",
+                "select count(a.hall) from ExpShift a where a.expHallShiftPurpose.expHallShiftPurposeId = :id",
                 Long.class);
 
         q.setParameter("id", programId);
@@ -141,7 +141,7 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
 
     @RolesAllowed({"cc", "btm-admin", "schcom"})
     public void remove(BigInteger programId) throws UserFriendlyException {
-        ExpHallShiftPurpose purpose = find(programId);
+        ExpShiftPurpose purpose = find(programId);
 
         if (isInUse(programId)) {
             throw new UserFriendlyException(
@@ -158,7 +158,7 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
             throw new UserFriendlyException("Program Id must not be empty");
         }
 
-        ExpHallShiftPurpose purpose = find(programId);
+        ExpShiftPurpose purpose = find(programId);
 
         if (purpose == null) {
             throw new UserFriendlyException("Program with ID: " + programId + " not found");
@@ -172,12 +172,12 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
     }
 
     @PermitAll
-    public Map<Integer, ExpHallShiftPurpose> findPurposeByIdMap() {
-        Map<Integer, ExpHallShiftPurpose> purposeMap = new HashMap<>();
+    public Map<Integer, ExpShiftPurpose> findPurposeByIdMap() {
+        Map<Integer, ExpShiftPurpose> purposeMap = new HashMap<>();
 
-        List<ExpHallShiftPurpose> purposeList = findAll();
+        List<ExpShiftPurpose> purposeList = findAll();
 
-        for (ExpHallShiftPurpose purpose : purposeList) {
+        for (ExpShiftPurpose purpose : purposeList) {
             purposeMap.put(purpose.getExpHallShiftPurposeId().intValue(), purpose);
         }
 
@@ -185,12 +185,12 @@ public class ExpHallShiftPurposeService extends AbstractService<ExpHallShiftPurp
     }
 
     @PermitAll
-    public Map<String, ExpHallShiftPurpose> findPurposeByHallNameMap(Hall hall) {
-        Map<String, ExpHallShiftPurpose> purposeMap = new HashMap<>();
+    public Map<String, ExpShiftPurpose> findPurposeByHallNameMap(Hall hall) {
+        Map<String, ExpShiftPurpose> purposeMap = new HashMap<>();
 
-        List<ExpHallShiftPurpose> purposeList = this.findByHall(hall, null);
+        List<ExpShiftPurpose> purposeList = this.findByHall(hall, null);
 
-        for (ExpHallShiftPurpose purpose : purposeList) {
+        for (ExpShiftPurpose purpose : purposeList) {
             purposeMap.put(purpose.getName(), purpose);
         }
 

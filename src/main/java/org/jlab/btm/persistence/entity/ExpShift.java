@@ -15,18 +15,18 @@ import java.util.Date;
  * @author ryans
  */
 @Entity
-@Table(name = "EXP_HALL_SHIFT", schema = "BTM_OWNER", uniqueConstraints = {
+@Table(name = "EXP_SHIFT", schema = "BTM_OWNER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"HALL", "START_DAY_AND_HOUR"})})
 @NamedQueries({
-        @NamedQuery(name = "ExpHallShift.findByExpHallShiftId", query = "SELECT e FROM ExpHallShift e WHERE e.expHallShiftId = :expHallShiftId"),
-        @NamedQuery(name = "ExpHallShift.findByHallAndStartDayAndHour", query = "SELECT e FROM ExpHallShift e WHERE e.expHallShiftPurpose.hall = :hall AND e.startDayAndHour = :startDayAndHour")})
-public class ExpHallShift implements Serializable {
+        @NamedQuery(name = "ExpHallShift.findByExpHallShiftId", query = "SELECT e FROM ExpShift e WHERE e.expHallShiftId = :expHallShiftId"),
+        @NamedQuery(name = "ExpHallShift.findByHallAndStartDayAndHour", query = "SELECT e FROM ExpShift e WHERE e.expShiftPurpose.hall = :hall AND e.startDayAndHour = :startDayAndHour")})
+public class ExpShift implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "ExpHallShiftId", sequenceName = "EXP_HALL_SHIFT_ID", allocationSize = 1)
+    @SequenceGenerator(name = "ExpHallShiftId", sequenceName = "EXP_SHIFT_ID", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ExpHallShiftId")
     @Basic(optional = false)
-    @Column(name = "EXP_HALL_SHIFT_ID", nullable = false, precision = 38, scale = 0)
+    @Column(name = "EXP_SHIFT_ID", nullable = false, precision = 38, scale = 0)
     private BigInteger expHallShiftId;
     @Basic(optional = false)
     @Column(name = "HALL", nullable = false, length = 1, columnDefinition = "char(1)")
@@ -48,18 +48,18 @@ public class ExpHallShift implements Serializable {
     @Size(max = 256)
     private String workers;
     @NotNull
-    @JoinColumn(name = "PURPOSE_ID", referencedColumnName = "EXP_HALL_SHIFT_PURPOSE_ID", nullable = false)
+    @JoinColumn(name = "PURPOSE_ID", referencedColumnName = "EXP_SHIFT_PURPOSE_ID", nullable = false)
     @ManyToOne(optional = false)
-    private ExpHallShiftPurpose expHallShiftPurpose;
+    private ExpShiftPurpose expShiftPurpose;
 
-    public ExpHallShift() {
+    public ExpShift() {
     }
 
-    public ExpHallShift(BigInteger expHallShiftId) {
+    public ExpShift(BigInteger expHallShiftId) {
         this.expHallShiftId = expHallShiftId;
     }
 
-    public ExpHallShift(BigInteger expHallShiftId, Date startDayAndHour) {
+    public ExpShift(BigInteger expHallShiftId, Date startDayAndHour) {
         this.expHallShiftId = expHallShiftId;
         this.startDayAndHour = startDayAndHour;
     }
@@ -88,12 +88,12 @@ public class ExpHallShift implements Serializable {
         this.hall = hall;
     }
 
-    public ExpHallShiftPurpose getExpHallShiftPurpose() {
-        return expHallShiftPurpose;
+    public ExpShiftPurpose getExpHallShiftPurpose() {
+        return expShiftPurpose;
     }
 
-    public void setExpHallShiftPurpose(ExpHallShiftPurpose expHallShiftPurpose) {
-        this.expHallShiftPurpose = expHallShiftPurpose;
+    public void setExpHallShiftPurpose(ExpShiftPurpose expShiftPurpose) {
+        this.expShiftPurpose = expShiftPurpose;
     }
 
     public String getLeader() {
@@ -130,10 +130,10 @@ public class ExpHallShift implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ExpHallShift)) {
+        if (!(object instanceof ExpShift)) {
             return false;
         }
-        ExpHallShift other = (ExpHallShift) object;
+        ExpShift other = (ExpShift) object;
         return (this.expHallShiftId != null || other.expHallShiftId == null) && (this.expHallShiftId == null || this.expHallShiftId.equals(other.expHallShiftId));
     }
 

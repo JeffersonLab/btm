@@ -30,11 +30,11 @@ public class CcHallCrossCheck {
     private final boolean[] highAcc = new boolean[4];
 
     public CcHallCrossCheck(CcHallShiftTotals opA, CcHallShiftTotals opB,
-                            CcHallShiftTotals opC, CcHallShiftTotals opD, ExpHallShiftTotals a,
-                            ExpHallShiftTotals b, ExpHallShiftTotals c, ExpHallShiftTotals d) {
+                            CcHallShiftTotals opC, CcHallShiftTotals opD, ExpShiftTotals a,
+                            ExpShiftTotals b, ExpShiftTotals c, ExpShiftTotals d) {
 
         CcHallShiftTotals[] opTimes = new CcHallShiftTotals[]{opA, opB, opC, opD};
-        ExpHallShiftTotals[] times = new ExpHallShiftTotals[]{a, b, c, d};
+        ExpShiftTotals[] times = new ExpShiftTotals[]{a, b, c, d};
 
         for (int i = 0; i < 4; i++) {
             highAbuMessage[i] = "Experimenter Hall " + halls[i]

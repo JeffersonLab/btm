@@ -4,7 +4,7 @@ import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
 import org.jlab.btm.business.util.HourUtil;
-import org.jlab.btm.persistence.entity.ExpHallHour;
+import org.jlab.btm.persistence.entity.ExpHour;
 import org.jlab.btm.persistence.epics.ExperimenterAccounting;
 import org.jlab.btm.persistence.epics.ExperimenterAccountingDao;
 import org.jlab.smoothness.persistence.enumeration.Hall;
@@ -57,10 +57,10 @@ public class ExpEpicsHourService {
      * @throws InterruptedException if a thread gets unexpectedly interrupted.
      * @throws CAException if a channel access problem occurs.
      */
-    public List<ExpHallHour> loadAccounting(Hall hall, Date startDayAndHour,
-                                            Date endDayAndHour, boolean round) throws TimeoutException,
+    public List<ExpHour> loadAccounting(Hall hall, Date startDayAndHour,
+                                        Date endDayAndHour, boolean round) throws TimeoutException,
             InterruptedException, CAException {
-        List<ExpHallHour> hours = null;
+        List<ExpHour> hours = null;
 
         if (HourUtil.isInEpicsWindow(endDayAndHour)) {
             hours = loadAccounting(hall);
@@ -72,7 +72,7 @@ public class ExpEpicsHourService {
                 rounder.roundExpHourList(hours);
             }
         } else {
-            hours = new ArrayList<ExpHallHour>();
+            hours = new ArrayList<ExpHour>();
         }
 
         return hours;
@@ -90,7 +90,7 @@ public class ExpEpicsHourService {
      * @throws InterruptedException if a thread gets unexpectedly interrupted.
      * @throws CAException if a channel access problem occurs.
      */
-    public List<ExpHallHour> loadAccounting(Hall hall) throws TimeoutException,
+    public List<ExpHour> loadAccounting(Hall hall) throws TimeoutException,
             InterruptedException, CAException {
         logger.log(Level.FINEST, "EpicsDataSource.loadAccounting.hall: {}", hall);
 

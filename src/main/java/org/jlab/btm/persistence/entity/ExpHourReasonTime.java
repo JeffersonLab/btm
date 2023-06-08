@@ -31,19 +31,19 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
  */
 @Entity
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-@Table(name = "EXP_HALL_HOUR_REASON_TIME", schema = "BTM_OWNER", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"HALL", "EXP_HALL_HOUR_ID", "EXP_HALL_REASON_ID"})})
+@Table(name = "EXP_HOUR_REASON_TIME", schema = "BTM_OWNER", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"HALL", "EXP_HOUR_ID", "EXP_REASON_ID"})})
 @NamedQueries({
-        @NamedQuery(name = "ExpHallHourReasonTime.findByExpHallHourReasonTimeId", query = "SELECT e FROM ExpHallHourReasonTime e WHERE e.expHallHourReasonTimeId = :expHallHourReasonTimeId"),
-        @NamedQuery(name = "ExpHallHourReasonTime.findByHallAndHourRange", query = "SELECT e FROM ExpHallHourReasonTime e WHERE e.hall = :hall AND e.expHallHour.dayAndHourCal BETWEEN :startDayAndHourCal AND :endDayAndHourCal ORDER BY e.expHallHour.dayAndHourCal ASC"),
-        @NamedQuery(name = "ExpHallHourReasonTime.sumByExpHallHourId", query = "SELECT NVL(SUM(e.seconds), 0) FROM ExpHallHourReasonTime e WHERE e.expHallHour.expHallHourId = :expHallHourId")})
-public class ExpHallHourReasonTime implements Comparable<ExpHallHourReasonTime>, Serializable {
+        @NamedQuery(name = "ExpHallHourReasonTime.findByExpHallHourReasonTimeId", query = "SELECT e FROM ExpHourReasonTime e WHERE e.expHallHourReasonTimeId = :expHallHourReasonTimeId"),
+        @NamedQuery(name = "ExpHallHourReasonTime.findByHallAndHourRange", query = "SELECT e FROM ExpHourReasonTime e WHERE e.hall = :hall AND e.expHour.dayAndHourCal BETWEEN :startDayAndHourCal AND :endDayAndHourCal ORDER BY e.expHour.dayAndHourCal ASC"),
+        @NamedQuery(name = "ExpHallHourReasonTime.sumByExpHallHourId", query = "SELECT NVL(SUM(e.seconds), 0) FROM ExpHourReasonTime e WHERE e.expHour.expHallHourId = :expHallHourId")})
+public class ExpHourReasonTime implements Comparable<ExpHourReasonTime>, Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="ExpHallHourReasonTimeId", sequenceName="EXP_HALL_HOUR_REASON_TIME_ID", allocationSize=1)
+    @SequenceGenerator(name="ExpHallHourReasonTimeId", sequenceName="EXP_HOUR_REASON_TIME_ID", allocationSize=1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ExpHallHourReasonTimeId")
     @Basic(optional = false)
-    @Column(name = "EXP_HALL_HOUR_REASON_TIME_ID", nullable = false, precision = 38, scale = 0)
+    @Column(name = "EXP_HOUR_REASON_TIME_ID", nullable = false, precision = 38, scale = 0)
     private BigInteger expHallHourReasonTimeId;
     @Basic(optional = false)
     @Column(name = "HALL", nullable = false, length = 1, columnDefinition = "char(1)")
@@ -57,22 +57,22 @@ public class ExpHallHourReasonTime implements Comparable<ExpHallHourReasonTime>,
     @Max(value = 3600, message = "{org.jlab.bta.maxTime}")
     private short seconds;
     @NotNull
-    @JoinColumn(name = "EXP_HALL_HOUR_ID", referencedColumnName = "EXP_HALL_HOUR_ID", nullable = false)
+    @JoinColumn(name = "EXP_HOUR_ID", referencedColumnName = "EXP_HOUR_ID", nullable = false)
     @ManyToOne(optional = false)
-    private ExpHallHour expHallHour;
+    private ExpHour expHour;
     @NotNull
-    @JoinColumn(name = "EXP_HALL_REASON_ID", referencedColumnName = "EXP_HALL_REASON_ID", nullable = false)
+    @JoinColumn(name = "EXP_REASON_ID", referencedColumnName = "EXP_REASON_ID", nullable = false)
     @ManyToOne(optional = false)
-    private ExpHallReason expHallReason;
+    private ExpReason expReason;
 
-    public ExpHallHourReasonTime() {
+    public ExpHourReasonTime() {
     }
 
-    public ExpHallHourReasonTime(BigInteger expHallHourReasonTimeId) {
+    public ExpHourReasonTime(BigInteger expHallHourReasonTimeId) {
         this.expHallHourReasonTimeId = expHallHourReasonTimeId;
     }
 
-    public ExpHallHourReasonTime(BigInteger expHallHourReasonTimeId, Hall hall, short seconds) {
+    public ExpHourReasonTime(BigInteger expHallHourReasonTimeId, Hall hall, short seconds) {
         this.expHallHourReasonTimeId = expHallHourReasonTimeId;
         this.hall = hall;
         this.seconds = seconds;
@@ -102,20 +102,20 @@ public class ExpHallHourReasonTime implements Comparable<ExpHallHourReasonTime>,
         this.seconds = seconds;
     }
 
-    public ExpHallHour getExpHallHour() {
-        return expHallHour;
+    public ExpHour getExpHallHour() {
+        return expHour;
     }
 
-    public void setExpHallHour(ExpHallHour expHallHour) {
-        this.expHallHour = expHallHour;
+    public void setExpHallHour(ExpHour expHour) {
+        this.expHour = expHour;
     }
 
-    public ExpHallReason getExpHallReason() {
-        return expHallReason;
+    public ExpReason getExpHallReason() {
+        return expReason;
     }
 
-    public void setExpHallReason(ExpHallReason expHallReason) {
-        this.expHallReason = expHallReason;
+    public void setExpHallReason(ExpReason expReason) {
+        this.expReason = expReason;
     }
 
     @Override
@@ -128,10 +128,10 @@ public class ExpHallHourReasonTime implements Comparable<ExpHallHourReasonTime>,
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ExpHallHourReasonTime)) {
+        if (!(object instanceof ExpHourReasonTime)) {
             return false;
         }
-        ExpHallHourReasonTime other = (ExpHallHourReasonTime) object;
+        ExpHourReasonTime other = (ExpHourReasonTime) object;
         if ((this.expHallHourReasonTimeId == null && other.expHallHourReasonTimeId != null) || (this.expHallHourReasonTimeId != null && !this.expHallHourReasonTimeId.equals(other.expHallHourReasonTimeId))) {
             return false;
         }
@@ -139,7 +139,7 @@ public class ExpHallHourReasonTime implements Comparable<ExpHallHourReasonTime>,
     }
 
     @Override
-    public int compareTo(ExpHallHourReasonTime o) {
+    public int compareTo(ExpHourReasonTime o) {
         int result = this.getHall().compareTo(o.getHall());
 
         if(result == 0) {

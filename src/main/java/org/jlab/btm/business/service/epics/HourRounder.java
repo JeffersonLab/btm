@@ -1,6 +1,6 @@
 package org.jlab.btm.business.service.epics;
 
-import org.jlab.btm.persistence.entity.ExpHallHour;
+import org.jlab.btm.persistence.entity.ExpHour;
 import org.jlab.btm.persistence.entity.CcAccHour;
 import org.jlab.btm.persistence.entity.CcHallHour;
 import org.jlab.btm.persistence.entity.CcMultiplicityHour;
@@ -32,8 +32,8 @@ public class HourRounder {
      *
      * @param hours the list of hours.
      */
-    public void roundExpHourList(List<ExpHallHour> hours) {
-        for(ExpHallHour hour: hours) {
+    public void roundExpHourList(List<ExpHour> hours) {
+        for(ExpHour hour: hours) {
             roundExpHour(hour);
         }
     }
@@ -49,7 +49,7 @@ public class HourRounder {
      *
      * @param hour the experimenter hall hour.
      */
-    public void roundExpHour(ExpHallHour hour) {
+    public void roundExpHour(ExpHour hour) {
         //Make sure shared status Off is within range 0 - 3600
         short[] statuses = new short[1];
         statuses[0] = hour.getOffSeconds();
@@ -66,7 +66,7 @@ public class HourRounder {
      *
      * @param hour the experimenter hall hour.
      */
-    public void roundAcceleratorSet(ExpHallHour hour) {
+    public void roundAcceleratorSet(ExpHour hour) {
         // Won't modify off since it is a shared status
         short[] statuses = new short[4];
         statuses[0] = hour.getAbuSeconds();
@@ -88,7 +88,7 @@ public class HourRounder {
      *
      * @param hour the experimenter hall hour.
      */
-    public void roundExperimenterSet(ExpHallHour hour) {
+    public void roundExperimenterSet(ExpHour hour) {
         // Won't modify off since it is a shared status
         short[] statuses = new short[3];
         statuses[0] = hour.getErSeconds();

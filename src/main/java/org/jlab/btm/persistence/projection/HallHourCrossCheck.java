@@ -1,6 +1,6 @@
 package org.jlab.btm.persistence.projection;
 
-import org.jlab.btm.persistence.entity.ExpHallHour;
+import org.jlab.btm.persistence.entity.ExpHour;
 import org.jlab.btm.persistence.entity.CcAccHour;
 import org.jlab.btm.persistence.entity.CcHallHour;
 import org.jlab.btm.persistence.entity.CcMultiplicityHour;
@@ -57,7 +57,7 @@ public class HallHourCrossCheck {
     private final String highOffMessage;
     private final String highAccMessage;
 
-    public HallHourCrossCheck(Hall hall, Date dayAndHour, CcAccHour ccAccHour, CcMultiplicityHour opMultiHour, CcHallHour ccHallHour, ExpHallHour expHallHour) {
+    public HallHourCrossCheck(Hall hall, Date dayAndHour, CcAccHour ccAccHour, CcMultiplicityHour opMultiHour, CcHallHour ccHallHour, ExpHour expHour) {
         this.hall = hall;
         this.dayAndHour = dayAndHour;
         /*this.opAccHour = opAccHour;
@@ -84,30 +84,30 @@ public class HallHourCrossCheck {
         // Accelerator Experimenter vs Operations
         highAbuAccMessage = "Experimenter Hall " + hall
                 + " reports significantly more ABU ("
-                + BtmFunctions.formatDuration(expHallHour.getAbuSeconds(), DurationUnits.MINUTES)
+                + BtmFunctions.formatDuration(expHour.getAbuSeconds(), DurationUnits.MINUTES)
                 + " minutes) than the Operations reported PHYSICS + STUDIES + RESTORE ("
                 + BtmFunctions.formatDuration(ccAccHour.getUpSeconds() + ccAccHour.getRestoreSeconds()
                 + ccAccHour.getStudiesSeconds(), DurationUnits.MINUTES) + " minutes)";
         highBanuAccMessage = "Experimenter Hall " + hall
                 + " reports significantly more BANU ("
-                + BtmFunctions.formatDuration(expHallHour.getBanuSeconds(), DurationUnits.MINUTES)
+                + BtmFunctions.formatDuration(expHour.getBanuSeconds(), DurationUnits.MINUTES)
                 + " minutes) than the Operations reported PHYSICS ("
                 + BtmFunctions.formatDuration(ccAccHour.getUpSeconds(), DurationUnits.MINUTES) + " minutes)";
         highBnaAccMessage = "Experimenter Hall " + hall
                 + " reports significantly more BNA ("
-                + BtmFunctions.formatDuration(expHallHour.getBnaSeconds(), DurationUnits.MINUTES)
+                + BtmFunctions.formatDuration(expHour.getBnaSeconds(), DurationUnits.MINUTES)
                 + " minutes) than the Operations reported PHYSICS ("
                 + BtmFunctions.formatDuration(ccAccHour.getUpSeconds(), DurationUnits.MINUTES) + " minutes)";
         highAccAccMessage = "Experimenter Hall " + hall
                 + " reports significantly more ACC ("
-                + BtmFunctions.formatDuration(expHallHour.getAccSeconds(), DurationUnits.MINUTES)
+                + BtmFunctions.formatDuration(expHour.getAccSeconds(), DurationUnits.MINUTES)
                 + " minutes) than the Operations reported ACC ("
                 + BtmFunctions.formatDuration(ccAccHour.getAccSeconds(), DurationUnits.MINUTES) + " minutes)";
 
         // Hall Experimeneter vs Operations
         highAbuMessage = "Experimenter Hall " + hall
                 + " reports significantly more ABU + BANU ("
-                + BtmFunctions.formatDuration(expHallHour.getAbuSeconds() + expHallHour.getBanuSeconds(),
+                + BtmFunctions.formatDuration(expHour.getAbuSeconds() + expHour.getBanuSeconds(),
                 DurationUnits.MINUTES)
                 + " minutes) than the Operations reported UP + TUNE + BNR ("
                 + BtmFunctions.formatDuration(ccHallHour.getUpSeconds()
@@ -116,7 +116,7 @@ public class HallHourCrossCheck {
                 + " minutes)";
         lowAbuMessage = "Experimenter Hall " + hall
                 + " reports significantly less ABU + BANU ("
-                + BtmFunctions.formatDuration(expHallHour.getAbuSeconds() + expHallHour.getBanuSeconds(),
+                + BtmFunctions.formatDuration(expHour.getAbuSeconds() + expHour.getBanuSeconds(),
                 DurationUnits.MINUTES)
                 + " minutes) than the Operations reported UP + TUNE + BNR ("
                 + BtmFunctions.formatDuration(ccHallHour.getUpSeconds()
@@ -124,24 +124,24 @@ public class HallHourCrossCheck {
                 DurationUnits.MINUTES)
                 + " minutes)";
         lowBanuMessage = "Experimenter Hall " + hall + " reports significantly less BANU ("
-                + BtmFunctions.formatDuration(expHallHour.getBanuSeconds(), DurationUnits.MINUTES)
+                + BtmFunctions.formatDuration(expHour.getBanuSeconds(), DurationUnits.MINUTES)
                 + " minutes) vs the Operations reported BNR (" + BtmFunctions.formatDuration(
                 ccHallHour.getBnrSeconds(),
                 DurationUnits.MINUTES) + " minutes)";
         highBnaMessage = "Experimenter Hall " + hall + " reports significantly more BNA ("
-                + BtmFunctions.formatDuration(expHallHour.getBnaSeconds(), DurationUnits.MINUTES)
+                + BtmFunctions.formatDuration(expHour.getBnaSeconds(), DurationUnits.MINUTES)
                 + " minutes) than the Operations reported UP + TUNE + DOWN ("
                 + BtmFunctions.formatDuration(ccHallHour.getUpSeconds()
                         + ccHallHour.getTuneSeconds() + ccHallHour.getDownSeconds(),
                 DurationUnits.MINUTES)
                 + " minutes)";
         highOffMessage = "Experimenter Hall " + hall + " reports significantly more OFF ("
-                + BtmFunctions.formatDuration(expHallHour.getOffSeconds(), DurationUnits.MINUTES)
+                + BtmFunctions.formatDuration(expHour.getOffSeconds(), DurationUnits.MINUTES)
                 + " minutes) than the Operations reported OFF (" + BtmFunctions.formatDuration(
                 ccHallHour.getOffSeconds(),
                 DurationUnits.MINUTES) + " minutes)";
         highAccMessage = "Experimenter Hall " + hall + " reports significantly more ACC ("
-                + BtmFunctions.formatDuration(expHallHour.getAccSeconds(), DurationUnits.MINUTES)
+                + BtmFunctions.formatDuration(expHour.getAccSeconds(), DurationUnits.MINUTES)
                 + " minutes) than the Operations reported OFF (" + BtmFunctions.formatDuration(
                 ccHallHour.getOffSeconds(),
                 DurationUnits.MINUTES) + " minutes)";
@@ -154,25 +154,25 @@ public class HallHourCrossCheck {
         highUp = ccHallHour.getUpSeconds() > opMultiHour.getAnyHallUpSeconds() + TEN_MINUTES_OF_SECONDS;
 
         // Accelerator Experimenter vs Operations
-        highAbuAccCheck = expHallHour.getAbuSeconds() > ccAccHour.getUpSeconds()
+        highAbuAccCheck = expHour.getAbuSeconds() > ccAccHour.getUpSeconds()
                 + ccAccHour.getRestoreSeconds()
                 + ccAccHour.getStudiesSeconds() + TEN_MINUTES_OF_SECONDS;
-        highBanuAccCheck = expHallHour.getBanuSeconds() > ccAccHour.getUpSeconds() + TEN_MINUTES_OF_SECONDS;
-        highBnaAccCheck = expHallHour.getBnaSeconds() > ccAccHour.getUpSeconds() + TEN_MINUTES_OF_SECONDS;
-        highAccAccCheck = expHallHour.getAccSeconds() > ccAccHour.getAccSeconds() + TEN_MINUTES_OF_SECONDS;
+        highBanuAccCheck = expHour.getBanuSeconds() > ccAccHour.getUpSeconds() + TEN_MINUTES_OF_SECONDS;
+        highBnaAccCheck = expHour.getBnaSeconds() > ccAccHour.getUpSeconds() + TEN_MINUTES_OF_SECONDS;
+        highAccAccCheck = expHour.getAccSeconds() > ccAccHour.getAccSeconds() + TEN_MINUTES_OF_SECONDS;
 
         // Hall Experimenter vs Operations
-        highAbu = ((expHallHour.getAbuSeconds() + expHallHour.getBanuSeconds()) / 2 > ccHallHour.getUpSeconds()
+        highAbu = ((expHour.getAbuSeconds() + expHour.getBanuSeconds()) / 2 > ccHallHour.getUpSeconds()
                 + ccHallHour.getTuneSeconds() + ccHallHour.getBnrSeconds()) && (ccHallHour.getUpSeconds()
                 > HALF_HOUR_OF_SECONDS);
-        lowAbu = (expHallHour.getAbuSeconds() + expHallHour.getBanuSeconds() < (ccHallHour.getUpSeconds()
+        lowAbu = (expHour.getAbuSeconds() + expHour.getBanuSeconds() < (ccHallHour.getUpSeconds()
                 + ccHallHour.getTuneSeconds() + ccHallHour.getBnrSeconds()) / 2) && (ccHallHour.getUpSeconds()
                 > HALF_HOUR_OF_SECONDS);
-        lowBanu = expHallHour.getBanuSeconds() + TEN_MINUTES_OF_SECONDS < ccHallHour.getBnrSeconds();
-        highBna = expHallHour.getBnaSeconds() > ccHallHour.getDownSeconds()
+        lowBanu = expHour.getBanuSeconds() + TEN_MINUTES_OF_SECONDS < ccHallHour.getBnrSeconds();
+        highBna = expHour.getBnaSeconds() > ccHallHour.getDownSeconds()
                 + ccHallHour.getUpSeconds() + ccHallHour.getTuneSeconds() + TEN_MINUTES_OF_SECONDS;
-        highOff = expHallHour.getOffSeconds() > ccHallHour.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
-        highAcc = expHallHour.getAccSeconds() > ccHallHour.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
+        highOff = expHour.getOffSeconds() > ccHallHour.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
+        highAcc = expHour.getAccSeconds() > ccHallHour.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
     }
 
     public Hall getHall() {

@@ -1,7 +1,7 @@
 package org.jlab.btm.business.service;
 
-import org.jlab.btm.persistence.entity.ExpHallHour;
-import org.jlab.btm.persistence.entity.ExpHallHourReasonTime;
+import org.jlab.btm.persistence.entity.ExpHour;
+import org.jlab.btm.persistence.entity.ExpHourReasonTime;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 import javax.annotation.security.PermitAll;
@@ -22,13 +22,13 @@ import java.util.List;
  * @author ryans
  */
 @Stateless
-public class ExpHallHourReasonTimeService extends AbstractService<ExpHallHourReasonTime> {
+public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime> {
 
     @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
-    public ExpHallHourReasonTimeService() {
-        super(ExpHallHourReasonTime.class);
+    public ExpHourReasonTimeService() {
+        super(ExpHourReasonTime.class);
     }
 
     @Override
@@ -46,10 +46,10 @@ public class ExpHallHourReasonTimeService extends AbstractService<ExpHallHourRea
      * @return the list of hour reason times.
      */
     @PermitAll
-    public List<ExpHallHourReasonTime> find(Hall hall, Date startDayAndHour,
-                                            Date endDayAndHour) {
-        TypedQuery<ExpHallHourReasonTime> q = em.createNamedQuery(
-                "ExpHallHourReasonTime.findByHallAndHourRange", ExpHallHourReasonTime.class);
+    public List<ExpHourReasonTime> find(Hall hall, Date startDayAndHour,
+                                        Date endDayAndHour) {
+        TypedQuery<ExpHourReasonTime> q = em.createNamedQuery(
+                "ExpHallHourReasonTime.findByHallAndHourRange", ExpHourReasonTime.class);
 
         Calendar start = Calendar.getInstance();
         Calendar end = Calendar.getInstance();
@@ -64,11 +64,11 @@ public class ExpHallHourReasonTimeService extends AbstractService<ExpHallHourRea
     }
 
     @PermitAll
-    public List<String> validateUED(List<ExpHallHour> availabilityList, List<ExpHallHourReasonTime> explanationList) {
+    public List<String> validateUED(List<ExpHour> availabilityList, List<ExpHourReasonTime> explanationList) {
         List<String> discrepancies = new ArrayList<>();
 
         if(availabilityList != null) {
-            for(ExpHallHour hour: availabilityList) {
+            for(ExpHour hour: availabilityList) {
                 int uedSeconds = hour.getUedSeconds();
                 int explanationSeconds = calculateExplanationSeconds(hour.getExpHallHourId(), explanationList);
 
@@ -81,11 +81,11 @@ public class ExpHallHourReasonTimeService extends AbstractService<ExpHallHourRea
         return discrepancies;
     }
 
-    private int calculateExplanationSeconds(BigInteger hourId, List<ExpHallHourReasonTime> explanationList) {
+    private int calculateExplanationSeconds(BigInteger hourId, List<ExpHourReasonTime> explanationList) {
         int total = 0;
 
         if(explanationList != null) {
-            for(ExpHallHourReasonTime explanation: explanationList) {
+            for(ExpHourReasonTime explanation: explanationList) {
                 if(hourId.equals(explanation.getExpHallHour().getExpHallHourId())) {
                     total = total + explanation.getSeconds();
                 }

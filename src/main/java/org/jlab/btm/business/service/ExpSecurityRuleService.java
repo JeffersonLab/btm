@@ -1,6 +1,6 @@
 package org.jlab.btm.business.service;
 
-import org.jlab.btm.persistence.entity.ExpHallSignature;
+import org.jlab.btm.persistence.entity.ExpSignature;
 import org.jlab.btm.persistence.enumeration.Role;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
@@ -12,7 +12,6 @@ import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.PermitAll;
 import javax.ejb.*;
-import javax.inject.Inject;
 
 /**
  * Responsible for verifying security rules for editing an experimenter hall
@@ -94,7 +93,7 @@ public class ExpSecurityRuleService {
                 }
 
                 if(userSigned) {
-                    ExpHallSignature sig = sigChecker.getUserSignature();
+                    ExpSignature sig = sigChecker.getUserSignature();
 
                     if(anonymous || !username.equals(sig.getSignedBy())) {
                         return "You cannot modify a User signed timesheet unless you are the signer, Hall Manager, or Operability Manager";
@@ -147,7 +146,7 @@ public class ExpSecurityRuleService {
 
     class SignatureChecker {
 
-        private List<ExpHallSignature> signatures;
+        private List<ExpSignature> signatures;
         SignatureChecker(Hall hall, Date dayAndHour) {
             signatures = signatureService.find(hall, dayAndHour);
         }
@@ -161,7 +160,7 @@ public class ExpSecurityRuleService {
             boolean userSigned = false;
 
             if(signatures != null) {
-                for(ExpHallSignature signature: signatures) {
+                for(ExpSignature signature: signatures) {
                     if(signature.getSignedRole() == Role.USER) {
                         userSigned = true;
                         break;
@@ -183,7 +182,7 @@ public class ExpSecurityRuleService {
             boolean opSigned = false;
 
             if(signatures != null) {
-                for(ExpHallSignature signature: signatures) {
+                for(ExpSignature signature: signatures) {
                     if(signature.getSignedRole() == Role.getHallManagerRole(hall)) {
                         opSigned = true;
                         break;
@@ -204,7 +203,7 @@ public class ExpSecurityRuleService {
             boolean opSigned = false;
 
             if(signatures != null) {
-                for(ExpHallSignature signature: signatures) {
+                for(ExpSignature signature: signatures) {
                     if(signature.getSignedRole() == Role.OPERABILITY_MANAGER) {
                         opSigned = true;
                         break;
@@ -220,11 +219,11 @@ public class ExpSecurityRuleService {
          *
          * @return the user signature or null.
          */
-        public ExpHallSignature getUserSignature() {
-            ExpHallSignature sig = null;
+        public ExpSignature getUserSignature() {
+            ExpSignature sig = null;
 
             if(signatures != null) {
-                for(ExpHallSignature signature: signatures) {
+                for(ExpSignature signature: signatures) {
                     if(signature.getSignedRole() == Role.USER) {
                         sig = signature;
                         break;

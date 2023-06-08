@@ -14,21 +14,21 @@ import java.math.BigInteger;
  * @author ryans
  */
 @Entity
-@Table(name = "EXP_HALL_SHIFT_PURPOSE", schema = "BTM_OWNER", uniqueConstraints = {
+@Table(name = "EXP_SHIFT_PURPOSE", schema = "BTM_OWNER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"HALL", "NAME"}),
-        @UniqueConstraint(columnNames = {"HALL", "EXP_HALL_SHIFT_PURPOSE_ID"})})
+        @UniqueConstraint(columnNames = {"HALL", "EXP_SHIFT_PURPOSE_ID"})})
 @NamedQueries({
-        @NamedQuery(name = "ExpHallShiftPurpose.findByExpHallShiftPurposeId", query = "SELECT e FROM ExpHallShiftPurpose e WHERE e.expHallShiftPurposeId = :expHallShiftPurposeId"),
-        @NamedQuery(name = "ExpHallShiftPurpose.findByHallAndName", query = "SELECT e FROM ExpHallShiftPurpose e WHERE e.hall = :hall AND e.name = :name"),
-        @NamedQuery(name = "ExpHallShiftPurpose.findByHallAndActive", query = "SELECT e FROM ExpHallShiftPurpose e WHERE e.hall = :hall AND e.active = :active"),
-        @NamedQuery(name = "ExpHallShiftPurpose.findByHallAndExperiment", query = "SELECT e FROM ExpHallShiftPurpose e WHERE e.hall = :hall AND e.experiment = :experiment")})
-public class ExpHallShiftPurpose implements Comparable<ExpHallShiftPurpose>, Serializable {
+        @NamedQuery(name = "ExpHallShiftPurpose.findByExpHallShiftPurposeId", query = "SELECT e FROM ExpShiftPurpose e WHERE e.expHallShiftPurposeId = :expHallShiftPurposeId"),
+        @NamedQuery(name = "ExpHallShiftPurpose.findByHallAndName", query = "SELECT e FROM ExpShiftPurpose e WHERE e.hall = :hall AND e.name = :name"),
+        @NamedQuery(name = "ExpHallShiftPurpose.findByHallAndActive", query = "SELECT e FROM ExpShiftPurpose e WHERE e.hall = :hall AND e.active = :active"),
+        @NamedQuery(name = "ExpHallShiftPurpose.findByHallAndExperiment", query = "SELECT e FROM ExpShiftPurpose e WHERE e.hall = :hall AND e.experiment = :experiment")})
+public class ExpShiftPurpose implements Comparable<ExpShiftPurpose>, Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "ExpHallShiftPurposeId", sequenceName = "EXP_HALL_SHIFT_PURPOSE_ID", allocationSize = 1)
+    @SequenceGenerator(name = "ExpHallShiftPurposeId", sequenceName = "EXP_SHIFT_PURPOSE_ID", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ExpHallShiftPurposeId")
     @Basic(optional = false)
-    @Column(name = "EXP_HALL_SHIFT_PURPOSE_ID", nullable = false, precision = 38, scale = 0)
+    @Column(name = "EXP_SHIFT_PURPOSE_ID", nullable = false, precision = 38, scale = 0)
     private BigInteger expHallShiftPurposeId;
     @Basic(optional = false)
     @Column(name = "HALL", nullable = false, length = 1, columnDefinition = "char(1)")
@@ -57,14 +57,14 @@ public class ExpHallShiftPurpose implements Comparable<ExpHallShiftPurpose>, Ser
     @NotNull
     private boolean experiment;
 
-    public ExpHallShiftPurpose() {
+    public ExpShiftPurpose() {
     }
 
-    public ExpHallShiftPurpose(BigInteger expHallShiftPurposeId) {
+    public ExpShiftPurpose(BigInteger expHallShiftPurposeId) {
         this.expHallShiftPurposeId = expHallShiftPurposeId;
     }
 
-    public ExpHallShiftPurpose(BigInteger expHallShiftPurposeId, Hall hall, String name, boolean active, boolean experiment) {
+    public ExpShiftPurpose(BigInteger expHallShiftPurposeId, Hall hall, String name, boolean active, boolean experiment) {
         this.expHallShiftPurposeId = expHallShiftPurposeId;
         this.hall = hall;
         this.name = name;
@@ -138,15 +138,15 @@ public class ExpHallShiftPurpose implements Comparable<ExpHallShiftPurpose>, Ser
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ExpHallShiftPurpose)) {
+        if (!(object instanceof ExpShiftPurpose)) {
             return false;
         }
-        ExpHallShiftPurpose other = (ExpHallShiftPurpose) object;
+        ExpShiftPurpose other = (ExpShiftPurpose) object;
         return (this.expHallShiftPurposeId != null || other.expHallShiftPurposeId == null) && (this.expHallShiftPurposeId == null || this.expHallShiftPurposeId.equals(other.expHallShiftPurposeId));
     }
 
     @Override
-    public int compareTo(ExpHallShiftPurpose o) {
+    public int compareTo(ExpShiftPurpose o) {
         int result = this.getHall().compareTo(o.getHall());
 
         if (result == 0) {

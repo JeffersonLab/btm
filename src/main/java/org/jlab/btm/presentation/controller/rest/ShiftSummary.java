@@ -1,11 +1,11 @@
 package org.jlab.btm.presentation.controller.rest;
 
 import org.jlab.btm.business.service.*;
-import org.jlab.btm.persistence.entity.ExpHallShift;
+import org.jlab.btm.persistence.entity.ExpShift;
 import org.jlab.btm.persistence.entity.CcShift;
 import org.jlab.btm.persistence.entity.PdShiftPlan;
 import org.jlab.btm.persistence.projection.AcceleratorShiftAvailability;
-import org.jlab.btm.persistence.projection.ExpHallShiftTotals;
+import org.jlab.btm.persistence.projection.ExpShiftTotals;
 import org.jlab.btm.persistence.projection.CcHallShiftAvailability;
 import org.jlab.btm.persistence.projection.CcHallShiftTotals;
 import org.jlab.btm.presentation.util.BtmParamConverter;
@@ -36,19 +36,19 @@ import java.util.Map;
 @Path("shift-summary")
 public class ShiftSummary {
 
-    private ExpHallHourService lookupHourService() {
+    private ExpHourService lookupHourService() {
         try {
             InitialContext ic = new InitialContext();
-            return (ExpHallHourService) ic.lookup("java:global/btm/ExpHallHourService");
+            return (ExpHourService) ic.lookup("java:global/btm/ExpHallHourService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
     }
 
-    private ExpHallShiftService lookupExpShiftService() {
+    private ExpShiftService lookupExpShiftService() {
         try {
             InitialContext ic = new InitialContext();
-            return (ExpHallShiftService) ic.lookup("java:global/btm/ExpHallShiftService");
+            return (ExpShiftService) ic.lookup("java:global/btm/ExpHallShiftService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
@@ -99,8 +99,8 @@ public class ShiftSummary {
             @Override
             public void write(OutputStream out) {
                 try (JsonGenerator gen = Json.createGenerator(out)) {
-                    ExpHallHourService expHourService = lookupHourService();
-                    ExpHallShiftService expShiftService = lookupExpShiftService();
+                    ExpHourService expHourService = lookupHourService();
+                    ExpShiftService expShiftService = lookupExpShiftService();
                     CcShiftService ccShiftService = lookupOpShiftService();
                     CcAccHourService ccAccHourService = lookupOpAccHourService();
                     CcHallHourService hallHourService = lookupOpHallHourService();
@@ -130,11 +130,11 @@ public class ShiftSummary {
                     Date ccEnd = TimeUtil.calculateCrewChiefShiftEndDayAndHour(ccStart);
                     Date expStart = TimeUtil.addHours(ccStart, 1);
 
-                    List<ExpHallShiftTotals> expHourList
+                    List<ExpShiftTotals> expHourList
                             = expHourService.findExpHallShiftTotals(ccStart, ccEnd);
-                    List<ExpHallShift> expShiftList
+                    List<ExpShift> expShiftList
                             = expShiftService.findByShiftStartAndLoadPurpose(expStart);
-                    Map<Hall, ExpHallShift> shiftMap = expShiftService.getMap(expShiftList);
+                    Map<Hall, ExpShift> shiftMap = expShiftService.getMap(expShiftList);
                     CcShift ccShift = ccShiftService.findInDatabase(ccStart);
                     AcceleratorShiftAvailability accAvail = ccAccHourService.getAcceleratorAvailability(ccStart, ccEnd, false, plan);
                     List<CcHallShiftAvailability> hallAvailabilityList = hallHourService.getHallAvailablilityList(
@@ -188,8 +188,8 @@ public class ShiftSummary {
                             .write("plan-sad-seconds", ObjectUtil.coalesce(accAvail.getPdShiftTotals().getSadSeconds(), 0));
                     gen.writeStartArray("halls");
                     int i = 0;
-                    for (ExpHallShiftTotals totals : expHourList) {
-                        ExpHallShift expShift = shiftMap.get(totals.getHall());
+                    for (ExpShiftTotals totals : expHourList) {
+                        ExpShift expShift = shiftMap.get(totals.getHall());
                         CcHallShiftAvailability opAvail = hallAvailabilityList.get(i++);
                         CcHallShiftTotals opTotals = opAvail.getShiftTotals();
 
