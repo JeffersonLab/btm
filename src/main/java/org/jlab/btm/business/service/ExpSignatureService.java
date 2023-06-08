@@ -12,6 +12,7 @@ import javax.persistence.TypedQuery;
 import org.jlab.btm.persistence.entity.*;
 import org.jlab.btm.persistence.enumeration.Role;
 import org.jlab.btm.persistence.projection.ExpTimesheetStatus;
+import org.jlab.btm.persistence.projection.HourReasonDiscrepancy;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.enumeration.Hall;
@@ -81,9 +82,9 @@ public class ExpSignatureService extends AbstractService<ExpSignature> {
             status.setAvailabilityComplete(true);
         }
 
-        List<String> discrepancies = reasonTimeService.validateUED(expAvailabilityList, reasonsNotReadyList);
+        List<HourReasonDiscrepancy> discrepancies = reasonTimeService.validateUED(expAvailabilityList, reasonsNotReadyList);
 
-        status.setUedDiscrepancies(discrepancies);
+        status.setReasonDiscrepancyList(discrepancies);
 
         if(discrepancies.isEmpty()) {
             status.setReasonsNotReadyComplete(true);

@@ -618,6 +618,19 @@ $(document).on("click", ".ui-icon-close", function () {
     $textarea.val($textarea.prev().text());
 });
 
+$(document).on("click", "#add-reason-button", function () {
+    $("#reason-dialog").dialog("open");
+    return false;
+});
+
 $(function () {
     jlab.btm.validateHourTableRowTotal($("#exp-hourly-table"));
+
+    $("#reason-dialog").dialog({
+        autoOpen: false,
+        height: 400,
+        width: 500,
+        minHeight: 400,
+        minWidth: 500
+    });
 });

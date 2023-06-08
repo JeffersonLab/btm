@@ -42,8 +42,83 @@
                 </table>
             </c:when>
             <c:otherwise>
-                <p>No Reasons</p>
+                <p>None</p>
             </c:otherwise>
         </c:choose>
+        <h4>UED Reason Discrepancies</h4>
+        <c:choose>
+            <c:when test="${fn:length(status.reasonDiscrepancyList) > 0}">
+                <table class="data-table stripped-table">
+                    <thead>
+                        <tr>
+                            <th class="hour-header"></th>
+                            <th>UED</th>
+                            <th>Reason Total</th>
+                            <th>Difference</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${status.reasonDiscrepancyList}" var="hour">
+                        <tr class="ui-state-error">
+                            <fmt:formatDate value="${hour.dayAndHour}" pattern="dd MMM yyyy HH:mm z"
+                                            var="fullDate"/>
+                            <fmt:formatDate value="${hour.dayAndHour}" pattern="yyyy-MM-dd-HH-z" var="isoDate"/>
+                            <th title="${fullDate}" data-hour="${isoDate}"><fmt:formatDate
+                                    value="${hour.dayAndHour}"
+                                    pattern="HH"/></th>
+                            <td>${btm:formatDuration(hour.uedSeconds, durationUnits)}</td>
+                            <td>${btm:formatDuration(hour.reasonTotalSeconds, durationUnits)}</td>
+                            <td>${btm:formatDuration(hour.differenceSeconds, durationUnits)}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </c:when>
+            <c:otherwise>
+                None
+            </c:otherwise>
+        </c:choose>
+        <div class="form-button-panel">
+            <button id="add-reason-button" type="button">Add</button>
+        </div>
+    </form>
+</div>
+<div id="reason-dialog" class="dialog" title="Add Reason Not Ready">
+    <form>
+        <ul class="key-value-list">
+            <li>
+                <div class="li-key"><span>Hour:</span></div>
+                <div class="li-value">
+                    <select id="reason-hour">
+                        <option></option>
+                        <c:forEach items="${status.reasonDiscrepancyList}" var="discrepancy">
+                            <fmt:formatDate pattern="dd MMM yyyy HH" value="${discrepancy.dayAndHour}" var="dayAndHour"/>
+                            <fmt:formatDate pattern="HH" value="${discrepancy.dayAndHour}" var="hour"/>
+                            <option value="${dayAndHour}">${hour}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="li-key"><span>Reason:</span></div>
+                <div class="li-value">
+                    <select id="reason">
+                        <option></option>
+                        <c:forEach items="${reasonList}" var="reason">
+                            <option value="${reason.expReasonId}">${reason.name}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="li-key"><span>Duration:</span></div>
+                <div class="li-value">
+                    <input id="reason-duration" type="text"/>
+                </div>
+            </li>
+        </ul>
+        <div class="dialog-button-panel">
+            <button id="save-reason-button" class="dialog-save-button" type="button">Save</button>
+        </div>
     </form>
 </div>

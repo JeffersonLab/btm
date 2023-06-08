@@ -2,6 +2,7 @@ package org.jlab.btm.business.service;
 
 import org.jlab.btm.persistence.entity.ExpHour;
 import org.jlab.btm.persistence.entity.ExpHourReasonTime;
+import org.jlab.btm.persistence.projection.HourReasonDiscrepancy;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 import javax.annotation.security.PermitAll;
@@ -64,8 +65,8 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
     }
 
     @PermitAll
-    public List<String> validateUED(List<ExpHour> availabilityList, List<ExpHourReasonTime> explanationList) {
-        List<String> discrepancies = new ArrayList<>();
+    public List<HourReasonDiscrepancy> validateUED(List<ExpHour> availabilityList, List<ExpHourReasonTime> explanationList) {
+        List<HourReasonDiscrepancy> discrepancies = new ArrayList<>();
 
         if(availabilityList != null) {
             for(ExpHour hour: availabilityList) {
@@ -73,7 +74,8 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
                 int explanationSeconds = calculateExplanationSeconds(hour.getExpHourId(), explanationList);
 
                 if(uedSeconds != explanationSeconds) {
-                    discrepancies.add(explanationSeconds + " seconds of UED explanation for Hour " + hour.getDayAndHour() + " and expected " + uedSeconds);
+                    HourReasonDiscrepancy discrepancy = new HourReasonDiscrepancy(hour.getDayAndHour(), uedSeconds, explanationSeconds);
+                    discrepancies.add(discrepancy);
                 }
             }
         }

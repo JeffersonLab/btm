@@ -162,6 +162,7 @@ table.editable-table tbody td span {
 #exp-avail-panel tfoot th,
 #exp-avail-panel th.mirror-th,
 #exp-avail-panel td input,
+#exp-reasons-panel td,
 #dtm-btm-table td {
     text-align: right;
 }
@@ -189,6 +190,7 @@ table.editable-table tbody td span {
 }
 
 #exp-avail-panel,
+#exp-reasons-panel,
 .tabset {
     font-size: 0.75em;
 }

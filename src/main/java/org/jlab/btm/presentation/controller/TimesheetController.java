@@ -64,6 +64,8 @@ public class TimesheetController extends HttpServlet {
     ExpShiftPurposeService purposeService;
     @EJB
     ExpHourReasonTimeService reasonTimeService;
+    @EJB
+    ExpReasonService reasonService;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -350,6 +352,7 @@ public class TimesheetController extends HttpServlet {
                 endHour, true);
 
         /*REASONS NOT READY*/
+        List<ExpReason> reasonList = reasonService.findByActive(hall, true);
         List<ExpHourReasonTime> reasonsNotReady = reasonTimeService.find(hall, startHour, endHour);
 
         /*SHIFT INFORMATION*/
@@ -370,6 +373,7 @@ public class TimesheetController extends HttpServlet {
 
         request.setAttribute("status", status);
         request.setAttribute("editable", editable);
+        request.setAttribute("reasonList", reasonList);
         request.setAttribute("availability", expAvailability);
         request.setAttribute("shiftInfo", shiftInfo);
         request.setAttribute("signatureList", signatureList);

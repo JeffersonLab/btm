@@ -8,11 +8,10 @@ import java.util.List;
  */
 public class ExpTimesheetStatus {
     private boolean availabilityComplete = false;
-
     private boolean reasonsNotReadyComplete = false;
     private boolean shiftInfoComplete = false;
     private boolean signatureComplete = false;
-    private List<String> uedDiscrepancies = new ArrayList<>();
+    private List<HourReasonDiscrepancy> reasonDiscrepancyList = new ArrayList<>();
 
     public boolean isAvailabilityComplete() {
         return availabilityComplete;
@@ -46,11 +45,11 @@ public class ExpTimesheetStatus {
         this.signatureComplete = signature;
     }
 
-    public void setUedDiscrepancies(List<String> discrepancies) {
-        this.uedDiscrepancies = discrepancies;
+    public void setReasonDiscrepancyList(List<HourReasonDiscrepancy> discrepancyList) {
+        this.reasonDiscrepancyList = discrepancyList;
     }
 
-    public List<String> getUedDiscrepancies() {
-        return uedDiscrepancies;
+    public List<HourReasonDiscrepancy> getReasonDiscrepancyList() {
+        return reasonDiscrepancyList;
     }
 }
