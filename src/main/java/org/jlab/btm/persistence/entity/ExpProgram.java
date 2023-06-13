@@ -14,22 +14,22 @@ import java.math.BigInteger;
  * @author ryans
  */
 @Entity
-@Table(name = "EXP_SHIFT_PURPOSE", schema = "BTM_OWNER", uniqueConstraints = {
+@Table(name = "EXP_PROGRAM", schema = "BTM_OWNER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"HALL", "NAME"}),
-        @UniqueConstraint(columnNames = {"HALL", "EXP_SHIFT_PURPOSE_ID"})})
+        @UniqueConstraint(columnNames = {"HALL", "EXP_PROGRAM_ID"})})
 @NamedQueries({
-        @NamedQuery(name = "ExpShiftPurpose.findByExpShiftPurposeId", query = "SELECT e FROM ExpShiftPurpose e WHERE e.expShiftPurposeId = :expShiftPurposeId"),
-        @NamedQuery(name = "ExpShiftPurpose.findByHallAndName", query = "SELECT e FROM ExpShiftPurpose e WHERE e.hall = :hall AND e.name = :name"),
-        @NamedQuery(name = "ExpShiftPurpose.findByHallAndActive", query = "SELECT e FROM ExpShiftPurpose e WHERE e.hall = :hall AND e.active = :active"),
-        @NamedQuery(name = "ExpShiftPurpose.findByHallAndExperiment", query = "SELECT e FROM ExpShiftPurpose e WHERE e.hall = :hall AND e.experiment = :experiment")})
-public class ExpShiftPurpose implements Comparable<ExpShiftPurpose>, Serializable {
+        @NamedQuery(name = "ExpProgram.findByExpProgramId", query = "SELECT e FROM ExpProgram e WHERE e.expProgramId = :expProgramId"),
+        @NamedQuery(name = "ExpProgram.findByHallAndName", query = "SELECT e FROM ExpProgram e WHERE e.hall = :hall AND e.name = :name"),
+        @NamedQuery(name = "ExpProgram.findByHallAndActive", query = "SELECT e FROM ExpProgram e WHERE e.hall = :hall AND e.active = :active"),
+        @NamedQuery(name = "ExpProgram.findByHallAndExperiment", query = "SELECT e FROM ExpProgram e WHERE e.hall = :hall AND e.experiment = :experiment")})
+public class ExpProgram implements Comparable<ExpProgram>, Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "ExpShiftPurposeId", sequenceName = "EXP_SHIFT_PURPOSE_ID", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ExpShiftPurposeId")
+    @SequenceGenerator(name = "ExpProgramId", sequenceName = "EXP_PROGRAM_ID", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ExpProgramId")
     @Basic(optional = false)
-    @Column(name = "EXP_SHIFT_PURPOSE_ID", nullable = false, precision = 38, scale = 0)
-    private BigInteger expShiftPurposeId;
+    @Column(name = "EXP_PROGRAM_ID", nullable = false, precision = 38, scale = 0)
+    private BigInteger expProgramId;
     @Basic(optional = false)
     @Column(name = "HALL", nullable = false, length = 1, columnDefinition = "char(1)")
     @Enumerated(EnumType.STRING)
@@ -57,27 +57,27 @@ public class ExpShiftPurpose implements Comparable<ExpShiftPurpose>, Serializabl
     @NotNull
     private boolean experiment;
 
-    public ExpShiftPurpose() {
+    public ExpProgram() {
     }
 
-    public ExpShiftPurpose(BigInteger expShiftPurposeId) {
-        this.expShiftPurposeId = expShiftPurposeId;
+    public ExpProgram(BigInteger expProgramId) {
+        this.expProgramId = expProgramId;
     }
 
-    public ExpShiftPurpose(BigInteger expShiftPurposeId, Hall hall, String name, boolean active, boolean experiment) {
-        this.expShiftPurposeId = expShiftPurposeId;
+    public ExpProgram(BigInteger expProgramId, Hall hall, String name, boolean active, boolean experiment) {
+        this.expProgramId = expProgramId;
         this.hall = hall;
         this.name = name;
         this.active = active;
         this.experiment = experiment;
     }
 
-    public BigInteger getExpShiftPurposeId() {
-        return expShiftPurposeId;
+    public BigInteger getExpProgramId() {
+        return expProgramId;
     }
 
-    public void setExpShiftPurposeId(BigInteger expShiftPurposeId) {
-        this.expShiftPurposeId = expShiftPurposeId;
+    public void setExpProgramId(BigInteger expProgramId) {
+        this.expProgramId = expProgramId;
     }
 
     public Hall getHall() {
@@ -131,22 +131,22 @@ public class ExpShiftPurpose implements Comparable<ExpShiftPurpose>, Serializabl
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (expShiftPurposeId != null ? expShiftPurposeId.hashCode() : 0);
+        hash += (expProgramId != null ? expProgramId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ExpShiftPurpose)) {
+        if (!(object instanceof ExpProgram)) {
             return false;
         }
-        ExpShiftPurpose other = (ExpShiftPurpose) object;
-        return (this.expShiftPurposeId != null || other.expShiftPurposeId == null) && (this.expShiftPurposeId == null || this.expShiftPurposeId.equals(other.expShiftPurposeId));
+        ExpProgram other = (ExpProgram) object;
+        return (this.expProgramId != null || other.expProgramId == null) && (this.expProgramId == null || this.expProgramId.equals(other.expProgramId));
     }
 
     @Override
-    public int compareTo(ExpShiftPurpose o) {
+    public int compareTo(ExpProgram o) {
         int result = this.getHall().compareTo(o.getHall());
 
         if (result == 0) {
@@ -160,7 +160,7 @@ public class ExpShiftPurpose implements Comparable<ExpShiftPurpose>, Serializabl
     public String toString() {
 
         String builder = "ID: " +
-                this.getExpShiftPurposeId() +
+                this.getExpProgramId() +
                 ", Hall: " +
                 this.getHall() +
                 ", Name: " +

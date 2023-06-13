@@ -1,7 +1,7 @@
 package org.jlab.btm.presentation.controller;
 
-import org.jlab.btm.business.service.ExpShiftPurposeService;
-import org.jlab.btm.persistence.entity.ExpShiftPurpose;
+import org.jlab.btm.business.service.ExpProgramService;
+import org.jlab.btm.persistence.entity.ExpProgram;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 import javax.ejb.EJB;
@@ -20,7 +20,7 @@ import java.util.List;
 public class ProgramsController extends HttpServlet {
 
     @EJB
-    ExpShiftPurposeService purposeService;
+    ExpProgramService programService;
 
     /**
      * Handles the HTTP
@@ -35,10 +35,10 @@ public class ProgramsController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<ExpShiftPurpose> hallAPurposeList = purposeService.findByHall(Hall.A, null);
-        List<ExpShiftPurpose> hallBPurposeList = purposeService.findByHall(Hall.B, null);
-        List<ExpShiftPurpose> hallCPurposeList = purposeService.findByHall(Hall.C, null);
-        List<ExpShiftPurpose> hallDPurposeList = purposeService.findByHall(Hall.D, null);
+        List<ExpProgram> hallAPurposeList = programService.findByHall(Hall.A, null);
+        List<ExpProgram> hallBPurposeList = programService.findByHall(Hall.B, null);
+        List<ExpProgram> hallCPurposeList = programService.findByHall(Hall.C, null);
+        List<ExpProgram> hallDPurposeList = programService.findByHall(Hall.D, null);
 
         boolean editable = request.isUserInRole("schcom")
                 || request.isUserInRole("btm-admin") || request.isUserInRole("cc");

@@ -1,6 +1,6 @@
 package org.jlab.btm.presentation.controller.ajax;
 
-import org.jlab.btm.business.service.ExpShiftPurposeService;
+import org.jlab.btm.business.service.ExpProgramService;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.ExceptionUtil;
 import org.jlab.smoothness.presentation.util.ParamConverter;
@@ -30,7 +30,7 @@ public class RemoveProgram extends HttpServlet {
             RemoveProgram.class.getName());
 
     @EJB
-    ExpShiftPurposeService purposeService;
+    ExpProgramService programService;
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -53,7 +53,7 @@ public class RemoveProgram extends HttpServlet {
 
             BigInteger programId = ParamConverter.convertBigInteger(request, "programId");
 
-            purposeService.remove(programId);
+            programService.remove(programId);
         } catch (EJBAccessException e) {
             logger.log(Level.WARNING,
                     "Unable to remove program due to access exception", e);

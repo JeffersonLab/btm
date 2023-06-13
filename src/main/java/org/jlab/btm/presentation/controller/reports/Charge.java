@@ -1,8 +1,8 @@
 package org.jlab.btm.presentation.controller.reports;
 
-import org.jlab.btm.business.service.ExpShiftPurposeService;
+import org.jlab.btm.business.service.ExpProgramService;
 import org.jlab.btm.business.service.MonthlyScheduleService;
-import org.jlab.btm.persistence.entity.ExpShiftPurpose;
+import org.jlab.btm.persistence.entity.ExpProgram;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
 import org.jlab.btm.persistence.entity.ScheduleDay;
 import org.jlab.btm.persistence.projection.DailyCharge;
@@ -36,7 +36,7 @@ public class Charge extends HttpServlet {
     MonthlyScheduleService scheduleService;
 
     @EJB
-    ExpShiftPurposeService purposeService;
+    ExpProgramService programService;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -106,7 +106,7 @@ public class Charge extends HttpServlet {
     private HallChargeData calculateScheduledHallCharge(List<ScheduleDay> scheduleDays) {
         HallChargeData data = new HallChargeData();
 
-        Map<Integer, ExpShiftPurpose> purposeMap = purposeService.findPurposeByIdMap();
+        Map<Integer, ExpProgram> purposeMap = programService.findProgramByIdMap();
 
         if (scheduleDays != null && !scheduleDays.isEmpty()) {
             //Date dateprev = TimeUtil.addDays(scheduleDays.get(0).getDayMonthYear(), -1);

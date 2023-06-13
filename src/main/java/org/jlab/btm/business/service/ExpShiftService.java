@@ -1,7 +1,7 @@
 package org.jlab.btm.business.service;
 
 import org.jlab.btm.persistence.entity.ExpShift;
-import org.jlab.btm.persistence.entity.ExpShiftPurpose;
+import org.jlab.btm.persistence.entity.ExpProgram;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
@@ -37,7 +37,7 @@ public class ExpShiftService extends AbstractService<ExpShift> {
     ExpSecurityRuleService ruleService;
 
     @EJB
-    ExpShiftPurposeService purposeService;
+    ExpProgramService programService;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -56,7 +56,7 @@ public class ExpShiftService extends AbstractService<ExpShift> {
 
         if (shiftList != null) {
             for (ExpShift shift : shiftList) {
-                shift.getExpShiftPurpose().getName();
+                shift.getExpProgram().getName();
             }
         }
 
@@ -115,15 +115,15 @@ public class ExpShiftService extends AbstractService<ExpShift> {
             throw new UserFriendlyException("Program is required");
         }
 
-        ExpShiftPurpose purpose = purposeService.find(purposeId);
+        ExpProgram program = programService.find(purposeId);
 
-        if(purpose == null) {
-            throw new UserFriendlyException("Purpose not found");
+        if(program == null) {
+            throw new UserFriendlyException("Program not found");
         }
 
         shift.setLeader(leader);
         shift.setWorkers(workers);
-        shift.setExpShiftPurpose(purpose);
+        shift.setExpProgram(program);
         shift.setRemark(comments);
 
         super.edit(shift);

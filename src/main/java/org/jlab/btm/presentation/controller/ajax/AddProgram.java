@@ -1,6 +1,6 @@
 package org.jlab.btm.presentation.controller.ajax;
 
-import org.jlab.btm.business.service.ExpShiftPurposeService;
+import org.jlab.btm.business.service.ExpProgramService;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.ExceptionUtil;
@@ -31,7 +31,7 @@ public class AddProgram extends HttpServlet {
             AddProgram.class.getName());
 
     @EJB
-    ExpShiftPurposeService purposeService;
+    ExpProgramService programService;
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -59,7 +59,7 @@ public class AddProgram extends HttpServlet {
             Boolean experiment = ParamConverter.convertYNBoolean(request, "experiment");
             Boolean active = ParamConverter.convertYNBoolean(request, "active");
 
-            purposeService.add(hall, name, alias, url, experiment, active);
+            programService.add(hall, name, alias, url, experiment, active);
         } catch (EJBAccessException e) {
             logger.log(Level.WARNING,
                     "Unable to add program due to access exception", e);

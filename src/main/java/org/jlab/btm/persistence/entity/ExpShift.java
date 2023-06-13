@@ -19,7 +19,7 @@ import java.util.Date;
         @UniqueConstraint(columnNames = {"HALL", "START_DAY_AND_HOUR"})})
 @NamedQueries({
         @NamedQuery(name = "ExpShift.findByExpShiftId", query = "SELECT e FROM ExpShift e WHERE e.expShiftId = :expShiftId"),
-        @NamedQuery(name = "ExpShift.findByHallAndStartDayAndHour", query = "SELECT e FROM ExpShift e WHERE e.expShiftPurpose.hall = :hall AND e.startDayAndHour = :startDayAndHour")})
+        @NamedQuery(name = "ExpShift.findByHallAndStartDayAndHour", query = "SELECT e FROM ExpShift e WHERE e.expProgram.hall = :hall AND e.startDayAndHour = :startDayAndHour")})
 public class ExpShift implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,9 +48,9 @@ public class ExpShift implements Serializable {
     @Size(max = 256)
     private String workers;
     @NotNull
-    @JoinColumn(name = "PURPOSE_ID", referencedColumnName = "EXP_SHIFT_PURPOSE_ID", nullable = false)
+    @JoinColumn(name = "EXP_PROGRAM_ID", referencedColumnName = "EXP_PROGRAM_ID", nullable = false)
     @ManyToOne(optional = false)
-    private ExpShiftPurpose expShiftPurpose;
+    private ExpProgram expProgram;
 
     public ExpShift() {
     }
@@ -79,12 +79,12 @@ public class ExpShift implements Serializable {
         this.hall = hall;
     }
 
-    public ExpShiftPurpose getExpShiftPurpose() {
-        return expShiftPurpose;
+    public ExpProgram getExpProgram() {
+        return expProgram;
     }
 
-    public void setExpShiftPurpose(ExpShiftPurpose expShiftPurpose) {
-        this.expShiftPurpose = expShiftPurpose;
+    public void setExpProgram(ExpProgram expProgram) {
+        this.expProgram = expProgram;
     }
 
     public String getLeader() {

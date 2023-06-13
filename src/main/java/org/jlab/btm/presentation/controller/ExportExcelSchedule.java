@@ -1,10 +1,10 @@
 package org.jlab.btm.presentation.controller;
 
 import org.jlab.btm.business.service.ExcelScheduleService;
-import org.jlab.btm.business.service.ExpShiftPurposeService;
+import org.jlab.btm.business.service.ExpProgramService;
 import org.jlab.btm.business.service.MonthlyScheduleService;
 import org.jlab.btm.business.service.ScheduleDayService;
-import org.jlab.btm.persistence.entity.ExpShiftPurpose;
+import org.jlab.btm.persistence.entity.ExpProgram;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
 import org.jlab.btm.persistence.entity.ScheduleDay;
 import org.jlab.smoothness.business.util.TimeUtil;
@@ -34,7 +34,7 @@ public class ExportExcelSchedule extends HttpServlet {
     @EJB
     ScheduleDayService scheduleDayService;
     @EJB
-    ExpShiftPurposeService purposeService;
+    ExpProgramService programService;
     @EJB
     ExcelScheduleService excelService;
 
@@ -63,7 +63,7 @@ public class ExportExcelSchedule extends HttpServlet {
             schedule.setScheduleDayList(dayList);
         }
 
-        Map<Integer, ExpShiftPurpose> purposeMap = purposeService.findPurposeByIdMap();
+        Map<Integer, ExpProgram> purposeMap = programService.findProgramByIdMap();
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("content-disposition", "attachment;filename=\"schedule.xlsx\"");

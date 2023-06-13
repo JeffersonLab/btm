@@ -1,9 +1,9 @@
 package org.jlab.btm.presentation.controller;
 
-import org.jlab.btm.business.service.ExpShiftPurposeService;
+import org.jlab.btm.business.service.ExpProgramService;
 import org.jlab.btm.business.service.MonthlyScheduleService;
 import org.jlab.btm.business.service.ScheduleDayService;
-import org.jlab.btm.persistence.entity.ExpShiftPurpose;
+import org.jlab.btm.persistence.entity.ExpProgram;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
 import org.jlab.btm.persistence.entity.ScheduleDay;
 import org.jlab.btm.presentation.util.BtmParamConverter;
@@ -41,7 +41,7 @@ public class ScheduleController extends HttpServlet {
     @EJB
     ScheduleDayService scheduleDayService;
     @EJB
-    ExpShiftPurposeService purposeService;
+    ExpProgramService programService;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -123,11 +123,11 @@ public class ScheduleController extends HttpServlet {
             }
         }
 
-        Map<Integer, ExpShiftPurpose> purposeMap = purposeService.findPurposeByIdMap();
-        List<ExpShiftPurpose> hallAPurposeList = purposeService.findByHall(Hall.A, true);
-        List<ExpShiftPurpose> hallBPurposeList = purposeService.findByHall(Hall.B, true);
-        List<ExpShiftPurpose> hallCPurposeList = purposeService.findByHall(Hall.C, true);
-        List<ExpShiftPurpose> hallDPurposeList = purposeService.findByHall(Hall.D, true);
+        Map<Integer, ExpProgram> purposeMap = programService.findProgramByIdMap();
+        List<ExpProgram> hallAPurposeList = programService.findByHall(Hall.A, true);
+        List<ExpProgram> hallBPurposeList = programService.findByHall(Hall.B, true);
+        List<ExpProgram> hallCPurposeList = programService.findByHall(Hall.C, true);
+        List<ExpProgram> hallDPurposeList = programService.findByHall(Hall.D, true);
 
         request.setAttribute("start", start);
         request.setAttribute("scheduleList", scheduleList);

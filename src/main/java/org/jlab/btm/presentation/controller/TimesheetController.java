@@ -61,7 +61,7 @@ public class TimesheetController extends HttpServlet {
     @EJB
     ExpSecurityRuleService ruleService;
     @EJB
-    ExpShiftPurposeService purposeService;
+    ExpProgramService purposeService;
     @EJB
     ExpUedExplanationService reasonTimeService;
     @EJB
@@ -371,8 +371,8 @@ public class TimesheetController extends HttpServlet {
                 shiftInfo, signatureList);
 
         /*Purposes*/
-        List<ExpShiftPurpose> experimentList = purposeService.findActiveExperimentsByHall(hall);
-        List<ExpShiftPurpose> nonexperimentList = purposeService.findActiveNonExperimentsByHall(hall);
+        List<ExpProgram> experimentList = purposeService.findActiveExperimentsByHall(hall);
+        List<ExpProgram> nonexperimentList = purposeService.findActiveNonExperimentsByHall(hall);
 
         boolean editable = ruleService.isEditAllowed(hall, startHour);
 

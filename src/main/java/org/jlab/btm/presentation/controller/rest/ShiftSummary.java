@@ -196,7 +196,7 @@ public class ShiftSummary {
                         String hallProgram = null;
 
                         if (expShift != null) {
-                            hallProgram = expShift.getExpShiftPurpose().getName();
+                            hallProgram = expShift.getExpProgram().getName();
                         }
 
                         gen.writeStartObject()
