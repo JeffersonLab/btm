@@ -29,7 +29,7 @@ public class ExpSignatureService extends AbstractService<ExpSignature> {
     protected EntityManager em;
 
     @EJB
-    ExpHourReasonTimeService reasonTimeService;
+    ExpUedExplanationService reasonTimeService;
     @EJB
     ExpHourService expHourService;
     @EJB
@@ -61,7 +61,7 @@ public class ExpSignatureService extends AbstractService<ExpSignature> {
 
         List<ExpHour> availabilityList = expHourService.findInDatabase(hall, startDayAndHour, endDayAndHour);
 
-        List<ExpHourReasonTime> explanationsList = reasonTimeService.find(hall, startDayAndHour, endDayAndHour);
+        List<ExpUedExplanation> explanationsList = reasonTimeService.find(hall, startDayAndHour, endDayAndHour);
 
         ExpShift shift = shiftService.find(hall, startDayAndHour);
 
@@ -72,7 +72,7 @@ public class ExpSignatureService extends AbstractService<ExpSignature> {
 
     @PermitAll
     public ExpTimesheetStatus calculateStatus(Date startDayAndHour, Date endDayAndHour, List<ExpHour> expAvailabilityList,
-                                              List<ExpHourReasonTime> reasonsNotReadyList, ExpShift shiftInfo,
+                                              List<ExpUedExplanation> reasonsNotReadyList, ExpShift shiftInfo,
                                               List<ExpSignature> signatureList) {
         ExpTimesheetStatus status = new ExpTimesheetStatus();
 

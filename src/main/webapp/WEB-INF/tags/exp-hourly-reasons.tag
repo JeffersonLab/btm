@@ -30,7 +30,7 @@
                     <tbody>
                     <c:forEach items="${hourList}" var="explanation">
                         <c:set value="${explanation.expHour}" var="hour"/>
-                        <tr data-explanation-id="${explanation.expHourReasonTimeId}">
+                        <tr data-explanation-id="${explanation.expUedExplanationId}">
                             <fmt:formatDate value="${hour.dayAndHour}" pattern="dd MMM yyyy HH:mm z"
                                             var="fullDate"/>
                             <fmt:formatDate value="${hour.dayAndHour}" pattern="yyyy-MM-dd-HH-z" var="isoDate"/>

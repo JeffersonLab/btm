@@ -25,26 +25,26 @@ import org.hibernate.envers.RelationTargetAuditMode;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 /**
- * An experimenter hall hour reason not ready time.
+ * An experimenter UED explanation.
  *
  * @author ryans
  */
 @Entity
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-@Table(name = "EXP_HOUR_REASON_TIME", schema = "BTM_OWNER", uniqueConstraints = {
+@Table(name = "EXP_UED_EXPLANATION", schema = "BTM_OWNER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"HALL", "EXP_HOUR_ID", "EXP_REASON_ID"})})
 @NamedQueries({
-        @NamedQuery(name = "ExpHourReasonTime.findByExpHourReasonTimeId", query = "SELECT e FROM ExpHourReasonTime e WHERE e.expHourReasonTimeId = :expHallHourReasonTimeId"),
-        @NamedQuery(name = "ExpHourReasonTime.findByHallAndHourRange", query = "SELECT e FROM ExpHourReasonTime e WHERE e.hall = :hall AND e.expHour.dayAndHourCal BETWEEN :startDayAndHourCal AND :endDayAndHourCal ORDER BY e.expHour.dayAndHourCal ASC"),
-        @NamedQuery(name = "ExpHourReasonTime.sumByExpHallHourId", query = "SELECT NVL(SUM(e.seconds), 0) FROM ExpHourReasonTime e WHERE e.expHour.expHourId = :expHallHourId")})
-public class ExpHourReasonTime implements Comparable<ExpHourReasonTime>, Serializable {
+        @NamedQuery(name = "ExpHourReasonTime.findByExpUedExplanationId", query = "SELECT e FROM ExpUedExplanation e WHERE e.expUedExplanationId = :expUedExplanationId"),
+        @NamedQuery(name = "ExpHourReasonTime.findByHallAndHourRange", query = "SELECT e FROM ExpUedExplanation e WHERE e.hall = :hall AND e.expHour.dayAndHourCal BETWEEN :startDayAndHourCal AND :endDayAndHourCal ORDER BY e.expHour.dayAndHourCal ASC"),
+        @NamedQuery(name = "ExpHourReasonTime.sumByExpHourId", query = "SELECT NVL(SUM(e.seconds), 0) FROM ExpUedExplanation e WHERE e.expHour.expHourId = :expHourId")})
+public class ExpUedExplanation implements Comparable<ExpUedExplanation>, Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="ExpHourReasonTimeId", sequenceName="EXP_HOUR_REASON_TIME_ID", allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ExpHourReasonTimeId")
+    @SequenceGenerator(name="ExpUedExplanationId", sequenceName="EXP_UED_EXPLANATION_ID", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ExpUedExplanationId")
     @Basic(optional = false)
-    @Column(name = "EXP_HOUR_REASON_TIME_ID", nullable = false, precision = 38, scale = 0)
-    private BigInteger expHourReasonTimeId;
+    @Column(name = "EXP_UED_EXPLANATION_ID", nullable = false, precision = 38, scale = 0)
+    private BigInteger expUedExplanationId;
     @Basic(optional = false)
     @Column(name = "HALL", nullable = false, length = 1, columnDefinition = "char(1 char)")
     @NotNull
@@ -53,8 +53,8 @@ public class ExpHourReasonTime implements Comparable<ExpHourReasonTime>, Seriali
     @Basic(optional = false)
     @Column(name = "SECONDS", nullable = false)
     @NotNull
-    @Min(value = 1, message = "{org.jlab.bta.reasonMinTime}")
-    @Max(value = 3600, message = "{org.jlab.bta.maxTime}")
+    @Min(value = 1, message="Minimum value is 1 second")
+    @Max(value = 3600, message="Maximum value is 3600 seconds")
     private short seconds;
     @NotNull
     @JoinColumn(name = "EXP_HOUR_ID", referencedColumnName = "EXP_HOUR_ID", nullable = false)
@@ -65,25 +65,25 @@ public class ExpHourReasonTime implements Comparable<ExpHourReasonTime>, Seriali
     @ManyToOne(optional = false)
     private ExpReason expReason;
 
-    public ExpHourReasonTime() {
+    public ExpUedExplanation() {
     }
 
-    public ExpHourReasonTime(BigInteger expHourReasonTimeId) {
-        this.expHourReasonTimeId = expHourReasonTimeId;
+    public ExpUedExplanation(BigInteger expUedExplanationId) {
+        this.expUedExplanationId = expUedExplanationId;
     }
 
-    public ExpHourReasonTime(BigInteger expHourReasonTimeId, Hall hall, short seconds) {
-        this.expHourReasonTimeId = expHourReasonTimeId;
+    public ExpUedExplanation(BigInteger expUedExplanationId, Hall hall, short seconds) {
+        this.expUedExplanationId = expUedExplanationId;
         this.hall = hall;
         this.seconds = seconds;
     }
 
-    public BigInteger getExpHourReasonTimeId() {
-        return expHourReasonTimeId;
+    public BigInteger getExpUedExplanationId() {
+        return expUedExplanationId;
     }
 
-    public void setExpHourReasonTimeId(BigInteger expHourReasonTimeId) {
-        this.expHourReasonTimeId = expHourReasonTimeId;
+    public void setExpUedExplanationId(BigInteger expUedExplanationId) {
+        this.expUedExplanationId = expUedExplanationId;
     }
 
     public Hall getHall() {
@@ -121,25 +121,25 @@ public class ExpHourReasonTime implements Comparable<ExpHourReasonTime>, Seriali
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (expHourReasonTimeId != null ? expHourReasonTimeId.hashCode() : 0);
+        hash += (expUedExplanationId != null ? expUedExplanationId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ExpHourReasonTime)) {
+        if (!(object instanceof ExpUedExplanation)) {
             return false;
         }
-        ExpHourReasonTime other = (ExpHourReasonTime) object;
-        if ((this.expHourReasonTimeId == null && other.expHourReasonTimeId != null) || (this.expHourReasonTimeId != null && !this.expHourReasonTimeId.equals(other.expHourReasonTimeId))) {
+        ExpUedExplanation other = (ExpUedExplanation) object;
+        if ((this.expUedExplanationId == null && other.expUedExplanationId != null) || (this.expUedExplanationId != null && !this.expUedExplanationId.equals(other.expUedExplanationId))) {
             return false;
         }
         return true;
     }
 
     @Override
-    public int compareTo(ExpHourReasonTime o) {
+    public int compareTo(ExpUedExplanation o) {
         int result = this.getHall().compareTo(o.getHall());
 
         if(result == 0) {
@@ -151,6 +151,6 @@ public class ExpHourReasonTime implements Comparable<ExpHourReasonTime>, Seriali
 
     @Override
     public String toString() {
-        return "org.jlab.btm.entity.ExpHallHourReasonTime[expHallHourReasonTimeId=" + expHourReasonTimeId + "]";
+        return "org.jlab.btm.entity.ExpUedExplanation[expUedExplanationId=" + expUedExplanationId + "]";
     }
 }

@@ -2,11 +2,10 @@ package org.jlab.btm.business.service;
 
 import org.jlab.btm.business.util.BtmTimeUtil;
 import org.jlab.btm.persistence.entity.ExpHour;
-import org.jlab.btm.persistence.entity.ExpHourReasonTime;
+import org.jlab.btm.persistence.entity.ExpUedExplanation;
 import org.jlab.btm.persistence.entity.ExpReason;
 import org.jlab.btm.persistence.projection.HourReasonDiscrepancy;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
-import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 import javax.annotation.security.PermitAll;
@@ -15,7 +14,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.xml.registry.infomodel.User;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,13 +21,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Responsible for experimenter hall hour reason not ready time business
- * operations.
+ * Responsible for experimenter UED explanation handling.
  *
  * @author ryans
  */
 @Stateless
-public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime> {
+public class ExpUedExplanationService extends AbstractService<ExpUedExplanation> {
 
     @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
@@ -43,8 +40,8 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
     @EJB
     ExpReasonService reasonService;
 
-    public ExpHourReasonTimeService() {
-        super(ExpHourReasonTime.class);
+    public ExpUedExplanationService() {
+        super(ExpUedExplanation.class);
     }
 
     @Override
@@ -62,10 +59,10 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
      * @return the list of hour reason times.
      */
     @PermitAll
-    public List<ExpHourReasonTime> find(Hall hall, Date startDayAndHour,
+    public List<ExpUedExplanation> find(Hall hall, Date startDayAndHour,
                                         Date endDayAndHour) {
-        TypedQuery<ExpHourReasonTime> q = em.createNamedQuery(
-                "ExpHourReasonTime.findByHallAndHourRange", ExpHourReasonTime.class);
+        TypedQuery<ExpUedExplanation> q = em.createNamedQuery(
+                "ExpHourReasonTime.findByHallAndHourRange", ExpUedExplanation.class);
 
         Calendar start = Calendar.getInstance();
         Calendar end = Calendar.getInstance();
@@ -80,7 +77,7 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
     }
 
     @PermitAll
-    public List<HourReasonDiscrepancy> validateUED(List<ExpHour> availabilityList, List<ExpHourReasonTime> explanationList) {
+    public List<HourReasonDiscrepancy> validateUED(List<ExpHour> availabilityList, List<ExpUedExplanation> explanationList) {
         List<HourReasonDiscrepancy> discrepancies = new ArrayList<>();
 
         if(availabilityList != null) {
@@ -98,11 +95,11 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
         return discrepancies;
     }
 
-    private int calculateExplanationSeconds(BigInteger hourId, List<ExpHourReasonTime> explanationList) {
+    private int calculateExplanationSeconds(BigInteger hourId, List<ExpUedExplanation> explanationList) {
         int total = 0;
 
         if(explanationList != null) {
-            for(ExpHourReasonTime explanation: explanationList) {
+            for(ExpUedExplanation explanation: explanationList) {
                 if(hourId.equals(explanation.getExpHour().getExpHourId())) {
                     total = total + explanation.getSeconds();
                 }
@@ -114,7 +111,7 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
 
     @PermitAll
     @Override
-    public ExpHourReasonTime find(Object id) {
+    public ExpUedExplanation find(Object id) {
         return super.find(id);
     }
 
@@ -122,7 +119,7 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
     public void remove(Hall hall, Date startDayAndHour, BigInteger id) throws UserFriendlyException {
         ruleService.editCheck(hall, startDayAndHour);
 
-        ExpHourReasonTime explanation = this.find(id);
+        ExpUedExplanation explanation = this.find(id);
 
         if(explanation == null) {
             throw new UserFriendlyException("Explanation not found with ID: " + id);
@@ -139,8 +136,8 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
 
         ruleService.editCheck(hall, BtmTimeUtil.getExpShiftStart(dayAndHour));
 
-        if(durationSeconds == null) {
-            throw new UserFriendlyException("Duration must not be empty");
+        if(durationSeconds == null || durationSeconds < 1) {
+            throw new UserFriendlyException("Duration must not be empty and must be positive");
         }
 
         // This find method uses inclusive on both start and end!  Should have exclusive end.  Doh!
@@ -164,7 +161,7 @@ public class ExpHourReasonTimeService extends AbstractService<ExpHourReasonTime>
             throw new UserFriendlyException("Reason not found with ID: " + reasonId);
         }
 
-        ExpHourReasonTime explanation = new ExpHourReasonTime();
+        ExpUedExplanation explanation = new ExpUedExplanation();
         explanation.setHall(hall);
         explanation.setExpHour(hour);
         explanation.setSeconds(durationSeconds);

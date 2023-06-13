@@ -1,6 +1,6 @@
 package org.jlab.btm.presentation.controller.ajax;
 
-import org.jlab.btm.business.service.ExpHourReasonTimeService;
+import org.jlab.btm.business.service.ExpUedExplanationService;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.ExceptionUtil;
@@ -33,7 +33,7 @@ public class RemoveUedExplanation extends HttpServlet {
             RemoveUedExplanation.class.getName());
 
     @EJB
-    ExpHourReasonTimeService explanationService;
+    ExpUedExplanationService explanationService;
 
     /**
      * Handles the HTTP <code>POST</code> method.

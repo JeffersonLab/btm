@@ -63,7 +63,7 @@ public class TimesheetController extends HttpServlet {
     @EJB
     ExpShiftPurposeService purposeService;
     @EJB
-    ExpHourReasonTimeService reasonTimeService;
+    ExpUedExplanationService reasonTimeService;
     @EJB
     ExpReasonService reasonService;
 
@@ -353,10 +353,10 @@ public class TimesheetController extends HttpServlet {
 
         /*REASONS NOT READY*/
         List<ExpReason> reasonList = reasonService.findByActive(hall, true);
-        List<ExpHourReasonTime> explanationList = reasonTimeService.find(hall, startHour, endHour);
+        List<ExpUedExplanation> explanationList = reasonTimeService.find(hall, startHour, endHour);
 
         int explanationSecondsTotal = 0;
-        for(ExpHourReasonTime explanation: explanationList) {
+        for(ExpUedExplanation explanation: explanationList) {
             explanationSecondsTotal = explanationSecondsTotal + explanation.getSeconds();
         }
 
