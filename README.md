@@ -13,7 +13,7 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application for mana
 ---
 
 ## Overview
-The Beam Time application allows machine operators and management to track machine time accounting.  The app prompts crew chiefs with shift timesheets pre-filled with data estimated via beam position sensors.  Integrations include Program Deputy shift plans and hall experimenter timesheets.   Reports are also provided.
+The Beam Time Manager application allows crew chiefs and experimenters to track machine time accounting while allowing management to review reports.  The app prompts crew chiefs and experimenters with shift timesheets pre-filled with data estimated via beam position sensors measurements.  The app also holds a database view of the PAC schedule an exposes programatic access via a JSON REST service and integrates with Program Deputy shift plans and DTM to enable prompting timekeepers with the expected plan as well.  The timesheets therefore consist of Planned, Measured, and Reported values.
 
 ## Quick Start with Compose
 1. Grab project
