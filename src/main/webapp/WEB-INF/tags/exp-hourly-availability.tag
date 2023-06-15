@@ -18,7 +18,7 @@
                 experiment timekeepers this means you may need to stay in contact with the Crew Chief during dynamic program times.
             </p>
             <p>
-                There are at least four schedules, each one informs the next, and in increasing granularity they are:
+                There are at least four plans, each one informs the next, and in increasing granularity they are:
             </p>
             <ul class="plan-list">
                 <li><a target="_blank" href="https://ace.jlab.org/btm/schedule">Program Advisory Committee (PAC) Schedule</a> - day resolution, months in advance</li>
