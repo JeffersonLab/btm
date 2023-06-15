@@ -161,10 +161,10 @@
                                             </tr>
                                             <tr>
                                                 <fmt:formatDate var="dateFmt" value="${day.day}" pattern="dd-MMM-yyyy"/>
-                                                <c:url var="owlUrl" value="/crew-chief-timesheet/${dateFmt}/owl/hours"/>
-                                                <c:url var="dayUrl" value="/crew-chief-timesheet/${dateFmt}/day/hours"/>
+                                                <c:url var="owlUrl" value="/timesheet/cc/${dateFmt}/owl/hours"/>
+                                                <c:url var="dayUrl" value="/timesheet/cc/${dateFmt}/day/hours"/>
                                                 <c:url var="swingUrl"
-                                                       value="/crew-chief-timesheet/${dateFmt}/swing/hours"/>
+                                                       value="/timesheet/cc/${dateFmt}/swing/hours"/>
                                                 <td><a target="_blank" class="${day.future ? '' : 'shift-check'}"
                                                        href="${owlUrl}">-</a>/<a target="_blank"
                                                                                  class="${day.future ? '' : 'shift-check'}"
