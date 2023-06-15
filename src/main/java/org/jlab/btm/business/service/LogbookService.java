@@ -43,22 +43,26 @@ public class LogbookService {
         String username = checkAuthorized(); /*Must be logged in*/
 
         String logbookServerUrl = System.getenv("LOGBOOK_SERVER_URL");
+        String logbooks = "ELOG";
 
-        String logbooks = System.getenv("BTM_BOOKS_CSV");
+        // In the absence of a test server an alternative is to use production server,
+        // but route entries to TLOG
+        String logbookDebug = System.getenv("LOGBOOK_DEBUG");
+
+        if("true".equals(logbookDebug)) {
+            logbooks = "TLOG";
+            logger.log(Level.INFO, "Using logbook TLOG");
+        }
 
         if (logbookServerUrl == null) {
             throw new IOException("logbook server not configured");
-        }
-
-        if (logbooks == null) {
-            throw new IOException("logbooks not configured");
         }
 
         Properties config = Library.getConfiguration();
 
         config.setProperty("SUBMIT_URL", logbookServerUrl + "/incoming");
 
-        logger.log(Level.INFO, "Sending elog to logbook: {}", logbooks);
+        logger.log(Level.INFO, "Sending elog to logbook: {0}", logbooks);
 
         LogEntry entry = new LogEntry(subject, logbooks);
 

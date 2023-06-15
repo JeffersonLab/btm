@@ -52,10 +52,10 @@ Wildfly must be pre-configured before the first deployment of the app. The [wild
 ### Runtime
 Uses the [Smoothness Environment Variables](https://github.com/JeffersonLab/smoothness#environment-variables) plus the following application specific:
 
-| Name                              | Description                                                                                                                                 |
-|-----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| BTM_BOOKS_CSV                     | Comma separated list of Jefferson Lab Logbook names to log to when timesheets are signed.                                                   |
-| BTM_EPICS_ADDR_LIST               | EPICS CA Address List for obtaining time keeping measurements.                                                                              |
+| Name                | Description                                                    |
+|---------------------|----------------------------------------------------------------|
+| LOGBOOK_DEBUG       | If set to "true" then TLOG is used as logbook                  |
+| BTM_EPICS_ADDR_LIST | EPICS CA Address List for obtaining time keeping measurements. |
 
 ## Build
 This project is built with [Java 17](https://adoptium.net/) (compiled to Java 11 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
