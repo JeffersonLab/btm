@@ -116,6 +116,7 @@ public class SignExpTimesheet extends HttpServlet {
                         + urlDateFormat.format(endHour).toLowerCase() + "/"
                         + shift.name().toLowerCase() + "/hours";
 
+                request.setAttribute("durationUnits", DurationUnits.HOURS);
                 request.setAttribute("title", subject);
                 request.setAttribute("timesheetUrl", timesheetUrl);
 
