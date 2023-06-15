@@ -124,7 +124,9 @@ public class SignCcTimesheet extends HttpServlet {
                 String subject = "Crew Chief Timesheet Summary: " + dateFormat.format(endHour)
                         + " " + shift;
 
-                String timesheetUrl = "https://accweb.acc.jlab.org/btm/crew-chief-timesheet/"
+                String frontEndUrl = System.getenv("FRONTEND_SERVER_URL");
+
+                String timesheetUrl = frontEndUrl + "/btm/timesheet/cc/"
                         + urlDateFormat.format(endHour).toLowerCase() + "/"
                         + shift.name().toLowerCase() + "/hours";
 
