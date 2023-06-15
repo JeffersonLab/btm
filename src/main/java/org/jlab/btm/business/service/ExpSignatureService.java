@@ -8,9 +8,11 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpServletRequest;
 
 import org.jlab.btm.persistence.entity.*;
 import org.jlab.btm.persistence.enumeration.Role;
+import org.jlab.btm.persistence.projection.ExpShiftAvailability;
 import org.jlab.btm.persistence.projection.ExpTimesheetStatus;
 import org.jlab.btm.persistence.projection.HourReasonDiscrepancy;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
@@ -29,11 +31,17 @@ public class ExpSignatureService extends AbstractService<ExpSignature> {
     protected EntityManager em;
 
     @EJB
-    ExpUedExplanationService reasonTimeService;
+    ExpUedExplanationService explanationService;
     @EJB
-    ExpHourService expHourService;
+    ExpHourService hourService;
     @EJB
     ExpShiftService shiftService;
+    @EJB
+    ExpSecurityRuleService ruleService;
+    @EJB
+    ExpProgramService programService;
+    @EJB
+    ExpReasonService reasonService;
 
     public ExpSignatureService() {
         super(ExpSignature.class);
@@ -59,9 +67,9 @@ public class ExpSignatureService extends AbstractService<ExpSignature> {
 
         Date endDayAndHour = TimeUtil.calculateExperimenterShiftEndDayAndHour(startDayAndHour);
 
-        List<ExpHour> availabilityList = expHourService.findInDatabase(hall, startDayAndHour, endDayAndHour);
+        List<ExpHour> availabilityList = hourService.findInDatabase(hall, startDayAndHour, endDayAndHour);
 
-        List<ExpUedExplanation> explanationsList = reasonTimeService.find(hall, startDayAndHour, endDayAndHour);
+        List<ExpUedExplanation> explanationsList = explanationService.find(hall, startDayAndHour, endDayAndHour);
 
         ExpShift shift = shiftService.find(hall, startDayAndHour);
 
@@ -82,7 +90,7 @@ public class ExpSignatureService extends AbstractService<ExpSignature> {
             status.setAvailabilityComplete(true);
         }
 
-        List<HourReasonDiscrepancy> discrepancies = reasonTimeService.validateUED(expAvailabilityList, reasonsNotReadyList);
+        List<HourReasonDiscrepancy> discrepancies = explanationService.validateUED(expAvailabilityList, reasonsNotReadyList);
 
         status.setReasonDiscrepancyList(discrepancies);
 
@@ -142,5 +150,49 @@ public class ExpSignatureService extends AbstractService<ExpSignature> {
         signature.setSignedBy(username);
 
         create(signature);
+    }
+
+    @PermitAll
+    public void populateRequestAttributes(HttpServletRequest request, Hall hall, Date startHour, Date endHour) {
+        /*AVAILABILITY*/
+        ExpShiftAvailability expAvailability = hourService.getHallAvailability(hall,
+                startHour,
+                endHour, true);
+
+        /*REASONS NOT READY*/
+        List<ExpReason> reasonList = reasonService.findByActive(hall, true);
+        List<ExpUedExplanation> explanationList = explanationService.find(hall, startHour, endHour);
+
+        int explanationSecondsTotal = 0;
+        for(ExpUedExplanation explanation: explanationList) {
+            explanationSecondsTotal = explanationSecondsTotal + explanation.getSeconds();
+        }
+
+        /*SHIFT INFORMATION*/
+        ExpShift shiftInfo = shiftService.find(hall, startHour);
+
+        /*SIGNATURES*/
+        List<ExpSignature> signatureList = this.find(hall, startHour);
+        ExpTimesheetStatus status = this.calculateStatus(startHour, endHour,
+                expAvailability.getDbHourList(),
+                explanationList,
+                shiftInfo, signatureList);
+
+        /*Purposes*/
+        List<ExpProgram> experimentList = programService.findActiveExperimentsByHall(hall);
+        List<ExpProgram> nonexperimentList = programService.findActiveNonExperimentsByHall(hall);
+
+        boolean editable = ruleService.isEditAllowed(hall, startHour);
+
+        request.setAttribute("status", status);
+        request.setAttribute("editable", editable);
+        request.setAttribute("reasonList", reasonList);
+        request.setAttribute("explanationList", explanationList);
+        request.setAttribute("explanationSecondsTotal", explanationSecondsTotal);
+        request.setAttribute("availability", expAvailability);
+        request.setAttribute("shiftInfo", shiftInfo);
+        request.setAttribute("signatureList", signatureList);
+        request.setAttribute("experimentList", experimentList);
+        request.setAttribute("nonexperimentList", nonexperimentList);
     }
 }

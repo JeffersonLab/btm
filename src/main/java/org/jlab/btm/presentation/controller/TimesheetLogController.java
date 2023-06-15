@@ -1,13 +1,11 @@
 package org.jlab.btm.presentation.controller;
 
-import org.jlab.btm.business.service.*;
+import org.jlab.btm.business.service.CcSignatureService;
+import org.jlab.btm.business.service.ExpSignatureService;
 import org.jlab.btm.business.util.BtmTimeUtil;
-import org.jlab.btm.persistence.entity.*;
 import org.jlab.btm.persistence.enumeration.DurationUnits;
 import org.jlab.btm.persistence.enumeration.TimesheetType;
-import org.jlab.btm.persistence.projection.*;
 import org.jlab.btm.presentation.util.BtmParamConverter;
-import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 import org.jlab.smoothness.persistence.enumeration.Shift;
@@ -21,20 +19,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * @author ryans
  */
-@WebServlet(name = "TimesheetController", urlPatterns = {"/timesheet"})
-public class TimesheetController extends HttpServlet {
+@WebServlet(name = "TimesheetLogController", urlPatterns = {"/timesheet-log"})
+public class TimesheetLogController extends HttpServlet {
 
     private final static Logger logger = Logger.getLogger(
-            TimesheetController.class.getName());
+            TimesheetLogController.class.getName());
 
     @EJB
     CcSignatureService ccSignatureService;
@@ -95,14 +90,6 @@ public class TimesheetController extends HttpServlet {
                 }
             } else {
                 day = BtmTimeUtil.getCurrentExperimenterShiftDay(now);
-
-                /*if (BtmTimeUtil.isFirstHourOfExperimenterShift(now)) {
-                    shift = shift.getPrevious();
-
-                    if (shift == Shift.SWING) {
-                        day = TimeUtil.addDays(day, -1);
-                    }
-                }*/
             }
 
             redirect = true;
@@ -119,15 +106,6 @@ public class TimesheetController extends HttpServlet {
 
             redirect = true;
         }
-
-        if(redirect) {
-            response.sendRedirect(response.encodeRedirectURL(this.getCurrentUrl(request, type, day, shift,
-                    units)));
-            return;
-        }
-
-        String previousUrl = getPreviousUrl(request, type, day, shift, units);
-        String nextUrl = getNextUrl(request, type, day, shift, units);
 
         Date startHour, endHour;
 
@@ -182,61 +160,16 @@ public class TimesheetController extends HttpServlet {
         request.setAttribute("startOfNextShift", startOfNextShift);
         request.setAttribute("endHour", endHour);
         request.setAttribute("shift", shift);
-        request.setAttribute("previousUrl", previousUrl);
-        request.setAttribute("nextUrl", nextUrl);
         request.setAttribute("message", message);
         request.setAttribute("now", new Date());
         request.setAttribute("hoursInShift", hoursInShift);
 
-        if ("Y".equals(request.getParameter("crosscheck"))) {
-            request.getRequestDispatcher("/WEB-INF/views/cross-check-only.jsp").forward(
+        if (type == TimesheetType.CC) {
+            request.getRequestDispatcher("/WEB-INF/views/log-cc-timesheet.jsp").forward(
                     request, response);
         } else {
-            request.getRequestDispatcher("/WEB-INF/views/timesheet.jsp").forward(
+            request.getRequestDispatcher("/WEB-INF/views/log-exp-timesheet.jsp").forward(
                     request, response);
         }
-    }
-
-    private String getCurrentUrl(HttpServletRequest request, TimesheetType type, Date day, Shift shift,
-                                 DurationUnits units) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
-
-        return request.getContextPath() + "/timesheet/" + type.toString().toLowerCase() + "/" + dateFormat.format(
-                day).toLowerCase() + "/" + shift.toString().toLowerCase() + "/"
-                + units.toString().toLowerCase();
-    }
-
-    private String getPreviousUrl(HttpServletRequest request, TimesheetType type, Date day, Shift shift,
-                                  DurationUnits units) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
-
-        Date previousDay = day;
-
-        Shift previousShift = shift.getPrevious();
-
-        if (previousShift == Shift.SWING) {
-            previousDay = TimeUtil.addDays(day, -1);
-        }
-
-        return request.getContextPath() + "/timesheet/" + type.toString().toLowerCase() + "/" + dateFormat.format(
-                previousDay).toLowerCase() + "/" + previousShift.toString().toLowerCase() + "/"
-                + units.toString().toLowerCase();
-    }
-
-    private String getNextUrl(HttpServletRequest request, TimesheetType type, Date day, Shift shift,
-                              DurationUnits units) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
-
-        Date nextDay = day;
-
-        Shift nextShift = shift.getNext();
-
-        if (nextShift == Shift.OWL) {
-            nextDay = TimeUtil.addDays(day, 1);
-        }
-
-        return request.getContextPath() + "/timesheet/" + type.toString().toLowerCase() + "/" + dateFormat.format(
-                nextDay).toLowerCase() + "/" + nextShift.toString().toLowerCase() + "/"
-                + units.toString().toLowerCase();
     }
 }

@@ -88,34 +88,9 @@ public class SignCcTimesheet extends HttpServlet {
             try {
                 Shift shift = TimeUtil.calculateCrewChiefShift(startHour);
                 Date endHour = TimeUtil.calculateCrewChiefShiftEndDayAndHour(startHour);
+                Date startOfNextShift = TimeUtil.addHours(endHour, 1);
 
-                PdShiftPlan plan = planService.findInDatabase(startHour);
-
-                /*ACCELERATOR AVAILABILITY*/
-                AcceleratorShiftAvailability accAvailability
-                        = accHourService.getAcceleratorAvailability(
-                        startHour,
-                        endHour,
-                        true, plan);
-
-                /*HALL AVAILABILITY*/
-                List<CcHallShiftAvailability> hallAvailabilityList
-                        = hallHourService.getHallAvailablilityList(
-                        startHour, endHour, true, plan);
-
-                List<List<CcHallHour>> hallHoursList = new ArrayList<>();
-                hallHoursList.add(hallAvailabilityList.get(0).getEpicsHourList());
-                hallHoursList.add(hallAvailabilityList.get(1).getEpicsHourList());
-                hallHoursList.add(hallAvailabilityList.get(2).getEpicsHourList());
-                hallHoursList.add(hallAvailabilityList.get(3).getEpicsHourList());
-
-                /*MULTIPLICITY AVAILABILITY*/
-                MultiplicityShiftAvailability multiplicityAvailability
-                        = multiplicityHourService.getMultiShiftAvailability(startHour,
-                        endHour, true, hallHoursList);
-
-                /*SHIFT INFORMATION*/
-                CcShift dbShiftInfo = shiftService.findInDatabase(startHour);
+                signatureService.populateRequestAttributes(request, startHour, endHour, startOfNextShift);
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
                 SimpleDateFormat urlDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
@@ -131,11 +106,6 @@ public class SignCcTimesheet extends HttpServlet {
                         + shift.name().toLowerCase() + "/hours";
 
                 request.setAttribute("title", subject);
-                request.setAttribute("accAvailability", accAvailability);
-                request.setAttribute("hallAvailabilityList", hallAvailabilityList);
-                request.setAttribute("multiplicityAvailability", multiplicityAvailability);
-                request.setAttribute("shiftInfo", dbShiftInfo);
-                request.setAttribute("durationUnits", DurationUnits.HOURS);
                 request.setAttribute("timesheetUrl", timesheetUrl);
 
                 String html = InternalHtmlRequestExecutor.execute(
