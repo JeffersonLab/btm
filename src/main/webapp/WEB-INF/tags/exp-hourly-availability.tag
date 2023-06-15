@@ -30,7 +30,7 @@
                 <b>NOTE</b>: The Crew Chief plan is the one you actually use for time accounting.  A few points:
             </p>
             <ul>
-                <li>The Crew Chief plan is not written down in advance as the Crew Chief makes decisions to maximize machine utilization, guided by the other schedules</li>
+                <li>The Crew Chief plan is not written down in advance as the Crew Chief makes decisions to maximize machine utilization, guided by the other plans</li>
                 <li>The PD Shift Plan is tailored for the Crew Chief, and it does not line up exactly with your shift (Crew Chief shifts start and end one hour before yours) - you may wish to review the next PD shift plan to see how your last hour is scheduled</li>
                 <li>If you have any questions please call the hall Run Coordinator or Crew Chief</li>
             </ul>
