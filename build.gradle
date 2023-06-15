@@ -3,8 +3,8 @@ plugins {
 }
 description = 'Beam Time Manager app'
 group 'org.jlab'
-version '3.0.0'
-ext.releaseDate = 'June 13 2023'
+version '3.1.0'
+ext.releaseDate = 'June 15 2023'
 tasks.withType(JavaCompile) {
     options.release = 11
     options.encoding = 'UTF-8'
