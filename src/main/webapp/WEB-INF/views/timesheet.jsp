@@ -100,6 +100,16 @@
                             </li>
                         </ul>
                     </fieldset>
+                    <fieldset>
+                        <legend>Current Quicklink (bookmarkable)</legend>
+                        <ul>
+                            <li><a href="${pageContext.request.contextPath}/timesheet/cc">Crew Chief</a></li>
+                            <li><a href="${pageContext.request.contextPath}/timesheet/ea">Experimenter A</a></li>
+                            <li><a href="${pageContext.request.contextPath}/timesheet/eb">Experimenter B</a></li>
+                            <li><a href="${pageContext.request.contextPath}/timesheet/ec">Experimenter C</a></li>
+                            <li><a href="${pageContext.request.contextPath}/timesheet/ed">Experimenter D</a></li>
+                        </ul>
+                    </fieldset>
                     <button id="filter-form-submit-button">Apply</button>
                 </form>
             </s:filter-flyout-widget>
