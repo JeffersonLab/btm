@@ -101,7 +101,7 @@
                         </ul>
                     </fieldset>
                     <fieldset>
-                        <legend>Current Quicklink (bookmarkable)</legend>
+                        <legend>Current Shift (bookmarkable)</legend>
                         <ul>
                             <li><a href="${pageContext.request.contextPath}/timesheet/cc">Crew Chief</a></li>
                             <li><a href="${pageContext.request.contextPath}/timesheet/ea">Experimenter A</a></li>
