@@ -209,4 +209,6 @@ $(function () {
         minHeight: 400,
         minWidth: 500
     });
+
+    $("#timesheet-body").show();
 });

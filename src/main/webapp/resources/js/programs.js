@@ -230,4 +230,6 @@ $(function () {
     });
 
     $("#inactive-hidden").change();
+
+    $("#program-body").show();
 }); 

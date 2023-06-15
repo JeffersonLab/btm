@@ -16,7 +16,7 @@
     <jsp:body>
         <section>
             <h2><c:out value="${title}"/></h2>
-            <div>
+            <div id="program-body" style="display: none;">
                 <div id="active-control-box"><label for="inactive-hidden">Hide Inactive</label><input
                         id="inactive-hidden" type="checkbox" checked="checked"/></div>
                 <div class="tabset">

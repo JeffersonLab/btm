@@ -1,3 +1,6 @@
+#content-liner {
+    min-height: 1400px;
+}
 #program,
 #comments {
     width: 230px;

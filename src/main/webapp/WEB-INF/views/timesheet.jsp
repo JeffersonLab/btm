@@ -133,6 +133,7 @@
                     </c:otherwise>
                 </c:choose>
             </div>
+            <div id="timesheet-body" style="display: none;">
             <c:choose>
                 <c:when test="${type eq 'CC'}">
                     <t:cc-timesheet/>
@@ -141,6 +142,7 @@
                     <t:exp-timesheet/>
                 </c:otherwise>
             </c:choose>
+            </div>
         </section>
     </jsp:body>
 </t:page>
