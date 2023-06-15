@@ -1,3 +1,8 @@
+.plan-list a {
+    font-weight: bold;
+    color: blue;
+    text-decoration: underline;
+}
 #content-liner {
     min-height: 1400px;
 }
