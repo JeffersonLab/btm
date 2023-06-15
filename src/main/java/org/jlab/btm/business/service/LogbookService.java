@@ -44,6 +44,7 @@ public class LogbookService {
 
         String logbookServerUrl = System.getenv("LOGBOOK_SERVER_URL");
         String logbooks = "ELOG";
+        String tags = "BeamAccounting";
 
         // In the absence of a test server an alternative is to use production server,
         // but route entries to TLOG
@@ -51,6 +52,7 @@ public class LogbookService {
 
         if("true".equals(logbookDebug)) {
             logbooks = "TLOG";
+            tags = null;
             logger.log(Level.INFO, "Using logbook TLOG");
         }
 
@@ -68,7 +70,7 @@ public class LogbookService {
 
         entry.setBody(html, Body.ContentType.HTML);
 
-        entry.setTags("BeamAccounting");
+        entry.setTags(tags);
 
         LogEntryAdminExtension extension = new LogEntryAdminExtension(entry);
         extension.setAuthor(username);
