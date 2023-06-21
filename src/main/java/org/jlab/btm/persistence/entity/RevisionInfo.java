@@ -2,16 +2,13 @@ package org.jlab.btm.persistence.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.List;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import org.hibernate.envers.RevisionEntity;
 import org.hibernate.envers.RevisionNumber;
 import org.hibernate.envers.RevisionTimestamp;
+import org.jlab.btm.persistence.projection.AuditedEntityChange;
 import org.jlab.btm.presentation.util.RevisionInfoListener;
 
 /**
@@ -39,6 +36,8 @@ public class RevisionInfo implements Serializable {
     @Column(name = "ADDRESS", length = 64)
     @Size(max=64)
     private String address;
+    @Transient
+    List<AuditedEntityChange> changeList;
 
     @Override
     public int hashCode() {
@@ -90,5 +89,13 @@ public class RevisionInfo implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<AuditedEntityChange> getChangeList() {
+        return changeList;
+    }
+
+    public void setChangeList(List<AuditedEntityChange> changeList) {
+        this.changeList = changeList;
     }
 }

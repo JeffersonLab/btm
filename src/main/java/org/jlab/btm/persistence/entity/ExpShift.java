@@ -1,5 +1,6 @@
 package org.jlab.btm.persistence.entity;
 
+import org.hibernate.envers.Audited;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 import javax.persistence.*;
@@ -9,12 +10,15 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
 
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
+
 /**
  * An experimenter hall shift.
  *
  * @author ryans
  */
 @Entity
+@Audited(targetAuditMode = NOT_AUDITED)
 @Table(name = "EXP_SHIFT", schema = "BTM_OWNER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"HALL", "START_DAY_AND_HOUR"})})
 @NamedQueries({

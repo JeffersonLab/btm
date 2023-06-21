@@ -26,6 +26,9 @@
                                     <li${'/reports/bt-calendar' eq currentPath ? ' class="current-secondary"' : ''}><a
                                             href="${pageContext.request.contextPath}/reports/bt-calendar">Review Calendar</a>
                                     </li>
+                                    <li${'/reports/activity-audit' eq currentPath ? ' class="current-secondary"' : ''}><a
+                                            href="${pageContext.request.contextPath}/reports/activity-audit">Activity Audit</a>
+                                    </li>
                                 </ul>
     </jsp:attribute>
     <jsp:body>

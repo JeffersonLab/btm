@@ -1,5 +1,6 @@
 package org.jlab.btm.persistence.entity;
 
+import org.hibernate.envers.Audited;
 import org.jlab.btm.persistence.enumeration.DataSource;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.util.Date;
  * @author ryans
  */
 @Entity
+@Audited
 @Table(name = "CC_SHIFT", schema = "BTM_OWNER", uniqueConstraints
         = {
         @UniqueConstraint(columnNames = {"START_DAY_AND_HOUR"})})

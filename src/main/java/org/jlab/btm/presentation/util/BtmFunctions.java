@@ -5,6 +5,8 @@ import org.jlab.btm.persistence.enumeration.DurationUnits;
 import org.jlab.btm.persistence.projection.HallPriority;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -176,5 +178,24 @@ public final class BtmFunctions {
 
     public static boolean isToday(Date date) {
         return BtmTimeUtil.isToday(date);
+    }
+
+    public static String getHostnameFromIp(String ip) {
+        String hostname = ip;
+
+        if (ip != null) {
+            try {
+                InetAddress address = InetAddress.getByName(ip);
+                hostname = address.getHostName();
+
+                if (!ip.equals(hostname)) {
+                    hostname = hostname + " (" + ip + ")";
+                }
+            } catch (UnknownHostException e) {
+                // Unable to resolve... oh well, just use ip
+            }
+        }
+
+        return hostname;
     }
 }
