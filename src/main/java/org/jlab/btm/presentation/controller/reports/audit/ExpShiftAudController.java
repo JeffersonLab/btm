@@ -20,8 +20,8 @@ import java.util.List;
  *
  * @author ryans
  */
-@WebServlet(name = "ExpShiftAudit", urlPatterns = {"/reports/activity-audit/exp-shift"})
-public class ExpShiftAudit extends HttpServlet {
+@WebServlet(name = "ExpShiftAudController", urlPatterns = {"/reports/activity-audit/exp-shift"})
+public class ExpShiftAudController extends HttpServlet {
 
     @EJB
     ExpShiftAudService audService;

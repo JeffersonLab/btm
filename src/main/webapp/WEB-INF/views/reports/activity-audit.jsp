@@ -25,8 +25,8 @@
             <h2 id="page-header-title">Activity Audit: Transactions</h2>
             <ul class="bracket-horizontal-nav">
                 <li>Transactions</li>
-                <li><a href="${pageContext.request.contextPath}/reports/activity-audit/exp-shift-audit">Exp Shift</a></li>
-                <li><a href="${pageContext.request.contextPath}/reports/activity-audit/cc-shift-audit">CC Shift</a></li>
+                <li><a href="${pageContext.request.contextPath}/reports/activity-audit/exp-shift">Exp Shift</a></li>
+                <li><a href="${pageContext.request.contextPath}/reports/activity-audit/cc-shift">CC Shift</a></li>
             </ul>             
             <c:choose>
                 <c:when test="${fn:length(revisionList) == 0}">
