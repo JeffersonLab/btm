@@ -23,10 +23,10 @@ public class AuditedEntityChange {
 
         switch(entityClass.getSimpleName()) {
             case "ExpShift":
-                this.url = "/reports/activity-audit/exp-shift-audit?expShiftId=" + entityId;
+                this.url = "/reports/activity-audit/exp-shift?entityId=" + entityId;
                 break;
             case "CcShift":
-                this.url = "/reports/activity-audit/cc-shift-audit?ccShiftId=" + entityId;
+                this.url = "/reports/activity-audit/cc-shift?entityId=" + entityId;
                 break;
             default:
                 this.url = "Unknown";
