@@ -231,12 +231,14 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
     }
 
     @Override
-    protected void edit(CcAccHour hour) {
+    protected CcAccHour edit(CcAccHour hour) {
         if (hour.getOpAccHourId() == null) {
-            this.manualInsert(hour);
+            hour = this.manualInsert(hour);
         } else {
-            super.edit(hour);
+            hour = super.edit(hour);
         }
+
+        return hour;
     }
 
     private CcAccHour manualInsert(CcAccHour hour) {

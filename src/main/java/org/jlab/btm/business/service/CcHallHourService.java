@@ -217,12 +217,14 @@ public class CcHallHourService extends AbstractService<CcHallHour> {
     }
 
     @Override
-    protected void edit(CcHallHour hour) {
+    protected CcHallHour edit(CcHallHour hour) {
         if (hour.getOpHallHourId() == null) {
-            this.manualInsert(hour);
+            hour = this.manualInsert(hour);
         } else {
-            super.edit(hour);
+            hour = super.edit(hour);
         }
+
+        return hour;
     }
 
     private CcHallHour manualInsert(CcHallHour hour) {

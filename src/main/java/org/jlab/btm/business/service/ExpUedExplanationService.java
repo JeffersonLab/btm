@@ -64,14 +64,9 @@ public class ExpUedExplanationService extends AbstractService<ExpUedExplanation>
         TypedQuery<ExpUedExplanation> q = em.createNamedQuery(
                 "ExpHourReasonTime.findByHallAndHourRange", ExpUedExplanation.class);
 
-        Calendar start = Calendar.getInstance();
-        Calendar end = Calendar.getInstance();
-        start.setTime(startDayAndHour);
-        end.setTime(endDayAndHour);
-
         q.setParameter("hall", hall);
-        q.setParameter("startDayAndHourCal", start);
-        q.setParameter("endDayAndHourCal", end);
+        q.setParameter("startDayAndHour", startDayAndHour);
+        q.setParameter("endDayAndHour", endDayAndHour);
 
         return q.getResultList();
     }

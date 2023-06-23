@@ -1,5 +1,6 @@
 package org.jlab.btm.persistence.entity;
 
+import org.hibernate.envers.Audited;
 import org.jlab.btm.persistence.projection.HallHour;
 import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.enumeration.Hall;
@@ -23,14 +24,10 @@ import java.util.Date;
         @UniqueConstraint(columnNames = {"HALL", "DAY_AND_HOUR"}),
         @UniqueConstraint(columnNames = {"HALL", "EXP_HOUR_ID"})})
 @NamedQueries({
-        @NamedQuery(name = "ExpHour.findByExpHourId", query = "SELECT e FROM ExpHour e WHERE e.expHourId = :expHallHourId"),
-        @NamedQuery(name = "ExpHour.findByHallAndDayAndHour", query = "SELECT e FROM ExpHour e WHERE e.hall = :hall AND e.dayAndHourCal = :dayAndHourCal"),
-        @NamedQuery(name = "ExpHour.findByHallAndHourRange", query = "SELECT e FROM ExpHour e WHERE e.hall = :hall AND e.dayAndHourCal BETWEEN :startDayAndHourCal AND :endDayAndHourCal ORDER BY e.dayAndHourCal ASC")})
+        @NamedQuery(name = "ExpHour.findByExpHourId", query = "SELECT e FROM ExpHour e WHERE e.expHourId = :expHallHourId")})
 @NamedNativeQueries({
         @NamedNativeQuery(name = "ExpHour.findByHallAndDayAndHourNATIVE", query = "SELECT * FROM EXP_HOUR WHERE hall = :hall AND to_char(DAY_AND_HOUR, 'YYYY-MM-DD HH24 TZD') = :dayAndHour", resultClass = ExpHour.class),
-        @NamedNativeQuery(name = "ExpHour.findByHallAndHourRangeNATIVE", query = "SELECT e.* FROM EXP_HOUR e WHERE e.hall = :hall AND e.DAY_AND_HOUR BETWEEN :startDayAndHour AND :endDayAndHour ORDER BY e.DAY_AND_HOUR ASC", resultClass = ExpHour.class),
-        @NamedNativeQuery(name = "ExpHour.insertNATIVE", query = "INSERT into EXP_HOUR (EXP_HOUR_ID, HALL, DAY_AND_HOUR, ABU_SECONDS, BANU_SECONDS, BNA_SECONDS, ACC_SECONDS, ER_SECONDS, PCC_SECONDS, UED_SECONDS, OFF_SECONDS, REMARK) values (:id, :hall, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :abu, :banu, :bna, :acc, :er, :pcc, :ued, :off, :remark)", resultClass = ExpHour.class),
-        @NamedNativeQuery(name = "ExpHour.updateNATIVE", query = "UPDATE EXP_HOUR SET ABU_SECONDS = :abu, BANU_SECONDS = :banu, BNA_SECONDS = :bna, ACC_SECONDS = :acc, ER_SECONDS = :er, PCC_SECONDS = :pcc, UED_SECONDS = :ued, SCHED_SECONDS = :sched, STUDIES_SECONDS = :studies, OFF_SECONDS = :off, REMARK = :remark WHERE EXP_HOUR_ID = :id", resultClass = ExpHour.class)})
+        @NamedNativeQuery(name = "ExpHour.insertNATIVE", query = "INSERT into EXP_HOUR (EXP_HOUR_ID, HALL, DAY_AND_HOUR, ABU_SECONDS, BANU_SECONDS, BNA_SECONDS, ACC_SECONDS, ER_SECONDS, PCC_SECONDS, UED_SECONDS, OFF_SECONDS, REMARK) values (:id, :hall, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :abu, :banu, :bna, :acc, :er, :pcc, :ued, :off, :remark)", resultClass = ExpHour.class)})
 public class ExpHour extends HallHour {
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,15 +41,11 @@ public class ExpHour extends HallHour {
     @NotNull
     @Enumerated(EnumType.STRING)
     private Hall hall;
-
-    @Transient
-    private Date dayAndHour = null;
-
     @Basic(optional = false)
-    @Column(name = "DAY_AND_HOUR", nullable = false, insertable = false, updatable = false, length = 7, columnDefinition = "timestamp(0) with local timezone")
+    @NotNull
+    @Column(name = "DAY_AND_HOUR", nullable = false, insertable = false, updatable = false, columnDefinition = "timestamp(0) with local timezone")
     @Temporal(TemporalType.TIMESTAMP)
-    private Calendar dayAndHourCal;
-
+    private Date dayAndHour;
     @Basic(optional = false)
     @Column(name = "ABU_SECONDS", nullable = false)
     @NotNull
@@ -112,20 +105,6 @@ public class ExpHour extends HallHour {
         this.expHourId = expHourId;
     }
 
-    public ExpHour(BigInteger expHourId, Hall hall, Calendar dayAndHourCal, short abuSeconds, short banuSeconds, short bnaSeconds, short accSeconds, short erSeconds, short pccSeconds, short uedSeconds, short schedSeconds, short studiesSeconds, short offSeconds) {
-        this.expHourId = expHourId;
-        this.hall = hall;
-        this.dayAndHourCal = dayAndHourCal;
-        this.abuSeconds = abuSeconds;
-        this.banuSeconds = banuSeconds;
-        this.bnaSeconds = bnaSeconds;
-        this.accSeconds = accSeconds;
-        this.erSeconds = erSeconds;
-        this.pccSeconds = pccSeconds;
-        this.uedSeconds = uedSeconds;
-        this.offSeconds = offSeconds;
-    }
-
     /**
      * Copies the time accounting data plus the remark
      * from the specified experimenter hall hour into this one.
@@ -162,28 +141,14 @@ public class ExpHour extends HallHour {
         this.hall = hall;
     }
 
-    public Calendar getDayAndHourCal() {
-        return dayAndHourCal;
-    }
-
-    public void setDayAndHourCal(Calendar dayAndHourCal) {
-        this.dayAndHourCal = dayAndHourCal;
-    }
-
     @Override
     public Date getDayAndHour() {
-        if (dayAndHour == null && dayAndHourCal != null) {
-            dayAndHour = dayAndHourCal.getTime();
-        }
         return dayAndHour;
     }
 
     @Override
     public void setDayAndHour(Date dayAndHour) {
         this.dayAndHour = dayAndHour;
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dayAndHour);
-        setDayAndHourCal(cal);
     }
 
     public short getAbuSeconds() {

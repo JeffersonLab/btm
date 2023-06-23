@@ -2,8 +2,10 @@ package org.jlab.btm.business.service;
 
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
+import org.hibernate.envers.RevisionType;
 import org.jlab.btm.business.service.epics.ExpEpicsHourService;
 import org.jlab.btm.business.util.HourUtil;
+import org.jlab.btm.persistence.entity.CcHallHour;
 import org.jlab.btm.persistence.entity.ExpHour;
 import org.jlab.btm.persistence.enumeration.DataSource;
 import org.jlab.btm.persistence.projection.ExpHourTotals;
@@ -15,6 +17,7 @@ import org.jlab.smoothness.business.util.DateIterator;
 import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 import org.jlab.smoothness.persistence.util.JPAUtil;
+import org.jlab.smoothness.presentation.filter.AuditContext;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
@@ -254,25 +257,28 @@ public class ExpHourService extends AbstractService<ExpHour> {
      * @return the list of experimenter hall hours.
      */
     @PermitAll
+    @SuppressWarnings("unchecked")
     public List<ExpHour> findInDatabase(Hall hall, Date startDayAndHour,
                                         Date endDayAndHour) {
-        TypedQuery<ExpHour> q = em.createNamedQuery("ExpHour.findByHallAndHourRange", ExpHour.class);
 
-        Calendar start = Calendar.getInstance();
-        Calendar end = Calendar.getInstance();
-        start.setTime(startDayAndHour);
-        end.setTime(endDayAndHour);
+        // We must use to_timestamp_tz in query because if you rely on JPA criteria query it will not include TZ Offset,
+        // which means you couldn't select between the two wall clock ambiguous daylight savings hours
+        Query query = em.createNativeQuery("select * from EXP_HOUR a where a.hall = :hall and a.day_and_hour between to_timestamp_tz(:start, 'YYYY-MM-DD HH24 TZD') and to_timestamp_tz(:end, 'YYYY-MM-DD HH24 TZD')", ExpHour.class);
 
-        q.setParameter("hall", hall);
-        q.setParameter("startDayAndHourCal", start);
-        q.setParameter("endDayAndHourCal", end);
+        String startStr = TimeUtil.formatDatabaseDateTimeTZ(startDayAndHour);
+        String endStr = TimeUtil.formatDatabaseDateTimeTZ(endDayAndHour);
 
-        logger.log(Level.FINEST, "ExpHallHourFacade.findInDatabase: {} - {}", new Object[]{startDayAndHour, endDayAndHour});
-        List<ExpHour> hours = q.getResultList();
-        logger.log(Level.FINEST, "ExpHallHourFacade.findInDatabase: Found: {}", hours.size());
+        query.setParameter("hall", hall.getLetter());
+        query.setParameter("start", startStr);
+        query.setParameter("end", endStr);
 
-        /*for(ExpHallHour hour: hours) {
-            System.out.println(TimeHelper.formatDetailHour(hour.getDayAndHour()));
+        List<ExpHour> hours = query.getResultList();
+
+        logger.log(Level.FINEST, "ExpHallHourFacade.findInDatabase: {0} - {1}", new Object[]{startDayAndHour, endDayAndHour});
+        logger.log(Level.FINEST, "ExpHallHourFacade.findInDatabase: Found: {0}", hours.size());
+
+        /*for(ExpHour hour: hours) {
+            System.out.println(TimeUtil.formatDatabaseDateTimeTZ(hour.getDayAndHour()));
         }*/
         return hours;
     }
@@ -347,10 +353,19 @@ public class ExpHourService extends AbstractService<ExpHour> {
             }
 
             List<ExpHour> hourList = findInDatabase(hall, hourArray[0], hourArray[hourArray.length - 1]);
+
             Map<Date, ExpHour> hourMap = HourUtil.createHourMap(hourList);
 
-
             ruleService.editCheck(hall, hourArray[0]);
+
+            /*for (int i = 0; i < hourArray.length; i++) {
+                Date hour = hourArray[i];
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy HH:mm z");
+                logger.log(Level.WARNING, "Editing hour: {0}", dateFormat.format(hour));
+                ExpHour expHour = hourMap.get(hour);
+                logger.log(Level.WARNING, "exp hour: {0}", dateFormat.format(expHour.getDayAndHour()));
+            }
+            hourArray = new Date[] {};*/
 
             // We probably could consolidate with previous loop... (performance vs maintainability)
             for (int i = 0; i < hourArray.length; i++) {
@@ -392,16 +407,95 @@ public class ExpHourService extends AbstractService<ExpHour> {
                 expHour.setUedSeconds(uedArray[i]);
                 expHour.setRemark(commentsArray[i]);
 
+                //System.err.println(expHour);
+
                 edit(expHour);
             }
     }
 
     @Override
-    protected void edit(ExpHour hour) {
+    protected ExpHour edit(ExpHour hour) {
         if (hour.getExpHourId() == null) {
-            this.manualInsert(hour);
+            /* We can't use JPA to do insert because JPA breaks startDayAndHour field on ambiguous wall clock hour
+             * during daylight savings; JPA can't include EDT/EST qualifier in String literal SQL statement it creates
+             * And we must support unique dates such as:
+             * 2018-11-04 01 EDT
+             * 2018-11-04 01 EST
+             */
+            hour = this.manualInsert(hour);
+            manualAudit(hour, RevisionType.ADD);
         } else {
-            super.edit(hour);
+            /*
+             * We can use JPA to modify records since
+             * startDayAndHour @Column is marked as insertable = false and updatable = false as it's an alternate key
+             * and can't be changed after the manual insert above.  However, the JPA Date limitation (and
+             * @Column insertable = false above) breaks Envers Auditing, so we can't use @Audited to
+             * automatically insert audit records and must do that manually.
+             */
+            hour = super.edit(hour);
+            this.manualAudit(hour, RevisionType.MOD);
+        }
+
+        return hour;
+    }
+
+    @PermitAll
+    public void manualAudit(ExpHour hour, RevisionType type) {
+        logger.log(Level.FINEST, "ExpHourService.manualAudit");
+
+        Query idq = em.createNativeQuery("select hibernate_sequence.nextval from dual");
+
+        BigDecimal idDec = (BigDecimal)idq.getSingleResult();
+
+        BigInteger id = idDec.toBigInteger();
+
+        logger.log(Level.FINEST, "ExpHourService.manualAudit; Got ID: {}", id);
+
+        long timestamp = System.currentTimeMillis();
+
+        Query revq = em.createNativeQuery("insert into revision_info (ADDRESS, REVTSTMP, USERNAME, REV) values (:address, :revtstmp, :username, :rev)");
+
+        AuditContext context = AuditContext.getCurrentInstance();
+
+        String address = context.getIp();
+        String username = context.getUsername();
+
+        revq.setParameter("address", address);
+        revq.setParameter("revtstmp", timestamp);
+        revq.setParameter("username", username);
+        revq.setParameter("rev", id);
+
+        int count = revq.executeUpdate();
+
+        if(count == 0) {
+            logger.log(Level.WARNING, "manualAudit revision_info insert count is zero");
+        }
+
+        Query audq = em.createNativeQuery("insert into exp_hour_aud (REVTYPE, HALL, DAY_AND_HOUR, ABU_SECONDS, BANU_SECONDS, BNA_SECONDS, ACC_SECONDS, ER_SECONDS, PCC_SECONDS, UED_SECONDS, OFF_SECONDS, REMARK, EXP_HOUR_ID, REV) values (:revtype, :hall, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :abu, :banu, :bna, :acc, :er, :pcc, :ued, :off, :remark, :hour_id, :rev)");
+
+        String dayAndHourStr = TimeUtil.formatDatabaseDateTimeTZ(hour.getDayAndHour());
+
+        logger.log(Level.FINEST, "manualAudit.dayAndHourStr: {}, dayAndHour: {}", new Object[] {dayAndHourStr, hour.getDayAndHour()});
+
+        audq.setParameter("revtype", type.getRepresentation());
+        audq.setParameter("hall", hour.getHall().getLetter());
+        audq.setParameter("dayAndHour", dayAndHourStr);
+        audq.setParameter("abu", hour.getAbuSeconds());
+        audq.setParameter("banu", hour.getBanuSeconds());
+        audq.setParameter("bna", hour.getBnaSeconds());
+        audq.setParameter("acc", hour.getAccSeconds());
+        audq.setParameter("er", hour.getErSeconds());
+        audq.setParameter("pcc", hour.getPccSeconds());
+        audq.setParameter("ued", hour.getUedSeconds());
+        audq.setParameter("off", hour.getOffSeconds());
+        audq.setParameter("remark", hour.getRemark());
+        audq.setParameter("hour_id", hour.getExpHourId());
+        audq.setParameter("rev", id);
+
+        count = audq.executeUpdate();
+
+        if(count == 0) {
+            logger.log(Level.WARNING, "manualAudit exp_hall_hour_aud insert count is zero");
         }
     }
 

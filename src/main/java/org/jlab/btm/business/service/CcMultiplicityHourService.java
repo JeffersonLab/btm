@@ -188,12 +188,14 @@ public class CcMultiplicityHourService extends AbstractService<CcMultiplicityHou
     }
 
     @Override
-    protected void edit(CcMultiplicityHour hour) {
+    protected CcMultiplicityHour edit(CcMultiplicityHour hour) {
         if (hour.getOpMultiplicityHourId() == null) {
-            this.manualInsert(hour);
+            hour = this.manualInsert(hour);
         } else {
-            super.edit(hour);
+            hour = super.edit(hour);
         }
+
+        return hour;
     }
 
     private CcMultiplicityHour manualInsert(CcMultiplicityHour hour) {

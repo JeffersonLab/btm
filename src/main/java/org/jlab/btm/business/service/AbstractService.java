@@ -30,8 +30,8 @@ public abstract class AbstractService<T> {
         getEntityManager().persist(entity);
     }
 
-    protected void edit(T entity) {
-        getEntityManager().merge(entity);
+    protected T edit(T entity) {
+        return getEntityManager().merge(entity);
     }
 
     protected void remove(T entity) {
