@@ -1,7 +1,7 @@
 package org.jlab.btm.business.service.audit;
 
 import org.jlab.btm.business.service.AbstractService;
-import org.jlab.btm.persistence.entity.audit.ExpShiftAud;
+import org.jlab.btm.persistence.entity.audit.ExpHourAud;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
@@ -18,7 +18,7 @@ import java.util.List;
  * @author ryans
  */
 @Stateless
-public class ExpShiftAudService extends AbstractService<ExpShiftAud> {
+public class ExpHourAudService extends AbstractService<ExpHourAud> {
     @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
 
@@ -27,21 +27,21 @@ public class ExpShiftAudService extends AbstractService<ExpShiftAud> {
         return em;
     }
 
-    public ExpShiftAudService() {
-        super(ExpShiftAud.class);
+    public ExpHourAudService() {
+        super(ExpHourAud.class);
     }
 
     @PermitAll
-    public List<ExpShiftAud> filterList(BigInteger entityId, BigInteger revisionId, int offset, int max) {
+    public List<ExpHourAud> filterList(BigInteger entityId, BigInteger revisionId, int offset, int max) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<ExpShiftAud> cq = cb.createQuery(ExpShiftAud.class);
-        Root<ExpShiftAud> root = cq.from(ExpShiftAud.class);
+        CriteriaQuery<ExpHourAud> cq = cb.createQuery(ExpHourAud.class);
+        Root<ExpHourAud> root = cq.from(ExpHourAud.class);
         cq.select(root);
 
         List<Predicate> filters = new ArrayList<Predicate>();
 
         if (entityId != null) {
-            filters.add(cb.equal(root.get("expShiftAudPK").get("expShiftId"), entityId));
+            filters.add(cb.equal(root.get("expHourAudPK").get("expHourId"), entityId));
         }
 
         if (revisionId != null) {
@@ -57,10 +57,10 @@ public class ExpShiftAudService extends AbstractService<ExpShiftAud> {
         orders.add(o0);
         cq.orderBy(orders);
 
-        List<ExpShiftAud> entityList = getEntityManager().createQuery(cq).setFirstResult(offset).setMaxResults(max).getResultList();
+        List<ExpHourAud> entityList = getEntityManager().createQuery(cq).setFirstResult(offset).setMaxResults(max).getResultList();
         
         if(entityList != null) {
-            for(ExpShiftAud entity: entityList) {
+            for(ExpHourAud entity: entityList) {
                 entity.getRevision().getId(); // Tickle to load
             }
         }
@@ -70,14 +70,14 @@ public class ExpShiftAudService extends AbstractService<ExpShiftAud> {
 
     @PermitAll
     public Long countFilterList(BigInteger entityId, BigInteger revisionId) {
-        String selectFrom = "select count(*) from EXP_SHIFT_AUD e ";
+        String selectFrom = "select count(*) from EXP_HOUR_AUD e ";
 
         List<String> whereList = new ArrayList<>();
 
         String w;
 
         if (entityId != null) {
-            w = "e.exp_shift_id = " + entityId;
+            w = "e.exp_hour_id = " + entityId;
             whereList.add(w);
         }
 

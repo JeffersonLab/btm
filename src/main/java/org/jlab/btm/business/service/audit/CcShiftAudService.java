@@ -1,11 +1,9 @@
 package org.jlab.btm.business.service.audit;
 
 import org.jlab.btm.business.service.AbstractService;
-import org.jlab.btm.business.service.RevisionInfoService;
 import org.jlab.btm.persistence.entity.audit.CcShiftAud;
 
 import javax.annotation.security.PermitAll;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,9 +21,6 @@ import java.util.List;
 public class CcShiftAudService extends AbstractService<CcShiftAud> {
     @PersistenceContext(unitName = "btmPU")
     private EntityManager em;
-
-    @EJB
-    RevisionInfoService revisionFacade;
 
     @Override
     protected EntityManager getEntityManager() {

@@ -1,3 +1,6 @@
+#revision-table tfoot th {
+    word-break: break-word;
+}
 .table-cell-list {
     list-style: none;
     padding: 0;

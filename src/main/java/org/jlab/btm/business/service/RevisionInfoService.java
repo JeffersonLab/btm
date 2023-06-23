@@ -2,9 +2,11 @@ package org.jlab.btm.business.service;
 
 import org.hibernate.envers.RevisionType;
 import org.jlab.btm.persistence.entity.CcShift;
+import org.jlab.btm.persistence.entity.ExpHour;
 import org.jlab.btm.persistence.entity.ExpShift;
 import org.jlab.btm.persistence.entity.RevisionInfo;
 import org.jlab.btm.persistence.projection.AuditedEntityChange;
+import org.jlab.smoothness.persistence.enumeration.Hall;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
@@ -14,6 +16,8 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -102,7 +106,12 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
     @SuppressWarnings("unchecked")
     @PermitAll
     public List<AuditedEntityChange> findEntityChangeList(long revision) {
-        Query q = em.createNativeQuery("select 'ES', exp_shift_id, revtype from btm_owner.exp_shift_aud where rev = :revision union select 'CS', cc_shift_id, revtype from btm_owner.cc_shift_aud where rev = :revision");
+        // We drop TZD on to_char because ExpShift doesn't have one, and we can live with ambiguous hour on Transactions page.
+        Query q = em.createNativeQuery(
+                "select 'ES', exp_shift_id, revtype, to_char(start_day_and_hour, 'YYYY-MM-DD HH24'), hall from btm_owner.exp_shift_aud where rev = :revision " +
+                "union select 'CS', cc_shift_id, revtype, to_char(start_day_and_hour, 'YYYY-MM-DD HH24'), 'A' from btm_owner.cc_shift_aud where rev = :revision " +
+                "union select 'EH', exp_hour_id, revtype, to_char(day_and_hour, 'YYYY-MM-DD HH24'), hall from btm_owner.exp_hour_aud where rev = :revision"
+        );
 
         q.setParameter("revision", revision);
 
@@ -116,7 +125,20 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
                 entityClass = fromString(((String) row[0]));
                 BigInteger entityId = BigInteger.valueOf(((Number) row[1]).longValue());
                 RevisionType type = fromNumber((Number) row[2]);
-                changeList.add(new AuditedEntityChange(revision, type, entityId, entityClass));
+
+                String dateStr = (String)row[3];
+
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH");
+
+                Date date = null;
+                try {
+                    date = format.parse(dateStr);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+
+                Hall hall = Hall.valueOf((String)row[4]);
+                changeList.add(new AuditedEntityChange(revision, type, entityId, entityClass, date, hall));
             }
         }
 
@@ -130,6 +152,8 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
         if (s != null) {
             if (s.equals("ES")) {
                 entityClass = ExpShift.class;
+            } else if(s.equals("EH")) {
+                entityClass = ExpHour.class;
             } else if (s.equals("CS")) {
                 entityClass = CcShift.class;
             }

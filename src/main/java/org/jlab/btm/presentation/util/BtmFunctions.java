@@ -4,6 +4,7 @@ import org.jlab.btm.business.util.BtmTimeUtil;
 import org.jlab.btm.persistence.enumeration.DurationUnits;
 import org.jlab.btm.persistence.projection.HallPriority;
 import org.jlab.smoothness.persistence.enumeration.Hall;
+import org.jlab.smoothness.persistence.enumeration.Shift;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -197,5 +198,9 @@ public final class BtmFunctions {
         }
 
         return hostname;
+    }
+
+    public static Shift expShiftFromStartDayAndHour(Date startDayAndHour) {
+        return BtmTimeUtil.calculateExperimenterShift(startDayAndHour);
     }
 }

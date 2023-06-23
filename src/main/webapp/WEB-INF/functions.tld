@@ -51,4 +51,9 @@
         <function-class>org.jlab.btm.presentation.util.BtmFunctions</function-class>
         <function-signature>java.lang.String getHostnameFromIp(java.lang.String)</function-signature>
     </function>
+    <function>
+        <name>expShiftFromStartDayAndHour</name>
+        <function-class>org.jlab.btm.presentation.util.BtmFunctions</function-class>
+        <function-signature>org.jlab.smoothness.persistence.enumeration.Shift expShiftFromStartDayAndHour(java.util.Date)</function-signature>
+    </function>
 </taglib>

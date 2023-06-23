@@ -25,8 +25,9 @@
             <h2 id="page-header-title">Activity Audit: Transactions</h2>
             <ul class="bracket-horizontal-nav">
                 <li>Transactions</li>
-                <li><a href="${pageContext.request.contextPath}/reports/activity-audit/exp-shift">Exp Shift</a></li>
-                <li><a href="${pageContext.request.contextPath}/reports/activity-audit/cc-shift">CC Shift</a></li>
+                <li><a href="${pageContext.request.contextPath}/reports/activity-audit/exp-shift">ExpShift</a></li>
+                <li><a href="${pageContext.request.contextPath}/reports/activity-audit/cc-shift">CCShift</a></li>
+                <li><a href="${pageContext.request.contextPath}/reports/activity-audit/exp-hour">ExpHour</a></li>
             </ul>             
             <c:choose>
                 <c:when test="${fn:length(revisionList) == 0}">
@@ -45,7 +46,7 @@
                                 <th>Modified Date</th>
                                 <th>Modified By</th>
                                 <th>Computer</th>
-                                <th>Changes</th>
+                                <th style="min-width: 300px;">Changes</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,7 +61,7 @@
                                             <ul class="table-cell-list">
                                                 <c:forEach items="${revision.changeList}" var="change">
                                                     <li class="table-cell-list-item">
-                                                        <a title="${change.entityClass.simpleName} Audit" href="${pageContext.request.contextPath}${change.url}"><c:out value="${change.type} ${change.entityClass.simpleName} ${change.entityId}"/></a>
+                                                        <a title="${change.entityClass.simpleName} Audit" href="${pageContext.request.contextPath}${change.url}"><c:out value="${change.type} ${change.entityClass.simpleName} ${change.name}"/></a>
                                                     </li>
                                                 </c:forEach>
                                             </ul>
