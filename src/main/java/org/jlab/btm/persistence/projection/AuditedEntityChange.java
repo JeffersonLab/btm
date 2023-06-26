@@ -43,6 +43,10 @@ public class AuditedEntityChange {
                 this.url = "/reports/activity-audit/exp-hour?entityId=" + entityId;
                 this.name = hall.name() + " " + hourFormat.format(date);
                 break;
+            case "CcAccHour":
+                this.url = "/reports/activity-audit/cc-acc-hour?entityId=" + entityId;
+                this.name = hourFormat.format(date);
+                break;
             default:
                 this.url = "Unknown";
                 this.name = "Unknown";

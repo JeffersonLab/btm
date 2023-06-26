@@ -46,6 +46,7 @@
                 <li>ExpShift</li>
                 <li><a href="${pageContext.request.contextPath}/reports/activity-audit/cc-shift">CcShift</a></li>
                 <li><a href="${pageContext.request.contextPath}/reports/activity-audit/exp-hour">ExpHour</a></li>
+                <li><a href="${pageContext.request.contextPath}/reports/activity-audit/cc-acc-hour">CcAccHour</a></li>
             </ul>                             
             <c:choose>
                 <c:when test="${param.entityId == null}">

@@ -5,7 +5,7 @@
 <%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%> 
 <%@taglib prefix="btm" uri="http://jlab.org/btm/functions"%>
-<c:set var="title" value="CcShift Audit"/>
+<c:set var="title" value="CcAccHour Audit"/>
 <t:report-page title="${title}">
     <jsp:attribute name="stylesheets">       
     </jsp:attribute>
@@ -14,7 +14,7 @@
     <jsp:body>
         <section>
             <s:filter-flyout-widget requiredMessage="true">
-                <form id="filter-form" method="get" action="cc-shift">
+                <form id="filter-form" method="get" action="cc-acc-hour">
                     <fieldset>
                         <legend>Filter</legend>
                         <ul class="key-value-list">                      
@@ -40,13 +40,13 @@
                         <input id="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
             </s:filter-flyout-widget>
-            <h2 id="page-header-title">Activity Audit: CcShift <c:out value="${selectionMessage}"/></h2>
+            <h2 id="page-header-title">Activity Audit: CcAccHour <c:out value="${selectionMessage}"/></h2>
             <ul class="bracket-horizontal-nav">
                 <li><a href="${pageContext.request.contextPath}/reports/activity-audit">Transactions</a></li>
                 <li><a href="${pageContext.request.contextPath}/reports/activity-audit/exp-shift">ExpShift</a></li>
-                <li>CcShift</li>
+                <li><a href="${pageContext.request.contextPath}/reports/activity-audit/cc-shift">CcShift</a></li>
                 <li><a href="${pageContext.request.contextPath}/reports/activity-audit/exp-hour">ExpHour</a></li>
-                <li><a href="${pageContext.request.contextPath}/reports/activity-audit/cc-acc-hour">CcAccHour</a></li>
+                <li>CcAccHour</li>
             </ul>                             
             <c:choose>
                 <c:when test="${param.entityId == null}">
@@ -112,42 +112,50 @@
                         </tfoot>
                         <tbody>
                             <tr>                  
-                                <th>Crew Chief:</th>
+                                <th>Physics (${durationUnits.label}):</th>
                                     <c:forEach items="${entityList}" var="entity">
                                     <td>
-                                        <c:out value="${entity.crewChief}"/>
+                                        <c:out value="${btm:formatDuration(entity.upSeconds, durationUnits)}"/>
                                     </td>
                                 </c:forEach>
                             </tr>                             
                             <tr>                  
-                                <th>Operators</th>
+                                <th>Studies (${durationUnits.label}):</th>
                                     <c:forEach items="${entityList}" var="entity">
                                     <td>
-                                        <c:out value="${entity.operators}"/>
-                                    </td>
-                                </c:forEach>
-                            </tr>                            
-                            <tr>                  
-                                <th>Program:</th>
-                                    <c:forEach items="${entityList}" var="entity">
-                                    <td>
-                                        <c:out value="${entity.program}"/>
+                                        <c:out value="${btm:formatDuration(entity.studiesSeconds, durationUnits)}"/>
                                     </td>
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <th>Program Deputy</th>
+                                <th>SAD Restore (${durationUnits.label}):</th>
                                 <c:forEach items="${entityList}" var="entity">
                                     <td>
-                                        <c:out value="${entity.programDeputy}"/>
+                                        <c:out value="${btm:formatDuration(entity.restoreSeconds, durationUnits)}"/>
                                     </td>
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <th>Comments:</th>
+                                <th>ACC (${durationUnits.label}):</th>
                                 <c:forEach items="${entityList}" var="entity">
                                     <td>
-                                        <c:out value="${entity.remark}"/>
+                                        <c:out value="${btm:formatDuration(entity.accSeconds, durationUnits)}"/>
+                                    </td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <th>Internal Down (${durationUnits.label}):</th>
+                                <c:forEach items="${entityList}" var="entity">
+                                    <td>
+                                        <c:out value="${btm:formatDuration(entity.downSeconds, durationUnits)}"/>
+                                    </td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <th>SAD (${durationUnits.label}):</th>
+                                <c:forEach items="${entityList}" var="entity">
+                                    <td>
+                                        <c:out value="${btm:formatDuration(entity.sadSeconds, durationUnits)}"/>
                                     </td>
                                 </c:forEach>
                             </tr>

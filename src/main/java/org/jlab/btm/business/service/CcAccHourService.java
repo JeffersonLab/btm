@@ -2,6 +2,7 @@ package org.jlab.btm.business.service;
 
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
+import org.hibernate.envers.RevisionType;
 import org.jlab.btm.business.service.epics.CcEpicsAccHourService;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.CcAccHour;
@@ -13,6 +14,7 @@ import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.DateIterator;
 import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.util.JPAUtil;
+import org.jlab.smoothness.presentation.filter.AuditContext;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -232,13 +234,84 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
 
     @Override
     protected CcAccHour edit(CcAccHour hour) {
-        if (hour.getOpAccHourId() == null) {
+        if (hour.getCcAccHourId() == null) {
+            /* We can't use JPA to do insert because JPA breaks startDayAndHour field on ambiguous wall clock hour
+             * during daylight savings; JPA can't include EDT/EST qualifier in String literal SQL statement it creates
+             * And we must support unique dates such as:
+             * 2018-11-04 01 EDT
+             * 2018-11-04 01 EST
+             */
             hour = this.manualInsert(hour);
+            manualAudit(hour, RevisionType.ADD);
         } else {
+            /*
+             * We can use JPA to modify records since
+             * startDayAndHour @Column is marked as insertable = false and updatable = false as it's an alternate key
+             * and can't be changed after the manual insert above.  However, the JPA Date limitation (and
+             * @Column insertable = false above) breaks Envers Auditing, so we can't use @Audited to
+             * automatically insert audit records and must do that manually.
+             */
             hour = super.edit(hour);
+            this.manualAudit(hour, RevisionType.MOD);
         }
 
         return hour;
+    }
+
+    @PermitAll
+    public void manualAudit(CcAccHour hour, RevisionType type) {
+        logger.log(Level.FINEST, "CcAccHourService.manualAudit");
+
+        Query idq = em.createNativeQuery("select hibernate_sequence.nextval from dual");
+
+        BigDecimal idDec = (BigDecimal)idq.getSingleResult();
+
+        BigInteger id = idDec.toBigInteger();
+
+        logger.log(Level.FINEST, "CcAccHourService.manualAudit; Got ID: {}", id);
+
+        long timestamp = System.currentTimeMillis();
+
+        Query revq = em.createNativeQuery("insert into revision_info (ADDRESS, REVTSTMP, USERNAME, REV) values (:address, :revtstmp, :username, :rev)");
+
+        AuditContext context = AuditContext.getCurrentInstance();
+
+        String address = context.getIp();
+        String username = context.getUsername();
+
+        revq.setParameter("address", address);
+        revq.setParameter("revtstmp", timestamp);
+        revq.setParameter("username", username);
+        revq.setParameter("rev", id);
+
+        int count = revq.executeUpdate();
+
+        if(count == 0) {
+            logger.log(Level.WARNING, "manualAudit revision_info insert count is zero");
+        }
+
+        Query audq = em.createNativeQuery("insert into cc_acc_hour_aud (REVTYPE, DAY_AND_HOUR, UP_SECONDS, SAD_SECONDS, DOWN_SECONDS, STUDIES_SECONDS, RESTORE_SECONDS, ACC_SECONDS, CC_ACC_HOUR_ID, REV) values (:revtype, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :up, :sad, :down, :studies, :restore, :acc, :hour_id, :rev)");
+
+        String dayAndHourStr = TimeUtil.formatDatabaseDateTimeTZ(hour.getDayAndHour());
+
+        logger.log(Level.FINEST, "manualAudit.dayAndHourStr: {}, dayAndHour: {}", new Object[] {dayAndHourStr, hour.getDayAndHour()});
+
+        audq.setParameter("revtype", type.getRepresentation());
+        audq.setParameter("dayAndHour", dayAndHourStr);
+        audq.setParameter("up", hour.getUpSeconds());
+        audq.setParameter("sad", hour.getSadSeconds());
+        audq.setParameter("down", hour.getDownSeconds());
+        audq.setParameter("studies", hour.getStudiesSeconds());
+        audq.setParameter("restore", hour.getRestoreSeconds());
+        audq.setParameter("acc", hour.getAccSeconds());
+        audq.setParameter("hour_id", hour.getCcAccHourId());
+        audq.setParameter("rev", id);
+
+        count = audq.executeUpdate();
+
+        if(count == 0) {
+            logger.log(Level.WARNING, "manualAudit cc_acc_hour_aud insert count is zero");
+        }
     }
 
     private CcAccHour manualInsert(CcAccHour hour) {
@@ -251,7 +324,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
 
         BigInteger id = idDec.toBigInteger();
 
-        Query q = em.createNamedQuery("OpAccHour.insertNATIVE");
+        Query q = em.createNamedQuery("CcAccHour.insertNATIVE");
 
         q.setParameter("id", id);
         q.setParameter("dayAndHour", dayAndHourStr);

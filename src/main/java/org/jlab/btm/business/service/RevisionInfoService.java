@@ -1,10 +1,7 @@
 package org.jlab.btm.business.service;
 
 import org.hibernate.envers.RevisionType;
-import org.jlab.btm.persistence.entity.CcShift;
-import org.jlab.btm.persistence.entity.ExpHour;
-import org.jlab.btm.persistence.entity.ExpShift;
-import org.jlab.btm.persistence.entity.RevisionInfo;
+import org.jlab.btm.persistence.entity.*;
 import org.jlab.btm.persistence.projection.AuditedEntityChange;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
@@ -110,7 +107,8 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
         Query q = em.createNativeQuery(
                 "select 'ES', exp_shift_id, revtype, to_char(start_day_and_hour, 'YYYY-MM-DD HH24'), hall from btm_owner.exp_shift_aud where rev = :revision " +
                 "union select 'CS', cc_shift_id, revtype, to_char(start_day_and_hour, 'YYYY-MM-DD HH24'), 'A' from btm_owner.cc_shift_aud where rev = :revision " +
-                "union select 'EH', exp_hour_id, revtype, to_char(day_and_hour, 'YYYY-MM-DD HH24'), hall from btm_owner.exp_hour_aud where rev = :revision"
+                "union select 'EH', exp_hour_id, revtype, to_char(day_and_hour, 'YYYY-MM-DD HH24'), hall from btm_owner.exp_hour_aud where rev = :revision " +
+                "union select 'CAH', cc_acc_hour_id, revtype, to_char(day_and_hour, 'YYYY-MM-DD HH24'), 'A' from btm_owner.cc_acc_hour_aud where rev = :revision "
         );
 
         q.setParameter("revision", revision);
@@ -156,6 +154,8 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
                 entityClass = ExpHour.class;
             } else if (s.equals("CS")) {
                 entityClass = CcShift.class;
+            } else if (s.equals("CAH")) {
+                entityClass = CcAccHour.class;
             }
         }
 

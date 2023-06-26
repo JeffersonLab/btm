@@ -1,43 +1,40 @@
-package org.jlab.btm.persistence.entity;
+package org.jlab.btm.persistence.entity.audit;
 
-import org.jlab.btm.business.util.HourEntity;
-import org.jlab.btm.persistence.enumeration.DataSource;
+import org.hibernate.envers.RevisionType;
+import org.jlab.btm.persistence.entity.RevisionInfo;
+import org.jlab.smoothness.persistence.enumeration.Hall;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Date;
 
 /**
+ *
  * @author ryans
  */
 @Entity
-@Table(name = "CC_ACC_HOUR", schema = "BTM_OWNER", uniqueConstraints
-        = {
-        @UniqueConstraint(columnNames = {"DAY_AND_HOUR"})})
-@NamedQueries({
-        @NamedQuery(name = "CcAccHour.findAll", query
-                = "SELECT o FROM CcAccHour o")})
-@NamedNativeQueries({
-        @NamedNativeQuery(name = "CcAccHour.insertNATIVE", query = "INSERT into CC_ACC_HOUR (CC_ACC_HOUR_ID, DAY_AND_HOUR, UP_SECONDS, SAD_SECONDS, DOWN_SECONDS, STUDIES_SECONDS, ACC_SECONDS, RESTORE_SECONDS) values (:id, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :up, :sad, :down, :studies, :acc, :restore)", resultClass = CcAccHour.class)})
-public class CcAccHour implements Serializable, HourEntity {
-
+@Table(name = "CC_ACC_HOUR_AUD", schema = "BTM_OWNER")
+public class CcAccHourAud implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @SequenceGenerator(name = "AccHourId", sequenceName = "CC_ACC_HOUR_ID", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AccHourId")
-    @Basic(optional = false)
+    @EmbeddedId
+    protected CcAccHourAudPK ccAccHourAudPK;
+    @Enumerated(EnumType.ORDINAL)
     @NotNull
-    @Column(name = "CC_ACC_HOUR_ID", nullable = false, precision = 22, scale = 0)
-    private BigInteger ccAccHourId;
+    @Column(name = "REVTYPE")
+    private RevisionType type;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "DAY_AND_HOUR", nullable = false, insertable = false, updatable = false)
+    @Column(name = "DAY_AND_HOUR", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
     private Date dayAndHour;
+    @JoinColumn(name = "REV", referencedColumnName = "REV", insertable = false, updatable = false, nullable = false)
+    @NotNull
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private RevisionInfo revision;
     @Basic(optional = false)
     @NotNull
     @Column(name = "UP_SECONDS", nullable = false)
@@ -74,43 +71,33 @@ public class CcAccHour implements Serializable, HourEntity {
     @Max(value = 3600, message = "RESTORE must be less than or equal to 1 hour")
     @Min(value = 0, message = "RESTORE must be greater than or equal to 0")
     private short restoreSeconds;
-    @Transient
-    private DataSource source;
 
-    public CcAccHour() {
+    public CcAccHourAud() {
     }
 
-    public BigInteger getCcAccHourId() {
-        return ccAccHourId;
-    }
-
-    public void setCcAccHourId(BigInteger opAccHourId) {
-        this.ccAccHourId = opAccHourId;
-    }
-
-    @Override
     public Date getDayAndHour() {
         return dayAndHour;
     }
 
-    @Override
-    public void setDayAndHour(Date dayAndHour) {
-        this.dayAndHour = dayAndHour;
-    }
-    
-    /*public Date getDayAndHour() {
-        return dayAndHour == null ? null : dayAndHour.getTime();
+    public void setDayAndHour(Date startDayAndHour) {
+        this.dayAndHour = startDayAndHour;
     }
 
-    public void setDayAndHour(Date dayAndHour) {
-        if (dayAndHour == null) {
-            this.dayAndHour = null;
-        } else {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(dayAndHour);
-            this.dayAndHour = cal;
-        }
-    }*/
+    public RevisionInfo getRevision() {
+        return revision;
+    }
+
+    public void setRevision(RevisionInfo revision) {
+        this.revision = revision;
+    }
+
+    public RevisionType getType() {
+        return type;
+    }
+
+    public void setType(RevisionType type) {
+        this.type = type;
+    }
 
     public short getUpSeconds() {
         return upSeconds;
@@ -160,37 +147,20 @@ public class CcAccHour implements Serializable, HourEntity {
         this.restoreSeconds = restoreSeconds;
     }
 
-    public DataSource getSource() {
-        return source;
-    }
-
-    @Override
-    public void setSource(DataSource source) {
-        this.source = source;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (this.getDayAndHour() != null
-                ? this.getDayAndHour().hashCode() : 0);
+        hash += (ccAccHourAudPK != null ? ccAccHourAudPK.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof CcAccHour)) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof CcAccHourAud)) {
             return false;
         }
-        CcAccHour other = (CcAccHour) object;
-        return (this.getDayAndHour() != null || other.getDayAndHour() == null)
-                && (this.getDayAndHour() == null || this.getDayAndHour().equals(
-                other.getDayAndHour()));
+        CcAccHourAud other = (CcAccHourAud) object;
+        return (this.ccAccHourAudPK != null || other.ccAccHourAudPK == null) && (this.ccAccHourAudPK == null || this.ccAccHourAudPK.equals(other.ccAccHourAudPK));
     }
-
-    @Override
-    public String toString() {
-        return "org.jlab.btm.persistence.entity.CcAccHour[ ccAccHourId=" + ccAccHourId + " ]";
-    }
-
 }
