@@ -44,8 +44,8 @@ public class HourRounder {
      *
      * The status 'off' is a shared status of both experimenter and accelerator
      * statuses so rounding to correct one set of statuses could affect the
-     * other set.  Therefore 'off' is simply truncated to range and then not
-     * further modified during rounding of each mutually exclusive set.
+     * other set.  Therefore, 'off' is truncated to range, then UED/OFF fix applied, and finally
+     * during rounding of each mutually exclusive set OFF is then static.
      *
      * @param hour the experimenter hall hour.
      */
@@ -56,8 +56,38 @@ public class HourRounder {
         truncateToRange(statuses);
         hour.setOffSeconds(statuses[0]);
 
+        adjustOffAndUED(hour);
+
         roundAcceleratorSet(hour);
         roundExperimenterSet(hour);
+    }
+
+    /**
+     * The experimenter automated time accounting needs to be corrected for fact that (1) it doesn't actually include a
+     * metric for OFF and (2) when really OFF automated accounting often sets UED.  To count OFF, the Crew Chief
+     * measure of Hall Off is used, but needs to REPLACE UED so this method does that.
+     *
+     * @param hour The ExpHour
+     */
+    private void adjustOffAndUED(ExpHour hour) {
+        int SLOP = 60;
+        short ued = hour.getUedSeconds();
+        short off = hour.getOffSeconds();
+
+
+        if(off != 0) {
+            int difference = Math.abs(off - ued);
+
+            // If UED and OFF are within 1 minute of matching, then set UED to zero
+            if(difference <= SLOP) {
+                hour.setUedSeconds((short)0);
+
+                // If OFF is within 1 minute of filling entire hour, then set to entire hour
+                if((SECONDS_PER_HOUR - off) < SLOP) {
+                    hour.setOffSeconds((short)SECONDS_PER_HOUR);
+                }
+            }
+        }
     }
 
     /**
