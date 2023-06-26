@@ -40,7 +40,7 @@
                         <input id="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
             </s:filter-flyout-widget>
-            <h2 id="page-header-title">Activity Audit: ExpShift <fmt:formatDate pattern="dd-MMM-yyyy" value="${entityList[0].startDayAndHour}"/> ${btm:expShiftFromStartDayAndHour(entityList[0].startDayAndHour)} (<c:out value="${param.entityId}"/>)</h2>
+            <h2 id="page-header-title">Activity Audit: ExpShift <c:out value="${selectionMessage}"/></h2>
             <ul class="bracket-horizontal-nav">
                 <li><a href="${pageContext.request.contextPath}/reports/activity-audit">Transactions</a></li>
                 <li>ExpShift</li>

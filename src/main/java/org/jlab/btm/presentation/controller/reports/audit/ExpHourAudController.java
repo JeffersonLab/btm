@@ -3,6 +3,7 @@ package org.jlab.btm.presentation.controller.reports.audit;
 import org.jlab.btm.business.service.audit.ExpHourAudService;
 import org.jlab.btm.persistence.entity.audit.ExpHourAud;
 import org.jlab.btm.persistence.enumeration.DurationUnits;
+import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.presentation.util.Paginator;
 import org.jlab.smoothness.presentation.util.ParamConverter;
 import org.jlab.smoothness.presentation.util.ParamUtil;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -48,10 +50,16 @@ public class ExpHourAudController extends HttpServlet {
 
         List<ExpHourAud> entityList = null;
         Long totalRecords = 0L;
+        String selectionMessage = "";
         
         if(entityId != null) {
             entityList = audService.filterList(entityId, revisionId, offset, maxPerPage);
             totalRecords = audService.countFilterList(entityId, revisionId);
+            SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy HH z");
+            selectionMessage = format.format(entityList.get(0).getDayAndHour()) +
+                    " (" +
+                    entityId +
+                    ")";
         }
         
         Paginator paginator = new Paginator(totalRecords.intValue(), offset, maxPerPage);
@@ -60,7 +68,8 @@ public class ExpHourAudController extends HttpServlet {
         request.setAttribute("entityList", entityList);
         request.setAttribute("paginator", paginator);
         request.setAttribute("durationUnits", DurationUnits.MINUTES);
-        
+        request.setAttribute("selectionMessage", selectionMessage);
+
         request.getRequestDispatcher("/WEB-INF/views/reports/activity-audit/exp-hour.jsp").forward(request, response);
     }
 }

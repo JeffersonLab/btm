@@ -1,6 +1,7 @@
 package org.jlab.btm.presentation.controller.reports.audit;
 
 import org.jlab.btm.business.service.audit.ExpShiftAudService;
+import org.jlab.btm.business.util.BtmTimeUtil;
 import org.jlab.btm.persistence.entity.audit.ExpShiftAud;
 import org.jlab.smoothness.presentation.util.Paginator;
 import org.jlab.smoothness.presentation.util.ParamConverter;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -47,17 +49,26 @@ public class ExpShiftAudController extends HttpServlet {
 
         List<ExpShiftAud> entityList = null;
         Long totalRecords = 0L;
-        
+        String selectionMessage = "";
+
         if(entityId != null) {
             entityList = audService.filterList(entityId, revisionId, offset, maxPerPage);
             totalRecords = audService.countFilterList(entityId, revisionId);
+            SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
+            selectionMessage = format.format(entityList.get(0).getStartDayAndHour()) +
+                    " " +
+                    BtmTimeUtil.calculateExperimenterShift(entityList.get(0).getStartDayAndHour()).name() +
+                    " (" +
+                    entityId +
+                    ")";
         }
         
         Paginator paginator = new Paginator(totalRecords.intValue(), offset, maxPerPage);
 
         
         request.setAttribute("entityList", entityList);
-        request.setAttribute("paginator", paginator);        
+        request.setAttribute("paginator", paginator);
+        request.setAttribute("selectionMessage", selectionMessage);
         
         request.getRequestDispatcher("/WEB-INF/views/reports/activity-audit/exp-shift.jsp").forward(request, response);
     }
