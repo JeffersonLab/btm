@@ -39,7 +39,7 @@ public class ShiftSummary {
     private ExpHourService lookupHourService() {
         try {
             InitialContext ic = new InitialContext();
-            return (ExpHourService) ic.lookup("java:global/btm/ExpHallHourService");
+            return (ExpHourService) ic.lookup("java:global/btm/ExpHourService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
@@ -48,7 +48,7 @@ public class ShiftSummary {
     private ExpShiftService lookupExpShiftService() {
         try {
             InitialContext ic = new InitialContext();
-            return (ExpShiftService) ic.lookup("java:global/btm/ExpHallShiftService");
+            return (ExpShiftService) ic.lookup("java:global/btm/ExpShiftService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
@@ -57,7 +57,7 @@ public class ShiftSummary {
     private CcShiftService lookupOpShiftService() {
         try {
             InitialContext ic = new InitialContext();
-            return (CcShiftService) ic.lookup("java:global/btm/OpShiftService");
+            return (CcShiftService) ic.lookup("java:global/btm/CcShiftService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
@@ -66,7 +66,7 @@ public class ShiftSummary {
     private CcAccHourService lookupOpAccHourService() {
         try {
             InitialContext ic = new InitialContext();
-            return (CcAccHourService) ic.lookup("java:global/btm/OpAccHourService");
+            return (CcAccHourService) ic.lookup("java:global/btm/CcAccHourService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
@@ -75,7 +75,7 @@ public class ShiftSummary {
     private CcHallHourService lookupOpHallHourService() {
         try {
             InitialContext ic = new InitialContext();
-            return (CcHallHourService) ic.lookup("java:global/btm/OpHallHourService");
+            return (CcHallHourService) ic.lookup("java:global/btm/CcHallHourService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
