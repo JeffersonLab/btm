@@ -107,12 +107,14 @@ public class BeamTimeSummary extends HttpServlet {
         Double period = null;
         String selectionMessage = null;
         BeamSummaryTotals totals = null;
-        Double unknownHours = 0d;
-        double programHours = 0d;
-        double offHours = 0d;
+        Double ccImplicitOffHours = 0d;
+        double ccProgramHours = 0d;
+        double ccOffHours = 0d;
         Long[] accScheduledArray = null;
         PacAccSum pacSum = null;
-        long pdProgramTotal = 0;
+        long pdProgramSeconds = 0;
+        double pdImplicitOffHours = 0;
+        double pdOffTotalHours = 0;
 
         if (start != null && end != null) {
             if (start.after(end)) {
@@ -123,20 +125,22 @@ public class BeamTimeSummary extends HttpServlet {
 
             totals = accHourService.reportTotals(start, end);
 
-            unknownHours = period - (totals.getUpSeconds() + totals.getStudiesSeconds()
+            ccImplicitOffHours = period - (totals.getUpSeconds() + totals.getStudiesSeconds()
                     + totals.getRestoreSeconds() + totals.getAccSeconds() + totals.getDownSeconds()
                     + totals.getSadSeconds()) / 3600.0;
 
-            programHours = (totals.getUpSeconds() + totals.getStudiesSeconds()
+            ccProgramHours = (totals.getUpSeconds() + totals.getStudiesSeconds()
                     + totals.getRestoreSeconds() + totals.getAccSeconds() + totals.getDownSeconds())
                     / 3600.0;
 
-            offHours = (totals.getSadSeconds() / 3600.0) + unknownHours;
+            ccOffHours = (totals.getSadSeconds() / 3600.0) + ccImplicitOffHours;
 
             accScheduledArray = pdShiftService.findAcceleratorScheduled(start, end);
 
             // Add up all but SAD
-            pdProgramTotal = accScheduledArray[0] + accScheduledArray[1] + accScheduledArray[2] + accScheduledArray[4];
+            pdProgramSeconds = accScheduledArray[0] + accScheduledArray[1] + accScheduledArray[2] + accScheduledArray[4];
+            pdImplicitOffHours = period - (pdProgramSeconds + accScheduledArray[3]) / 3600.0;
+            pdOffTotalHours = (accScheduledArray[3] / 3600.0) + pdImplicitOffHours;
 
             pacSum = pacService.sumAccDays(start, end);
 
@@ -148,11 +152,13 @@ public class BeamTimeSummary extends HttpServlet {
         request.setAttribute("selectionMessage", selectionMessage);
         request.setAttribute("period", period);
         request.setAttribute("totals", totals);
-        request.setAttribute("unknownHours", unknownHours);
-        request.setAttribute("programHours", programHours);
-        request.setAttribute("offHours", offHours);
+        request.setAttribute("unknownHours", ccImplicitOffHours);
+        request.setAttribute("programHours", ccProgramHours);
+        request.setAttribute("offHours", ccOffHours);
         request.setAttribute("accScheduledArray", accScheduledArray);
-        request.setAttribute("pdProgramTotal", pdProgramTotal);
+        request.setAttribute("pdProgramSeconds", pdProgramSeconds);
+        request.setAttribute("pdImplicitOffHours", pdImplicitOffHours);
+        request.setAttribute("pdOffTotalHours", pdOffTotalHours);
         request.setAttribute("pacSum", pacSum);
 
         request.getRequestDispatcher("/WEB-INF/views/reports/beam-time-summary.jsp").forward(request,

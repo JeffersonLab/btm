@@ -43,8 +43,6 @@ doPieChart = function () {
 
         var program = $("td:nth-child(2)", value).text().trim();
 
-        console.log(program);
-
         var duration = parseFloat($("td:nth-child(3)", value).text().replace(/,/g, ''));
 
         ds.push({

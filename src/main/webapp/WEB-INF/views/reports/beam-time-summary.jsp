@@ -164,7 +164,7 @@
                                     <td>(<fmt:formatNumber value="${programHours / period * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
-                                    <td><fmt:formatNumber value="${pdProgramTotal / 3600}"
+                                    <td><fmt:formatNumber value="${pdProgramSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
                                     <td><fmt:formatNumber value="${pacSum.pacProgram * 24}"
                                                           pattern="#,##0.0"/></td>
@@ -192,14 +192,14 @@
                                     <td>(<fmt:formatNumber value="${unknownHours / period * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
-                                    <td>-</td>
+                                    <td><fmt:formatNumber value="${pdImplicitOffHours}" pattern="#,##0.0"/></td>
                                     <td>-</td>
                                 </tr>
                                 <tr class="off-row">
                                     <th colspan="2">Off Time:</th>
                                     <td><fmt:formatNumber value="${offHours}" pattern="#,##0.0"/></td>
                                     <td>(<fmt:formatNumber value="${offHours / period * 100}" pattern="#,##0.0"/>%)</td>
-                                    <td></td>
+                                    <td><fmt:formatNumber value="${pdOffTotalHours}" pattern="#,##0.0"/></td>
                                     <td></td>
                                 </tr>
                                 </tbody>
