@@ -14,9 +14,9 @@
                 <thead>
                 <tr>
                     <th rowspan="2"></th>
-                    <th rowspan="2" class="duration-header">PHYSICS MODE</th>
-                    <th colspan="4">INTERNAL MODE</th>
-                    <th rowspan="2" class="duration-header">SAD MODE (OFF)</th>
+                    <th rowspan="2" class="duration-header">PHYSICS</th>
+                    <th colspan="4">INTERNAL</th>
+                    <th rowspan="2" class="duration-header">OFF (SAD)</th>
                 </tr>
                 <tr>
                     <th class="duration-header">STUDIES</th>
@@ -66,9 +66,9 @@
             <thead>
             <tr>
                 <th rowspan="2"></th>
-                <th rowspan="2" class="duration-header">PHYSICS MODE</th>
-                <th colspan="4" style="width: 320px;">INTERNAL MODE</th>
-                <th rowspan="2" class="duration-header">SAD MODE (OFF)</th>
+                <th rowspan="2" class="duration-header">PHYSICS</th>
+                <th colspan="4" style="width: 320px;">INTERNAL</th>
+                <th rowspan="2" class="duration-header">OFF (SAD)</th>
                 <th rowspan="2">Hour Total</th>
                 <th rowspan="2">Source</th>
                 <th rowspan="2" style="width: 50px;"></th>

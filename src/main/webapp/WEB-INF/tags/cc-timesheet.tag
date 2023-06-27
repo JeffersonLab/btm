@@ -70,7 +70,7 @@
             </tr>
             </tbody>
         </table>
-        <h5>Halls (Physics Mode Progress)</h5>
+        <h5>Hall Physics Progress</h5>
         <table id="hall-summary-table" class="data-table">
             <thead>
             <tr>
@@ -117,7 +117,7 @@
             </c:forEach>
             </tbody>
         </table>
-        <h5>Multiplicity (Physics Mode Progress)</h5>
+        <h5>Multiplicity Physics Progress</h5>
         <table id="multi-summary-table" class="data-table">
             <thead>
             <tr>
@@ -161,7 +161,7 @@
             <div class="accordion">
                 <t:acc-hourly-availability availability="${accAvailability}"/>
             </div>
-            <h5>Halls (Physics Mode Progress)</h5>
+            <h5>Halls Physics Progress</h5>
             <div class="accordion">
                 <c:forEach items="${hallAvailabilityList}" var="availability">
                     <t:hall-hourly-availability hall="${availability.hall}"
@@ -171,7 +171,7 @@
                                                 epicsTotals="${availability.epicsShiftTotals}"/>
                 </c:forEach>
             </div>
-            <h5>Multiplicity (Physics Mode Progress)</h5>
+            <h5>Multiplicity Physics Progress</h5>
             <div class="accordion">
                 <t:multiplicity-hourly-availability availability="${multiplicityAvailability}"/>
             </div>
