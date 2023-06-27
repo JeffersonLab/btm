@@ -76,7 +76,7 @@
                             </tr>
                             <tr>
                                 <td>Implicit Off</td>
-                                <td>Nothing was recorded.   This is only used in reports to fill in gaps when no timekeeper is staffing the control room as otherwise OFF should be specified explicitly with SAD by timekeepers and schedulers.</td>
+                                <td>Nothing was recorded.   This is only used in reports to fill in gaps when no timekeeper is staffing the control room as otherwise OFF should be specified explicitly by timekeepers and schedulers.</td>
                             </tr>
                             </tbody>
                         </table>
