@@ -36,7 +36,7 @@ public class WeekSummary {
     private ExpHourService lookupHourService() {
         try {
             InitialContext ic = new InitialContext();
-            return (ExpHourService) ic.lookup("java:global/btm/ExpHallHourService");
+            return (ExpHourService) ic.lookup("java:global/btm/ExpHourService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
@@ -45,7 +45,7 @@ public class WeekSummary {
     private CcAccHourService lookupOpAccHourService() {
         try {
             InitialContext ic = new InitialContext();
-            return (CcAccHourService) ic.lookup("java:global/btm/OpAccHourService");
+            return (CcAccHourService) ic.lookup("java:global/btm/CcAccHourService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
