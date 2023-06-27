@@ -107,12 +107,14 @@ public class BeamTimeSummary extends HttpServlet {
         Double period = null;
         String selectionMessage = null;
         CcAccSum ccSum = null;
-        Double ccImplicitOffHours = 0d;
-        double ccOffTotalHours = 0d;
         PacAccSum pacSum = null;
         PdAccSum pdSum = null;
+        double ccImplicitOffHours = 0d;
+        double ccOffTotalHours = 0d;
         double pdImplicitOffHours = 0;
         double pdOffTotalHours = 0;
+        double pacImplicitOffHours = 0;
+        double pacOffTotalHours = 0;
 
         if (start != null && end != null) {
             if (start.after(end)) {
@@ -122,19 +124,16 @@ public class BeamTimeSummary extends HttpServlet {
             period = (end.getTime() - start.getTime()) / 1000.0 / 60 / 60;
 
             ccSum = accHourService.reportTotals(start, end);
-
-            ccImplicitOffHours = period - (ccSum.getProgramSeconds()
-                    + ccSum.getSadSeconds()) / 3600.0;
-
+            ccImplicitOffHours = period - (ccSum.getProgramSeconds() + ccSum.getSadSeconds()) / 3600.0;
             ccOffTotalHours = (ccSum.getSadSeconds() / 3600.0) + ccImplicitOffHours;
 
             pdSum = pdShiftService.findAcceleratorScheduled(start, end);
-
-            // Add up all but SAD
             pdImplicitOffHours = period - (pdSum.getProgramSeconds() + pdSum.getOffSeconds()) / 3600.0;
             pdOffTotalHours = (pdSum.getOffSeconds() / 3600.0) + pdImplicitOffHours;
 
             pacSum = pacService.sumAccDays(start, end);
+            pacImplicitOffHours = period - (pacSum.getProgramDays() + pacSum.getOffDays()) * 24;
+            pacOffTotalHours = (pacSum.getOffDays() * 24) + pacImplicitOffHours;
 
             selectionMessage = TimeUtil.formatSmartRangeSeparateTime(start, end);
         }
@@ -150,6 +149,8 @@ public class BeamTimeSummary extends HttpServlet {
         request.setAttribute("pdImplicitOffHours", pdImplicitOffHours);
         request.setAttribute("pdOffTotalHours", pdOffTotalHours);
         request.setAttribute("pacSum", pacSum);
+        request.setAttribute("pacImplicitOffHours", pacImplicitOffHours);
+        request.setAttribute("pacOffTotalHours", pacOffTotalHours);
 
         request.getRequestDispatcher("/WEB-INF/views/reports/beam-time-summary.jsp").forward(request,
                 response);

@@ -193,14 +193,14 @@
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td><fmt:formatNumber value="${pdImplicitOffHours}" pattern="#,##0.0"/></td>
-                                    <td>-</td>
+                                    <td><fmt:formatNumber value="${pacImplicitOffHours}" pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="off-row">
                                     <th colspan="2">Off Time:</th>
                                     <td><fmt:formatNumber value="${ccOffTotalHours}" pattern="#,##0.0"/></td>
                                     <td>(<fmt:formatNumber value="${ccOffTotalHours / period * 100}" pattern="#,##0.0"/>%)</td>
                                     <td><fmt:formatNumber value="${pdOffTotalHours}" pattern="#,##0.0"/></td>
-                                    <td></td>
+                                    <td><fmt:formatNumber value="${pacOffTotalHours}" pattern="#,##0.0"/></td>
                                 </tr>
                                 </tbody>
                             </table>
