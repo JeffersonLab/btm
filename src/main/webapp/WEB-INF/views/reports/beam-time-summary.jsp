@@ -91,13 +91,13 @@
                                         <div class="color-box"></div>
                                     </th>
                                     <td class="legend-label">Physics</td>
-                                    <td><fmt:formatNumber value="${totals.upSeconds / 3600}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${(totals.upSeconds / 3600) / period * 100}"
+                                    <td><fmt:formatNumber value="${ccSum.upSeconds / 3600}" pattern="#,##0.0"/></td>
+                                    <td>(<fmt:formatNumber value="${(ccSum.upSeconds / 3600) / period * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
-                                    <td><fmt:formatNumber value="${accScheduledArray[4] / 3600}"
+                                    <td><fmt:formatNumber value="${pdSum.physicsSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td><fmt:formatNumber value="${pacSum.physics * 24}"
+                                    <td><fmt:formatNumber value="${pacSum.physicsDays * 24}"
                                                           pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
@@ -105,14 +105,14 @@
                                         <div class="color-box"></div>
                                     </th>
                                     <td class="legend-label">Studies</td>
-                                    <td><fmt:formatNumber value="${totals.studiesSeconds / 3600}"
+                                    <td><fmt:formatNumber value="${ccSum.studiesSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${(totals.studiesSeconds / 3600) / period * 100}"
+                                    <td>(<fmt:formatNumber value="${(ccSum.studiesSeconds / 3600) / period * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
-                                    <td><fmt:formatNumber value="${accScheduledArray[0] / 3600}"
+                                    <td><fmt:formatNumber value="${pdSum.studiesSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td><fmt:formatNumber value="${pacSum.studies * 24}"
+                                    <td><fmt:formatNumber value="${pacSum.studiesDays * 24}"
                                                           pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
@@ -120,14 +120,14 @@
                                         <div class="color-box"></div>
                                     </th>
                                     <td class="legend-label">SAD Restore</td>
-                                    <td><fmt:formatNumber value="${totals.restoreSeconds / 3600}"
+                                    <td><fmt:formatNumber value="${ccSum.restoreSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${(totals.restoreSeconds / 3600) / period * 100}"
+                                    <td>(<fmt:formatNumber value="${(ccSum.restoreSeconds / 3600) / period * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
-                                    <td><fmt:formatNumber value="${accScheduledArray[1] / 3600}"
+                                    <td><fmt:formatNumber value="${pdSum.restoreSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td><fmt:formatNumber value="${pacSum.restore * 24}"
+                                    <td><fmt:formatNumber value="${pacSum.restoreDays * 24}"
                                                           pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
@@ -135,13 +135,13 @@
                                         <div class="color-box"></div>
                                     </th>
                                     <td class="legend-label">ACC</td>
-                                    <td><fmt:formatNumber value="${totals.accSeconds / 3600}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${(totals.accSeconds / 3600) / period * 100}"
+                                    <td><fmt:formatNumber value="${ccSum.accSeconds / 3600}" pattern="#,##0.0"/></td>
+                                    <td>(<fmt:formatNumber value="${(ccSum.accSeconds / 3600) / period * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
-                                    <td><fmt:formatNumber value="${accScheduledArray[2] / 3600}"
+                                    <td><fmt:formatNumber value="${pdSum.accSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td><fmt:formatNumber value="${pacSum.acc * 24}"
+                                    <td><fmt:formatNumber value="${pacSum.accDays * 24}"
                                                           pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
@@ -151,8 +151,8 @@
                                     <td class="legend-label" title="Studies / Restore / ACC Down (not a Physics Down)">
                                         Internal Down
                                     </td>
-                                    <td><fmt:formatNumber value="${totals.downSeconds / 3600}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${(totals.downSeconds / 3600) / period * 100}"
+                                    <td><fmt:formatNumber value="${ccSum.downSeconds / 3600}" pattern="#,##0.0"/></td>
+                                    <td>(<fmt:formatNumber value="${(ccSum.downSeconds / 3600) / period * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td>-</td>
@@ -160,13 +160,13 @@
                                 </tr>
                                 <tr class="program-row">
                                     <th colspan="2">Program Time:</th>
-                                    <td><fmt:formatNumber value="${programHours}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${programHours / period * 100}"
+                                    <td><fmt:formatNumber value="${ccSum.programSeconds / 3600}" pattern="#,##0.0"/></td>
+                                    <td>(<fmt:formatNumber value="${(ccSum.programSeconds / 3600) / period * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td><fmt:formatNumber value="${pdProgramSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td><fmt:formatNumber value="${pacSum.pacProgram * 24}"
+                                    <td><fmt:formatNumber value="${pacSum.programDays * 24}"
                                                           pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
@@ -174,13 +174,13 @@
                                         <div class="color-box"></div>
                                     </th>
                                     <td class="legend-label">SAD</td>
-                                    <td><fmt:formatNumber value="${totals.sadSeconds / 3600}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${(totals.sadSeconds / 3600) / period * 100}"
+                                    <td><fmt:formatNumber value="${ccSum.sadSeconds / 3600}" pattern="#,##0.0"/></td>
+                                    <td>(<fmt:formatNumber value="${(ccSum.sadSeconds / 3600) / period * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
-                                    <td><fmt:formatNumber value="${accScheduledArray[3] / 3600}"
+                                    <td><fmt:formatNumber value="${pdSum.offSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td><fmt:formatNumber value="${pacSum.off * 24}"
+                                    <td><fmt:formatNumber value="${pacSum.offDays * 24}"
                                                           pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
@@ -188,8 +188,8 @@
                                         <div class="color-box"></div>
                                     </th>
                                     <td class="legend-label">Implicit Off</td>
-                                    <td><fmt:formatNumber value="${unknownHours}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${unknownHours / period * 100}"
+                                    <td><fmt:formatNumber value="${ccImplicitOffHours}" pattern="#,##0.0"/></td>
+                                    <td>(<fmt:formatNumber value="${ccImplicitOffHours / period * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td><fmt:formatNumber value="${pdImplicitOffHours}" pattern="#,##0.0"/></td>
@@ -197,8 +197,8 @@
                                 </tr>
                                 <tr class="off-row">
                                     <th colspan="2">Off Time:</th>
-                                    <td><fmt:formatNumber value="${offHours}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${offHours / period * 100}" pattern="#,##0.0"/>%)</td>
+                                    <td><fmt:formatNumber value="${ccOffTotalHours}" pattern="#,##0.0"/></td>
+                                    <td>(<fmt:formatNumber value="${ccOffTotalHours / period * 100}" pattern="#,##0.0"/>%)</td>
                                     <td><fmt:formatNumber value="${pdOffTotalHours}" pattern="#,##0.0"/></td>
                                     <td></td>
                                 </tr>

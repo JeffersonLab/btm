@@ -3,8 +3,9 @@ package org.jlab.btm.presentation.controller.rest;
 import org.jlab.btm.business.service.ExpHourService;
 import org.jlab.btm.business.service.CcAccHourService;
 import org.jlab.btm.business.service.PdShiftPlanService;
-import org.jlab.btm.persistence.projection.BeamSummaryTotals;
+import org.jlab.btm.persistence.projection.CcAccSum;
 import org.jlab.btm.persistence.projection.ExpHourTotals;
+import org.jlab.btm.persistence.projection.PdAccSum;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.util.ObjectUtil;
 import org.jlab.smoothness.business.util.TimeUtil;
@@ -97,12 +98,12 @@ public class WeekSummary {
 
                     Long[] hallScheduledArray = pdShiftService.findScheduledHallTime(ccStart, ccEnd);
 
-                    Long[] accScheduledArray = pdShiftService.findAcceleratorScheduled(ccStart, ccEnd);
+                    PdAccSum pdSum = pdShiftService.findAcceleratorScheduled(ccStart, ccEnd);
 
                     List<ExpHourTotals> expHourTotals
                             = expHourService.findExpHallHourTotals(ccStart, ccEnd);
 
-                    BeamSummaryTotals accTotals = ccAccHourService.reportTotals(ccStart, ccEnd);
+                    CcAccSum accTotals = ccAccHourService.reportTotals(ccStart, ccEnd);
 
                     Map<Hall, Long> hallScheduledMap = new HashMap<>();
 
@@ -115,11 +116,11 @@ public class WeekSummary {
 
                     Map<String, Long> accScheduledMap = new HashMap<>();
 
-                    if (accScheduledArray != null && accScheduledArray.length == 4) {
-                        accScheduledMap.put("studies", accScheduledArray[0]);
-                        accScheduledMap.put("restore", accScheduledArray[1]);
-                        accScheduledMap.put("acc", accScheduledArray[2]);
-                        accScheduledMap.put("sad", accScheduledArray[3]);
+                    if (pdSum != null) {
+                        accScheduledMap.put("studies", pdSum.getStudiesSeconds());
+                        accScheduledMap.put("restore", pdSum.getRestoreSeconds());
+                        accScheduledMap.put("acc", pdSum.getAccSeconds());
+                        accScheduledMap.put("sad", pdSum.getOffSeconds());
                     }
 
                     gen.writeStartObject()

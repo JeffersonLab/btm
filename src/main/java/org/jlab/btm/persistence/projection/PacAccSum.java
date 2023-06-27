@@ -7,58 +7,58 @@ package org.jlab.btm.persistence.projection;
  * allowance (perhaps covered by double schedule slop factor).
  */
 public class PacAccSum {
-    public int pacProgram = 0; // Anything but OFF or implied OFF
-    public int restore = 0;
-    public int physics = 0;
-    public int studies = 0;
-    public int acc = 0;
-    public int off = 0;
+    public int programDays = 0; // Anything but OFF or implied OFF
+    public int restoreDays = 0;
+    public int physicsDays = 0;
+    public int studiesDays = 0;
+    public int accDays = 0;
+    public int offDays = 0;
 
-    public int getPacProgram() {
-        return pacProgram;
+    public int getProgramDays() {
+        return programDays;
     }
 
-    public void setPacProgram(int pacProgram) {
-        this.pacProgram = pacProgram;
+    public void setProgramDays(int programDays) {
+        this.programDays = programDays;
     }
 
-    public int getRestore() {
-        return restore;
+    public int getRestoreDays() {
+        return restoreDays;
     }
 
-    public void setRestore(int restore) {
-        this.restore = restore;
+    public void setRestoreDays(int restoreDays) {
+        this.restoreDays = restoreDays;
     }
 
-    public int getPhysics() {
-        return physics;
+    public int getPhysicsDays() {
+        return physicsDays;
     }
 
-    public void setPhysics(int physics) {
-        this.physics = physics;
+    public void setPhysicsDays(int physicsDays) {
+        this.physicsDays = physicsDays;
     }
 
-    public int getStudies() {
-        return studies;
+    public int getStudiesDays() {
+        return studiesDays;
     }
 
-    public void setStudies(int studies) {
-        this.studies = studies;
+    public void setStudiesDays(int studiesDays) {
+        this.studiesDays = studiesDays;
     }
 
-    public int getAcc() {
-        return acc;
+    public int getAccDays() {
+        return accDays;
     }
 
-    public void setAcc(int acc) {
-        this.acc = acc;
+    public void setAccDays(int accDays) {
+        this.accDays = accDays;
     }
 
-    public int getOff() {
-        return off;
+    public int getOffDays() {
+        return offDays;
     }
 
-    public void setOff(int off) {
-        this.off = off;
+    public void setOffDays(int offDays) {
+        this.offDays = offDays;
     }
 }

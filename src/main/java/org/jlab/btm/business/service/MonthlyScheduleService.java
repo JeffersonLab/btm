@@ -525,25 +525,25 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
 
         for (ScheduleDay day : scheduleDays) {
             if (!"OFF".equals(day.getAccProgram())) {
-                record.pacProgram++;
+                record.programDays++;
 
                 switch(day.getAccProgram()) {
                     case "PHYSICS":
-                        record.physics++;
+                        record.physicsDays++;
                         break;
                     case "RESTORE":
-                        record.restore++;
+                        record.restoreDays++;
                         break;
                     case "STUDIES":
-                        record.studies++;
+                        record.studiesDays++;
                         break;
                     case "ACC":
-                        record.acc++;
+                        record.accDays++;
                         break;
                 }
 
             } else {
-                record.off++;  // May be implied off gaps that are missed so this number is explicit off only...
+                record.offDays++;  // May be implied off gaps that are missed so this number is explicit off only...
             }
         }
 

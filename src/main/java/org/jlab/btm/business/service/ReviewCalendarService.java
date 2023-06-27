@@ -2,7 +2,7 @@ package org.jlab.btm.business.service;
 
 import org.jlab.btm.business.util.BtmTimeUtil;
 import org.jlab.btm.business.util.DateRange;
-import org.jlab.btm.persistence.projection.BeamSummaryTotals;
+import org.jlab.btm.persistence.projection.CcAccSum;
 import org.jlab.btm.persistence.projection.DowntimeSummaryTotals;
 import org.jlab.btm.persistence.projection.ReviewDay;
 import org.jlab.btm.persistence.projection.ReviewWeek;
@@ -47,7 +47,7 @@ public class ReviewCalendarService {
             review.setDay(d);
 
             CcAccHourService.DayTotals accTotal = accTotals.get(i);
-            BeamSummaryTotals at = accTotal.totals;
+            CcAccSum at = accTotal.totals;
             review.setAccTotal(at);
 
             DowntimeService.DayTotals downTotal = downTotals.get(i);

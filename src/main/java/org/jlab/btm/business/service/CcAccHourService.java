@@ -8,7 +8,7 @@ import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.CcAccHour;
 import org.jlab.btm.persistence.entity.PdShiftPlan;
 import org.jlab.btm.persistence.projection.AcceleratorShiftAvailability;
-import org.jlab.btm.persistence.projection.BeamSummaryTotals;
+import org.jlab.btm.persistence.projection.CcAccSum;
 import org.jlab.btm.persistence.projection.CcAccShiftTotals;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.DateIterator;
@@ -106,7 +106,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
     }
 
     @PermitAll
-    public BeamSummaryTotals reportTotals(Date start, Date end) {
+    public CcAccSum reportTotals(Date start, Date end) {
         Query q = em.createNativeQuery(
                 "select sum(up_seconds), sum(sad_seconds), sum(down_seconds), sum(studies_seconds), sum(restore_seconds), sum(acc_seconds) "
                         + "from ("
@@ -117,9 +117,9 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
         q.setParameter("start", start);
         q.setParameter("end", end);
 
-        List<BeamSummaryTotals> totalsList = JPAUtil.getResultList(q, BeamSummaryTotals.class);
+        List<CcAccSum> totalsList = JPAUtil.getResultList(q, CcAccSum.class);
 
-        BeamSummaryTotals totals = null;
+        CcAccSum totals = null;
 
         if (totalsList != null && !totalsList.isEmpty()) {
             totals = totalsList.get(0);
@@ -423,7 +423,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
             Date realStart = (startDayHourZero.getTime() == day.getTime()) ? start : startOfDay;
             Date realEnd = iterator.hasNext() ? startOfNextDay : end;
 
-            BeamSummaryTotals totals = this.reportTotals(realStart, realEnd);
+            CcAccSum totals = this.reportTotals(realStart, realEnd);
             DayTotals mt = new DayTotals();
             mt.day = startOfDay;
             mt.totals = totals;
@@ -458,7 +458,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
             Date realStart = (startMonthDayOne.getTime() == month.getTime()) ? start : startOfMonth;
             Date realEnd = iterator.hasNext() ? startOfNextMonth : end;
 
-            BeamSummaryTotals totals = this.reportTotals(realStart, realEnd);
+            CcAccSum totals = this.reportTotals(realStart, realEnd);
             MonthTotals mt = new MonthTotals();
             mt.month = startOfMonth;
             mt.totals = totals;
@@ -471,13 +471,13 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
     public class DayTotals {
 
         Date day;
-        BeamSummaryTotals totals;
+        CcAccSum totals;
 
         public Date getDay() {
             return day;
         }
 
-        public BeamSummaryTotals getTotals() {
+        public CcAccSum getTotals() {
             return totals;
         }
     }
@@ -485,13 +485,13 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
     public class MonthTotals {
 
         Date month;
-        BeamSummaryTotals totals;
+        CcAccSum totals;
 
         public Date getMonth() {
             return month;
         }
 
-        public BeamSummaryTotals getTotals() {
+        public CcAccSum getTotals() {
             return totals;
         }
     }

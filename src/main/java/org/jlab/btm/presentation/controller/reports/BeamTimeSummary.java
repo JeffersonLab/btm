@@ -3,8 +3,9 @@ package org.jlab.btm.presentation.controller.reports;
 import org.jlab.btm.business.service.CcAccHourService;
 import org.jlab.btm.business.service.MonthlyScheduleService;
 import org.jlab.btm.business.service.PdShiftPlanService;
-import org.jlab.btm.persistence.projection.BeamSummaryTotals;
+import org.jlab.btm.persistence.projection.CcAccSum;
 import org.jlab.btm.persistence.projection.PacAccSum;
+import org.jlab.btm.persistence.projection.PdAccSum;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.util.TimeUtil;
 
@@ -20,7 +21,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -106,13 +106,11 @@ public class BeamTimeSummary extends HttpServlet {
 
         Double period = null;
         String selectionMessage = null;
-        BeamSummaryTotals totals = null;
+        CcAccSum ccSum = null;
         Double ccImplicitOffHours = 0d;
-        double ccProgramHours = 0d;
-        double ccOffHours = 0d;
-        Long[] accScheduledArray = null;
+        double ccOffTotalHours = 0d;
         PacAccSum pacSum = null;
-        long pdProgramSeconds = 0;
+        PdAccSum pdSum = null;
         double pdImplicitOffHours = 0;
         double pdOffTotalHours = 0;
 
@@ -123,24 +121,18 @@ public class BeamTimeSummary extends HttpServlet {
 
             period = (end.getTime() - start.getTime()) / 1000.0 / 60 / 60;
 
-            totals = accHourService.reportTotals(start, end);
+            ccSum = accHourService.reportTotals(start, end);
 
-            ccImplicitOffHours = period - (totals.getUpSeconds() + totals.getStudiesSeconds()
-                    + totals.getRestoreSeconds() + totals.getAccSeconds() + totals.getDownSeconds()
-                    + totals.getSadSeconds()) / 3600.0;
+            ccImplicitOffHours = period - (ccSum.getProgramSeconds()
+                    + ccSum.getSadSeconds()) / 3600.0;
 
-            ccProgramHours = (totals.getUpSeconds() + totals.getStudiesSeconds()
-                    + totals.getRestoreSeconds() + totals.getAccSeconds() + totals.getDownSeconds())
-                    / 3600.0;
+            ccOffTotalHours = (ccSum.getSadSeconds() / 3600.0) + ccImplicitOffHours;
 
-            ccOffHours = (totals.getSadSeconds() / 3600.0) + ccImplicitOffHours;
-
-            accScheduledArray = pdShiftService.findAcceleratorScheduled(start, end);
+            pdSum = pdShiftService.findAcceleratorScheduled(start, end);
 
             // Add up all but SAD
-            pdProgramSeconds = accScheduledArray[0] + accScheduledArray[1] + accScheduledArray[2] + accScheduledArray[4];
-            pdImplicitOffHours = period - (pdProgramSeconds + accScheduledArray[3]) / 3600.0;
-            pdOffTotalHours = (accScheduledArray[3] / 3600.0) + pdImplicitOffHours;
+            pdImplicitOffHours = period - (pdSum.getProgramSeconds() + pdSum.getOffSeconds()) / 3600.0;
+            pdOffTotalHours = (pdSum.getOffSeconds() / 3600.0) + pdImplicitOffHours;
 
             pacSum = pacService.sumAccDays(start, end);
 
@@ -151,12 +143,10 @@ public class BeamTimeSummary extends HttpServlet {
         request.setAttribute("end", end);
         request.setAttribute("selectionMessage", selectionMessage);
         request.setAttribute("period", period);
-        request.setAttribute("totals", totals);
-        request.setAttribute("unknownHours", ccImplicitOffHours);
-        request.setAttribute("programHours", ccProgramHours);
-        request.setAttribute("offHours", ccOffHours);
-        request.setAttribute("accScheduledArray", accScheduledArray);
-        request.setAttribute("pdProgramSeconds", pdProgramSeconds);
+        request.setAttribute("ccSum", ccSum);
+        request.setAttribute("ccImplicitOffHours", ccImplicitOffHours);
+        request.setAttribute("ccOffTotalHours", ccOffTotalHours);
+        request.setAttribute("pdSum", pdSum);
         request.setAttribute("pdImplicitOffHours", pdImplicitOffHours);
         request.setAttribute("pdOffTotalHours", pdOffTotalHours);
         request.setAttribute("pacSum", pacSum);

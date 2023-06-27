@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class ReviewDay {
     private Date day; // Hours, Minutes, Seconds ignored
-    private BeamSummaryTotals accTotal;
+    private CcAccSum accTotal;
     private DowntimeSummaryTotals downTotal;
     private boolean future;
 
@@ -30,11 +30,11 @@ public class ReviewDay {
         }
     }
 
-    public BeamSummaryTotals getAccTotal() {
+    public CcAccSum getAccTotal() {
         return accTotal;
     }
 
-    public void setAccTotal(BeamSummaryTotals accTotal) {
+    public void setAccTotal(CcAccSum accTotal) {
         this.accTotal = accTotal;
     }
 

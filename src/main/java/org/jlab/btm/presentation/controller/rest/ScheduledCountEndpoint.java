@@ -62,7 +62,7 @@ public class ScheduledCountEndpoint {
                     PacAccSum record = scheduleService.sumAccDays(start, end);
 
                     gen.writeStartObject()
-                            .write("count", record.pacProgram)
+                            .write("count", record.programDays)
                             .writeEnd();
                 }
             }
