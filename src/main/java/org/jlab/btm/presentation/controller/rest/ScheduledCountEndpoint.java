@@ -1,8 +1,7 @@
 package org.jlab.btm.presentation.controller.rest;
 
 import org.jlab.btm.business.service.MonthlyScheduleService;
-import org.jlab.btm.persistence.entity.MonthlySchedule;
-import org.jlab.btm.persistence.entity.ScheduleDay;
+import org.jlab.btm.persistence.projection.PacAccSum;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 
 import javax.json.Json;
@@ -18,7 +17,6 @@ import javax.ws.rs.core.StreamingOutput;
 import java.io.OutputStream;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author ryans
@@ -61,20 +59,10 @@ public class ScheduledCountEndpoint {
                         throw new JsonWebApplicationException(Response.Status.BAD_REQUEST, "start and end dates in ISO8601 format are required");
                     }
 
-                    List<MonthlySchedule> monthlySchedules = scheduleService.findMostRecentPublishedInDateRange(start, end);
-                    List<ScheduleDay> scheduleDays = scheduleService.filterScheduleDaysFromRange(monthlySchedules, start, end);
-
-                    long count = 0;
-
-                    for (ScheduleDay day : scheduleDays) {
-                        if(!"OFF".equals(day.getAccProgram()) ) {
-                                //&& !"UNKNOWN".equals(day.getAccProgram())) {
-                            count++;
-                        }
-                    }
+                    PacAccSum record = scheduleService.sumAccDays(start, end);
 
                     gen.writeStartObject()
-                            .write("count", count)
+                            .write("count", record.accProgram)
                             .writeEnd();
                 }
             }

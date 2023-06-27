@@ -3,6 +3,7 @@ package org.jlab.btm.business.service;
 import org.jlab.btm.business.util.DateRange;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
 import org.jlab.btm.persistence.entity.ScheduleDay;
+import org.jlab.btm.persistence.projection.PacAccSum;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.DateIterator;
 import org.jlab.smoothness.business.util.TimeUtil;
@@ -515,5 +516,37 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
             }
         }
         return bounds;
+    }
+
+    @PermitAll
+    public PacAccSum sumAccDays(Date start, Date end) {
+        PacAccSum record = new PacAccSum();
+
+        List<MonthlySchedule> monthlySchedules = this.findMostRecentPublishedInDateRange(start, end);
+        List<ScheduleDay> scheduleDays = this.filterScheduleDaysFromRange(monthlySchedules, start, end);
+
+
+        for (ScheduleDay day : scheduleDays) {
+            if (!"OFF".equals(day.getAccProgram())) {
+                record.accProgram++;
+
+                switch(day.getAccProgram()){
+                    case "RESTORE":
+                        record.restore++;
+                        break;
+                    case "STUDIES":
+                        record.studies++;
+                        break;
+                    case "ACC":
+                        record.acc++;
+                        break;
+                }
+
+            } else {
+                record.off++;  // May be implied off gaps that are missed so this number is explicit off only...
+            }
+        }
+
+        return record;
     }
 }

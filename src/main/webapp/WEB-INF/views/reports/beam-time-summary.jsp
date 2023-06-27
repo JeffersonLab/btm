@@ -77,6 +77,7 @@
                                     <th title="Actual Hours">Hrs</th>
                                     <th title="Percent of total hours">%</th>
                                     <th title="PD Scheduled Hours">PD Sched. Hrs</th>
+                                    <th title="PAC Scheduled Hours">PAC Sched. Hrs</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -91,6 +92,8 @@
                                     </td>
                                     <td><fmt:formatNumber value="${accScheduledArray[4] / 3600}"
                                                           pattern="#,##0.0"/></td>
+                                    <td><fmt:formatNumber value="${pacSum.physics * 24}"
+                                                          pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
                                     <th>
@@ -103,6 +106,8 @@
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td><fmt:formatNumber value="${accScheduledArray[0] / 3600}"
+                                                          pattern="#,##0.0"/></td>
+                                    <td><fmt:formatNumber value="${pacSum.studies * 24}"
                                                           pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
@@ -117,6 +122,8 @@
                                     </td>
                                     <td><fmt:formatNumber value="${accScheduledArray[1] / 3600}"
                                                           pattern="#,##0.0"/></td>
+                                    <td><fmt:formatNumber value="${pacSum.restore * 24}"
+                                                          pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
                                     <th>
@@ -128,6 +135,8 @@
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td><fmt:formatNumber value="${accScheduledArray[2] / 3600}"
+                                                          pattern="#,##0.0"/></td>
+                                    <td><fmt:formatNumber value="${pacSum.acc * 24}"
                                                           pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
@@ -142,6 +151,7 @@
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td>-</td>
+                                    <td>-</td>
                                 </tr>
                                 <tr class="program-row">
                                     <th colspan="2">Program Time:</th>
@@ -149,7 +159,8 @@
                                     <td>(<fmt:formatNumber value="${programHours / period * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
-                                    <td>-</td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                                 <tr class="data-row">
                                     <th>
@@ -162,6 +173,8 @@
                                     </td>
                                     <td><fmt:formatNumber value="${accScheduledArray[3] / 3600}"
                                                           pattern="#,##0.0"/></td>
+                                    <td><fmt:formatNumber value="${pacSum.off * 24}"
+                                                          pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
                                     <th>
@@ -173,13 +186,14 @@
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td>-</td>
+                                    <td>-</td>
                                 </tr>
                                 <tr class="off-row">
                                     <th colspan="2">Off Time:</th>
                                     <td><fmt:formatNumber value="${offHours}" pattern="#,##0.0"/></td>
                                     <td>(<fmt:formatNumber value="${offHours / period * 100}" pattern="#,##0.0"/>%)</td>
-                                    <td><fmt:formatNumber value="${accScheduledArray[3] / 3600}"
-                                                          pattern="#,##0.0"/></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                                 </tbody>
                             </table>

@@ -1,8 +1,10 @@
 package org.jlab.btm.presentation.controller.reports;
 
 import org.jlab.btm.business.service.CcAccHourService;
+import org.jlab.btm.business.service.MonthlyScheduleService;
 import org.jlab.btm.business.service.PdShiftPlanService;
 import org.jlab.btm.persistence.projection.BeamSummaryTotals;
+import org.jlab.btm.persistence.projection.PacAccSum;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.util.TimeUtil;
 
@@ -31,6 +33,8 @@ public class BeamTimeSummary extends HttpServlet {
     CcAccHourService accHourService;
     @EJB
     PdShiftPlanService pdShiftService;
+    @EJB
+    MonthlyScheduleService pacService;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -106,6 +110,7 @@ public class BeamTimeSummary extends HttpServlet {
         double programHours = 0d;
         double offHours = 0d;
         Long[] accScheduledArray = null;
+        PacAccSum pacSum = null;
 
         if (start != null && end != null) {
             if (start.after(end)) {
@@ -128,6 +133,8 @@ public class BeamTimeSummary extends HttpServlet {
 
             accScheduledArray = pdShiftService.findAcceleratorScheduled(start, end);
 
+            pacSum = pacService.sumAccDays(start, end);
+
             selectionMessage = TimeUtil.formatSmartRangeSeparateTime(start, end);
         }
 
@@ -140,6 +147,7 @@ public class BeamTimeSummary extends HttpServlet {
         request.setAttribute("programHours", programHours);
         request.setAttribute("offHours", offHours);
         request.setAttribute("accScheduledArray", accScheduledArray);
+        request.setAttribute("pacSum", pacSum);
 
         request.getRequestDispatcher("/WEB-INF/views/reports/beam-time-summary.jsp").forward(request,
                 response);

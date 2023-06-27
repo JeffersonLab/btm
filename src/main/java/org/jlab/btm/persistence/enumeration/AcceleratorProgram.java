@@ -5,7 +5,6 @@ package org.jlab.btm.persistence.enumeration;
  */
 public enum AcceleratorProgram {
     PHYSICS,
-    FACDEV,
     STUDIES,
     RESTORE,
     ACC,
