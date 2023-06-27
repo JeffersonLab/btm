@@ -85,10 +85,10 @@ public class PdShiftPlanService extends AbstractService<PdShiftPlan> {
 
     @PermitAll
     public Long[] findAcceleratorScheduled(Date start, Date end) {
-        Long[] values = new Long[4];
+        Long[] values = new Long[5];
 
         Query q = em.createNativeQuery(
-                "select sum(studies_seconds), sum(restore_seconds), sum(acc_seconds), sum(sad_seconds) from pd_shift_plan where start_day_and_hour < :end and start_day_and_hour  >= :start");
+                "select sum(studies_seconds), sum(restore_seconds), sum(acc_seconds), sum(sad_seconds), sum(physics_seconds) from pd_shift_plan where start_day_and_hour < :end and start_day_and_hour  >= :start");
 
         q.setParameter("start", start);
         q.setParameter("end", end);
@@ -97,7 +97,7 @@ public class PdShiftPlanService extends AbstractService<PdShiftPlan> {
 
         if (resultList != null && resultList.size() == 1) {
             Object[] row = (Object[]) resultList.get(0);
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 5; i++) {
                 Object item = row[i];
                 Number n = (Number) item;
                 values[i] = n == null ? 0 : n.longValue();

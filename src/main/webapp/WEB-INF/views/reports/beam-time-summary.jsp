@@ -89,7 +89,8 @@
                                     <td>(<fmt:formatNumber value="${(totals.upSeconds / 3600) / period * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
-                                    <td>-</td>
+                                    <td><fmt:formatNumber value="${accScheduledArray[4] / 3600}"
+                                                          pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
                                     <th>
