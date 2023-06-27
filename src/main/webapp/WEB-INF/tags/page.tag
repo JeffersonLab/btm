@@ -29,6 +29,9 @@
                         <li${'/programs' eq currentPath ? ' class="current-primary"' : ''}>
                             <a href="${pageContext.request.contextPath}/programs">Programs</a>
                         </li>
+                        <li${'/metrics' eq currentPath ? ' class="current-primary"' : ''}>
+                            <a href="${pageContext.request.contextPath}/metrics">Metrics</a>
+                        </li>
                         <li${fn:startsWith(currentPath, '/reports') ? ' class="current-primary"' : ''}>
                             <a href="${pageContext.request.contextPath}/reports/beam-time-summary">Reports</a>
                         </li>
