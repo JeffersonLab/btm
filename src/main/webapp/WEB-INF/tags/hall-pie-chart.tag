@@ -57,7 +57,7 @@
                 <th>
                     <div class="color-box"></div>
                 </th>
-                <th class="legend-label">Unknown</th>
+                <th class="legend-label">Implicit OFF</th>
                 <td><fmt:formatNumber value="${unknown}" pattern="#,##0.0"/></td>
                 <td>(<fmt:formatNumber value="${unknown / period * 100}" pattern="#,##0.0"/>%)</td>
             </tr>

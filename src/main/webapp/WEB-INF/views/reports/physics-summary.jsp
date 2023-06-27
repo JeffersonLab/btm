@@ -150,7 +150,7 @@
                                         <tr>
                                             <th rowspan="2">Hall</th>
                                             <th colspan="6">Experimenter</th>
-                                            <th colspan="6">Operations</th>
+                                            <th colspan="6">Crew Chief</th>
                                             <th>Program Deputy</th>
                                         </tr>
                                         <tr>
@@ -159,13 +159,13 @@
                                             <th>BNA</th>
                                             <th>ACC</th>
                                             <th>OFF</th>
-                                            <th>UNKNOWN</th>
+                                            <th>Implicit OFF</th>
                                             <th>UP</th>
                                             <th>TUNE</th>
                                             <th>BNR</th>
                                             <th>DOWN</th>
                                             <th>OFF</th>
-                                            <th>UNKNOWN</th>
+                                            <th>Implicit OFF</th>
                                             <th>Scheduled</th>
                                         </tr>
                                         </thead>

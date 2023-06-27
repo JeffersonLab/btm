@@ -19,12 +19,12 @@
                 <th rowspan="2"></th>
                 <th rowspan="2"
                     title="Machine program intention is to deliver beam to at least one experimental hall (even if down - choose physics down)">
-                    PHYSICS MODE
+                    PHYSICS
                 </th>
-                <th colspan="4">INTERNAL MODE</th>
+                <th colspan="4">INTERNAL</th>
                 <th rowspan="2"
                     title="Machine is scheduled to be off for holiday, maintenance, or budget restrictions (Scheduled Accelerator Down)">
-                    SAD MODE (OFF)
+                    OFF (SAD)
                 </th>
             </tr>
             <tr>

@@ -31,20 +31,20 @@
                         <table class="data-table stripped-table">
                             <thead>
                             <tr>
-                                <th colspan="2">Name/Mode</th>
+                                <th colspan="2">Name</th>
                                 <th>Description</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td colspan="2">PHYSICS MODE</td>
+                                <td colspan="2">PHYSICS</td>
                                 <td>Machine is provided to the Physics division with the goal of delivering beam to at
                                     least one experimental hall (even if down - choose Physics, then Physics Down for
                                     hall)
                                 </td>
                             </tr>
                             <tr>
-                                <td rowspan="4">INTERNAL MODE</td>
+                                <td rowspan="4">INTERNAL</td>
                                 <td>Studies</td>
                                 <td>Machine is being studied/tested/developed</td>
                             </tr>
@@ -68,10 +68,15 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2">SAD MODE (OFF)</td>
+                                <td rowspan="2">OFF</td>
+                                <td>SAD</td>
                                 <td>Machine is scheduled to be off for holiday, maintenance, or budget restrictions
-                                    (Scheduled Accelerator Down)
+                                    (Scheduled Accelerator Down).
                                 </td>
+                            </tr>
+                            <tr>
+                                <td>Implicit Off</td>
+                                <td>Nothing was recorded.   This is only used in reports to fill in gaps when no timekeeper is staffing the control room as otherwise OFF should be specified explicitly with SAD by timekeepers and schedulers.</td>
                             </tr>
                             </tbody>
                         </table>
