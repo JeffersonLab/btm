@@ -164,7 +164,7 @@
                                     <td>(<fmt:formatNumber value="${(ccSum.programSeconds / 3600) / period * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
-                                    <td><fmt:formatNumber value="${pdProgramSeconds / 3600}"
+                                    <td><fmt:formatNumber value="${pdSum.programSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
                                     <td><fmt:formatNumber value="${pacSum.programDays * 24}"
                                                           pattern="#,##0.0"/></td>
