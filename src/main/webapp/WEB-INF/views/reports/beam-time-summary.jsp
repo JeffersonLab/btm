@@ -21,6 +21,10 @@
             .chart-legend tbody tr, .chart-legend tbody th, .chart-legend tbody td {
                 border-bottom: none;
             }
+            .sched-info {
+                font-size: 0.8em;
+                margin-bottom: 2em;
+            }
         </style>
     </jsp:attribute>
     <jsp:attribute name="scripts">
@@ -56,6 +60,7 @@
                     <fieldset>
                         <legend>Time</legend>
                         <s:date-range datetime="${true}" sevenAmOffset="${true}"/>
+                        <div class="sched-info">PD Sched. only accurate on shift boundaries (7:00, 15:00, 23:00).  PAC Sched queried by truncating date range to day boundaries (midnight).</div>
                     </fieldset>
                     <input id="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
