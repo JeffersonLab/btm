@@ -128,7 +128,7 @@
                                         </tr>
                                         <tr>
                                             <th>PD Scheduled</th>
-                                            <th>Actual Program Time (T)</th>
+                                            <th>Experimenter Program Time (T)</th>
                                             <th>Accelerator Availability (AA)</th>
                                             <th>Experiment Availability (EA)</th>
                                             <th>Simultaneous Availability (SA)</th>
