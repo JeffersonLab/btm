@@ -20,6 +20,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -111,6 +112,7 @@ public class BeamTimeSummary extends HttpServlet {
         double offHours = 0d;
         Long[] accScheduledArray = null;
         PacAccSum pacSum = null;
+        long pdProgramTotal = 0;
 
         if (start != null && end != null) {
             if (start.after(end)) {
@@ -133,6 +135,9 @@ public class BeamTimeSummary extends HttpServlet {
 
             accScheduledArray = pdShiftService.findAcceleratorScheduled(start, end);
 
+            // Add up all but SAD
+            pdProgramTotal = accScheduledArray[0] + accScheduledArray[1] + accScheduledArray[2] + accScheduledArray[4];
+
             pacSum = pacService.sumAccDays(start, end);
 
             selectionMessage = TimeUtil.formatSmartRangeSeparateTime(start, end);
@@ -147,6 +152,7 @@ public class BeamTimeSummary extends HttpServlet {
         request.setAttribute("programHours", programHours);
         request.setAttribute("offHours", offHours);
         request.setAttribute("accScheduledArray", accScheduledArray);
+        request.setAttribute("pdProgramTotal", pdProgramTotal);
         request.setAttribute("pacSum", pacSum);
 
         request.getRequestDispatcher("/WEB-INF/views/reports/beam-time-summary.jsp").forward(request,

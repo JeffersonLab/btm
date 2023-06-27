@@ -7,19 +7,19 @@ package org.jlab.btm.persistence.projection;
  * allowance (perhaps covered by double schedule slop factor).
  */
 public class PacAccSum {
-    public int accProgram = 0; // Anything but OFF or implied OFF
+    public int pacProgram = 0; // Anything but OFF or implied OFF
     public int restore = 0;
     public int physics = 0;
     public int studies = 0;
     public int acc = 0;
     public int off = 0;
 
-    public int getAccProgram() {
-        return accProgram;
+    public int getPacProgram() {
+        return pacProgram;
     }
 
-    public void setAccProgram(int accProgram) {
-        this.accProgram = accProgram;
+    public void setPacProgram(int pacProgram) {
+        this.pacProgram = pacProgram;
     }
 
     public int getRestore() {

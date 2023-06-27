@@ -17,10 +17,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.math.BigInteger;
 import java.time.Duration;
-import java.time.Month;
-import java.time.temporal.TemporalUnit;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -528,9 +525,12 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
 
         for (ScheduleDay day : scheduleDays) {
             if (!"OFF".equals(day.getAccProgram())) {
-                record.accProgram++;
+                record.pacProgram++;
 
-                switch(day.getAccProgram()){
+                switch(day.getAccProgram()) {
+                    case "PHYSICS":
+                        record.physics++;
+                        break;
                     case "RESTORE":
                         record.restore++;
                         break;

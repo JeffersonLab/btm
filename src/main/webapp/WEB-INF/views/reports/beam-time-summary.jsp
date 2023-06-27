@@ -79,8 +79,8 @@
                                 <tr>
                                     <th></th>
                                     <th></th>
-                                    <th title="Actual Hours">Hrs</th>
-                                    <th title="Percent of total hours">%</th>
+                                    <th title="Actual Hours">CC Hrs</th>
+                                    <th title="Percent of total hours">CC %</th>
                                     <th title="PD Scheduled Hours">PD Sched. Hrs</th>
                                     <th title="PAC Scheduled Hours">PAC Sched. Hrs</th>
                                 </tr>
@@ -164,8 +164,10 @@
                                     <td>(<fmt:formatNumber value="${programHours / period * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
-                                    <td></td>
-                                    <td></td>
+                                    <td><fmt:formatNumber value="${pdProgramTotal / 3600}"
+                                                          pattern="#,##0.0"/></td>
+                                    <td><fmt:formatNumber value="${pacSum.pacProgram * 24}"
+                                                          pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
                                     <th>
