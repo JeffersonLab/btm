@@ -103,8 +103,8 @@
                             <tr>
                                 <td>Down Hard</td>
                                 <td>An FSD, component failure, or excessive tuning, affecting the entire machine (unlike a hall specific failure).
-                                    All halls which are not scheduled off should be recording hall-specific physics down during down hard. Down Hard applies to both
-                                    PHYSICS and INTERNAL programs. If running an Internal program then Internal Down should be recorded
+                                    All halls which are not scheduled off should be recording hall-specific Physics Down during Down Hard. Down Hard applies to both
+                                    Physics and Internal programs, and if running an Internal program then Internal Down should be recorded
                                     during Down Hard. BTM Down Hard correlates with DTM accelerator event downtime.
                                     Down Hard generally starts counting on an FSD trip.</td>
                             </tr>
