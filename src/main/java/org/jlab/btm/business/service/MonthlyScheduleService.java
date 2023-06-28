@@ -1,5 +1,6 @@
 package org.jlab.btm.business.service;
 
+import org.jlab.btm.business.util.BtmTimeUtil;
 import org.jlab.btm.business.util.DateRange;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
 import org.jlab.btm.persistence.entity.ScheduleDay;
@@ -516,8 +517,15 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
     }
 
     @PermitAll
-    public PacAccSum sumAccDays(Date start, Date end) {
+    public PacAccSum findSummary(Date start, Date end) {
+
+        // PAC schedule lines up with whole days
+        start = TimeUtil.startOfDay(start, Calendar.getInstance());
+        end = BtmTimeUtil.isStartOfDay(end) ? end : TimeUtil.startOfNextDay(end, Calendar.getInstance());
+
         PacAccSum record = new PacAccSum();
+
+        record.setRange(start, end);
 
         List<MonthlySchedule> monthlySchedules = this.findMostRecentPublishedInDateRange(start, end);
         List<ScheduleDay> scheduleDays = this.filterScheduleDaysFromRange(monthlySchedules, start, end);

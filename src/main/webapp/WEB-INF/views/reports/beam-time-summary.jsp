@@ -271,15 +271,15 @@
                                     <td>(<fmt:formatNumber value="${ccSum.implicitOffHours / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
-                                    <td><fmt:formatNumber value="${pdImplicitOffHours}" pattern="#,##0.0"/></td>
-                                    <td><fmt:formatNumber value="${pacImplicitOffHours}" pattern="#,##0.0"/></td>
+                                    <td><fmt:formatNumber value="${pdSum.implicitOffHours}" pattern="#,##0.0"/></td>
+                                    <td><fmt:formatNumber value="${pacSum.implicitOffHours}" pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="off-row">
                                     <th colspan="2">Off Time:</th>
                                     <td><fmt:formatNumber value="${ccSum.totalOffHours}" pattern="#,##0.0"/></td>
                                     <td>(<fmt:formatNumber value="${ccSum.totalOffHours / ccSum.periodHours * 100}" pattern="#,##0.0"/>%)</td>
-                                    <td><fmt:formatNumber value="${pdOffTotalHours}" pattern="#,##0.0"/></td>
-                                    <td><fmt:formatNumber value="${pacOffTotalHours}" pattern="#,##0.0"/></td>
+                                    <td><fmt:formatNumber value="${pdSum.totalOffHours}" pattern="#,##0.0"/></td>
+                                    <td><fmt:formatNumber value="${pacSum.totalOffHours}" pattern="#,##0.0"/></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -301,30 +301,30 @@
                         <ul class="key-value-list">
                             <li>
                                 <div class="li-key">Start</div>
-                                <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pdStart}"/></div>
+                                <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pdSum.start}"/></div>
                             </li>
                             <li>
                                 <div class="li-key">End</div>
-                                <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pdEnd}"/></div>
+                                <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pdSum.end}"/></div>
                             </li>
                             <li>
                                 <div class="li-key">Period (Hours)</div>
-                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${pdPeriod}"/></div>
+                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${pdSum.periodHours}"/></div>
                             </li>
                         </ul>
                         <span>PAC</span>
                         <ul class="key-value-list">
                             <li>
                                 <div class="li-key">Start</div>
-                                <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pacStart}"/></div>
+                                <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pacSum.start}"/></div>
                             </li>
                             <li>
                                 <div class="li-key">End</div>
-                                <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pacEnd}"/></div>
+                                <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pacSum.end}"/></div>
                             </li>
                             <li>
                                 <div class="li-key">Period (Hours)</div>
-                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${pacPeriod}"/></div>
+                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${pacSum.periodHours}"/></div>
                             </li>
                         </ul>
                         <span>CC</span>

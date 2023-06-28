@@ -106,7 +106,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
     }
 
     @PermitAll
-    public CcAccSum reportTotals(Date start, Date end) {
+    public CcAccSum findSummary(Date start, Date end) {
         Query q = em.createNativeQuery(
                 "select :start0, :end0, sum(up_seconds), sum(sad_seconds), sum(down_seconds), sum(studies_seconds), sum(restore_seconds), sum(acc_seconds) "
                         + "from ("
@@ -425,7 +425,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
             Date realStart = (startDayHourZero.getTime() == day.getTime()) ? start : startOfDay;
             Date realEnd = iterator.hasNext() ? startOfNextDay : end;
 
-            CcAccSum totals = this.reportTotals(realStart, realEnd);
+            CcAccSum totals = this.findSummary(realStart, realEnd);
             DayTotals mt = new DayTotals();
             mt.day = startOfDay;
             mt.totals = totals;
@@ -460,7 +460,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
             Date realStart = (startMonthDayOne.getTime() == month.getTime()) ? start : startOfMonth;
             Date realEnd = iterator.hasNext() ? startOfNextMonth : end;
 
-            CcAccSum totals = this.reportTotals(realStart, realEnd);
+            CcAccSum totals = this.findSummary(realStart, realEnd);
             MonthTotals mt = new MonthTotals();
             mt.month = startOfMonth;
             mt.totals = totals;

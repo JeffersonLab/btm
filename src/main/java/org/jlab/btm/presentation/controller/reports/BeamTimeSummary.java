@@ -32,9 +32,9 @@ import java.util.Date;
 public class BeamTimeSummary extends HttpServlet {
 
     @EJB
-    CcAccHourService accHourService;
+    CcAccHourService ccService;
     @EJB
-    PdShiftPlanService pdShiftService;
+    PdShiftPlanService pdService;
     @EJB
     MonthlyScheduleService pacService;
 
@@ -105,65 +105,29 @@ public class BeamTimeSummary extends HttpServlet {
         session.setAttribute("start", start);
         session.setAttribute("end", end);
 
-        Date pdStart = null;
-        Date pdEnd = null;
-        Date pacStart = null;
-        Date pacEnd = null;
-        Double pdPeriod = null;
-        Double pacPeriod = null;
         String selectionMessage = null;
         CcAccSum ccSum = null;
         PacAccSum pacSum = null;
         PdAccSum pdSum = null;
-        double pdImplicitOffHours = 0;
-        double pdOffTotalHours = 0;
-        double pacImplicitOffHours = 0;
-        double pacOffTotalHours = 0;
 
         if (start != null && end != null) {
             if (start.after(end)) {
                 throw new ServletException("start date cannot be after end date");
             }
 
-            // PD Shift Plans line up with CC Shifts
-            pdStart = TimeUtil.getCcShiftStart(start);
-            pdEnd = TimeUtil.isCrewChiefShiftStart(end) ? end : TimeUtil.getCcShiftEnd(end);
-            pdPeriod = (pdEnd.getTime() - pdStart.getTime()) / 1000.0 / 60 / 60;
-
-            // PAC schedule line up with whole days
-            pacStart = TimeUtil.startOfDay(start, Calendar.getInstance());
-            pacEnd = BtmTimeUtil.isStartOfDay(end) ? end : TimeUtil.startOfNextDay(end, Calendar.getInstance());
-            pacPeriod = (pacEnd.getTime() - pacStart.getTime()) / 1000.0 / 60 / 60;
-
-            ccSum = accHourService.reportTotals(start, end);
-
-            pdSum = pdShiftService.findAcceleratorScheduled(pdStart, pdEnd);
-            pdImplicitOffHours = pdPeriod - (pdSum.getProgramSeconds() + pdSum.getOffSeconds()) / 3600.0;
-            pdOffTotalHours = (pdSum.getOffSeconds() / 3600.0) + pdImplicitOffHours;
-
-            pacSum = pacService.sumAccDays(pacStart, pacEnd);
-            pacImplicitOffHours = pacPeriod - (pacSum.getProgramDays() + pacSum.getOffDays()) * 24;
-            pacOffTotalHours = (pacSum.getOffDays() * 24) + pacImplicitOffHours;
+            ccSum = ccService.findSummary(start, end);
+            pdSum = pdService.findSummary(start, end);
+            pacSum = pacService.findSummary(start, end);
 
             selectionMessage = TimeUtil.formatSmartRangeSeparateTime(start, end);
         }
 
         request.setAttribute("start", start);
         request.setAttribute("end", end);
-        request.setAttribute("pdStart", pdStart);
-        request.setAttribute("pdEnd", pdEnd);
-        request.setAttribute("pacStart", pacStart);
-        request.setAttribute("pacEnd", pacEnd);
         request.setAttribute("selectionMessage", selectionMessage);
-        request.setAttribute("pdPeriod", pdPeriod);
-        request.setAttribute("pacPeriod", pacPeriod);
         request.setAttribute("ccSum", ccSum);
         request.setAttribute("pdSum", pdSum);
-        request.setAttribute("pdImplicitOffHours", pdImplicitOffHours);
-        request.setAttribute("pdOffTotalHours", pdOffTotalHours);
         request.setAttribute("pacSum", pacSum);
-        request.setAttribute("pacImplicitOffHours", pacImplicitOffHours);
-        request.setAttribute("pacOffTotalHours", pacOffTotalHours);
 
         request.getRequestDispatcher("/WEB-INF/views/reports/beam-time-summary.jsp").forward(request,
                 response);

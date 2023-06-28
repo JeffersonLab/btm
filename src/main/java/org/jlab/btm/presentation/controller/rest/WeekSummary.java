@@ -98,12 +98,12 @@ public class WeekSummary {
 
                     Long[] hallScheduledArray = pdShiftService.findScheduledHallTime(ccStart, ccEnd);
 
-                    PdAccSum pdSum = pdShiftService.findAcceleratorScheduled(ccStart, ccEnd);
+                    PdAccSum pdSum = pdShiftService.findSummary(ccStart, ccEnd);
 
                     List<ExpHourTotals> expHourTotals
                             = expHourService.findExpHallHourTotals(ccStart, ccEnd);
 
-                    CcAccSum accTotals = ccAccHourService.reportTotals(ccStart, ccEnd);
+                    CcAccSum accTotals = ccAccHourService.findSummary(ccStart, ccEnd);
 
                     Map<Hall, Long> hallScheduledMap = new HashMap<>();
 

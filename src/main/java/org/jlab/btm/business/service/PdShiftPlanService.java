@@ -2,6 +2,7 @@ package org.jlab.btm.business.service;
 
 import org.jlab.btm.persistence.entity.PdShiftPlan;
 import org.jlab.btm.persistence.projection.PdAccSum;
+import org.jlab.smoothness.business.util.TimeUtil;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
@@ -85,8 +86,12 @@ public class PdShiftPlanService extends AbstractService<PdShiftPlan> {
     }
 
     @PermitAll
-    public PdAccSum findAcceleratorScheduled(Date start, Date end) {
+    public PdAccSum findSummary(Date start, Date end) {
         Long[] values = new Long[5];
+
+        // PD Shift Plans line up with CC Shifts
+        start = TimeUtil.getCcShiftStart(start);
+        end = TimeUtil.isCrewChiefShiftStart(end) ? end : TimeUtil.getCcShiftEnd(end);
 
         Query q = em.createNativeQuery(
                 "select sum(physics_seconds), sum(sad_seconds), sum(studies_seconds), sum(restore_seconds), sum(acc_seconds) from pd_shift_plan where start_day_and_hour < :end and start_day_and_hour  >= :start");
@@ -105,6 +110,6 @@ public class PdShiftPlanService extends AbstractService<PdShiftPlan> {
             }
         }
 
-        return new PdAccSum(values[0], values[1], values[2], values[3], values[4]);
+        return new PdAccSum(start, end, values[0], values[1], values[2], values[3], values[4]);
     }
 }

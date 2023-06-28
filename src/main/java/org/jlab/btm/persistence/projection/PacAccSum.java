@@ -1,5 +1,7 @@
 package org.jlab.btm.persistence.projection;
 
+import java.util.Date;
+
 /**
  * A Sum of PAC schedule accelerator program days.
  *
@@ -14,6 +16,11 @@ public class PacAccSum {
     public int accDays = 0;
     public int offDays = 0;
 
+    private Date start;
+    private Date end;
+    private double periodHours;
+    private double implicitOffHours;
+    private double totalOffHours;
     public int getProgramDays() {
         return programDays;
     }
@@ -60,5 +67,35 @@ public class PacAccSum {
 
     public void setOffDays(int offDays) {
         this.offDays = offDays;
+    }
+
+    public void setRange(Date start, Date end) {
+        this.start = start;
+        this.end = end;
+
+        this.periodHours = (end.getTime() - start.getTime()) / 1000.0 / 60 / 60;
+
+        this.implicitOffHours = this.periodHours - (this.programDays + this.offDays) * 24;
+        this.totalOffHours = (this.offDays * 24) + this.implicitOffHours;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public double getPeriodHours() {
+        return periodHours;
+    }
+
+    public double getImplicitOffHours() {
+        return implicitOffHours;
+    }
+
+    public double getTotalOffHours() {
+        return totalOffHours;
     }
 }

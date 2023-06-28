@@ -59,7 +59,7 @@ public class ScheduledCountEndpoint {
                         throw new JsonWebApplicationException(Response.Status.BAD_REQUEST, "start and end dates in ISO8601 format are required");
                     }
 
-                    PacAccSum record = scheduleService.sumAccDays(start, end);
+                    PacAccSum record = scheduleService.findSummary(start, end);
 
                     gen.writeStartObject()
                             .write("count", record.programDays)
