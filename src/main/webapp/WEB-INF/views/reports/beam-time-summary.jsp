@@ -25,6 +25,71 @@
                 font-size: 0.8em;
                 margin-bottom: 2em;
             }
+            .flyout-panel {
+                border: 1px solid black;
+                width: 500px;
+                height: 250px;
+                position: absolute;
+                right: -548px;
+                top: -155px;
+                z-index: 2;
+                background-color: white;
+                border-radius: 0.5em;
+                box-shadow: 0.5em 0.5em 0.5em #979797;
+                padding: 16px;
+                font-size: 16px;
+
+                text-align: left;
+            }
+            #flyouts {
+                display: none;
+            }
+            .definition-flyout-handle {
+                position: relative;
+            }
+            .flyout-panel:after {
+                content: '';
+                width: 0;
+                height: 0;
+                border-top: 20px solid transparent;
+                border-bottom: 20px solid transparent;
+                border-right: 20px solid white;
+                top: 50%;
+                margin-top: -20px;
+                position: absolute;
+                left: -20px;
+            }
+            .flyout-panel:before {
+                content: '';
+                width: 0;
+                height: 0;
+                border-top: 21px solid transparent;
+                border-bottom: 21px solid transparent;
+                border-right: 21px solid black;
+                top: 50%;
+                margin-top: -21px;
+                position: absolute;
+                left: -21px;
+            }
+            .close-bubble {
+                float: right;
+                min-width: inherit;
+            }
+            .definition-bubble-title {
+                margin-bottom: 1em;
+            }
+            .definition-bubble-body {
+                font-weight: normal;
+                height: 200px;
+                overflow: auto;
+            }
+            .flyout-parent {
+                display: inline-block;
+                width: 20px;
+            }
+            .fullscreen .flyout-parent {
+                display: none;
+            }
         </style>
     </jsp:attribute>
     <jsp:attribute name="scripts">
@@ -42,6 +107,19 @@
         </c:choose>
         <script type="text/javascript"
                 src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/beam-time-summary.js"></script>
+        <script type="text/javascript">
+            $(document).on("click", ".flyout-link", function () {
+                $(".definition-flyout-handle").remove();
+                var flyout = $("." + $(this).attr("data-flyout-type") + " .flyout-panel").clone();
+                $(this).parent().append('<div class="definition-flyout-handle"></div>');
+                $(".definition-flyout-handle").append(flyout);
+                return false;
+            });
+            $(document).on("click", ".close-bubble", function () {
+                $(".definition-flyout-handle").remove();
+                return false;
+            });
+        </script>
     </jsp:attribute>
     <jsp:body>
         <section>
@@ -60,7 +138,7 @@
                     <fieldset>
                         <legend>Time</legend>
                         <s:date-range datetime="${true}" sevenAmOffset="${true}"/>
-                        <div class="sched-info">PD Sched. only accurate on shift boundaries (7:00, 15:00, 23:00).  PAC Sched queried by truncating date range to day boundaries (midnight).</div>
+                        <div class="sched-info">Schedule granularities differ.  The PD Schedule is queried by adjusting the date range to shift boundaries (7:00, 15:00, 23:00).  The PAC Schedule is queried by adjusting the date range to day boundaries (midnight).  Select start and end dates within SADs to avoid boundary concerns.</div>
                     </fieldset>
                     <input id="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
@@ -71,7 +149,7 @@
                     <div class="message-box">Select a start date and end date to continue</div>
                 </c:when>
                 <c:otherwise>
-                    <div class="message-box"><c:out value="${selectionMessage}"/></div>
+                    <div class="message-box"><c:out value="${selectionMessage}"/><div class="flyout-parent"><a class="flyout-link" data-flyout-type="sched-flyout" href="#">*</a></div></div>
                     <c:if test="${period > 0}">
                         <s:chart-widget>
                             <table class="chart-legend">
@@ -211,6 +289,62 @@
         </section>
         <div id="exit-fullscreen-panel">
             <button id="exit-fullscreen-button">Exit Full Screen</button>
+        </div>
+        <div id="flyouts">
+            <div class="sched-flyout">
+                <div class="flyout-panel">
+                    <button class="close-bubble">X</button>
+                    <div class="definition-bubble-title">Range and Period</div>
+                    <div class="definition-bubble-body">
+                        <span>PD</span>
+                        <ul class="key-value-list">
+                            <li>
+                                <div class="li-key">Start</div>
+                                <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pdStart}"/></div>
+                            </li>
+                            <li>
+                                <div class="li-key">End</div>
+                                <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pdEnd}"/></div>
+                            </li>
+                            <li>
+                                <div class="li-key">Period (Hours)</div>
+                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${pdPeriod}"/></div>
+                            </li>
+                        </ul>
+                        <span>PAC</span>
+                        <ul class="key-value-list">
+                            <li>
+                                <div class="li-key">Start</div>
+                                <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pacStart}"/></div>
+                            </li>
+                            <li>
+                                <div class="li-key">End</div>
+                                <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pacEnd}"/></div>
+                            </li>
+                            <li>
+                                <div class="li-key">Period (Hours)</div>
+                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${pacPeriod}"/></div>
+                            </li>
+                        </ul>
+                        <span>CC</span>
+                        <ul class="key-value-list">
+                            <li>
+                                <div class="li-key">Start</div>
+                                <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${start}"/></div>
+                            </li>
+                            <li>
+                                <div class="li-key">End</div>
+                                <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${end}"/></div>
+                            </li>
+                            <li>
+                                <div class="li-key">Period (Hours)</div>
+                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${period}"/></div>
+                            </li>
+                        </ul>
+                        <p><b>Note</b>: Start times are inclusive and End times are exclusive.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </jsp:body>
 </t:report-page>

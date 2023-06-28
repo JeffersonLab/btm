@@ -3,6 +3,7 @@ package org.jlab.btm.presentation.controller.reports;
 import org.jlab.btm.business.service.CcAccHourService;
 import org.jlab.btm.business.service.MonthlyScheduleService;
 import org.jlab.btm.business.service.PdShiftPlanService;
+import org.jlab.btm.business.util.BtmTimeUtil;
 import org.jlab.btm.persistence.projection.CcAccSum;
 import org.jlab.btm.persistence.projection.PacAccSum;
 import org.jlab.btm.persistence.projection.PdAccSum;
@@ -104,6 +105,10 @@ public class BeamTimeSummary extends HttpServlet {
         session.setAttribute("start", start);
         session.setAttribute("end", end);
 
+        Date pdStart = null;
+        Date pdEnd = null;
+        Date pacStart = null;
+        Date pacEnd = null;
         Double period = null;
         Double pdPeriod = null;
         Double pacPeriod = null;
@@ -126,24 +131,24 @@ public class BeamTimeSummary extends HttpServlet {
             period = (end.getTime() - start.getTime()) / 1000.0 / 60 / 60;
 
             // PD Shift Plans line up with CC Shifts
-            Date pdStart = TimeUtil.getCcShiftStart(start);
-            Date pdEnd = TimeUtil.getCcShiftEnd(end);
+            pdStart = TimeUtil.getCcShiftStart(start);
+            pdEnd = TimeUtil.isCrewChiefShiftStart(end) ? end : TimeUtil.getCcShiftEnd(end);
             pdPeriod = (pdEnd.getTime() - pdStart.getTime()) / 1000.0 / 60 / 60;
 
             // PAC schedule line up with whole days
-            Date pacStart = TimeUtil.startOfDay(start, Calendar.getInstance());
-            Date pacEnd = TimeUtil.startOfNextDay(end, Calendar.getInstance());
+            pacStart = TimeUtil.startOfDay(start, Calendar.getInstance());
+            pacEnd = BtmTimeUtil.isStartOfDay(end) ? end : TimeUtil.startOfNextDay(end, Calendar.getInstance());
             pacPeriod = (pacEnd.getTime() - pacStart.getTime()) / 1000.0 / 60 / 60;
 
             ccSum = accHourService.reportTotals(start, end);
             ccImplicitOffHours = period - (ccSum.getProgramSeconds() + ccSum.getSadSeconds()) / 3600.0;
             ccOffTotalHours = (ccSum.getSadSeconds() / 3600.0) + ccImplicitOffHours;
 
-            pdSum = pdShiftService.findAcceleratorScheduled(start, end);
+            pdSum = pdShiftService.findAcceleratorScheduled(pdStart, pdEnd);
             pdImplicitOffHours = pdPeriod - (pdSum.getProgramSeconds() + pdSum.getOffSeconds()) / 3600.0;
             pdOffTotalHours = (pdSum.getOffSeconds() / 3600.0) + pdImplicitOffHours;
 
-            pacSum = pacService.sumAccDays(start, end);
+            pacSum = pacService.sumAccDays(pacStart, pacEnd);
             pacImplicitOffHours = pacPeriod - (pacSum.getProgramDays() + pacSum.getOffDays()) * 24;
             pacOffTotalHours = (pacSum.getOffDays() * 24) + pacImplicitOffHours;
 
@@ -152,8 +157,14 @@ public class BeamTimeSummary extends HttpServlet {
 
         request.setAttribute("start", start);
         request.setAttribute("end", end);
+        request.setAttribute("pdStart", pdStart);
+        request.setAttribute("pdEnd", pdEnd);
+        request.setAttribute("pacStart", pacStart);
+        request.setAttribute("pacEnd", pacEnd);
         request.setAttribute("selectionMessage", selectionMessage);
         request.setAttribute("period", period);
+        request.setAttribute("pdPeriod", pdPeriod);
+        request.setAttribute("pacPeriod", pacPeriod);
         request.setAttribute("ccSum", ccSum);
         request.setAttribute("ccImplicitOffHours", ccImplicitOffHours);
         request.setAttribute("ccOffTotalHours", ccOffTotalHours);

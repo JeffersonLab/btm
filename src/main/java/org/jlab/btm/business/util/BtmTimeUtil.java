@@ -201,5 +201,15 @@ public class BtmTimeUtil {
 
         return cal.getTime();
     }
+
+    public static boolean isStartOfDay(Date date) {
+        Calendar cal = Calendar.getInstance();
+
+        cal.setTime(date);
+
+        int startHourOfDay = cal.get(Calendar.HOUR_OF_DAY);
+
+        return (startHourOfDay == 0);
+    }
 }
 
