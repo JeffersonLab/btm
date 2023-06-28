@@ -105,6 +105,8 @@ public class BeamTimeSummary extends HttpServlet {
         session.setAttribute("end", end);
 
         Double period = null;
+        Double pdPeriod = null;
+        Double pacPeriod = null;
         String selectionMessage = null;
         CcAccSum ccSum = null;
         PacAccSum pacSum = null;
@@ -123,16 +125,26 @@ public class BeamTimeSummary extends HttpServlet {
 
             period = (end.getTime() - start.getTime()) / 1000.0 / 60 / 60;
 
+            // PD Shift Plans line up with CC Shifts
+            Date pdStart = TimeUtil.getCcShiftStart(start);
+            Date pdEnd = TimeUtil.getCcShiftEnd(end);
+            pdPeriod = (pdEnd.getTime() - pdStart.getTime()) / 1000.0 / 60 / 60;
+
+            // PAC schedule line up with whole days
+            Date pacStart = TimeUtil.startOfDay(start, Calendar.getInstance());
+            Date pacEnd = TimeUtil.startOfNextDay(end, Calendar.getInstance());
+            pacPeriod = (pacEnd.getTime() - pacStart.getTime()) / 1000.0 / 60 / 60;
+
             ccSum = accHourService.reportTotals(start, end);
             ccImplicitOffHours = period - (ccSum.getProgramSeconds() + ccSum.getSadSeconds()) / 3600.0;
             ccOffTotalHours = (ccSum.getSadSeconds() / 3600.0) + ccImplicitOffHours;
 
             pdSum = pdShiftService.findAcceleratorScheduled(start, end);
-            pdImplicitOffHours = period - (pdSum.getProgramSeconds() + pdSum.getOffSeconds()) / 3600.0;
+            pdImplicitOffHours = pdPeriod - (pdSum.getProgramSeconds() + pdSum.getOffSeconds()) / 3600.0;
             pdOffTotalHours = (pdSum.getOffSeconds() / 3600.0) + pdImplicitOffHours;
 
             pacSum = pacService.sumAccDays(start, end);
-            pacImplicitOffHours = period - (pacSum.getProgramDays() + pacSum.getOffDays()) * 24;
+            pacImplicitOffHours = pacPeriod - (pacSum.getProgramDays() + pacSum.getOffDays()) * 24;
             pacOffTotalHours = (pacSum.getOffDays() * 24) + pacImplicitOffHours;
 
             selectionMessage = TimeUtil.formatSmartRangeSeparateTime(start, end);
