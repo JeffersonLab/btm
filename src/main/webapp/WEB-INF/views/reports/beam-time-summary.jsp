@@ -82,6 +82,7 @@
                 font-weight: normal;
                 height: 200px;
                 overflow: auto;
+                font-size: 12px;
             }
             .flyout-parent {
                 display: inline-block;
@@ -300,46 +301,46 @@
                         <span>PD</span>
                         <ul class="key-value-list">
                             <li>
-                                <div class="li-key">Start</div>
+                                <div class="li-key">Start:</div>
                                 <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pdSum.start}"/></div>
                             </li>
                             <li>
-                                <div class="li-key">End</div>
+                                <div class="li-key">End:</div>
                                 <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pdSum.end}"/></div>
                             </li>
                             <li>
-                                <div class="li-key">Period (Hours)</div>
-                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${pdSum.periodHours}"/></div>
+                                <div class="li-key">Period:</div>
+                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${pdSum.periodHours}"/> hours</div>
                             </li>
                         </ul>
                         <span>PAC</span>
                         <ul class="key-value-list">
                             <li>
-                                <div class="li-key">Start</div>
+                                <div class="li-key">Start:</div>
                                 <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pacSum.start}"/></div>
                             </li>
                             <li>
-                                <div class="li-key">End</div>
+                                <div class="li-key">End:</div>
                                 <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${pacSum.end}"/></div>
                             </li>
                             <li>
-                                <div class="li-key">Period (Hours)</div>
-                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${pacSum.periodHours}"/></div>
+                                <div class="li-key">Period:</div>
+                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${pacSum.periodHours}"/> hours</div>
                             </li>
                         </ul>
                         <span>CC</span>
                         <ul class="key-value-list">
                             <li>
-                                <div class="li-key">Start</div>
+                                <div class="li-key">Start:</div>
                                 <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${start}"/></div>
                             </li>
                             <li>
-                                <div class="li-key">End</div>
+                                <div class="li-key">End:</div>
                                 <div class="li-value"><fmt:formatDate pattern="dd-MMM-yyyy HH" value="${end}"/></div>
                             </li>
                             <li>
-                                <div class="li-key">Period (Hours)</div>
-                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${ccSum.periodHours}"/></div>
+                                <div class="li-key">Period:</div>
+                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${ccSum.periodHours}"/> hours</div>
                             </li>
                         </ul>
                         <p><b>Note</b>: Start times are inclusive and End times are exclusive.</p>
