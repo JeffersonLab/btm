@@ -86,6 +86,97 @@ public class ExcelBeamSummaryService {
         c.setCellStyle(numberStyle);
         c.setCellValue(pacSum.getRestoreDays() * 24);
 
+        // ACC Program
+        row = sheet1.createRow(rownum++);
+        row.createCell(0).setCellValue("ACC");
+        c = row.createCell(1);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(ccSum.getAccSeconds() / 3600);
+        c = row.createCell(2);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(pdSum.getAccSeconds() / 3600);
+        c = row.createCell(3);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(pacSum.getAccDays() * 24);
+
+        // Down Program
+        row = sheet1.createRow(rownum++);
+        row.createCell(0).setCellValue("DOWN");
+        c = row.createCell(1);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(ccSum.getDownSeconds() / 3600);
+        c = row.createCell(2);
+        c.setCellStyle(numberStyle);
+        //c.setCellValue();
+        c = row.createCell(3);
+        c.setCellStyle(numberStyle);
+        //c.setCellValue();
+
+        // Total Program Time
+        row = sheet1.createRow(rownum++);
+        row.createCell(0).setCellValue("Total Program");
+        c = row.createCell(1);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(ccSum.getProgramSeconds() / 3600);
+        c = row.createCell(2);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(pdSum.getProgramSeconds() / 3600);
+        c = row.createCell(3);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(pacSum.getProgramDays() * 24);
+
+        // Period
+        row = sheet1.createRow(rownum++);
+        row.createCell(0).setCellValue("Period");
+        c = row.createCell(1);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(ccSum.getPeriodHours());
+        c = row.createCell(2);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(pdSum.getPeriodHours());
+        c = row.createCell(3);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(pacSum.getPeriodHours());
+
+        // Explicit OFF
+        row = sheet1.createRow(rownum++);
+        row.createCell(0).setCellValue("Explicit Off (SAD)");
+        c = row.createCell(1);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(ccSum.getSadSeconds() / 3600);
+        c = row.createCell(2);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(pdSum.getOffSeconds() / 3600);
+        c = row.createCell(3);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(pacSum.getOffDays() * 24);
+
+        // Implicit OFF
+        row = sheet1.createRow(rownum++);
+        row.createCell(0).setCellValue("Implicit Off");
+        c = row.createCell(1);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(ccSum.getImplicitOffHours());
+        c = row.createCell(2);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(pdSum.getImplicitOffHours());
+        c = row.createCell(3);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(pacSum.getImplicitOffHours());
+
+        // Total OFF
+        row = sheet1.createRow(rownum++);
+        row.createCell(0).setCellValue("Total Off");
+        c = row.createCell(1);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(ccSum.getTotalOffHours());
+        c = row.createCell(2);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(pdSum.getTotalOffHours());
+        c = row.createCell(3);
+        c.setCellStyle(numberStyle);
+        c.setCellValue(pacSum.getTotalOffHours());
+
         sheet1.autoSizeColumn(0);
         row0.createCell(0).setCellValue("Bounded By: " + filters);
 

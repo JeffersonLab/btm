@@ -1,5 +1,8 @@
 package org.jlab.btm.presentation.controller.excel;
 
+import org.jlab.btm.business.service.CcAccHourService;
+import org.jlab.btm.business.service.MonthlyScheduleService;
+import org.jlab.btm.business.service.PdShiftPlanService;
 import org.jlab.btm.business.service.excel.ExcelBeamSummaryService;
 import org.jlab.btm.persistence.projection.CcAccSum;
 import org.jlab.btm.persistence.projection.PacAccSum;
@@ -28,6 +31,12 @@ public class ExcelBeamSummary extends HttpServlet {
 
     @EJB
     ExcelBeamSummaryService excelService;
+    @EJB
+    CcAccHourService ccService;
+    @EJB
+    PdShiftPlanService pdService;
+    @EJB
+    MonthlyScheduleService pacService;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -68,6 +77,10 @@ public class ExcelBeamSummary extends HttpServlet {
                 throw new ServletException("start date cannot be after end date");
             }
         }
+
+        ccSum = ccService.findSummary(start, end);
+        pdSum = pdService.findSummary(start, end);
+        pacSum = pacService.findSummary(start, end);
 
         String filters = TimeUtil.formatSmartRangeSeparateTime(start, end);
 
