@@ -109,15 +109,12 @@ public class BeamTimeSummary extends HttpServlet {
         Date pdEnd = null;
         Date pacStart = null;
         Date pacEnd = null;
-        Double period = null;
         Double pdPeriod = null;
         Double pacPeriod = null;
         String selectionMessage = null;
         CcAccSum ccSum = null;
         PacAccSum pacSum = null;
         PdAccSum pdSum = null;
-        double ccImplicitOffHours = 0d;
-        double ccOffTotalHours = 0d;
         double pdImplicitOffHours = 0;
         double pdOffTotalHours = 0;
         double pacImplicitOffHours = 0;
@@ -127,8 +124,6 @@ public class BeamTimeSummary extends HttpServlet {
             if (start.after(end)) {
                 throw new ServletException("start date cannot be after end date");
             }
-
-            period = (end.getTime() - start.getTime()) / 1000.0 / 60 / 60;
 
             // PD Shift Plans line up with CC Shifts
             pdStart = TimeUtil.getCcShiftStart(start);
@@ -141,8 +136,6 @@ public class BeamTimeSummary extends HttpServlet {
             pacPeriod = (pacEnd.getTime() - pacStart.getTime()) / 1000.0 / 60 / 60;
 
             ccSum = accHourService.reportTotals(start, end);
-            ccImplicitOffHours = period - (ccSum.getProgramSeconds() + ccSum.getSadSeconds()) / 3600.0;
-            ccOffTotalHours = (ccSum.getSadSeconds() / 3600.0) + ccImplicitOffHours;
 
             pdSum = pdShiftService.findAcceleratorScheduled(pdStart, pdEnd);
             pdImplicitOffHours = pdPeriod - (pdSum.getProgramSeconds() + pdSum.getOffSeconds()) / 3600.0;
@@ -162,12 +155,9 @@ public class BeamTimeSummary extends HttpServlet {
         request.setAttribute("pacStart", pacStart);
         request.setAttribute("pacEnd", pacEnd);
         request.setAttribute("selectionMessage", selectionMessage);
-        request.setAttribute("period", period);
         request.setAttribute("pdPeriod", pdPeriod);
         request.setAttribute("pacPeriod", pacPeriod);
         request.setAttribute("ccSum", ccSum);
-        request.setAttribute("ccImplicitOffHours", ccImplicitOffHours);
-        request.setAttribute("ccOffTotalHours", ccOffTotalHours);
         request.setAttribute("pdSum", pdSum);
         request.setAttribute("pdImplicitOffHours", pdImplicitOffHours);
         request.setAttribute("pdOffTotalHours", pdOffTotalHours);

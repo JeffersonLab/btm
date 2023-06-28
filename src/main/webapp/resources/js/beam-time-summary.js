@@ -64,14 +64,14 @@ doPieChart = function () {
             }
         },
         grid: {
-            hoverable: true
+            hoverable: false // Set to true to re-enable tooltips...
         },
         legend: {
             show: false
         }
     });
 
-    jlab.addPieTooltips();
+    //jlab.addPieTooltips();
 };
 
 $(function () {

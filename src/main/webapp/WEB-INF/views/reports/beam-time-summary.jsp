@@ -130,6 +130,7 @@
                     <ul id="export-menu">
                         <li id="image-menu-item">Image</li>
                         <li id="print-menu-item">Print</li>
+                        <li id="excel-menu-item">Excel</li>
                     </ul>
                 </div>
             </div>
@@ -138,7 +139,7 @@
                     <fieldset>
                         <legend>Time</legend>
                         <s:date-range datetime="${true}" sevenAmOffset="${true}"/>
-                        <div class="sched-info">Schedule granularities differ.  The PD Schedule is queried by adjusting the date range to shift boundaries (7:00, 15:00, 23:00).  The PAC Schedule is queried by adjusting the date range to day boundaries (midnight).  Select start and end dates within SADs to avoid boundary concerns.</div>
+                        <div class="sched-info">Schedule granularities differ.  The PD Shift Plan is queried by adjusting the date range to CC shift boundaries (7:00, 15:00, 23:00).  The PAC Schedule is queried by adjusting the date range to day boundaries (midnight).  Select start and end dates within SADs to avoid boundary concerns.</div>
                     </fieldset>
                     <input id="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
@@ -150,7 +151,7 @@
                 </c:when>
                 <c:otherwise>
                     <div class="message-box"><c:out value="${selectionMessage}"/><div class="flyout-parent"><a class="flyout-link" data-flyout-type="sched-flyout" href="#">*</a></div></div>
-                    <c:if test="${period > 0}">
+                    <c:if test="${ccSum ne null and ccSum.periodHours > 0}">
                         <s:chart-widget>
                             <table class="chart-legend">
                                 <thead>
@@ -170,7 +171,7 @@
                                     </th>
                                     <td class="legend-label">Physics</td>
                                     <td><fmt:formatNumber value="${ccSum.upSeconds / 3600}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${(ccSum.upSeconds / 3600) / period * 100}"
+                                    <td>(<fmt:formatNumber value="${(ccSum.upSeconds / 3600) / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td><fmt:formatNumber value="${pdSum.physicsSeconds / 3600}"
@@ -185,7 +186,7 @@
                                     <td class="legend-label">Studies</td>
                                     <td><fmt:formatNumber value="${ccSum.studiesSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${(ccSum.studiesSeconds / 3600) / period * 100}"
+                                    <td>(<fmt:formatNumber value="${(ccSum.studiesSeconds / 3600) / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td><fmt:formatNumber value="${pdSum.studiesSeconds / 3600}"
@@ -200,7 +201,7 @@
                                     <td class="legend-label">SAD Restore</td>
                                     <td><fmt:formatNumber value="${ccSum.restoreSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${(ccSum.restoreSeconds / 3600) / period * 100}"
+                                    <td>(<fmt:formatNumber value="${(ccSum.restoreSeconds / 3600) / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td><fmt:formatNumber value="${pdSum.restoreSeconds / 3600}"
@@ -214,7 +215,7 @@
                                     </th>
                                     <td class="legend-label">ACC</td>
                                     <td><fmt:formatNumber value="${ccSum.accSeconds / 3600}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${(ccSum.accSeconds / 3600) / period * 100}"
+                                    <td>(<fmt:formatNumber value="${(ccSum.accSeconds / 3600) / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td><fmt:formatNumber value="${pdSum.accSeconds / 3600}"
@@ -230,7 +231,7 @@
                                         Internal Down
                                     </td>
                                     <td><fmt:formatNumber value="${ccSum.downSeconds / 3600}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${(ccSum.downSeconds / 3600) / period * 100}"
+                                    <td>(<fmt:formatNumber value="${(ccSum.downSeconds / 3600) / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td>-</td>
@@ -239,7 +240,7 @@
                                 <tr class="program-row">
                                     <th colspan="2">Program Time:</th>
                                     <td><fmt:formatNumber value="${ccSum.programSeconds / 3600}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${(ccSum.programSeconds / 3600) / period * 100}"
+                                    <td>(<fmt:formatNumber value="${(ccSum.programSeconds / 3600) / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td><fmt:formatNumber value="${pdSum.programSeconds / 3600}"
@@ -253,7 +254,7 @@
                                     </th>
                                     <td class="legend-label">SAD</td>
                                     <td><fmt:formatNumber value="${ccSum.sadSeconds / 3600}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${(ccSum.sadSeconds / 3600) / period * 100}"
+                                    <td>(<fmt:formatNumber value="${(ccSum.sadSeconds / 3600) / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td><fmt:formatNumber value="${pdSum.offSeconds / 3600}"
@@ -266,8 +267,8 @@
                                         <div class="color-box"></div>
                                     </th>
                                     <td class="legend-label">Implicit Off</td>
-                                    <td><fmt:formatNumber value="${ccImplicitOffHours}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${ccImplicitOffHours / period * 100}"
+                                    <td><fmt:formatNumber value="${ccSum.implicitOffHours}" pattern="#,##0.0"/></td>
+                                    <td>(<fmt:formatNumber value="${ccSum.implicitOffHours / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td><fmt:formatNumber value="${pdImplicitOffHours}" pattern="#,##0.0"/></td>
@@ -275,8 +276,8 @@
                                 </tr>
                                 <tr class="off-row">
                                     <th colspan="2">Off Time:</th>
-                                    <td><fmt:formatNumber value="${ccOffTotalHours}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${ccOffTotalHours / period * 100}" pattern="#,##0.0"/>%)</td>
+                                    <td><fmt:formatNumber value="${ccSum.totalOffHours}" pattern="#,##0.0"/></td>
+                                    <td>(<fmt:formatNumber value="${ccSum.totalOffHours / ccSum.periodHours * 100}" pattern="#,##0.0"/>%)</td>
                                     <td><fmt:formatNumber value="${pdOffTotalHours}" pattern="#,##0.0"/></td>
                                     <td><fmt:formatNumber value="${pacOffTotalHours}" pattern="#,##0.0"/></td>
                                 </tr>
@@ -338,7 +339,7 @@
                             </li>
                             <li>
                                 <div class="li-key">Period (Hours)</div>
-                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${period}"/></div>
+                                <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${ccSum.periodHours}"/></div>
                             </li>
                         </ul>
                         <p><b>Note</b>: Start times are inclusive and End times are exclusive.</p>
@@ -346,5 +347,12 @@
                 </div>
             </div>
         </div>
+        <fmt:formatDate var="startFmt" value="${start}" pattern="${s:getFriendlyDateTimePattern()}"/>
+        <fmt:formatDate var="endFmt" value="${end}" pattern="${s:getFriendlyDateTimePattern()}"/>
+        <form id="excel-form" method="get" action="${pageContext.request.contextPath}/excel/beam-summary.xlsx">
+            <input type="hidden" name="start" value="${startFmt}"/>
+            <input type="hidden" name="end" value="${endFmt}"/>
+            <button id="excel" type="submit" style="display: none;">Excel</button>
+        </form>
     </jsp:body>
 </t:report-page>
