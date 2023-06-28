@@ -79,8 +79,8 @@
                                 <tr>
                                     <th></th>
                                     <th></th>
-                                    <th title="Actual Hours">CC Hrs</th>
-                                    <th title="Percent of total hours">CC %</th>
+                                    <th title="Crew Chief Reported Hours">CC Hrs</th>
+                                    <th title="Crew Chief Percent of Total Hours">CC %</th>
                                     <th title="PD Scheduled Hours">PD Sched. Hrs</th>
                                     <th title="PAC Scheduled Hours">PAC Sched. Hrs</th>
                                 </tr>
