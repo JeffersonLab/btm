@@ -45,8 +45,8 @@
                                                                                                       href="#">Reload</a>)
             </div>
             <p id="call-hall-note">Note: You must call each hall with an incomplete timesheet that is scheduled for
-                physics and ask them to submit all but the last hour of their shift and the last hour from the previous
-                shift (click &quot;Save For MCC Button&quot;) as this is needed for the Crew Chief Shift Log</p>
+                physics and ask them to submit all but the last hour of their shift (&quot;Edit CC Hours&quot; button) and the last hour from the previous
+                shift as this is needed for the Crew Chief Shift Log</p>
             <h5>Crew Chief Comments</h5>
             <div id="cross-check-comments-block">
                 <div id="view-cross-check-comments"><c:out value="${crossCheckComment.crewChiefRemark}"/></div>
