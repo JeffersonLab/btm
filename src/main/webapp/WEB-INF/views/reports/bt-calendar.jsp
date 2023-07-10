@@ -117,7 +117,7 @@
                                     </table>
                                 </th>
                                 <c:forEach items="${week.dayList}" var="day">
-                                    <c:set var="programHours" value="${day.accTotal.calculateProgramSeconds() / 3600}"/>
+                                    <c:set var="programHours" value="${day.accTotal.programSeconds / 3600}"/>
                                     <c:set var="downHours" value="${day.downTotal.eventSeconds / 3600}"/>
                                     <fmt:formatDate var="startFmt" value="${day.day}" pattern="dd-MMM-yyyy HH:mm"/>
                                     <fmt:formatDate var="endFmt" value="${day.calculateNextDay()}"
