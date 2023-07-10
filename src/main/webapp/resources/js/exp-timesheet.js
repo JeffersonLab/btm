@@ -268,7 +268,8 @@ jlab.btm.editExpHours = function ($button, ccOnly, saveAllSections) {
         success = false,
         $commentsTable = $("#comments-table"),
         units = $("#units").attr("data-units"),
-        hall = $table.attr("data-hall");
+        hall = $table.attr("data-hall"),
+        uedModified = false;
 
     var hourArray = [],
         abuArray = [],
@@ -300,10 +301,15 @@ jlab.btm.editExpHours = function ($button, ccOnly, saveAllSections) {
             er = jlab.btm.parseSeconds($row.find("td:nth-child(8) input").val(), units),
             pcc = jlab.btm.parseSeconds($row.find("td:nth-child(9) input").val(), units),
             ued = jlab.btm.parseSeconds($row.find("td:nth-child(10) input").val(), units),
+            uedPrev = jlab.btm.parseSeconds($row.find("td:nth-child(10) span").text(), units),
             index = $row.parent().children().index($row),
             $commentRow = $commentsTable.find("tbody tr:nth-child(" + (index + 1) + ")"),
             $textarea = $commentRow.find("textarea"),
             comments =  $textarea.val();
+
+        if(ued != uedPrev) {
+            uedModified = true;
+        }
 
         hourArray.push(hour);
         abuArray.push(abu);
@@ -347,6 +353,10 @@ jlab.btm.editExpHours = function ($button, ccOnly, saveAllSections) {
             alert('Unable to save hall ' + hall + ' availability hours: ' + $(".reason", data).html());
         } else {
             /* Success */
+            if(uedModified) {
+                window.location.reload();
+            }
+
             jlab.btm.doSaveHourTableSuccess($table, $button);
 
             $("#edit-all-button").show();
@@ -413,7 +423,8 @@ jlab.btm.editExpHour = function () {
         uedArray = [],
         commentsArray = [],
         $table = $("#exp-hourly-table"),
-        success = false;
+        success = false,
+        uedModified = false;
 
     var units = $("#units").attr("data-units"),
         hall = $table.attr("data-hall"),
@@ -426,7 +437,12 @@ jlab.btm.editExpHour = function () {
         er = jlab.btm.parseSeconds($row.find("td:nth-child(8) input").val(), units),
         pcc = jlab.btm.parseSeconds($row.find("td:nth-child(9) input").val(), units),
         ued = jlab.btm.parseSeconds($row.find("td:nth-child(10) input").val(), units),
+        uedPrev = jlab.btm.parseSeconds($row.find("td:nth-child(10) span").text(), units),
         comments =  $textarea.val();
+
+    if(ued != uedPrev) {
+        uedModified = true;
+    }
 
     hourArray.push(hour);
     abuArray.push(abu);
@@ -465,6 +481,10 @@ jlab.btm.editExpHour = function () {
             alert('Unable to save availability hours: ' + $(".reason", data).html());
         } else {
             /* Success */
+            if(uedModified) {
+                window.location.reload();
+            }
+
             jlab.btm.doSaveHourRowSuccess($row, $saveButton);
 
             $commentRow.find("td span").text(comments);
