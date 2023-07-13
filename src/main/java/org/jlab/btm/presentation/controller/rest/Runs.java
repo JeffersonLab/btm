@@ -1,8 +1,10 @@
 package org.jlab.btm.presentation.controller.rest;
 
 import org.jlab.btm.business.service.MonthlyScheduleService;
+import org.jlab.btm.business.service.RunService;
 import org.jlab.btm.business.util.DateRange;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
+import org.jlab.btm.persistence.entity.Run;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.util.TimeUtil;
 
@@ -29,10 +31,10 @@ import java.util.List;
 @Path("runs")
 public class Runs {
 
-    private MonthlyScheduleService lookupScheduleService() {
+    private RunService lookupRunService() {
         try {
             InitialContext ic = new InitialContext();
-            return (MonthlyScheduleService) ic.lookup("java:global/btm/MonthlyScheduleService");
+            return (RunService) ic.lookup("java:global/btm/RunService");
         } catch (NamingException e) {
             throw new RuntimeException("Unable to obtain EJB", e);
         }
@@ -45,33 +47,27 @@ public class Runs {
             @Override
             public void write(OutputStream out) {
                 try (JsonGenerator gen = Json.createGenerator(out)) {
-                    MonthlyScheduleService scheduleService = lookupScheduleService();
+                    RunService runService = lookupRunService();
 
-                    DateRange currentRun = scheduleService.getCurrentRunBounds();
+                    Run currentRun = runService.getCurrentRun();
 
-                    Date previousToDate = new Date();
-
-                    if (currentRun != null) {
-                        previousToDate = currentRun.getStart();
-                    }
-
-                    DateRange previousRun = scheduleService.getPreviousRunBounds(previousToDate);
+                    Run previousRun = runService.getRunBefore(currentRun);
 
                     // ISO 8601
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
                     gen.writeStartObject();
                     if (currentRun != null) {
-                        String startDate = dateFormat.format(currentRun.getStart());
-                        String endDate = dateFormat.format(currentRun.getEnd());
+                        String startDate = dateFormat.format(currentRun.getStartDay());
+                        String endDate = dateFormat.format(currentRun.getEndDay());
 
                         gen.writeStartObject("current")
                                 .write("start", startDate)
                                 .write("end", endDate).writeEnd();
                     }
                     if (previousRun != null) {
-                        String startDate = dateFormat.format(previousRun.getStart());
-                        String endDate = dateFormat.format(previousRun.getEnd());
+                        String startDate = dateFormat.format(previousRun.getStartDay());
+                        String endDate = dateFormat.format(previousRun.getEndDay());
 
                         gen.writeStartObject("previous")
                                 .write("start", startDate)
