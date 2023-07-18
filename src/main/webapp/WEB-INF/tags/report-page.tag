@@ -21,8 +21,6 @@
                                     <li${'/reports/hall-availability' eq currentPath ? ' class="current-secondary"' : ''}><a
                                             href="${pageContext.request.contextPath}/reports/hall-availability">Hall
                                         Availability</a></li>
-                                    <li${'/reports/charge' eq currentPath ? ' class="current-secondary"' : ''}><a
-                                            href="${pageContext.request.contextPath}/reports/charge">Charge</a></li>
                                     <li${'/reports/bt-calendar' eq currentPath ? ' class="current-secondary"' : ''}><a
                                             href="${pageContext.request.contextPath}/reports/bt-calendar">Review Calendar</a>
                                     </li>
