@@ -43,7 +43,7 @@ public class ScheduleDayService extends AbstractService<ScheduleDay> {
                 + "x.hall_c_program_id, x.hall_c_nano_amps, x.hall_c_kilo_volts, x.hall_c_passes, x.hall_c_priority, x.hall_c_polarized, "
                 + "x.hall_d_program_id, x.hall_d_nano_amps, x.hall_d_kilo_volts, x.hall_d_passes, x.hall_d_priority, x.hall_d_polarized "
                 + "from (select to_date(:start) - 1 + rownum as day_month_year from dual connect by rownum < (to_date(:end) - to_date(:start) + 2)) z "
-                + "left outer join schedule_day x on z.day_month_year = x.day_month_year and x.monthly_schedule_id = :schedule_id";
+                + "left outer join schedule_day x on z.day_month_year = x.day_month_year and x.monthly_schedule_id = :schedule_id order by z.day_month_year asc";
 
         Query q = em.createNativeQuery(sql);
 
