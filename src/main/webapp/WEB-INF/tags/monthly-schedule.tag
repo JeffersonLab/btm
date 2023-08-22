@@ -107,7 +107,7 @@
     <c:choose>
         <c:when test="${schedule eq null}">
             <div id="no-schedule-message">-- No Schedule Found --</div>
-            <c:if test="${pageContext.request.isUserInRole('schcom')}">
+            <c:if test="${pageContext.request.isUserInRole('schcom') or pageContext.request.isUserInRole('btm-admin')}">
                 <div id="form-panel">
                     <form id="create-form" class="create-from-scratch" method="post" action="/btm/create-schedule">
                         <fmt:formatDate value="${month}" pattern="MMMM-yyyy" var="urlDate"/>
@@ -124,7 +124,7 @@
         </c:when>
         <c:otherwise>
             <c:choose>
-                <c:when test="${schedule.publishedDate eq null and not (pageContext.request.isUserInRole('schcom'))}">
+                <c:when test="${schedule.publishedDate eq null and not (pageContext.request.isUserInRole('schcom') or pageContext.request.isUserInRole('btm-admin'))}">
                     <div id="no-schedule-message">-- Committee Member Login Required for Tentative Schedule --</div>
                 </c:when>
                 <c:when test="${calendar ne null}">
@@ -143,7 +143,7 @@
                     <input type="hidden" name="scheduleId" value="${schedule.monthlyScheduleId}"/>
                     <input type="submit" value="Excel"/>
                 </form>
-                <c:if test="${pageContext.request.isUserInRole('schcom')}">
+                <c:if test="${pageContext.request.isUserInRole('schcom') or pageContext.request.isUserInRole('btm-admin')}">
                     <form id="upload-form" style="float: right; margin-left: 0.5em;" method="post" action="/btm/schedule/upload"
                           enctype="multipart/form-data">
                         <input type="button" value="Upload" onclick="document.getElementById('fileInput').click();"/>

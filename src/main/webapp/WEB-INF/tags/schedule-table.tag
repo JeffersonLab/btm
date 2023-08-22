@@ -89,7 +89,7 @@
         </table>
     </div>
     <table id="schedule-table"
-           class="data-table stripped-table${(pageContext.request.isUserInRole('schcom')) && schedule.publishedDate eq null ? ' editable-schedule selectable' : ''}"
+           class="data-table stripped-table${(pageContext.request.isUserInRole('schcom') or pageContext.request.isUserInRole('btm-admin')) && schedule.publishedDate eq null ? ' editable-schedule selectable' : ''}"
            data-schedule-id="${schedule.monthlyScheduleId}">
         <thead>
         <tr class="fixed-size-first-row">

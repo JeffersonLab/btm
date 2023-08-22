@@ -115,6 +115,8 @@ public class BeamTimeSummary extends HttpServlet {
                 throw new ServletException("start date cannot be after end date");
             }
 
+            // Start is inclusive, end is exclusive
+
             ccSum = ccService.findSummary(start, end);
             pdSum = pdService.findSummary(start, end);
             pacSum = pacService.findSummary(start, end);

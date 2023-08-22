@@ -113,8 +113,8 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
      * any given month if no schedules are published then them most recent tentative schedule is used, or if none at
      * all then no record is included for that month.
      *
-     * @param start The start date
-     * @param end The end date
+     * @param start The start date (inclusive)
+     * @param end The end date (inclusive)
      * @return A list of published/recent monthly schedules that span the date range
      */
     @PermitAll
@@ -137,7 +137,7 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
         return monthlySchedules;
     }
 
-    @RolesAllowed({"schcom"})
+    @RolesAllowed({"schcom", "btm-admin"})
     public void editRow(Date date, BigInteger scheduleId, String accProgram,
                         Integer kiloVoltsPerPass, Integer minHallCount, int hallAProgramId,
                         int hallBProgramId, int hallCProgramId, int hallDProgramId, Integer hallAKiloVolts,
@@ -254,7 +254,7 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
         em.merge(scheduleDay);
     }
 
-    @RolesAllowed({"schcom"})
+    @RolesAllowed({"schcom", "btm-admin"})
     public ScheduleDay setDay(MonthlySchedule schedule, ScheduleDay day) {
         day.setMonthlySchedule(schedule);
 
@@ -265,7 +265,7 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
         }
     }
 
-    @RolesAllowed({"schcom"})
+    @RolesAllowed({"schcom", "btm-admin"})
     public MonthlySchedule publish(BigInteger scheduleId) throws UserFriendlyException {
         if (scheduleId == null) {
             throw new UserFriendlyException("Schedule ID must not be empty");
@@ -291,7 +291,7 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
         return super.find(scheduleId);
     }
 
-    @RolesAllowed({"schcom"})
+    @RolesAllowed({"schcom", "btm-admin"})
     public MonthlySchedule create(Date start) throws UserFriendlyException {
         Date firstOfMonth = TimeUtil.startOfMonth(start, Calendar.getInstance());
 
@@ -317,7 +317,7 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
         return schedule;
     }
 
-    @RolesAllowed({"schcom"})
+    @RolesAllowed({"schcom", "btm-admin"})
     public MonthlySchedule newVersion(BigInteger scheduleId) throws UserFriendlyException {
         if (scheduleId == null) {
             throw new UserFriendlyException("Schedule ID must not be emtpy");
@@ -516,6 +516,13 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
         return bounds;
     }
 
+    /**
+     * Find PAC Summary.
+     *
+     * @param start Start date inclusive
+     * @param end End date exclusive
+     * @return
+     */
     @PermitAll
     public PacAccSum findSummary(Date start, Date end) {
 
@@ -523,10 +530,13 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
         start = TimeUtil.startOfDay(start, Calendar.getInstance());
         end = BtmTimeUtil.isStartOfDay(end) ? end : TimeUtil.startOfNextDay(end, Calendar.getInstance());
 
+        Date inclusiveEnd = TimeUtil.addDays(end, -1);
+
         PacAccSum record = new PacAccSum();
 
-        List<MonthlySchedule> monthlySchedules = this.findMostRecentPublishedInDateRange(start, end);
-        List<ScheduleDay> scheduleDays = this.filterScheduleDaysFromRange(monthlySchedules, start, end);
+        // These two methods assume INCLUSIVE end date
+        List<MonthlySchedule> monthlySchedules = this.findMostRecentPublishedInDateRange(start, inclusiveEnd);
+        List<ScheduleDay> scheduleDays = this.filterScheduleDaysFromRange(monthlySchedules, start, inclusiveEnd);
 
 
         for (ScheduleDay day : scheduleDays) {

@@ -40,7 +40,7 @@ public class ExcelScheduleService {
     @EJB
     MonthlyScheduleService scheduleService;
 
-    @RolesAllowed({"schcom"})
+    @RolesAllowed({"schcom", "btm-admin"})
     public List<MonthlySchedule> upload(InputStream in) throws IOException, InvalidFormatException, UserFriendlyException {
         List<MonthlySchedule> resultList = new ArrayList<>();
 
