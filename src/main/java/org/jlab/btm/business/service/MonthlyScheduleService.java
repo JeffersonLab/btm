@@ -525,8 +525,6 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
 
         PacAccSum record = new PacAccSum();
 
-        record.setRange(start, end);
-
         List<MonthlySchedule> monthlySchedules = this.findMostRecentPublishedInDateRange(start, end);
         List<ScheduleDay> scheduleDays = this.filterScheduleDaysFromRange(monthlySchedules, start, end);
 
@@ -554,6 +552,9 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
                 record.offDays++;  // May be implied off gaps that are missed so this number is explicit off only...
             }
         }
+
+        // Must be done last after accumulating counts
+        record.setRangeAndCalculateOff(start, end);
 
         return record;
     }

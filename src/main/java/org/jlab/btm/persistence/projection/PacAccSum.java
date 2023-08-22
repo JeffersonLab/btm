@@ -69,7 +69,7 @@ public class PacAccSum {
         this.offDays = offDays;
     }
 
-    public void setRange(Date start, Date end) {
+    public void setRangeAndCalculateOff(Date start, Date end) {
         this.start = start;
         this.end = end;
 
