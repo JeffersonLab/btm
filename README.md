@@ -91,14 +91,14 @@ The [server](https://github.com/JeffersonLab/wildfly/blob/main/scripts/server-se
 ## Release
 1. Bump the version number and release date in build.gradle and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).
 2. Create a new release on the GitHub Releases page corresponding to the same version in the build.gradle. The release should enumerate changes and link issues. A war artifact can be attached to the release to facilitate easy installation by users.
-3. Build and publish a new Docker image [from the GitHub tag](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag). GitHub is configured to do this automatically on git push of semver tag (typically part of GitHub release) or the [Publish to DockerHub](https://github.com/JeffersonLab/btm/actions/workflows/docker-publish.yml) action can be manually triggered after selecting a tag.
+3. [Publish to DockerHub](https://github.com/JeffersonLab/btm/actions/workflows/docker-publish.yml) GitHub Action should run automatically.
 4. Bump and commit quick start [image version](https://github.com/JeffersonLab/btm/blob/main/docker-compose.override.yml)
 
 ## Deploy
 At JLab this app is found at [ace.jlab.org/btm](https://ace.jlab.org/btm) and internally at [acctest.acc.jlab.org/btm](https://acctest.acc.jlab.org/btm).  However, those servers are proxies for `wildfly5.acc.jlab.org` and `wildflytest5.acc.jlab.org` respectively.   A [deploy script](https://github.com/JeffersonLab/wildfly/blob/main/scripts/deploy.sh) is provided to automate wget and deploy.  Example:
 
 ```
-/root/setup/deploy.sh dep-btm.env v1.2.3
+/root/setup/deploy.sh btm v1.2.3
 ```
 
 **JLab Internal Docs**:  [InstallGuideWildflyRHEL9](https://accwiki.acc.jlab.org/do/view/SysAdmin/InstallGuideWildflyRHEL9)
