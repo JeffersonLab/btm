@@ -9,7 +9,9 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application for mana
 - [Install](https://github.com/JeffersonLab/btm#install)
 - [Configure](https://github.com/JeffersonLab/btm#configure)
 - [Build](https://github.com/JeffersonLab/btm#build)
+- [Develop](https://github.com/JeffersonLab/btm#develop) 
 - [Release](https://github.com/JeffersonLab/btm#release)
+- [Deploy](https://github.com/JeffersonLab/btm#deploy) 
 ---
 
 ## Overview
@@ -71,9 +73,32 @@ gradlew build
 
 See: [Docker Development Quick Reference](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#development-quick-reference)
 
+## Develop
+In order to iterate rapidly when making changes it's often useful to run the app directly on the local workstation, perhaps leveraging an IDE.  In this scenario run the service dependencies with:
+```
+docker compose -f deps.yml up
+```
+**Note**: The local install of Wildfly should be [configured](https://github.com/JeffersonLab/btm#configure) to proxy connections to services via localhost and therefore the environment variables should contain:
+```
+KEYCLOAK_BACKEND_SERVER_URL=http://localhost:8081
+FRONTEND_SERVER_URL=https://localhost:8443
+BTM_EPICS_ADDR_LIST=localhost
+```
+Further, the local DataSource must also leverage localhost port forwarding so the `standalone.xml` URL field should be: `url="jdbc:oracle:thin:@//localhost:1521/xepdb1"`.  
+
+The [server](https://github.com/JeffersonLab/wildfly/blob/main/scripts/server-setup.sh) and [app](https://github.com/JeffersonLab/wildfly/blob/main/scripts/app-setup.sh) setup scripts can be used to setup a local instance of Wildfly. 
+
 ## Release
 1. Bump the version number and release date in build.gradle and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).
 2. Create a new release on the GitHub Releases page corresponding to the same version in the build.gradle. The release should enumerate changes and link issues. A war artifact can be attached to the release to facilitate easy installation by users.
 3. Build and publish a new Docker image [from the GitHub tag](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag). GitHub is configured to do this automatically on git push of semver tag (typically part of GitHub release) or the [Publish to DockerHub](https://github.com/JeffersonLab/btm/actions/workflows/docker-publish.yml) action can be manually triggered after selecting a tag.
 4. Bump and commit quick start [image version](https://github.com/JeffersonLab/btm/blob/main/docker-compose.override.yml)
 
+## Deploy
+At JLab this app is found at [ace.jlab.org/btm](https://ace.jlab.org/btm) and internally at [acctest.acc.jlab.org/btm](https://acctest.acc.jlab.org/btm).  However, those servers are proxies for `wildfly5.acc.jlab.org` and `wildflytest5.acc.jlab.org` respectively.   A [deploy script](https://github.com/JeffersonLab/wildfly/blob/main/scripts/deploy.sh) is provided to automate wget and deploy.  Example:
+
+```
+/root/setup/deploy.sh dep-btm.env v1.2.3
+```
+
+**JLab Internal Docs**:  [InstallGuideWildflyRHEL9](https://accwiki.acc.jlab.org/do/view/SysAdmin/InstallGuideWildflyRHEL9)
