@@ -84,7 +84,7 @@ KEYCLOAK_BACKEND_SERVER_URL=http://localhost:8081
 FRONTEND_SERVER_URL=https://localhost:8443
 BTM_EPICS_ADDR_LIST=localhost
 ```
-Further, the local DataSource must also leverage localhost port forwarding so the `standalone.xml` URL field should be: `url="jdbc:oracle:thin:@//localhost:1521/xepdb1"`.  
+Further, the local DataSource must also leverage localhost port forwarding so the `standalone.xml` connection-url field should be: `jdbc:oracle:thin:@//localhost:1521/xepdb1`.  
 
 The [server](https://github.com/JeffersonLab/wildfly/blob/main/scripts/server-setup.sh) and [app](https://github.com/JeffersonLab/wildfly/blob/main/scripts/app-setup.sh) setup scripts can be used to setup a local instance of Wildfly. 
 
