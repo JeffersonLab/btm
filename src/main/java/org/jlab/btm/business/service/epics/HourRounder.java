@@ -56,31 +56,79 @@ public class HourRounder {
         truncateToRange(statuses);
         hour.setOffSeconds(statuses[0]);
 
-        adjustOffAndUED(hour);
+        // Note: we only adjust for extremes;
+        // We only fix scenario when entire hour is erroneously one of these metric OR roughly matches amount of OFF;
+        // We don't subtract difference and keep some off and some of these other metrics;
+        // There is an order/precedence of cleanup: UED, ER, PCC;
+        // Someone should Fix EPICS IOC measure logic!
+
+        // UED
+        adjustOffAndExperimentMetric(hour, new ExperimentHourMetric() {
+            @Override
+            short getSeconds() {
+                return hour.getUedSeconds();
+            }
+
+            @Override
+            void setSeconds(short seconds) {
+                hour.setUedSeconds(seconds);
+            }
+        });
+        // ER
+        adjustOffAndExperimentMetric(hour, new ExperimentHourMetric() {
+            @Override
+            short getSeconds() {
+                return hour.getErSeconds();
+            }
+
+            @Override
+            void setSeconds(short seconds) {
+                hour.setErSeconds(seconds);
+            }
+        });
+        // PCC
+        adjustOffAndExperimentMetric(hour, new ExperimentHourMetric() {
+            @Override
+            short getSeconds() {
+                return hour.getPccSeconds();
+            }
+
+            @Override
+            void setSeconds(short seconds) {
+                hour.setPccSeconds(seconds);
+            }
+        });
 
         roundAcceleratorSet(hour);
         roundExperimenterSet(hour);
     }
 
+    abstract class ExperimentHourMetric {
+
+        abstract short getSeconds();
+
+        abstract void setSeconds(short seconds);
+    }
+
     /**
      * The experimenter automated time accounting needs to be corrected for fact that (1) it doesn't actually include a
-     * metric for OFF and (2) when really OFF automated accounting often sets UED.  To count OFF, the Crew Chief
-     * measure of Hall Off is used, but needs to REPLACE UED so this method does that.
+     * metric for OFF and (2) when really OFF automated accounting often sets ER, PCC, or UED.  To count OFF,
+     * the Crew Chief measure of Hall Off is used, but needs to REPLACE ER, PCC, or UED so this method does that.
      *
      * @param hour The ExpHour
      */
-    private void adjustOffAndUED(ExpHour hour) {
+    private void adjustOffAndExperimentMetric(ExpHour hour, ExperimentHourMetric metric) {
         int SLOP = 60;
-        short ued = hour.getUedSeconds();
+        short metSeconds = metric.getSeconds();
         short off = hour.getOffSeconds();
 
 
         if(off != 0) {
-            int difference = Math.abs(off - ued);
+            int difference = Math.abs(off - metSeconds);
 
-            // If UED and OFF are within 1 minute of matching, then set UED to zero
+            // If metric and OFF are within 1 minute of matching, then set metric to zero
             if(difference <= SLOP) {
-                hour.setUedSeconds((short)0);
+                metric.setSeconds((short)0);
 
                 // If OFF is within 1 minute of filling entire hour, then set to entire hour
                 if((SECONDS_PER_HOUR - off) < SLOP) {
