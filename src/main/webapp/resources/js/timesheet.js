@@ -69,7 +69,7 @@ jlab.btm.doSaveHourRowSuccess = function ($row, $saveButton) {
     $row.find(".source-td").text("DB");
 };
 
-jlab.btm.doSaveHourTableSuccess = function ($table, $saveButton) {
+jlab.btm.doSaveHourTableSuccess = function ($table, $saveButton, skipLast) {
     var $cancelButton = $saveButton.next(),
         $editButton = $saveButton.prev();
 
@@ -91,7 +91,13 @@ jlab.btm.doSaveHourTableSuccess = function ($table, $saveButton) {
     $table.find("tbody td span").show();
     $table.find("input").hide();
 
-    $table.find("tbody tr").each(function () {
+    let selector = "tbody tr";
+
+    if(skipLast) {
+        selector = "tbody tr:not(:last-child)";
+    }
+
+    $table.find(selector).each(function () {
         $(this).find(".source-td").text("DB");
     });
 };
@@ -205,9 +211,9 @@ $(function () {
     $("#status-dialog").dialog({
         autoOpen: false,
         height: 400,
-        width: 500,
+        width: 550,
         minHeight: 400,
-        minWidth: 500
+        minWidth: 550
     });
 
     $("#timesheet-body").show();

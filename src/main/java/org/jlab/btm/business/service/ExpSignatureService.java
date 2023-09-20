@@ -75,19 +75,33 @@ public class ExpSignatureService extends AbstractService<ExpSignature> {
 
         List<ExpSignature> signatureList = find(hall, startDayAndHour);
 
-        return this.calculateStatus(startDayAndHour, endDayAndHour, availabilityList, explanationsList, shift, signatureList);
+        return this.calculateStatus(hall, startDayAndHour, endDayAndHour, availabilityList, explanationsList, shift, signatureList);
     }
 
     @PermitAll
-    public ExpTimesheetStatus calculateStatus(Date startDayAndHour, Date endDayAndHour, List<ExpHour> expAvailabilityList,
+    public ExpTimesheetStatus calculateStatus(Hall hall, Date startDayAndHour, Date endDayAndHour, List<ExpHour> expAvailabilityList,
                                               List<ExpUedExplanation> reasonsNotReadyList, ExpShift shiftInfo,
                                               List<ExpSignature> signatureList) {
         ExpTimesheetStatus status = new ExpTimesheetStatus();
 
         long hoursInShift = TimeUtil.differenceInHours(startDayAndHour, endDayAndHour) + 1;
 
-        if (expAvailabilityList != null && expAvailabilityList.size() == hoursInShift) {
-            status.setAvailabilityComplete(true);
+        if (expAvailabilityList != null) {
+            if(expAvailabilityList.size() == hoursInShift) {
+                status.setAvailabilityComplete(true);
+                status.setCcHoursComplete(true);
+                // If count of hours is 1 less than entire shift worth AND last hour in ordered list is NOT equal to last hour of shift then missing hour MUST be from last hour of shift
+            } else if(expAvailabilityList.size() == (hoursInShift - 1) && !expAvailabilityList.get(expAvailabilityList.size() - 1).getDayAndHour().equals(endDayAndHour)) {
+                status.setCcHoursComplete(true);
+            }
+        }
+
+        Date lastHourOfPreviousShift = TimeUtil.addHours(startDayAndHour, -1);
+
+        ExpHour previousLast = hourService.findInDatabase(hall, lastHourOfPreviousShift);
+
+        if(previousLast != null) {
+            status.setPreviousLastHourComplete(true);
         }
 
         List<HourReasonDiscrepancy> discrepancies = explanationService.validateUED(expAvailabilityList, reasonsNotReadyList);
@@ -173,7 +187,7 @@ public class ExpSignatureService extends AbstractService<ExpSignature> {
 
         /*SIGNATURES*/
         List<ExpSignature> signatureList = this.find(hall, startHour);
-        ExpTimesheetStatus status = this.calculateStatus(startHour, endHour,
+        ExpTimesheetStatus status = this.calculateStatus(hall, startHour, endHour,
                 expAvailability.getDbHourList(),
                 explanationList,
                 shiftInfo, signatureList);

@@ -357,7 +357,7 @@ jlab.btm.editExpHours = function ($button, ccOnly, saveAllSections) {
                 window.location.reload();
             }
 
-            jlab.btm.doSaveHourTableSuccess($table, $button);
+            jlab.btm.doSaveHourTableSuccess($table, $button, ccOnly);
 
             $("#edit-all-button").show();
             $("#edit-cc-only-button").show();
@@ -387,7 +387,11 @@ jlab.btm.editExpHours = function ($button, ccOnly, saveAllSections) {
         $button.next().removeAttr("disabled");
 
         if (success) {
-            $("#availability-status-value").text("Complete").removeClass("incomplete-status").addClass("complete-status");
+            $("#cc-hours-status-value").text("Complete").removeClass("incomplete-status").addClass("complete-status");
+
+            if(!ccOnly) {
+                $("#availability-status-value").text("Complete").removeClass("incomplete-status").addClass("complete-status");
+            }
             if (saveAllSections) {
                 jlab.btm.doSaveAll();
             }

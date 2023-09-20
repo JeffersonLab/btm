@@ -11,6 +11,8 @@ public class ExpTimesheetStatus {
     private boolean reasonsNotReadyComplete = false;
     private boolean shiftInfoComplete = false;
     private boolean signatureComplete = false;
+    private boolean ccHoursComplete = false;
+    private boolean previousLastHourComplete = false;
     private List<HourReasonDiscrepancy> reasonDiscrepancyList = new ArrayList<>();
 
     public boolean isAvailabilityComplete() {
@@ -43,6 +45,22 @@ public class ExpTimesheetStatus {
 
     public void setSignatureComplete(boolean signature) {
         this.signatureComplete = signature;
+    }
+
+    public boolean isCcHoursComplete() {
+        return ccHoursComplete;
+    }
+
+    public void setCcHoursComplete(boolean ccHoursComplete) {
+        this.ccHoursComplete = ccHoursComplete;
+    }
+
+    public boolean isPreviousLastHourComplete() {
+        return previousLastHourComplete;
+    }
+
+    public void setPreviousLastHourComplete(boolean previousLastHourComplete) {
+        this.previousLastHourComplete = previousLastHourComplete;
     }
 
     public void setReasonDiscrepancyList(List<HourReasonDiscrepancy> discrepancyList) {

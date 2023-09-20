@@ -114,6 +114,32 @@
                 </div>
             </li>
             <li>
+                <div class="li-key"><span>Current Shift All but Last Hour (for CC):</span></div>
+                <div class="li-value">
+                    <c:choose>
+                        <c:when test="${status.ccHoursComplete}">
+                            <span id="cc-hours-status-value" class="complete-status">Complete</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span id="cc-hours-status-value" class="incomplete-status">Incomplete</span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </li>
+            <li>
+                <div class="li-key"><span>Previous Shift Last Hour (for CC):</span></div>
+                <div class="li-value">
+                    <c:choose>
+                        <c:when test="${status.previousLastHourComplete}">
+                            <span id="previous-last-hour-status-value" class="complete-status">Complete</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span id="previous-last-hour-status-value" class="incomplete-status">Incomplete</span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </li>
+            <li>
                 <div class="li-key"><span>Reasons not Ready:</span></div>
                 <div class="li-value">
                     <c:choose>

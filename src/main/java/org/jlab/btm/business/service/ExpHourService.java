@@ -283,6 +283,32 @@ public class ExpHourService extends AbstractService<ExpHour> {
         return hours;
     }
 
+    @PermitAll
+    @SuppressWarnings("unchecked")
+    public ExpHour findInDatabase(Hall hall, Date dayAndHour) {
+        // We must use to_timestamp_tz in query because if you rely on JPA criteria query it will not include TZ Offset,
+        // which means you couldn't select between the two wall clock ambiguous daylight savings hours
+        Query query = em.createNativeQuery("select * from EXP_HOUR a where a.hall = :hall and a.day_and_hour = to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD')", ExpHour.class);
+
+        String dayAndHourStr = TimeUtil.formatDatabaseDateTimeTZ(dayAndHour);
+
+        query.setParameter("hall", hall.getLetter());
+        query.setParameter("dayAndHour", dayAndHourStr);
+
+        List<ExpHour> hours = query.getResultList();
+
+        logger.log(Level.FINEST, "ExpHallHourFacade.findInDatabase: {0}", dayAndHour);
+        logger.log(Level.FINEST, "ExpHallHourFacade.findInDatabase: Found: {0}", hours.size());
+
+        ExpHour hour = null;
+
+        if(!hours.isEmpty()) {
+            hour = hours.get(0);
+        }
+
+        return hour;
+    }
+
     /**
      * Fetch the experimenter hall hours for the specified hall, start day and
      * hour, and end day and hour from EPICS, optionally rounded.
