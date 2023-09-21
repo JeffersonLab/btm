@@ -238,18 +238,11 @@ jlab.toUserDateTimeStringUtc = function (x) {
 };
 jlab.fetchMyaData = function (params) {
 
-    var url = '/myquery/interval',
+    var url = jlab.contextPath + '/myquery/interval',
         data = {
             c: params.pv,
             b: params.start,
-            e: params.end,
-            u: 'on',
-            a: 'on',
-            p: 'on',
-            m: params.deployment,
-            l: params.limit,
-            t: 'graphical',
-            i: params.integrate ? 'on' : ''
+            e: params.end
         },
         dataType = "json",
         options = {url: url, type: 'GET', data: data, dataType: dataType, timeout: 60000};
@@ -501,8 +494,6 @@ jlab.initLineChart = function() {
         scalers: [0.000001, 0.000001, 0.000001, 0.000001],
         start: jlab.toIsoDateString(start),
         end: jlab.toIsoDateString(end),
-        limit: 100,
-        integrate: true
     };
 
     jlab.fetchMultiple(params);
