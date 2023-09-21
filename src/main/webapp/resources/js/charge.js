@@ -411,7 +411,7 @@ jlab.fetchMultiple = function (params) {
         }).catch(error => {
             console.log("Unable to query MYA data", error);
             $("#busy-wait").hide();
-            alert('Unable to query MYA');
+            $(".error-box").text('Unable to query MYA');
         });
     }
 };

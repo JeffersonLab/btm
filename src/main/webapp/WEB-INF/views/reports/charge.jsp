@@ -120,6 +120,7 @@
                 </c:when>
                 <c:otherwise>
                     <div class="message-box"><c:out value="${selectionMessage}"/></div>
+                    <div class="error-box"></div>
                     <c:if test="${period > 0}">
                                 <s:chart-widget>
                                     <table class="chart-legend">
