@@ -4,6 +4,7 @@ import org.jlab.btm.business.service.audit.ExpHourAudService;
 import org.jlab.btm.persistence.entity.audit.ExpHourAud;
 import org.jlab.btm.persistence.enumeration.DurationUnits;
 import org.jlab.smoothness.business.util.TimeUtil;
+import org.jlab.smoothness.persistence.enumeration.Hall;
 import org.jlab.smoothness.presentation.util.Paginator;
 import org.jlab.smoothness.presentation.util.ParamConverter;
 import org.jlab.smoothness.presentation.util.ParamUtil;
@@ -51,12 +52,19 @@ public class ExpHourAudController extends HttpServlet {
         List<ExpHourAud> entityList = null;
         Long totalRecords = 0L;
         String selectionMessage = "";
+        Hall hall = null;
         
         if(entityId != null) {
             entityList = audService.filterList(entityId, revisionId, offset, maxPerPage);
+
+            if(entityList != null && !entityList.isEmpty()) {
+                hall = entityList.get(0).getHall();
+            }
+
             totalRecords = audService.countFilterList(entityId, revisionId);
             SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy HH z");
-            selectionMessage = format.format(entityList.get(0).getDayAndHour()) +
+            selectionMessage = (hall == null ? "" : hall.name() + " ") +
+                    format.format(entityList.get(0).getDayAndHour()) +
                     " (" +
                     entityId +
                     ")";

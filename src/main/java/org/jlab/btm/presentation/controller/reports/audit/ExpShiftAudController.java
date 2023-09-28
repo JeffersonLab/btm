@@ -3,6 +3,7 @@ package org.jlab.btm.presentation.controller.reports.audit;
 import org.jlab.btm.business.service.audit.ExpShiftAudService;
 import org.jlab.btm.business.util.BtmTimeUtil;
 import org.jlab.btm.persistence.entity.audit.ExpShiftAud;
+import org.jlab.smoothness.persistence.enumeration.Hall;
 import org.jlab.smoothness.presentation.util.Paginator;
 import org.jlab.smoothness.presentation.util.ParamConverter;
 import org.jlab.smoothness.presentation.util.ParamUtil;
@@ -50,12 +51,19 @@ public class ExpShiftAudController extends HttpServlet {
         List<ExpShiftAud> entityList = null;
         Long totalRecords = 0L;
         String selectionMessage = "";
+        Hall hall = null;
 
         if(entityId != null) {
             entityList = audService.filterList(entityId, revisionId, offset, maxPerPage);
+
+            if(entityList != null && !entityList.isEmpty()) {
+                hall = entityList.get(0).getHall();
+            }
+
             totalRecords = audService.countFilterList(entityId, revisionId);
             SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
-            selectionMessage = format.format(entityList.get(0).getStartDayAndHour()) +
+            selectionMessage = (hall == null ? "" : hall.name() + " ") +
+                    format.format(entityList.get(0).getStartDayAndHour()) +
                     " " +
                     BtmTimeUtil.calculateExperimenterShift(entityList.get(0).getStartDayAndHour()).name() +
                     " (" +
