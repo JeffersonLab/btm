@@ -64,7 +64,7 @@ public class MyqueryInterval extends HttpServlet {
         builder.add("c", channel);
         builder.add("b", begin);
         builder.add("e", end);
-        builder.add("m", "history");
+        builder.add("m", "ops"); // history deployment goes further back, but doesn't have current month!
         builder.add("u", "on");
         builder.add("a", "on");
         builder.add("p", "on"); // Include Previous point
