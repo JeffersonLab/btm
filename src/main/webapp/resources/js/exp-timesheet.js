@@ -1,6 +1,27 @@
 var jlab = jlab || {};
 jlab.btm = jlab.btm || {};
 
+jlab.btm.openForm = function() {
+    console.log('form opened');
+
+    $("#reload-button").attr("disabled", "disabled");
+};
+
+jlab.btm.closeForm = function() {
+  console.log('form closed');
+
+  if(!jlab.btm.isFormOpen()) {
+      $("#reload-button").removeAttr("disabled");
+  }
+};
+
+jlab.btm.isFormOpen = function() {
+    let shiftInfoOpen = $("#leader").is(':visible'),
+        hoursOpen = $("#exp-hourly-table tbody tr input").is(':visible');
+
+    return shiftInfoOpen || hoursOpen;
+};
+
 jlab.btm.getMillisecondsToNextHour = function() {
     let now = new Date(),
         nowMilli = now.getMilliseconds(),
@@ -27,36 +48,17 @@ jlab.btm.refreshOnTheHour = function() {
     setTimeout("jlab.btm.refreshOnTheHour()", timeout);
 };
 
-jlab.btm.getPreviousHour = function() {
-    var now = new Date(),
-        nowHours = now.getHours();
-
-    return nowHours - 1;
-};
-
-jlab.btm.isRowOpen = function(row) {
-    return row.hasClass('ui-state-highlight');
-};
-
-jlab.btm.isRowSaved = function(row) {
-    return $(':contains(DB)', row).length > 0;
-};
-
 jlab.btm.handleRefreshEvent = function() {
-    var hourToUpdate, row, rowOpen, rowSaved;
-
-    hourToUpdate = jlab.btm.getPreviousHour();
-    row = jlab.btm.getRowAtHour(tableWidgetVar, hourToUpdate);
-
-    if(row.length == 1){
-        rowOpen = jlab.btm.isRowOpen(row);
-        rowSaved = jlab.btm.isRowSaved(row);
-
-        if(!rowOpen && !rowSaved) {
-            jlab.btm.refreshRow(row);
-        }
+    if(!jlab.btm.isFormOpen()) {
+        console.log('executing automatic reload');
+        window.location.reload();
+    } else {
+        console.log('skipping hourly refresh as form is open');
     }
 };
+
+var timeout = jlab.btm.getRefreshTimeout();
+setTimeout("jlab.btm.refreshOnTheHour()", timeout);
 
 $(document).on("click", "#reload-button", function() {
     window.location.reload();
@@ -671,6 +673,8 @@ $(document).on("click", "#edit-all-button", function () {
     $table.find("input").show();
     $commentsTable.find("td span").hide();
     $commentsTable.find("textarea").show();
+
+    jlab.btm.openForm();
 });
 
 $(document).on("click", "#edit-cc-only-button", function () {
@@ -682,6 +686,8 @@ $(document).on("click", "#edit-cc-only-button", function () {
 
     $("#edit-all-button").hide();
 
+    $table.find("tbody tr:last .ui-icon-close").click();
+
     $editButton.hide();
     $saveButton.show();
     $cancelButton.show();
@@ -689,6 +695,8 @@ $(document).on("click", "#edit-cc-only-button", function () {
     $table.find("tbody tr").not(":last").find("input").show();
     $commentsTable.find("td span").hide();
     $commentsTable.find("textarea").not(":last").show();
+
+    jlab.btm.openForm();
 });
 
 $(document).on("click", ".hour-cancel-button", function () {
@@ -722,6 +730,8 @@ $(document).on("click", ".hour-cancel-button", function () {
 
     jlab.btm.validateHourTableRowTotal($table);
     jlab.btm.updateAllDurationColumnTotals($table);
+
+    jlab.btm.closeForm();
 });
 
 $(document).on("click", "#edit-shift-info-button", function () {
@@ -735,6 +745,8 @@ $(document).on("click", "#edit-shift-info-button", function () {
     $cancelButton.show();
     $form.find(".li-value span").hide();
     $form.find(".li-value .input").show();
+
+    jlab.btm.openForm();
 });
 
 $(document).on("click", "#cancel-shift-info-button", function () {
@@ -754,6 +766,8 @@ $(document).on("click", "#cancel-shift-info-button", function () {
     });
 
     $("#program").val($("#program").attr("data-purpose-id"));
+
+    jlab.btm.closeForm();
 });
 
 $(document).on("click", "#save-shift-info-button", function () {
@@ -789,6 +803,8 @@ $(document).on("click", ".ui-icon-pencil", function () {
 
     $commentRow.find("td span").hide();
     $commentRow.find("textarea").show();
+
+    jlab.btm.openForm();
 });
 
 $(document).on("click", ".ui-icon-close", function () {
@@ -802,6 +818,8 @@ $(document).on("click", ".ui-icon-close", function () {
     $textarea.hide();
 
     $textarea.val($textarea.prev().text());
+
+    jlab.btm.closeForm();
 });
 
 $(document).on("click", ".ui-icon-minusthick", function () {
