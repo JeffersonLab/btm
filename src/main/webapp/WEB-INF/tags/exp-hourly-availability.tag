@@ -244,8 +244,8 @@
                     </c:forEach>
                     </tbody>
                 </table>
-
                 <div class="accordion-button-panel">
+                    <button type="button" id="reload-button" style="float:left;">Reload EPICS Measured</button>
                     <button type="button" id="edit-all-button"
                             class="hour-edit-button"${editable ? '' : ' disabled="disabled"'}>Edit All
                     </button>

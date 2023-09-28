@@ -1,6 +1,67 @@
 var jlab = jlab || {};
 jlab.btm = jlab.btm || {};
 
+jlab.btm.getMillisecondsToNextHour = function() {
+    let now = new Date(),
+        nowMilli = now.getMilliseconds(),
+        nowSeconds = now.getSeconds(),
+        nowMinutes = now.getMinutes(),
+        milliToNextHour = 3600000 - (nowMilli + (nowSeconds * 1000) + (nowMinutes * 60000));
+
+    return milliToNextHour;
+};
+
+jlab.btm.getRefreshTimeout = function() {
+    var timeout = jlab.btm.getMillisecondsToNextHour();
+
+    timeout = timeout + 60000; // We wait one minute after hour
+
+    return timeout;
+};
+
+jlab.btm.refreshOnTheHour = function() {
+    jlab.btm.handleRefreshEvent();
+
+    var timeout = jlab.btm.getRefreshTimeout();
+
+    setTimeout("jlab.btm.refreshOnTheHour()", timeout);
+};
+
+jlab.btm.getPreviousHour = function() {
+    var now = new Date(),
+        nowHours = now.getHours();
+
+    return nowHours - 1;
+};
+
+jlab.btm.isRowOpen = function(row) {
+    return row.hasClass('ui-state-highlight');
+};
+
+jlab.btm.isRowSaved = function(row) {
+    return $(':contains(DB)', row).length > 0;
+};
+
+jlab.btm.handleRefreshEvent = function() {
+    var hourToUpdate, row, rowOpen, rowSaved;
+
+    hourToUpdate = jlab.btm.getPreviousHour();
+    row = jlab.btm.getRowAtHour(tableWidgetVar, hourToUpdate);
+
+    if(row.length == 1){
+        rowOpen = jlab.btm.isRowOpen(row);
+        rowSaved = jlab.btm.isRowSaved(row);
+
+        if(!rowOpen && !rowSaved) {
+            jlab.btm.refreshRow(row);
+        }
+    }
+};
+
+$(document).on("click", "#reload-button", function() {
+    window.location.reload();
+});
+
 jlab.btm.addExplanation = function () {
     if (jlab.isRequest()) {
         window.console && console.log("Ajax already in progress");
