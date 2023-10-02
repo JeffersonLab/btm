@@ -107,8 +107,12 @@ public class ActivityAudit extends HttpServlet {
             }
         }
 
-        if(params.getShift() != null && params.getType() == null) {
-            throw new RuntimeException("Shift requires timesheet type");
+        if(params.getShift() != null && (params.getType() == null || params.getTimesheetDate() == null)) {
+            throw new RuntimeException("Shift requires timesheet type and day");
+        }
+
+        if(params.getTimesheetDate() != null && (params.getType() == null || params.getShift() == null)) {
+            throw new RuntimeException("Timesheet Date requires timesheet type and shift");
         }
     }
 

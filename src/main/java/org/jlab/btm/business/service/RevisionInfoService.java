@@ -2,6 +2,7 @@ package org.jlab.btm.business.service;
 
 import org.hibernate.envers.RevisionType;
 import org.jlab.btm.business.params.ActivityAuditParams;
+import org.jlab.btm.business.util.BtmTimeUtil;
 import org.jlab.btm.persistence.entity.*;
 import org.jlab.btm.persistence.entity.audit.CcAccHourAud;
 import org.jlab.btm.persistence.entity.audit.CcShiftAud;
@@ -9,6 +10,7 @@ import org.jlab.btm.persistence.entity.audit.ExpHourAud;
 import org.jlab.btm.persistence.entity.audit.ExpShiftAud;
 import org.jlab.btm.persistence.enumeration.TimesheetType;
 import org.jlab.btm.persistence.projection.AuditedEntityChange;
+import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 import javax.annotation.security.PermitAll;
@@ -54,15 +56,29 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
         }
 
         if (params.getType() != null) {
+            Date startHour = null;
+            Date endHour = null;
+
             if(params.getType() == TimesheetType.CC) {
+                if(params.getShift() != null && params.getTimesheetDate() != null) {
+                    startHour = TimeUtil.getCrewChiefStartDayAndHour(params.getTimesheetDate(), params.getShift());
+                    endHour = TimeUtil.getCrewChiefEndDayAndHour(params.getTimesheetDate(), params.getShift());
+                }
+
                 Subquery<Integer> shiftSubquery = cq.subquery(Integer.class);
                 Root<CcShiftAud> shiftRoot = shiftSubquery.from(CcShiftAud.class);
                 shiftSubquery.select(shiftRoot.get("revision"));
+                if(startHour != null) {
+                    shiftSubquery.where(cb.equal(shiftRoot.get("startDayAndHour"), startHour));
+                }
                 Predicate shiftPredicate = cb.in(root.get("id")).value(shiftSubquery);
 
                 Subquery<Integer> accHourSubquery = cq.subquery(Integer.class);
                 Root<CcAccHourAud> accHourRoot = accHourSubquery.from(CcAccHourAud.class);
                 accHourSubquery.select(accHourRoot.get("revision"));
+                if(startHour != null) {
+                    accHourSubquery.where(cb.and(cb.greaterThanOrEqualTo(accHourRoot.get("dayAndHour"), startHour)), cb.lessThanOrEqualTo(accHourRoot.get("dayAndHour"), endHour));
+                }
                 Predicate accHourPredicate = cb.in(root.get("id")).value(accHourSubquery);
 
                 /*Subquery<Integer> signatureSubquery = cq.subquery(Integer.class);
@@ -72,6 +88,11 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
 
                 filters.add(cb.or(shiftPredicate, accHourPredicate));
             } else {
+                if(params.getShift() != null && params.getTimesheetDate() != null) {
+                    startHour = BtmTimeUtil.getExperimenterStartDayAndHour(params.getTimesheetDate(), params.getShift());
+                    endHour = BtmTimeUtil.getExperimenterEndDayAndHour(params.getTimesheetDate(), params.getShift());
+                }
+
                 Hall hall;
 
                 switch(params.getType()) {
