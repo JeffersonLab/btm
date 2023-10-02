@@ -18,7 +18,7 @@
     <thead>
     <tr>
         <th></th>
-        <th colspan="2">Timesheet Status</th>
+        <th colspan="2">CC Shift Hours Status</th>
         <th rowspan="2"></th>
         <th colspan="5">Experimenter Hall Time Accounting</th>
         <th rowspan="2"></th>

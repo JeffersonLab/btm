@@ -44,7 +44,8 @@
             <div id="as-of">As of <fmt:formatDate value="${now}" pattern="dd MMM yyyy HH:mm:ss"/> (<a id="reload-page"
                                                                                                       href="#">Reload</a>)
             </div>
-            <p id="call-hall-note">Note: You must call each hall with an incomplete timesheet that is scheduled for
+            <p id="call-hall-note">Note: Experimenter CC Shift Hours Status above only indicates if hours needed for a CC shift report are saved (last hour of shift, shift info, and signatures are ignored).
+                See Experimenter timesheet for full status.  You must call each hall with incomplete CC Shift Hours that is scheduled for
                 physics and ask them to submit all but the last hour of their shift (&quot;Edit CC Hours&quot; button) and the last hour from the previous
                 shift as this is needed for the Crew Chief Shift Log</p>
             <h5>Crew Chief Comments</h5>
