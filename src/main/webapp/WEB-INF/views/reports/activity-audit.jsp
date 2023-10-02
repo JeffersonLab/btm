@@ -9,14 +9,63 @@
     <jsp:attribute name="stylesheets"> 
     </jsp:attribute>
     <jsp:attribute name="scripts">
+        <script>
+            $(document).on("click", ".default-clear-panel", function () {
+                $("#type").val('');
+                $("#shift").val('');
+                $("#date").val('');
+                $("#start").val('');
+                $("#end").val('');
+                $("#date-range").val('custom').trigger('change');
+                return false;
+            });
+        </script>
     </jsp:attribute>        
     <jsp:body>
         <section>
-            <s:filter-flyout-widget>
+            <s:filter-flyout-widget clearButton="true">
                 <form id="filter-form" method="get" action="activity-audit">
                     <fieldset>
-                        <legend>Time</legend>
+                        <legend>Modified Between</legend>
                         <s:date-range datetime="${true}" sevenAmOffset="${true}"/>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Timesheet</legend>
+                        <ul class="key-value-list">
+                            <li>
+                                <div class="li-key"><label for="type">Type</label></div>
+                                <div class="li-value">
+                                    <select id="type" name="type">
+                                        <option value="">&nbsp;</option>
+                                        <option value="cc"${param.type eq 'cc' ? ' selected="selected"' : ''}>Crew Chief</option>
+                                        <option value="ea"${param.type eq 'ea' ? ' selected="selected"' : ''}>Experimenter A</option>
+                                        <option value="eb"${param.type eq 'eb' ? ' selected="selected"' : ''}>Experimenter B</option>
+                                        <option value="ec"${param.type eq 'ec' ? ' selected="selected"' : ''}>Experimenter C</option>
+                                        <option value="ed"${param.type eq 'ed' ? ' selected="selected"' : ''}>Experimenter D</option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="li-key"><label for="date">Date</label></div>
+                                <div class="li-value"><input id="date" name="date" class="datepicker" placeholder="DD-MMM-YYYY"
+                                                             type="text" value="${param.date}"/></div>
+                            </li>
+                            <li>
+                                <div class="li-key"><label for="shift">Shift</label></div>
+                                <div class="li-value">
+                                    <select id="shift" name="shift">
+                                        <option value="">&nbsp;</option>
+                                        <option value="owl"${param.shift eq 'owl' ? ' selected="selected"' : ''}>Owl
+                                        </option>
+                                        <option value="day"${param.shift eq 'day' ? ' selected="selected"' : ''}>Day
+                                        </option>
+                                        <option value="swing"${param.shift eq 'swing' ? ' selected="selected"' : ''}>
+                                            Swing
+                                        </option>
+                                    </select>
+                                </div>
+                            </li>
+                        </ul>
                     </fieldset>
                     <input type="hidden" id="offset-input" name="offset" value="0"/>
                     <input id="filter-form-submit-button" type="submit" value="Apply"/>
@@ -29,15 +78,8 @@
                 <li><a href="${pageContext.request.contextPath}/reports/activity-audit/cc-shift">CCShift</a></li>
                 <li><a href="${pageContext.request.contextPath}/reports/activity-audit/exp-hour">ExpHour</a></li>
                 <li><a href="${pageContext.request.contextPath}/reports/activity-audit/cc-acc-hour">CcAccHour</a></li>
-            </ul>             
-            <c:choose>
-                <c:when test="${fn:length(revisionList) == 0}">
-                    <div class="message-box">Found 0 Transactions</div>
-                </c:when>
-                <c:otherwise>                                
-                    <div class="message-box">Showing Transactions <fmt:formatNumber value="${paginator.startNumber}"/> - <fmt:formatNumber value="${paginator.endNumber}"/> of <fmt:formatNumber value="${paginator.totalRecords}"/></div>           
-                </c:otherwise>
-            </c:choose>
+            </ul>
+            <div class="message-box"><c:out value="${selectionMessage}"/></div>
             <div>
                 <c:if test="${fn:length(revisionList) > 0}">     
                     <table class="data-table stripped-table">

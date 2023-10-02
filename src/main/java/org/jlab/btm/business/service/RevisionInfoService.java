@@ -1,6 +1,7 @@
 package org.jlab.btm.business.service;
 
 import org.hibernate.envers.RevisionType;
+import org.jlab.btm.business.params.ActivityAuditParams;
 import org.jlab.btm.persistence.entity.*;
 import org.jlab.btm.persistence.projection.AuditedEntityChange;
 import org.jlab.smoothness.persistence.enumeration.Hall;
@@ -39,7 +40,7 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
     }
 
     @PermitAll
-    public List<RevisionInfo> filterList(Date modifiedStart, Date modifiedEnd, int offset, int max) {
+    public List<RevisionInfo> filterList(ActivityAuditParams params) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<RevisionInfo> cq = cb.createQuery(RevisionInfo.class);
         Root<RevisionInfo> root = cq.from(RevisionInfo.class);
@@ -47,12 +48,12 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
 
         List<Predicate> filters = new ArrayList<>();
 
-        if (modifiedStart != null) {
-            filters.add(cb.greaterThanOrEqualTo(root.get("ts"), modifiedStart.getTime()));
+        if (params.getModifiedStart() != null) {
+            filters.add(cb.greaterThanOrEqualTo(root.get("ts"), params.getModifiedStart().getTime()));
         }
 
-        if (modifiedEnd != null) {
-            filters.add(cb.lessThan(root.get("ts"), modifiedEnd.getTime()));
+        if (params.getModifiedEnd() != null) {
+            filters.add(cb.lessThan(root.get("ts"), params.getModifiedEnd().getTime()));
         }
 
         if (!filters.isEmpty()) {
@@ -64,7 +65,7 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
         orders.add(o0);
         cq.orderBy(orders);
 
-        List<RevisionInfo> revisionList = getEntityManager().createQuery(cq).setFirstResult(offset).setMaxResults(max).getResultList();
+        List<RevisionInfo> revisionList = getEntityManager().createQuery(cq).setFirstResult(params.getOffset()).setMaxResults(params.getMaxPerPage()).getResultList();
 
         if (revisionList != null) {
             for (RevisionInfo revision : revisionList) {
@@ -76,19 +77,19 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
     }
 
     @PermitAll
-    public Long countFilterList(Date modifiedStart, Date modifiedEnd) {
+    public Long countFilterList(ActivityAuditParams params) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         Root<RevisionInfo> root = cq.from(RevisionInfo.class);
 
         List<Predicate> filters = new ArrayList<>();
 
-        if (modifiedStart != null) {
-            filters.add(cb.greaterThanOrEqualTo(root.get("ts"), modifiedStart.getTime()));
+        if (params.getModifiedStart() != null) {
+            filters.add(cb.greaterThanOrEqualTo(root.get("ts"), params.getModifiedStart().getTime()));
         }
 
-        if (modifiedEnd != null) {
-            filters.add(cb.lessThan(root.get("ts"), modifiedEnd.getTime()));
+        if (params.getModifiedEnd() != null) {
+            filters.add(cb.lessThan(root.get("ts"), params.getModifiedEnd().getTime()));
         }
 
         if (!filters.isEmpty()) {

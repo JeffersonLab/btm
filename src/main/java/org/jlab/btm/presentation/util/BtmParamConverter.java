@@ -252,7 +252,7 @@ public final class BtmParamConverter {
         String valueStr = request.getParameter(name);
         TimesheetType value = null;
 
-        if(valueStr != null) {
+        if(valueStr != null && !valueStr.isEmpty()) {
             value = TimesheetType.valueOf(valueStr.toUpperCase());
         }
 
