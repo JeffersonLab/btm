@@ -142,6 +142,13 @@
                     <t:exp-timesheet/>
                 </c:otherwise>
             </c:choose>
+                <fmt:formatDate value="${day}" pattern="dd-MMM-yyyy" var="auditFormattedDate"/>
+                <c:url var="historyUrl" value="/reports/activity-audit">
+                    <c:param name="type" value="${fn:toLowerCase(type)}"/>
+                    <c:param name="date" value="${auditFormattedDate}"/>
+                    <c:param name="shift" value="${fn:toLowerCase(shift)}"/>
+                </c:url>
+                <a style="float: right;" href="${historyUrl}">History</a>    
             </div>
         </section>
     </jsp:body>
