@@ -3,6 +3,11 @@ package org.jlab.btm.business.service;
 import org.hibernate.envers.RevisionType;
 import org.jlab.btm.business.params.ActivityAuditParams;
 import org.jlab.btm.persistence.entity.*;
+import org.jlab.btm.persistence.entity.audit.CcAccHourAud;
+import org.jlab.btm.persistence.entity.audit.CcShiftAud;
+import org.jlab.btm.persistence.entity.audit.ExpHourAud;
+import org.jlab.btm.persistence.entity.audit.ExpShiftAud;
+import org.jlab.btm.persistence.enumeration.TimesheetType;
 import org.jlab.btm.persistence.projection.AuditedEntityChange;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
@@ -39,6 +44,70 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
         super(RevisionInfo.class);
     }
 
+    private void addCommonFilters(CriteriaBuilder cb, CriteriaQuery<? extends Object> cq, Root<RevisionInfo> root, ActivityAuditParams params, List<Predicate> filters) {
+        if (params.getModifiedStart() != null) {
+            filters.add(cb.greaterThanOrEqualTo(root.get("ts"), params.getModifiedStart().getTime()));
+        }
+
+        if (params.getModifiedEnd() != null) {
+            filters.add(cb.lessThan(root.get("ts"), params.getModifiedEnd().getTime()));
+        }
+
+        if (params.getType() != null) {
+            if(params.getType() == TimesheetType.CC) {
+                Subquery<Integer> shiftSubquery = cq.subquery(Integer.class);
+                Root<CcShiftAud> shiftRoot = shiftSubquery.from(CcShiftAud.class);
+                shiftSubquery.select(shiftRoot.get("revision"));
+                Predicate shiftPredicate = cb.in(root.get("id")).value(shiftSubquery);
+
+                Subquery<Integer> accHourSubquery = cq.subquery(Integer.class);
+                Root<CcAccHourAud> accHourRoot = accHourSubquery.from(CcAccHourAud.class);
+                accHourSubquery.select(accHourRoot.get("revision"));
+                Predicate accHourPredicate = cb.in(root.get("id")).value(accHourSubquery);
+
+                /*Subquery<Integer> signatureSubquery = cq.subquery(Integer.class);
+                Root<CcSignatureAud> signatureRoot = signatureSubquery.from(CcSignatureAud.class);
+                signatureSubquery.select(signatureRoot.get("revision"));
+                Predicate signaturePredicate = cb.in(root.get("id")).value(signatureSubquery);*/
+
+                filters.add(cb.or(shiftPredicate, accHourPredicate));
+            } else {
+                Hall hall;
+
+                switch(params.getType()) {
+                    case EA:
+                        hall = Hall.A;
+                        break;
+                    case EB:
+                        hall = Hall.B;
+                        break;
+                    case EC:
+                        hall = Hall.C;
+                        break;
+                    case ED:
+                        hall = Hall.D;
+                        break;
+                    default:
+                        throw new RuntimeException("Unknown hall: " + params.getType());
+                }
+
+                Subquery<Integer> shiftSubquery = cq.subquery(Integer.class);
+                Root<ExpShiftAud> shiftRoot = shiftSubquery.from(ExpShiftAud.class);
+                shiftSubquery.select(shiftRoot.get("revision"));
+                shiftSubquery.where(cb.equal(shiftRoot.get("hall"), hall));
+                Predicate shiftPredicate = cb.in(root.get("id")).value(shiftSubquery);
+
+                Subquery<Integer> hourSubquery = cq.subquery(Integer.class);
+                Root<ExpHourAud> hourRoot = hourSubquery.from(ExpHourAud.class);
+                hourSubquery.select(hourRoot.get("revision"));
+                hourSubquery.where(cb.equal(hourRoot.get("hall"), hall));
+                Predicate hourPredicate = cb.in(root.get("id")).value(hourSubquery);
+
+                filters.add(cb.or(shiftPredicate, hourPredicate));
+            }
+        }
+    }
+
     @PermitAll
     public List<RevisionInfo> filterList(ActivityAuditParams params) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
@@ -48,13 +117,7 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
 
         List<Predicate> filters = new ArrayList<>();
 
-        if (params.getModifiedStart() != null) {
-            filters.add(cb.greaterThanOrEqualTo(root.get("ts"), params.getModifiedStart().getTime()));
-        }
-
-        if (params.getModifiedEnd() != null) {
-            filters.add(cb.lessThan(root.get("ts"), params.getModifiedEnd().getTime()));
-        }
+        addCommonFilters(cb, cq, root, params, filters);
 
         if (!filters.isEmpty()) {
             cq.where(cb.and(filters.toArray(new Predicate[]{})));
@@ -84,13 +147,7 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
 
         List<Predicate> filters = new ArrayList<>();
 
-        if (params.getModifiedStart() != null) {
-            filters.add(cb.greaterThanOrEqualTo(root.get("ts"), params.getModifiedStart().getTime()));
-        }
-
-        if (params.getModifiedEnd() != null) {
-            filters.add(cb.lessThan(root.get("ts"), params.getModifiedEnd().getTime()));
-        }
+        addCommonFilters(cb, cq, root, params, filters);
 
         if (!filters.isEmpty()) {
             cq.where(cb.and(filters.toArray(new Predicate[]{})));
