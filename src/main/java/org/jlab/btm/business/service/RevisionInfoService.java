@@ -115,13 +115,21 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
                 Subquery<Integer> shiftSubquery = cq.subquery(Integer.class);
                 Root<ExpShiftAud> shiftRoot = shiftSubquery.from(ExpShiftAud.class);
                 shiftSubquery.select(shiftRoot.get("revision"));
-                shiftSubquery.where(cb.equal(shiftRoot.get("hall"), hall));
+                Predicate shiftWherePredicate = cb.equal(shiftRoot.get("hall"), hall);
+                if(startHour != null) {
+                    shiftWherePredicate = cb.and(shiftWherePredicate, cb.equal(shiftRoot.get("startDayAndHour"), startHour));
+                }
+                shiftSubquery.where(shiftWherePredicate);
                 Predicate shiftPredicate = cb.in(root.get("id")).value(shiftSubquery);
 
                 Subquery<Integer> hourSubquery = cq.subquery(Integer.class);
                 Root<ExpHourAud> hourRoot = hourSubquery.from(ExpHourAud.class);
                 hourSubquery.select(hourRoot.get("revision"));
-                hourSubquery.where(cb.equal(hourRoot.get("hall"), hall));
+                Predicate hourWherePredicate = cb.equal(hourRoot.get("hall"), hall);
+                if(startHour != null) {
+                    hourWherePredicate = cb.and(hourWherePredicate, cb.and(cb.greaterThanOrEqualTo(hourRoot.get("dayAndHour"), startHour)), cb.lessThanOrEqualTo(hourRoot.get("dayAndHour"), endHour));
+                }
+                hourSubquery.where(hourWherePredicate);
                 Predicate hourPredicate = cb.in(root.get("id")).value(hourSubquery);
 
                 filters.add(cb.or(shiftPredicate, hourPredicate));
