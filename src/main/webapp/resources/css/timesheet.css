@@ -1,3 +1,69 @@
+.flyout-panel {
+    border: 1px solid black;
+    width: 500px;
+    height: 250px;
+    position: absolute;
+    right: -553px;
+    top: -40px;
+    z-index: 2;
+    background-color: white;
+    border-radius: 0.5em;
+    box-shadow: 0.5em 0.5em 0.5em #979797;
+    padding: 16px;
+    font-size: 16px;
+
+    text-align: left;
+}
+#flyouts {
+    display: none;
+}
+.definition-flyout-handle {
+    position: relative;
+}
+.flyout-panel:after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-right: 20px solid white;
+    top: 10%;
+    margin-top: -20px;
+    position: absolute;
+    left: -20px;
+}
+.flyout-panel:before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 21px solid transparent;
+    border-bottom: 21px solid transparent;
+    border-right: 21px solid black;
+    top: 10%;
+    margin-top: -21px;
+    position: absolute;
+    left: -21px;
+}
+.close-bubble {
+    float: right;
+    min-width: inherit;
+}
+.definition-bubble-title {
+    margin-bottom: 1em;
+}
+.definition-bubble-body {
+    font-weight: normal;
+    height: 200px;
+    overflow: auto;
+    font-size: 12px;
+}
+.flyout-parent {
+    display: inline-block;
+}
+.flyout-parent a.flyout-link {
+    color: blue;
+}
+
 .status-section-header {
     font-style: italic;
     font-size: 0.75em;

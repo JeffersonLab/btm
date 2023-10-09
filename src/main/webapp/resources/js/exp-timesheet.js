@@ -844,3 +844,15 @@ $(function () {
         minWidth: 500
     });
 });
+
+$(document).on("click", ".flyout-link", function () {
+    $(".definition-flyout-handle").remove();
+    var flyout = $("." + $(this).attr("data-flyout-type") + " .flyout-panel").clone();
+    $(this).parent().append('<div class="definition-flyout-handle"></div>');
+    $(".definition-flyout-handle").append(flyout);
+    return false;
+});
+$(document).on("click", ".close-bubble", function () {
+    $(".definition-flyout-handle").remove();
+    return false;
+});

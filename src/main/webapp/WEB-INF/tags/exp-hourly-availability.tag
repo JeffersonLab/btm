@@ -126,7 +126,7 @@
                         <th class="duration-header" title="Beam Available, but Not Used">BANU</th>
                         <th class="duration-header" title="Beam Not Available or unacceptable">BNA</th>
                         <th class="duration-header" title="Accelerator Configuration Change">ACC</th>
-                        <th class="duration-header">OFF</th>
+                        <th class="duration-header">OFF<div class="flyout-parent"><a class="flyout-link" data-flyout-type="off-flyout" href="#">*</a></div></th>
                         <th class="duration-header" title="Experiment Ready">ER</th>
                         <th class="duration-header" title="Planned Configuration Change">PCC</th>
                         <th class="duration-header" title="Unplanned Experiment Down">UED</th>
