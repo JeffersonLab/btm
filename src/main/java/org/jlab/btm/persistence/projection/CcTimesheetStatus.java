@@ -76,4 +76,8 @@ public class CcTimesheetStatus {
     public void setSignatureComplete(boolean signature) {
         this.signatureComplete = signature;
     }
+
+    public boolean isTimesheetComplete() {
+        return signatureComplete;
+    }
 }

@@ -99,22 +99,10 @@
 <button id="sign-button" type="button" class="ajax-submit"${editable ? '' : ' disabled="disabled"'}>Sign</button>
 <div id="status-dialog" class="dialog" title="Timesheet Status">
     <form>
+        <div class="status-section-header">Needed For Crew Chief Shift</div>
         <ul class="key-value-list">
             <li>
-                <div class="li-key"><span>Utilization and Availability:</span></div>
-                <div class="li-value">
-                    <c:choose>
-                        <c:when test="${status.availabilityComplete}">
-                            <span id="availability-status-value" class="complete-status">Complete</span>
-                        </c:when>
-                        <c:otherwise>
-                            <span id="availability-status-value" class="incomplete-status">Incomplete</span>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-            </li>
-            <li>
-                <div class="li-key"><span>Current Shift All but Last Hour (for CC):</span></div>
+                <div class="li-key"><span>Current Shift All but Last Hour:</span></div>
                 <div class="li-value">
                     <c:choose>
                         <c:when test="${status.ccHoursComplete}">
@@ -127,7 +115,7 @@
                 </div>
             </li>
             <li>
-                <div class="li-key"><span>Previous Shift Last Hour (for CC):</span></div>
+                <div class="li-key"><span>Previous Shift Last Hour:</span></div>
                 <div class="li-value">
                     <c:choose>
                         <c:when test="${status.previousLastHourComplete}">
@@ -135,6 +123,22 @@
                         </c:when>
                         <c:otherwise>
                             <span id="previous-last-hour-status-value" class="incomplete-status">Incomplete</span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </li>
+        </ul>
+        <div class="status-section-header">Needed for Experimenter Shift</div>
+        <ul class="key-value-list">
+            <li>
+                <div class="li-key"><span>Utilization and Availability:</span></div>
+                <div class="li-value">
+                    <c:choose>
+                        <c:when test="${status.availabilityComplete}">
+                            <span id="availability-status-value" class="complete-status">Complete</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span id="availability-status-value" class="incomplete-status">Incomplete</span>
                         </c:otherwise>
                     </c:choose>
                 </div>

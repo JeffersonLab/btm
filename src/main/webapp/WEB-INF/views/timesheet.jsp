@@ -125,7 +125,7 @@
                  data-day="${endOfShiftDay}" data-hour="${endOfShiftHour}"></div>
             <div id="status-div"><a id="status-label" href="#">Status:</a>
                 <c:choose>
-                    <c:when test="${fn:length(signatureList) > 0}">
+                    <c:when test="${status.timesheetComplete}">
                         <span class="complete-status">Complete</span>
                     </c:when>
                     <c:otherwise>

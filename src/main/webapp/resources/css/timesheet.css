@@ -1,3 +1,8 @@
+.status-section-header {
+    font-style: italic;
+    font-size: 0.75em;
+    color: rgb(128, 128, 128);
+}
 .plan-list a {
     font-weight: bold;
     color: blue;

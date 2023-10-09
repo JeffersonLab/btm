@@ -70,4 +70,11 @@ public class ExpTimesheetStatus {
     public List<HourReasonDiscrepancy> getReasonDiscrepancyList() {
         return reasonDiscrepancyList;
     }
+
+    /**
+     * Since the CC previous hour is tied to another timesheet you can't just look to see if current timesheet signature exists.
+     **/
+    public boolean isTimesheetComplete() {
+        return signatureComplete && shiftInfoComplete && reasonsNotReadyComplete && availabilityComplete && previousLastHourComplete;
+    }
 }
