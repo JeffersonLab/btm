@@ -2,14 +2,8 @@ package org.jlab.btm.presentation.controller.ajax;
 
 import org.jlab.btm.business.service.*;
 import org.jlab.btm.business.util.BtmTimeUtil;
-import org.jlab.btm.persistence.entity.CcHallHour;
-import org.jlab.btm.persistence.entity.CcShift;
-import org.jlab.btm.persistence.entity.PdShiftPlan;
 import org.jlab.btm.persistence.enumeration.DurationUnits;
 import org.jlab.btm.persistence.enumeration.TimesheetType;
-import org.jlab.btm.persistence.projection.AcceleratorShiftAvailability;
-import org.jlab.btm.persistence.projection.CcHallShiftAvailability;
-import org.jlab.btm.persistence.projection.MultiplicityShiftAvailability;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.btm.presentation.util.InternalHtmlRequestExecutor;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
@@ -30,9 +24,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
