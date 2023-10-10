@@ -198,10 +198,12 @@ public class ExpSignatureService extends AbstractService<ExpSignature> {
         List<ExpProgram> experimentList = programService.findActiveExperimentsByHall(hall);
         List<ExpProgram> nonexperimentList = programService.findActiveNonExperimentsByHall(hall);
 
-        boolean editable = ruleService.isEditAllowed(hall, startHour);
+        String readonlyReason = ruleService.checkForEditDeniedReason(hall, startHour);
+        boolean editable = readonlyReason == null;
 
         request.setAttribute("status", status);
         request.setAttribute("editable", editable);
+        request.setAttribute("readonlyReason", readonlyReason);
         request.setAttribute("reasonList", reasonList);
         request.setAttribute("explanationList", explanationList);
         request.setAttribute("explanationSecondsTotal", explanationSecondsTotal);

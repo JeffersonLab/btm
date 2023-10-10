@@ -1,3 +1,7 @@
+.readonly-reason {
+    margin: 1em 0;
+    color: rgb(128, 128, 128);
+}
 .flyout-panel {
     border: 1px solid black;
     width: 500px;

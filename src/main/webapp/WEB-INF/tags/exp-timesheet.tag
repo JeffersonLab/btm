@@ -96,6 +96,7 @@
         <p>None</p>
     </c:otherwise>
 </c:choose>
+<div class="readonly-reason"><c:out value="${readonlyReason}"/></div>
 <button id="sign-button" type="button" class="ajax-submit"${editable ? '' : ' disabled="disabled"'}>Sign</button>
 <div id="status-dialog" class="dialog" title="Timesheet Status">
     <form>

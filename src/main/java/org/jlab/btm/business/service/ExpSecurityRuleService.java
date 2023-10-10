@@ -78,18 +78,18 @@ public class ExpSecurityRuleService {
         logger.log(Level.WARNING, "isHallManager: {0}", callerIsHallManager);*/
 
         if(anonymous) {
-            return "You cannot anonymously modify a timesheet";
+            return "You must login to modify a timesheet";
         }
 
         // Only allow edits if a superior or colleage hasn't already signed
         if(!callerIsOperabilityManager) {
             if(opSigned) {
-                return "You cannot modify an Operability Manager signed timesheet unless you are an Operability Manager";
+                return "You cannot modify an Admin signed timesheet unless you are an Admin";
             }
 
             if(!callerIsHallManager) {
                 if(hallSigned) {
-                    return "You cannot modify a Hall Manager signed timesheet unless you are a Hall Manager or Operability Manager";
+                    return "You cannot modify a Hall Manager signed timesheet unless you are a Hall Manager or Admin";
                 }
 
                 Date now = new Date();
@@ -101,8 +101,8 @@ public class ExpSecurityRuleService {
                 if(after48Hours && userSigned) {
                     ExpSignature sig = sigChecker.getUserSignature();
 
-                    if(anonymous || !username.equals(sig.getSignedBy())) {
-                        return "After 48 hours you cannot modify a User signed timesheet unless you are the signer, Hall Manager, or Operability Manager";
+                    if(!username.equals(sig.getSignedBy())) {
+                        return "After 48 hours you cannot modify a User signed timesheet unless you are the signer, Hall Manager, or Admin";
                     }
                 }
             }
