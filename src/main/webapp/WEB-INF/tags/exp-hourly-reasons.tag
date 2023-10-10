@@ -83,7 +83,7 @@
             </c:otherwise>
         </c:choose>
         <div class="form-button-panel">
-            <button id="add-reason-button" type="button"${status.reasonDiscrepancyList.size() > 0 ? '' : ' disabled="disabled"'}>Add</button>
+            <button id="add-reason-button" type="button"${editable && status.reasonDiscrepancyList.size() > 0 ? '' : ' disabled="disabled"'}>Add</button>
         </div>
     </form>
 </div>
