@@ -136,9 +136,11 @@ public class ExpSignatureService extends AbstractService<ExpSignature> {
         List<ExpSignature> signatureList = find(hall, startDayAndHour);
 
         for (ExpSignature sig : signatureList) {
-            if (sig.getStartDayAndHour().getTime() == startDayAndHour.getTime()
-                    && sig.getSignedBy().equals(username) && sig.getSignedRole() == role) {
+            if (sig.getSignedBy().equals(username)) {
                 throw new UserFriendlyException("User has already signed the timesheet");
+            }
+            if(sig.getSignedRole() == role) {
+                throw new UserFriendlyException("A " + role.getLabel() + " has already signed the timesheet");
             }
         }
 

@@ -92,11 +92,17 @@ public class ExpSecurityRuleService {
                     return "You cannot modify a Hall Manager signed timesheet unless you are a Hall Manager or Operability Manager";
                 }
 
-                if(userSigned) {
+                Date now = new Date();
+                long differenceMillis = Math.abs(now.getTime() - dayAndHour.getTime());
+                long fourtyEightHoursInMillis = 172_800_000;
+
+                boolean after48Hours = differenceMillis > fourtyEightHoursInMillis;
+
+                if(after48Hours && userSigned) {
                     ExpSignature sig = sigChecker.getUserSignature();
 
                     if(anonymous || !username.equals(sig.getSignedBy())) {
-                        return "You cannot modify a User signed timesheet unless you are the signer, Hall Manager, or Operability Manager";
+                        return "After 48 hours you cannot modify a User signed timesheet unless you are the signer, Hall Manager, or Operability Manager";
                     }
                 }
             }
