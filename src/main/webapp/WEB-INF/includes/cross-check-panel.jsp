@@ -36,7 +36,7 @@
                     </li>
                 </c:if>
             </ul>
-            <h5>Halls</h5>
+            <h5>Hall Time Accounting</h5>
             <t:cross-check-summary hallAvailabilityList="${hallAvailabilityList}"
                                    expHallHourTotalsList="${expHallHourTotalsList}" modeCheck="${modeCrossCheck}"
                                    accCheck="${accCrossCheck}" hallCheck="${hallCrossCheck}"

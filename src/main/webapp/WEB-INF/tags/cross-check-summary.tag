@@ -17,15 +17,26 @@
 <table id="comparison-table" class="data-table" data-start="${startFmt}" data-end="${endFmt}">
     <thead>
     <tr>
-        <th></th>
-        <th colspan="2">CC Shift Hours Status</th>
-        <th rowspan="2"></th>
-        <th colspan="5">Experimenter Hall Time Accounting</th>
-        <th rowspan="2"></th>
-        <th rowspan="2">Cross Check Status</th>
+        <th rowspan="3"></th>
+        <th colspan="2" rowspan="2">CC Shift Hours Status</th>
+        <th rowspan="3"></th>
+        <th colspan="5">Experimenter</th>
+        <th rowspan="3"></th>
+        <th colspan="5">Crew Chief</th>
+        <th rowspan="3"></th>
+        <th rowspan="3">Cross Check Status</th>
     </tr>
     <tr>
-        <th></th>
+        <th>{UP,TUNE}</th>
+        <th>{BNR}</th>
+        <th>{DOWN}</th>
+        <th colspan="2">{OFF}</th>
+        <th colspan="2">{ABU}</th>
+        <th>{BANU}</th>
+        <th>{BNA}</th>
+        <th>{ACC,OFF}</th>
+    </tr>
+    <tr>
         <th class="duration-header">Experimenter</th>
         <th class="duration-header">Crew Chief</th>
         <th title="Acceptable Beam Used">ABU</th>
@@ -33,6 +44,11 @@
         <th title="Beam Not Acceptable (or not available)">BNA</th>
         <th title="Accelerator Configuration Change">ACC</th>
         <th title="The hall is not expected to be receiving beam">OFF</th>
+        <th title="">UP</th>
+        <th title="">TUNE</th>
+        <th title="">BNR</th>
+        <th title="">DOWN</th>
+        <th title="Scheduled Off (this includes ACC)">OFF</th>
     </tr>
     </thead>
     <tbody>
@@ -68,6 +84,12 @@
             <td class="exp-td">${btm:formatDurationLossy(expHallHourTotalsList.get(status.index).bnaSeconds, durationUnits)}</td>
             <td class="exp-td">${btm:formatDurationLossy(expHallHourTotalsList.get(status.index).accSeconds, durationUnits)}</td>
             <td class="exp-td">${btm:formatDurationLossy(expHallHourTotalsList.get(status.index).offSeconds, durationUnits)}</td>
+            <th></th>
+            <td class="exp-td">${btm:formatDurationLossy(hallAvailabilityList.get(status.index).shiftTotals.upSeconds, durationUnits)}</td>
+            <td class="exp-td">${btm:formatDurationLossy(hallAvailabilityList.get(status.index).shiftTotals.tuneSeconds, durationUnits)}</td>
+            <td class="exp-td">${btm:formatDurationLossy(hallAvailabilityList.get(status.index).shiftTotals.bnrSeconds, durationUnits)}</td>
+            <td class="exp-td">${btm:formatDurationLossy(hallAvailabilityList.get(status.index).shiftTotals.downSeconds, durationUnits)}</td>
+            <td class="exp-td">${btm:formatDurationLossy(hallAvailabilityList.get(status.index).shiftTotals.offSeconds, durationUnits)}</td>
             <th></th>
             <td class="${modeCheck.hallPassed[status.index] && accCheck.hallPassed[status.index] && hallCheck.hallPassed[status.index] && multiCheck.hallPassed[status.index] ? '' : 'ui-state-error'}">${modeCheck.hallPassed[status.index] && accCheck.hallPassed[status.index] && hallCheck.hallPassed[status.index] && multiCheck.hallPassed[status.index] ? '✔' : 'X'}</td>
         </tr>
