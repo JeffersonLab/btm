@@ -44,10 +44,10 @@
         <th title="Beam Not Acceptable (or not available)">BNA</th>
         <th title="Accelerator Configuration Change">ACC</th>
         <th title="The hall is not expected to be receiving beam">OFF</th>
-        <th title="">UP</th>
-        <th title="">TUNE</th>
-        <th title="">BNR</th>
-        <th title="">DOWN</th>
+        <th title="Beam available for physics (CW or TUNE mode beam, but measured as CW)">UP</th>
+        <th title="Hall is tuning (CW or pulse/tune mode beam, but measured as pulse/tune mode)">TUNE</th>
+        <th title="Beam Not Requested">BNR</th>
+        <th title="Component failures + FSDs that occurred while attempting to deliver beam to a particular hall (only counted if hall is intended to receive beam)">DOWN</th>
         <th title="Scheduled Off (this includes ACC)">OFF</th>
     </tr>
     </thead>

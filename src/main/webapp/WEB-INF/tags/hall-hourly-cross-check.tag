@@ -13,22 +13,32 @@
     <table class="data-table stripped-table">
         <thead>
         <tr>
-            <th rowspan="2"></th>
+            <th rowspan="3"></th>
             <th colspan="5">Experimenter</th>
-            <th rowspan="2" style="width: 5px;"></th>
+            <th rowspan="3" style="width: 5px;"></th>
             <th colspan="5">Crew Chief</th>
         </tr>
         <tr>
-            <th class="duration-header">ABU {UP,TUNE}</th>
-            <th class="duration-header">BANU {BNR}</th>
-            <th class="duration-header">BNA {DOWN}</th>
-            <th class="duration-header">ACC {OFF}</th>
-            <th class="duration-header">OFF {OFF} </th>
-            <th class="duration-header">UP {ABU}</th>
-            <th class="duration-header">TUNE {ABU}</th>
-            <th class="duration-header">BNR {BANU}</th>
-            <th class="duration-header">DOWN {BNA}</th>
-            <th class="duration-header">OFF {ACC,OFF}</th>
+            <th>{UP,TUNE}</th>
+            <th>{BNR}</th>
+            <th>{DOWN}</th>
+            <th colspan="2">{OFF}</th>
+            <th colspan="2">{ABU}</th>
+            <th>{BANU}</th>
+            <th>{BNA}</th>
+            <th>{ACC,OFF}</th>
+        </tr>
+        <tr>
+            <th class="duration-header">ABU</th>
+            <th class="duration-header">BANU</th>
+            <th class="duration-header">BNA</th>
+            <th class="duration-header">ACC</th>
+            <th class="duration-header">OFF</th>
+            <th class="duration-header">UP</th>
+            <th class="duration-header">TUNE</th>
+            <th class="duration-header">BNR</th>
+            <th class="duration-header">DOWN</th>
+            <th class="duration-header">OFF</th>
         </tr>
         </thead>
         <tbody>
