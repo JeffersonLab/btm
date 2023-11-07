@@ -311,6 +311,7 @@ public class CcSignatureService extends AbstractService<CcSignature> {
         request.setAttribute("hallAvailabilityList", hallAvailabilityList);
         request.setAttribute("multiplicityAvailability", multiplicityAvailability);
         request.setAttribute("expHallHourTotalsList", expHallHourTotalsList);
+        request.setAttribute("expHallAvailabilityList", expHallAvailabilityList);
         request.setAttribute("crossCheckComment", crossCheckComment);
         request.setAttribute("shiftInfo", shiftInfo);
         request.setAttribute("epicsShiftInfo", epicsShiftInfo);

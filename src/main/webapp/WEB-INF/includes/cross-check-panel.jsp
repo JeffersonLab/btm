@@ -89,16 +89,16 @@
     <div id="cross-check-hourly-tab" class="cross-check-details">
         <div id="cross-check-hourly-detail-panel">
             <div class="accordion">
-                <t:hall-hourly-cross-check hall="A" hourCrossCheckList="${hallAHourCrossCheckList}"/>
+                <t:hall-hourly-cross-check hall="A" hourCrossCheckList="${hallAHourCrossCheckList}" expHourList="${expHallAvailabilityList.get(0).hourList}" ccHourList="${hallAvailabilityList.get(0).hourList}"/>
             </div>
             <div class="accordion">
-                <t:hall-hourly-cross-check hall="B" hourCrossCheckList="${hallBHourCrossCheckList}"/>
+                <t:hall-hourly-cross-check hall="B" hourCrossCheckList="${hallBHourCrossCheckList}" expHourList="${expHallAvailabilityList.get(1).hourList}" ccHourList="${hallAvailabilityList.get(1).hourList}"/>
             </div>
             <div class="accordion">
-                <t:hall-hourly-cross-check hall="C" hourCrossCheckList="${hallCHourCrossCheckList}"/>
+                <t:hall-hourly-cross-check hall="C" hourCrossCheckList="${hallCHourCrossCheckList}" expHourList="${expHallAvailabilityList.get(2).hourList}" ccHourList="${hallAvailabilityList.get(2).hourList}"/>
             </div>
             <div class="accordion">
-                <t:hall-hourly-cross-check hall="D" hourCrossCheckList="${hallDHourCrossCheckList}"/>
+                <t:hall-hourly-cross-check hall="D" hourCrossCheckList="${hallDHourCrossCheckList}" expHourList="${expHallAvailabilityList.get(3).hourList}" ccHourList="${hallAvailabilityList.get(3).hourList}"/>
             </div>
         </div>
     </div>

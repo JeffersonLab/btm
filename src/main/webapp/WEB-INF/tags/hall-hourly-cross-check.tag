@@ -6,8 +6,54 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@attribute name="hall" required="true" type="org.jlab.smoothness.persistence.enumeration.Hall" %>
 <%@attribute name="hourCrossCheckList" required="true" type="java.util.List" %>
+<%@attribute name="expHourList" required="true" type="java.util.List" %>
+<%@attribute name="ccHourList" required="true" type="java.util.List" %>
 <h3>Hall ${hall}</h3>
 <div>
+    <table class="data-table stripped-table">
+        <thead>
+        <tr>
+            <th rowspan="2"></th>
+            <th colspan="5">Experimenter</th>
+            <th rowspan="2" style="width: 5px;"></th>
+            <th colspan="5">Crew Chief</th>
+        </tr>
+        <tr>
+            <th class="duration-header">ABU {UP,TUNE}</th>
+            <th class="duration-header">BANU {BNR}</th>
+            <th class="duration-header">BNA {DOWN}</th>
+            <th class="duration-header">ACC {OFF}</th>
+            <th class="duration-header">OFF {OFF} </th>
+            <th class="duration-header">UP {ABU}</th>
+            <th class="duration-header">TUNE {ABU}</th>
+            <th class="duration-header">BNR {BANU}</th>
+            <th class="duration-header">DOWN {BNA}</th>
+            <th class="duration-header">OFF {ACC,OFF}</th>
+        </tr>
+        </thead>
+        <tbody>
+            <c:forEach items="${ccHourList}" var="ccHour" varStatus="status">
+                <c:set value="${expHourList.get(status.index)}" var="expHour"/>
+                <tr>
+                    <fmt:formatDate value="${ccHour.dayAndHour}" pattern="dd MMM yyyy HH:mm z" var="fullDate"/>
+                    <fmt:formatDate value="${ccHour.dayAndHour}" pattern="yyyy-MM-dd-HH-z" var="isoDate"/>
+                    <th title="${fullDate}" data-hour="${isoDate}"><fmt:formatDate value="${ccHour.dayAndHour}"
+                                                                                   pattern="HH"/></th>
+                    <td><span><c:out value="${btm:formatDuration(expHour.abuSeconds, durationUnits)}"/></span></td>
+                    <td><span><c:out value="${btm:formatDuration(expHour.banuSeconds, durationUnits)}"/></span></td>
+                    <td><span><c:out value="${btm:formatDuration(expHour.bnaSeconds, durationUnits)}"/></span></td>
+                    <td><span><c:out value="${btm:formatDuration(expHour.accSeconds, durationUnits)}"/></span></td>
+                    <td><span><c:out value="${btm:formatDuration(expHour.offSeconds, durationUnits)}"/></span></td>
+                    <th></th>
+                    <td><span><c:out value="${btm:formatDuration(ccHour.upSeconds, durationUnits)}"/></span></td>
+                    <td><span><c:out value="${btm:formatDuration(ccHour.tuneSeconds, durationUnits)}"/></span></td>
+                    <td><span><c:out value="${btm:formatDuration(ccHour.bnrSeconds, durationUnits)}"/></span></td>
+                    <td><span><c:out value="${btm:formatDuration(ccHour.downSeconds, durationUnits)}"/></span></td>
+                    <td><span><c:out value="${btm:formatDuration(ccHour.offSeconds, durationUnits)}"/></span></td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
     <h5>Beam Mode and Multiplicity Check</h5>
     <table class="data-table stripped-table">
         <thead>
