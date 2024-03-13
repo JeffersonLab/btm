@@ -1,27 +1,27 @@
 services:
   oracle:
     extends:
-      file: deps.yml
+      file: deps.yaml
       service: oracle
 
   keycloak:
     extends:
-      file: deps.yml
+      file: deps.yaml
       service: keycloak
 
   puppet:
     extends:
-      file: deps.yml
+      file: deps.yaml
       service: puppet
 
   mailhog:
     extends:
-      file: deps.yml
+      file: deps.yaml
       service: mailhog
 
   softioc:
     extends:
-      file: deps.yml
+      file: deps.yaml
       service: softioc
 
   btm:

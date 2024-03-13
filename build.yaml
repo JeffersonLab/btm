@@ -1,34 +1,34 @@
 services:
   oracle:
     extends:
-      file: docker-compose.yml
+      file: compose.yaml
       service: oracle
     volumes:
       - ./run/oracle/oradata:/opt/oracle/oradata
 
   keycloak:
     extends:
-      file: docker-compose.yml
+      file: compose.yaml
       service: keycloak
 
   puppet:
     extends:
-      file: docker-compose.yml
+      file: compose.yaml
       service: puppet
 
   mailhog:
     extends:
-      file: docker-compose.yml
+      file: compose.yaml
       service: mailhog
 
   softioc:
     extends:
-      file: deps.yml
+      file: deps.yaml
       service: softioc
 
   btm:
     extends:
-      file: docker-compose.yml
+      file: compose.yaml
       service: btm
     build:
       context: .
