@@ -114,7 +114,7 @@ public class LogbookService {
             }
         }
 
-        logger.log(Level.INFO, "Sending elog to logbook: {}", logbooks);
+        logger.log(Level.INFO, "Sending elog to logbook: {0}", logbooks);
 
         Properties config = Library.getConfiguration();
 
