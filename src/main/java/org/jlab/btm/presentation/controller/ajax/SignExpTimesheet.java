@@ -125,7 +125,7 @@ public class SignExpTimesheet extends HttpServlet {
                     html = tokens[0];
                 }
 
-                logbookService.createCrewChiefTimesheetEntry(subject, html);
+                logbookService.createHallLogEntry(hall, subject, html);
 
             } catch (Exception e) {
                 logger.log(Level.WARNING, "Unable to create log entry", e);
