@@ -54,7 +54,6 @@ public class LogbookService {
         if("true".equals(logbookDebug)) {
             logbooks = "TLOG";
             tags = null;
-            logger.log(Level.INFO, "Using logbook TLOG");
         }
 
         if (logbookServerUrl == null) {
@@ -96,7 +95,6 @@ public class LogbookService {
         if("true".equals(logbookDebug)) {
             logbooks = "TLOG";
             tags = null;
-            logger.log(Level.INFO, "Using logbook TLOG");
         } else {
             switch (hall) {
                 case A:
