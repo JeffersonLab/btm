@@ -54,7 +54,6 @@ public class LogbookService {
         if("true".equals(logbookDebug)) {
             logbooks = "TLOG";
             tags = null;
-            logger.log(Level.INFO, "Using logbook TLOG");
         }
 
         if (logbookServerUrl == null) {
@@ -96,7 +95,6 @@ public class LogbookService {
         if("true".equals(logbookDebug)) {
             logbooks = "TLOG";
             tags = null;
-            logger.log(Level.INFO, "Using logbook TLOG");
         } else {
             switch (hall) {
                 case A:
@@ -114,13 +112,11 @@ public class LogbookService {
             }
         }
 
-        logger.log(Level.INFO, "Sending elog to logbook: {}", logbooks);
+        logger.log(Level.INFO, "Sending elog to logbook: {0}", logbooks);
 
         Properties config = Library.getConfiguration();
 
         config.setProperty("SUBMIT_URL", logbookServerUrl + "/incoming");
-
-        logger.log(Level.INFO, "Sending elog to logbook: {0}", logbooks);
 
         LogEntry entry = new LogEntry(subject, logbooks);
 

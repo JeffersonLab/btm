@@ -99,7 +99,7 @@ public class SignExpTimesheet extends HttpServlet {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
                 SimpleDateFormat urlDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 
-                String subject = "Experimenter Timesheet Summary: " + dateFormat.format(endHour)
+                String subject = "Experimenter " + hall + " Timesheet Summary: " + dateFormat.format(endHour)
                         + " " + shift;
 
                 String frontEndUrl = System.getenv("FRONTEND_SERVER_URL");
@@ -125,7 +125,7 @@ public class SignExpTimesheet extends HttpServlet {
                     html = tokens[0];
                 }
 
-                logbookService.createCrewChiefTimesheetEntry(subject, html);
+                logbookService.createHallLogEntry(hall, subject, html);
 
             } catch (Exception e) {
                 logger.log(Level.WARNING, "Unable to create log entry", e);
