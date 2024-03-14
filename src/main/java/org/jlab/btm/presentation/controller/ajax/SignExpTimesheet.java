@@ -99,7 +99,7 @@ public class SignExpTimesheet extends HttpServlet {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
                 SimpleDateFormat urlDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 
-                String subject = "Experimenter Timesheet Summary: " + dateFormat.format(endHour)
+                String subject = "Experimenter " + hall + " Timesheet Summary: " + dateFormat.format(endHour)
                         + " " + shift;
 
                 String frontEndUrl = System.getenv("FRONTEND_SERVER_URL");
