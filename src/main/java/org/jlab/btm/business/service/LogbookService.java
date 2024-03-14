@@ -120,8 +120,6 @@ public class LogbookService {
 
         config.setProperty("SUBMIT_URL", logbookServerUrl + "/incoming");
 
-        logger.log(Level.INFO, "Sending elog to logbook: {0}", logbooks);
-
         LogEntry entry = new LogEntry(subject, logbooks);
 
         Body.ContentType type = Body.ContentType.HTML;
