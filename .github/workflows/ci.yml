@@ -16,4 +16,4 @@ permissions:
 
 jobs:
   build:
-    uses: jeffersonlab/workflows/.github/workflows/build.yml@main
+    uses: jeffersonlab/java-workflows/.github/workflows/build.yml@main
