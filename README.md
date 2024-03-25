@@ -93,8 +93,9 @@ The [server](https://github.com/JeffersonLab/wildfly/blob/main/scripts/server-se
 
 ## Release
 1. Bump the version number in the VERSION file and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).
-2. The [Publish a Release](https://github.com/JeffersonLab/btm/blob/main/.github/workflows/release.yml) GitHub Action should run automatically to tag the source, create release notes summarizing any pull requests, and attach a war artifact.   Edit the release notes to add any missing details.
-3. The [Publish to DockerHub](https://github.com/JeffersonLab/btm/blob/main/.github/workflows/docker-publish.yml) GitHub Action should run automatically to create, tag, and publish a new demo Docker image, and bump the [compose.override.yaml](https://github.com/JeffersonLab/btm/blob/main/compose.override.yaml) to use the new image.
+2. The [CD](https://github.com/JeffersonLab/btm/blob/main/.github/workflows/cd.yml) GitHub Action should run automatically invoking:
+    - The [Create release](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/release.yml) GitHub Action to tag the source and create release notes summarizing any pull requests.   Edit the release notes to add any missing details.  A war file artifact is attached to the release.
+    - The [Publish docker image](https://github.com/JeffersonLab/container-workflows/blob/main/.github/workflows/docker-publish.yml) GitHub Action to create a new demo Docker image, and bump the [compose.override.yaml](https://github.com/JeffersonLab/btm/blob/main/compose.override.yaml) to use the new image.
 
 ## Deploy
 At JLab this app is found at [ace.jlab.org/btm](https://ace.jlab.org/btm) and internally at [acctest.acc.jlab.org/btm](https://acctest.acc.jlab.org/btm).  However, those servers are proxies for `wildfly5.acc.jlab.org` and `wildflytest5.acc.jlab.org` respectively.   A [deploy script](https://github.com/JeffersonLab/wildfly/blob/main/scripts/deploy.sh) is provided to automate wget and deploy.  Example:
