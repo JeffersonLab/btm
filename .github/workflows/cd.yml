@@ -7,7 +7,7 @@ on:
 
 jobs:
   release:
-    uses: jeffersonlab/java-workflows/.github/workflows/release.yml@main
+    uses: jeffersonlab/java-workflows/.github/workflows/gh-release.yml@main
     with:
       files: build/libs/btm.war
     secrets: inherit
