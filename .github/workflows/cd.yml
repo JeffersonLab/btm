@@ -1,0 +1,21 @@
+name: CD
+
+on:
+  push:
+    paths:
+      - 'VERSION'
+
+jobs:
+  release:
+    uses: jeffersonlab/java-workflows/.github/workflows/release.yml@main
+    with:
+      files: build/libs/btm.war
+    secrets: inherit
+
+  docker_publish:
+    needs:
+      - release
+    uses: jeffersonlab/container-workflows/.github/workflows/docker-publish.yml@main
+    with:
+      semvertag: ${{ needs.release.outputs.semvertag }}
+    secrets: inherit
