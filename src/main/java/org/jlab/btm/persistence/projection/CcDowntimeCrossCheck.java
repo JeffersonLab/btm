@@ -8,25 +8,22 @@ import org.jlab.btm.presentation.util.BtmFunctions;
  */
 public class CcDowntimeCrossCheck {
 
+    private static final int TEN_MINUTES_OF_SECONDS = 600;
 
     private final boolean passed;
     private final boolean lowProgramPassed;
-    private final boolean lowDownHardPassed;
 
     private final String lowProgramMessage;
-    private final String lowDownHardMessage;
 
     public CcDowntimeCrossCheck(CcAccShiftTotals acc, long dtmEventDownSeconds) {
 
-        int programSeconds = acc.getUpSeconds() + acc.getDownSeconds() + acc.getRestoreSeconds() + acc.getStudiesSeconds() + acc.getAccSeconds();
+        int possibleDowntimeSeconds = acc.calculatePossibleDowntimeSeconds();
 
-        lowProgramMessage = "DTM event down (" + BtmFunctions.formatDuration((int) dtmEventDownSeconds, DurationUnits.HOURS) + " hours) is greater than BTM program time [PHYSICS + STUDIES + RESTORE + ACC + DOWN] (" + BtmFunctions.formatDuration(programSeconds, DurationUnits.HOURS) + " hours)";
-        lowDownHardMessage = "";
+        lowProgramMessage = "DTM event down (" + BtmFunctions.formatDuration((int) dtmEventDownSeconds, DurationUnits.HOURS) + " hours) is significantly greater than BTM possible down time [PHYSICS + INTERNAL DOWN] (" + BtmFunctions.formatDuration(possibleDowntimeSeconds, DurationUnits.HOURS) + " hours)";
 
-        lowProgramPassed = programSeconds >= dtmEventDownSeconds;
-        lowDownHardPassed = true;
+        lowProgramPassed = possibleDowntimeSeconds >= dtmEventDownSeconds - TEN_MINUTES_OF_SECONDS;
 
-        passed = lowProgramPassed && lowDownHardPassed;
+        passed = lowProgramPassed;
     }
 
     public boolean isPassed() {
