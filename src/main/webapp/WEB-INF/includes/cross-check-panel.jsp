@@ -12,18 +12,18 @@
     </ul>
     <div id="cross-check-summary-tab" data-signature="${fn:length(signatureList) > 0}">
         <div id="cross-check-summary-panel">
-            <h5>DTM vs BTM</h5>
+            <h5>BTM vs DTM</h5>
             <table id="dtm-btm-table" class="data-table">
                 <thead>
                 <tr>
-                    <th>BTM Program</th>
-                    <th>DTM Event</th>
+                    <th>BTM Possible Downtime</th>
+                    <th>DTM Event Downtime</th>
                     <th>Cross Check Status</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td>${btm:formatDurationLossy(accAvailability.shiftTotals.calculateProgramSeconds(), durationUnits)}</td>
+                    <td>${btm:formatDurationLossy(accAvailability.shiftTotals.calculatePossibleDowntimeSeconds(), durationUnits)}</td>
                     <td>${btm:formatDurationLossy(dtmTotals.eventSeconds, durationUnits)}</td>
                     <td class="${downCrossCheck.isPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isPassed() ? '✔' : 'X'}</td>
                 </tr>

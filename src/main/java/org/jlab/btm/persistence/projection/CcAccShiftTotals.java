@@ -62,4 +62,8 @@ public class CcAccShiftTotals {
     public Integer calculateProgramSeconds() {
         return restoreSeconds + accSeconds + upSeconds + studiesSeconds + downSeconds;
     }
+
+    public Integer calculatePossibleDowntimeSeconds() {
+        return upSeconds + downSeconds;
+    }
 }
