@@ -12,6 +12,7 @@ public class CcAccSum {
     private final Date start;
     private final Date end;
 
+    private final long possibleDownSeconds; // Physics and Internal Down
     private final long programSeconds; // anything but OFF (SAD) or implied OFF
     private final long upSeconds;
     private final long sadSeconds;
@@ -42,6 +43,8 @@ public class CcAccSum {
                 this.getRestoreSeconds() +
                 this.getAccSeconds() +
                 this.getDownSeconds();
+
+        this.possibleDownSeconds = this.getUpSeconds() + this.getDownSeconds();
 
         this.periodHours = (end.getTime() - start.getTime()) / 1000.0 / 60 / 60;
 
@@ -75,6 +78,10 @@ public class CcAccSum {
 
     public long getProgramSeconds() {
         return programSeconds;
+    }
+
+    public long getPossibleDownSeconds() {
+        return possibleDownSeconds;
     }
 
     public Date getStart() {
