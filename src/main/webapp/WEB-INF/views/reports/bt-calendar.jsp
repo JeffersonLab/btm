@@ -118,6 +118,7 @@
                                 </th>
                                 <c:forEach items="${week.dayList}" var="day">
                                     <c:set var="programHours" value="${day.accTotal.programSeconds / 3600}"/>
+                                    <c:set var="possibleDownHours" value="${day.accTotal.possibleDownSeconds / 3600}"/>
                                     <c:set var="downHours" value="${day.downTotal.eventSeconds / 3600}"/>
                                     <fmt:formatDate var="startFmt" value="${day.day}" pattern="dd-MMM-yyyy HH:mm"/>
                                     <fmt:formatDate var="endFmt" value="${day.calculateNextDay()}"
@@ -144,7 +145,7 @@
                                         <table class="day-detail-table">
                                             <tbody>
                                             <tr>
-                                                <td class="${downHours > programHours ? 'bad-availability' : ''}"><a
+                                                <td class="${(downHours - 0.5) > possibleDownHours  ? 'bad-availability' : ''}"><a
                                                         href="#" class="date-link"><fmt:formatDate value="${day.day}"
                                                                                                    pattern="dd"/></a>
                                                 </td>
