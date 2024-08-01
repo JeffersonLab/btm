@@ -21,19 +21,22 @@
                 There are at least four plans, each one informs the next, and in increasing granularity they are:
             </p>
             <ul class="plan-list">
-                <li><a target="_blank" href="https://ace.jlab.org/btm/schedule">Program Advisory Committee (PAC) Schedule</a> - day resolution, months in advance</li>
+                <li><a target="_blank" href="https://ace.jlab.org/btm/schedule">Nuclear Physics Experiment Scheduling (NPES) Schedule</a> - day resolution, months in advance</li>
                 <li><a target="_blank" href="https://cebaf.jlab.org/files/ops/accboard/">MCC Whiteboard</a> - shift resolution, week in advance</li>
                 <li><a target="_blank" href="https://ace.jlab.org/apps/pd/shift-plans">PD Shift Plan</a> - shift resolution, shift in advance</li>
                 <li>Program Time - minute-by-minute Crew Chief plan</li>
             </ul>
             <p>
-                <b>NOTE</b>: The Crew Chief plan is the one you actually use for time accounting.  A few points:
+                <b>NOTE 1</b>: The Crew Chief plan is the one you actually use for time accounting.  A few points:
             </p>
             <ul>
                 <li>The Crew Chief plan is not written down in advance as the Crew Chief makes decisions to maximize machine utilization, guided by the other plans</li>
                 <li>The PD Shift Plan is tailored for the Crew Chief, and it does not line up exactly with your shift (Crew Chief shifts start and end one hour before yours) - you may wish to review the next PD shift plan to see how your last hour is scheduled</li>
                 <li>If you have any questions please call the hall Run Coordinator or Crew Chief</li>
             </ul>
+            <p>
+                <b>NOTE 2</b>: The Experiment schedule is created by the <a href="https://www.jlab.org/physics/experiments/NPEScommittee">NPES committee</a>.  The NPES committee relies on the <a href="https://www.jlab.org/physics/PAC">Program Advisory Committee (PAC)</a> for candidates.
+            </p>
         </div>
         <h3>Hall ${hall} Measured</h3>
         <div>
