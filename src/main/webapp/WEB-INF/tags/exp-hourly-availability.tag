@@ -35,7 +35,7 @@
                 <li>If you have any questions please call the hall Run Coordinator or Crew Chief</li>
             </ul>
             <p>
-                <b>NOTE 2</b>: The Experiment schedule is created by the <a href="https://www.jlab.org/physics/experiments/NPEScommittee">NPES committee</a>.  The NPES committee relies on the <a href="https://www.jlab.org/physics/PAC">Program Advisory Committee (PAC)</a> for candidates.
+                <b>NOTE 2</b>: The Experiment schedule is created by the <a href="https://www.jlab.org/physics/experiments/NPEScommittee">NPES committee</a>.  The NPES committee relies on the <a href="https://www.jlab.org/physics/PAC">Program Advisory Committee (PAC)</a> for candidates as vetted by the <a href="https://www.jlab.org/physics/TAC">Technical Advisory Committee (TAC)</a>.
             </p>
         </div>
         <h3>Hall ${hall} Measured</h3>
