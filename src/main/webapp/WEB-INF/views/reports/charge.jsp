@@ -105,7 +105,7 @@
                             <li>
                                 <div class="li-key"><label for="scale">Schedule Scale Factor</label></div>
                                 <div class="li-value">
-                                    <input id="scale" name="scale" type="number" value="${param.scale}" min="0.1" max="2" step="0.1"/>
+                                    <input id="scale" name="scale" type="number" value="${fn:escapeXml(param.scale)}" min="0.1" max="2" step="0.1"/>
                                 </div>
                             </li>
                         </ul>

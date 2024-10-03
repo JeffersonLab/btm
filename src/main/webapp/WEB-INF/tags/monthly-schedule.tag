@@ -79,8 +79,8 @@
                                 </li>
                             </ul>
                         </fieldset>
-                        <input id="print-input" type="hidden" name="print" value="${param.print}"/>
-                        <input id="fullscreen-input" type="hidden" name="fullscreen" value="${param.fullscreen}"/>
+                        <input id="print-input" type="hidden" name="print" value="${fn:escapeXml(param.print)}"/>
+                        <input id="fullscreen-input" type="hidden" name="fullscreen" value="${fn:escapeXml(param.fullscreen)}"/>
                         <button id="filter-form-submit-button">Apply</button>
                     </form>
                 </s:filter-flyout-widget>
@@ -153,14 +153,14 @@
                         <c:when test="${schedule.publishedDate eq null}">
                             <form id="publish-form" method="post" action="/btm/publish-schedule">
                                 <input type="hidden" name="scheduleId" value="${schedule.monthlyScheduleId}"/>
-                                <input type="hidden" name="fullscreen" value="${param.fullscreen}"/>
+                                <input type="hidden" name="fullscreen" value="${fn:escapeXml(param.fullscreen)}"/>
                                 <input type="submit" value="Publish" id="publish-button"/>
                             </form>
                         </c:when>
                         <c:otherwise>
                             <form id="new-version-form" method="post" action="/btm/new-schedule-version">
                                 <input type="hidden" name="scheduleId" value="${schedule.monthlyScheduleId}"/>
-                                <input type="hidden" name="fullscreen" value="${param.fullscreen}"/>
+                                <input type="hidden" name="fullscreen" value="${fn:escapeXml(param.fullscreen)}"/>
                                 <input type="submit" value="New Version" id="new-version-button"/>
                             </form>
                         </c:otherwise>

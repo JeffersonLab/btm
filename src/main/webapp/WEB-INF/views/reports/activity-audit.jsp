@@ -48,7 +48,7 @@
                             <li>
                                 <div class="li-key"><label for="date">Date</label></div>
                                 <div class="li-value"><input id="date" name="date" class="datepicker" placeholder="DD-MMM-YYYY"
-                                                             type="text" value="${param.date}"/></div>
+                                                             type="text" value="${fn:escapeXml(param.date)}"/></div>
                             </li>
                             <li>
                                 <div class="li-key"><label for="shift">Shift</label></div>
