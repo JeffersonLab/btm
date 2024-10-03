@@ -379,7 +379,7 @@ jlab.btm.doFilterFormSubmit = function () {
         queryString = '?' + queryString;
     }
 
-    window.location.href = jlab.contextPath + '/schedule/' + urlDate + urlVersion + queryString;
+    window.location.href = jlab.contextPath + '/schedule/' + encodeURIComponent(urlDate) + urlVersion + queryString;
 };
 
 $(document).on("click", "#toolbar-copy-button", function () {

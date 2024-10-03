@@ -12,7 +12,7 @@ $(document).on("click", "#filter-form-submit-button", function () {
         urlDay = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()),
         urlDate = urlDay + "-" + urlMonth + "-" + date.getFullYear();
 
-    window.location.href = jlab.contextPath + '/timesheet/' + $("#type").val() + '/' + urlDate + '/' + $("#shift").val() + '/' + $("#units").val();
+    window.location.href = jlab.contextPath + '/timesheet/' + encodeURIComponent($("#type").val()) + '/' + encodeURIComponent(urlDate) + '/' + encodeURIComponent($("#shift").val()) + '/' + encodeURIComponent($("#units").val());
     return false;
 });
 
