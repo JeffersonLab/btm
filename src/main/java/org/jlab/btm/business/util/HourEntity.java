@@ -1,13 +1,12 @@
 package org.jlab.btm.business.util;
 
+import java.util.Date;
 import org.jlab.btm.persistence.enumeration.DataSource;
 
-import java.util.Date;
-
 public interface HourEntity {
-    Date getDayAndHour();
+  Date getDayAndHour();
 
-    void setDayAndHour(Date dayAndHour);
+  void setDayAndHour(Date dayAndHour);
 
-    void setSource(DataSource source);
+  void setSource(DataSource source);
 }

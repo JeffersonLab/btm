@@ -1,11 +1,5 @@
 package org.jlab.btm.presentation.util;
 
-import org.jlab.btm.business.util.BtmTimeUtil;
-import org.jlab.btm.persistence.enumeration.DurationUnits;
-import org.jlab.btm.persistence.projection.HallPriority;
-import org.jlab.smoothness.persistence.enumeration.Hall;
-import org.jlab.smoothness.persistence.enumeration.Shift;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
@@ -13,194 +7,205 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import org.jlab.btm.business.util.BtmTimeUtil;
+import org.jlab.btm.persistence.enumeration.DurationUnits;
+import org.jlab.btm.persistence.projection.HallPriority;
+import org.jlab.smoothness.persistence.enumeration.Hall;
+import org.jlab.smoothness.persistence.enumeration.Shift;
 
 /**
  * @author ryans
  */
 public final class BtmFunctions {
 
-    private BtmFunctions() {
-        // cannot instantiate publicly
+  private BtmFunctions() {
+    // cannot instantiate publicly
+  }
+
+  public static String formatDurationLossy(Integer seconds, DurationUnits units) {
+    String value = "";
+
+    if (seconds != null) {
+      DecimalFormat hourFormat = new DecimalFormat("#0.##");
+      DecimalFormat minuteFormat = new DecimalFormat("##0");
+
+      switch (units) {
+        case HOURS:
+          value = hourFormat.format(seconds / 60f / 60f);
+          break;
+        case MINUTES:
+          value = minuteFormat.format(seconds / 60f);
+          break;
+        default:
+          value = String.valueOf(seconds);
+      }
     }
 
-    public static String formatDurationLossy(Integer seconds, DurationUnits units) {
-        String value = "";
+    return value;
+  }
 
-        if (seconds != null) {
-            DecimalFormat hourFormat = new DecimalFormat("#0.##");
-            DecimalFormat minuteFormat = new DecimalFormat("##0");
+  public static String formatDuration(Short seconds, DurationUnits units) {
+    String value = "";
+    if (seconds != null) {
+      value = formatDuration((int) seconds, units);
+    }
+    return value;
+  }
 
-            switch (units) {
-                case HOURS:
-                    value = hourFormat.format(seconds / 60f / 60f);
-                    break;
-                case MINUTES:
-                    value = minuteFormat.format(seconds / 60f);
-                    break;
-                default:
-                    value = String.valueOf(seconds);
-            }
-        }
+  public static String formatDuration(Integer seconds, DurationUnits units) {
+    String value = "";
 
-        return value;
+    if (seconds != null) {
+      DecimalFormat format = new DecimalFormat("#0.####");
+
+      switch (units) {
+        case HOURS:
+          value = format.format(seconds / 60f / 60f);
+          break;
+        case MINUTES:
+          value = format.format(seconds / 60f);
+          break;
+        default:
+          value = String.valueOf(seconds);
+      }
     }
 
-    public static String formatDuration(Short seconds, DurationUnits units) {
-        String value = "";
-        if (seconds != null) {
-            value = formatDuration((int) seconds, units);
-        }
-        return value;
+    return value;
+  }
+
+  public static String formatBoolean(Boolean value) {
+    if (value == null) {
+      return "";
+    } else if (value) {
+      return "Yes"; // true; Y; '✔'
+    } else {
+      return "No"; // false; N; ' '
+    }
+  }
+
+  public static String formatKiloToGiga(Integer kilos) {
+    String result = "";
+
+    if (kilos != null) {
+      double giga = kilos / 1000000.0;
+
+      DecimalFormat decimalFormat = new DecimalFormat("##.###");
+
+      result = decimalFormat.format(giga);
     }
 
-    public static String formatDuration(Integer seconds, DurationUnits units) {
-        String value = "";
+    return result;
+  }
 
-        if (seconds != null) {
-            DecimalFormat format = new DecimalFormat("#0.####");
+  public static String formatNanoToMicro(Integer nano) {
+    String result = "";
 
-            switch (units) {
-                case HOURS:
-                    value = format.format(seconds / 60f / 60f);
-                    break;
-                case MINUTES:
-                    value = format.format(seconds / 60f);
-                    break;
-                default:
-                    value = String.valueOf(seconds);
-            }
-        }
+    if (nano != null) {
+      double micro = nano / 1000.0;
 
-        return value;
+      DecimalFormat decimalFormat = new DecimalFormat("##.###");
+
+      result = decimalFormat.format(micro);
     }
 
-    public static String formatBoolean(Boolean value) {
-        if (value == null) {
-            return "";
-        } else if (value) {
-            return "Yes"; // true; Y; '✔' 
-        } else {
-            return "No"; // false; N; ' '
-        }
+    return result;
+  }
+
+  public static List<HallPriority> parsePriorityString(String priorityString) {
+    List<HallPriority> priorityList = new ArrayList<>();
+
+    if (priorityString != null && !priorityString.isEmpty()) {
+      String[] tokens = priorityString.split(",");
+
+      Integer hallA = (priorityString.indexOf("A") == -1) ? null : priorityString.indexOf("A");
+      Integer hallB = (priorityString.indexOf("B") == -1) ? null : priorityString.indexOf("B");
+      Integer hallC = (priorityString.indexOf("C") == -1) ? null : priorityString.indexOf("C");
+      Integer hallD = (priorityString.indexOf("D") == -1) ? null : priorityString.indexOf("D");
+
+      if (hallA != null) {
+        priorityList.add(new HallPriority(Hall.A, hallA));
+      }
+
+      if (hallB != null) {
+        priorityList.add(new HallPriority(Hall.B, hallB));
+      }
+
+      if (hallC != null) {
+        priorityList.add(new HallPriority(Hall.C, hallC));
+      }
+
+      if (hallD != null) {
+        priorityList.add(new HallPriority(Hall.D, hallD));
+      }
+      Collections.sort(priorityList);
     }
 
-    public static String formatKiloToGiga(Integer kilos) {
-        String result = "";
+    return priorityList;
+  }
 
-        if (kilos != null) {
-            double giga = kilos / 1000000.0;
+  public static String formatPriority(
+      Integer hallA,
+      Integer hallB,
+      Integer hallC,
+      Integer hallD,
+      Integer hallAKeV,
+      Integer hallBKeV,
+      Integer hallCKeV,
+      Integer hallDKeV) {
+    List<HallPriority> priorities = new ArrayList<>();
+    if (hallA != null && hallAKeV != null) {
+      priorities.add(new HallPriority(Hall.A, hallA));
+    }
+    if (hallB != null && hallBKeV != null) {
+      priorities.add(new HallPriority(Hall.B, hallB));
+    }
+    if (hallC != null && hallCKeV != null) {
+      priorities.add(new HallPriority(Hall.C, hallC));
+    }
+    if (hallD != null && hallDKeV != null) {
+      priorities.add(new HallPriority(Hall.D, hallD));
+    }
+    Collections.sort(priorities);
 
-            DecimalFormat decimalFormat = new DecimalFormat("##.###");
+    StringBuilder builder = new StringBuilder();
 
-            result = decimalFormat.format(giga);
-        }
+    if (priorities.size() > 0) {
+      builder.append(priorities.get(0).getHall());
 
-        return result;
+      for (int i = 1; i < priorities.size(); i++) {
+        HallPriority priority = priorities.get(i);
+        builder.append(",");
+        builder.append(priority.getHall());
+      }
     }
 
-    public static String formatNanoToMicro(Integer nano) {
-        String result = "";
+    return builder.toString();
+  }
 
-        if (nano != null) {
-            double micro = nano / 1000.0;
+  public static boolean isToday(Date date) {
+    return BtmTimeUtil.isToday(date);
+  }
 
-            DecimalFormat decimalFormat = new DecimalFormat("##.###");
+  public static String getHostnameFromIp(String ip) {
+    String hostname = ip;
 
-            result = decimalFormat.format(micro);
+    if (ip != null) {
+      try {
+        InetAddress address = InetAddress.getByName(ip);
+        hostname = address.getHostName();
+
+        if (!ip.equals(hostname)) {
+          hostname = hostname + " (" + ip + ")";
         }
-
-        return result;
+      } catch (UnknownHostException e) {
+        // Unable to resolve... oh well, just use ip
+      }
     }
 
-    public static List<HallPriority> parsePriorityString(String priorityString) {
-        List<HallPriority> priorityList = new ArrayList<>();
+    return hostname;
+  }
 
-        if (priorityString != null && !priorityString.isEmpty()) {
-            String[] tokens = priorityString.split(",");
-
-            Integer hallA = (priorityString.indexOf("A") == -1) ? null : priorityString.indexOf("A");
-            Integer hallB = (priorityString.indexOf("B") == -1) ? null : priorityString.indexOf("B");
-            Integer hallC = (priorityString.indexOf("C") == -1) ? null : priorityString.indexOf("C");
-            Integer hallD = (priorityString.indexOf("D") == -1) ? null : priorityString.indexOf("D");
-
-            if (hallA != null) {
-                priorityList.add(new HallPriority(Hall.A, hallA));
-            }
-
-            if (hallB != null) {
-                priorityList.add(new HallPriority(Hall.B, hallB));
-            }
-
-            if (hallC != null) {
-                priorityList.add(new HallPriority(Hall.C, hallC));
-            }
-
-            if (hallD != null) {
-                priorityList.add(new HallPriority(Hall.D, hallD));
-            }
-            Collections.sort(priorityList);
-
-        }
-
-        return priorityList;
-    }
-
-    public static String formatPriority(Integer hallA, Integer hallB, Integer hallC, Integer hallD, Integer hallAKeV,
-                                        Integer hallBKeV, Integer hallCKeV, Integer hallDKeV) {
-        List<HallPriority> priorities = new ArrayList<>();
-        if (hallA != null && hallAKeV != null) {
-            priorities.add(new HallPriority(Hall.A, hallA));
-        }
-        if (hallB != null && hallBKeV != null) {
-            priorities.add(new HallPriority(Hall.B, hallB));
-        }
-        if (hallC != null && hallCKeV != null) {
-            priorities.add(new HallPriority(Hall.C, hallC));
-        }
-        if (hallD != null && hallDKeV != null) {
-            priorities.add(new HallPriority(Hall.D, hallD));
-        }
-        Collections.sort(priorities);
-
-        StringBuilder builder = new StringBuilder();
-
-        if(priorities.size() > 0) {
-            builder.append(priorities.get(0).getHall());
-
-            for(int i = 1; i < priorities.size(); i++) {
-                HallPriority priority  = priorities.get(i);
-                builder.append(",");
-                builder.append(priority.getHall());
-            }
-        }
-
-        return builder.toString();
-    }
-
-    public static boolean isToday(Date date) {
-        return BtmTimeUtil.isToday(date);
-    }
-
-    public static String getHostnameFromIp(String ip) {
-        String hostname = ip;
-
-        if (ip != null) {
-            try {
-                InetAddress address = InetAddress.getByName(ip);
-                hostname = address.getHostName();
-
-                if (!ip.equals(hostname)) {
-                    hostname = hostname + " (" + ip + ")";
-                }
-            } catch (UnknownHostException e) {
-                // Unable to resolve... oh well, just use ip
-            }
-        }
-
-        return hostname;
-    }
-
-    public static Shift expShiftFromStartDayAndHour(Date startDayAndHour) {
-        return BtmTimeUtil.calculateExperimenterShift(startDayAndHour);
-    }
+  public static Shift expShiftFromStartDayAndHour(Date startDayAndHour) {
+    return BtmTimeUtil.calculateExperimenterShift(startDayAndHour);
+  }
 }

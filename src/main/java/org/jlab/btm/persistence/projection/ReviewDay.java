@@ -1,56 +1,55 @@
 package org.jlab.btm.persistence.projection;
 
-import org.jlab.smoothness.business.util.TimeUtil;
-
 import java.util.Calendar;
 import java.util.Date;
+import org.jlab.smoothness.business.util.TimeUtil;
 
 /**
  * @author ryans
  */
 public class ReviewDay {
-    private Date day; // Hours, Minutes, Seconds ignored
-    private CcAccSum accTotal;
-    private DowntimeSummaryTotals downTotal;
-    private boolean future;
+  private Date day; // Hours, Minutes, Seconds ignored
+  private CcAccSum accTotal;
+  private DowntimeSummaryTotals downTotal;
+  private boolean future;
 
-    public Date getDay() {
-        return day;
+  public Date getDay() {
+    return day;
+  }
+
+  public void setDay(Date day) {
+    this.day = day;
+
+    future = false;
+
+    if (day != null) {
+      Calendar cal = Calendar.getInstance();
+      cal.add(Calendar.DATE, -1);
+      future = day.after(cal.getTime());
     }
+  }
 
-    public void setDay(Date day) {
-        this.day = day;
+  public CcAccSum getAccTotal() {
+    return accTotal;
+  }
 
-        future = false;
+  public void setAccTotal(CcAccSum accTotal) {
+    this.accTotal = accTotal;
+  }
 
-        if (day != null) {
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DATE, -1);
-            future = day.after(cal.getTime());
-        }
-    }
+  public DowntimeSummaryTotals getDownTotal() {
+    return downTotal;
+  }
 
-    public CcAccSum getAccTotal() {
-        return accTotal;
-    }
+  public void setDownTotals(DowntimeSummaryTotals downTotal) {
+    this.downTotal = downTotal;
+  }
 
-    public void setAccTotal(CcAccSum accTotal) {
-        this.accTotal = accTotal;
-    }
+  public Date calculateNextDay() {
+    return TimeUtil.addDays(day, 1);
+  }
 
-    public DowntimeSummaryTotals getDownTotal() {
-        return downTotal;
-    }
-
-    public void setDownTotals(DowntimeSummaryTotals downTotal) {
-        this.downTotal = downTotal;
-    }
-
-    public Date calculateNextDay() {
-        return TimeUtil.addDays(day, 1);
-    }
-
-    public boolean isFuture() {
-        return future;
-    }
+  public boolean isFuture() {
+    return future;
+  }
 }
