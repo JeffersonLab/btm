@@ -81,7 +81,7 @@ public class EditMultiHours extends HttpServlet {
       errorReason = "Access Denied";
     } catch (UserFriendlyException e) {
       logger.log(Level.INFO, "Unable to edit multiplicity hours: {0}", e.getMessage());
-      errorReason = e.getMessage();
+      errorReason = e.getUserMessage();
     } catch (Exception e) {
       Throwable rootCause = ExceptionUtil.getRootCause(e);
       if (rootCause instanceof SQLException) {

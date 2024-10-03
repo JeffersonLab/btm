@@ -71,7 +71,7 @@ public class Upload extends HttpServlet {
       errorReason = "Access Denied";
     } catch (UserFriendlyException e) {
       LOGGER.log(Level.INFO, "Unable to upload: {0}", e.getMessage());
-      errorReason = e.getMessage();
+      errorReason = e.getUserMessage();
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, "Unable to upload", e);
       Throwable rootCause = ExceptionUtil.getRootCause(e);

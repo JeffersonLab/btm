@@ -59,7 +59,7 @@ public class EditCrossCheckComment extends HttpServlet {
       errorReason = "Access Denied";
     } catch (UserFriendlyException e) {
       LOGGER.log(Level.INFO, "Unable to edit shift info: {0}", e.getMessage());
-      errorReason = e.getMessage();
+      errorReason = e.getUserMessage();
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, "Unable to edit shift info", e);
       Throwable rootCause = ExceptionUtil.getRootCause(e);

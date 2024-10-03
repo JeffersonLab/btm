@@ -145,9 +145,9 @@ public class EditScheduleRow extends HttpServlet {
     } catch (EJBAccessException e) {
       logger.log(Level.WARNING, "Unable to edit schedule row due to access exception", e);
       errorReason = "Access Denied";
-    } catch (UserFriendlyException | IllegalArgumentException e) {
+    } catch (UserFriendlyException e) {
       logger.log(Level.INFO, "Unable to edit schedule row: {0}", e.getMessage());
-      errorReason = e.getMessage();
+      errorReason = e.getUserMessage();
     } catch (Exception e) {
       Throwable rootCause = ExceptionUtil.getRootCause(e);
       if (rootCause instanceof SQLException) {

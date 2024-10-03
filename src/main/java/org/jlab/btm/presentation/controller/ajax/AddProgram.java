@@ -64,7 +64,7 @@ public class AddProgram extends HttpServlet {
       errorReason = "Access Denied";
     } catch (UserFriendlyException e) {
       logger.log(Level.INFO, "Unable to add program: {0}", e.getMessage());
-      errorReason = e.getMessage();
+      errorReason = e.getUserMessage();
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Unable to add program", e);
       Throwable rootCause = ExceptionUtil.getRootCause(e);

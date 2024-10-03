@@ -66,7 +66,7 @@ public class EditExpShiftInfo extends HttpServlet {
       errorReason = "Access Denied";
     } catch (UserFriendlyException e) {
       logger.log(Level.INFO, "Unable to edit shift info: {0}", e.getMessage());
-      errorReason = e.getMessage();
+      errorReason = e.getUserMessage();
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Unable to edit shift info", e);
       Throwable rootCause = ExceptionUtil.getRootCause(e);

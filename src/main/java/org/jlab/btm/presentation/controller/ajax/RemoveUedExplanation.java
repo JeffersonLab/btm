@@ -63,7 +63,7 @@ public class RemoveUedExplanation extends HttpServlet {
       errorReason = "Access Denied";
     } catch (UserFriendlyException e) {
       logger.log(Level.INFO, "Unable to add explanation: {0}", e.getMessage());
-      errorReason = e.getMessage();
+      errorReason = e.getUserMessage();
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Unable to add explanation", e);
       Throwable rootCause = ExceptionUtil.getRootCause(e);

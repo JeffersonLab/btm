@@ -122,7 +122,7 @@ public class SignCcTimesheet extends HttpServlet {
       errorReason = "Access Denied";
     } catch (UserFriendlyException e) {
       logger.log(Level.INFO, "Unable to sign timesheet: {0}", e.getMessage());
-      errorReason = e.getMessage();
+      errorReason = e.getUserMessage();
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Unable to sign timesheet", e);
       Throwable rootCause = ExceptionUtil.getRootCause(e);

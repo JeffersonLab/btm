@@ -58,7 +58,7 @@ public class RemoveProgram extends HttpServlet {
       errorReason = "Access Denied";
     } catch (UserFriendlyException e) {
       logger.log(Level.INFO, "Unable to remove program: {0}", e.getMessage());
-      errorReason = e.getMessage();
+      errorReason = e.getUserMessage();
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Unable to remove program", e);
       Throwable rootCause = ExceptionUtil.getRootCause(e);
