@@ -6,7 +6,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
 import org.jlab.btm.persistence.entity.ExpReason;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
@@ -18,31 +17,31 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
 @Stateless
 public class ExpReasonService extends AbstractService<ExpReason> {
 
-    @PersistenceContext(unitName = "btmPU")
-    private EntityManager em;
+  @PersistenceContext(unitName = "btmPU")
+  private EntityManager em;
 
-    public ExpReasonService() {
-        super(ExpReason.class);
-    }
+  public ExpReasonService() {
+    super(ExpReason.class);
+  }
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
+  @Override
+  protected EntityManager getEntityManager() {
+    return em;
+  }
 
-    @PermitAll
-    @Override
-    public ExpReason find(Object id) {
-        return super.find(id);
-    }
+  @PermitAll
+  @Override
+  public ExpReason find(Object id) {
+    return super.find(id);
+  }
 
-    @PermitAll
-    public List<ExpReason> findByActive(Hall hall, boolean active) {
-        TypedQuery<ExpReason> q = em.createNamedQuery("ExpReason.findByHallAndActive", ExpReason.class);
+  @PermitAll
+  public List<ExpReason> findByActive(Hall hall, boolean active) {
+    TypedQuery<ExpReason> q = em.createNamedQuery("ExpReason.findByHallAndActive", ExpReason.class);
 
-        q.setParameter("hall", hall);
-        q.setParameter("active", active);
+    q.setParameter("hall", hall);
+    q.setParameter("active", active);
 
-        return q.getResultList();
-    }
+    return q.getResultList();
+  }
 }

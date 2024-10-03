@@ -4,67 +4,67 @@ package org.jlab.btm.persistence.projection;
  * @author ryans
  */
 public class CcMultiplicityShiftTotals {
-    private Integer oneHallUpSeconds;
-    private Integer twoHallUpSeconds;
-    private Integer threeHallUpSeconds;
-    private Integer fourHallUpSeconds;
-    private Integer anyHallUpSeconds;
-    private Integer allHallUpSeconds;
-    private Integer downHardSeconds;
+  private Integer oneHallUpSeconds;
+  private Integer twoHallUpSeconds;
+  private Integer threeHallUpSeconds;
+  private Integer fourHallUpSeconds;
+  private Integer anyHallUpSeconds;
+  private Integer allHallUpSeconds;
+  private Integer downHardSeconds;
 
-    public Integer getOneHallUpSeconds() {
-        return oneHallUpSeconds;
-    }
+  public Integer getOneHallUpSeconds() {
+    return oneHallUpSeconds;
+  }
 
-    public void setOneHallUpSeconds(Integer oneUpSeconds) {
-        this.oneHallUpSeconds = oneUpSeconds;
-    }
+  public void setOneHallUpSeconds(Integer oneUpSeconds) {
+    this.oneHallUpSeconds = oneUpSeconds;
+  }
 
-    public Integer getTwoHallUpSeconds() {
-        return twoHallUpSeconds;
-    }
+  public Integer getTwoHallUpSeconds() {
+    return twoHallUpSeconds;
+  }
 
-    public void setTwoHallUpSeconds(Integer twoUpSeconds) {
-        this.twoHallUpSeconds = twoUpSeconds;
-    }
+  public void setTwoHallUpSeconds(Integer twoUpSeconds) {
+    this.twoHallUpSeconds = twoUpSeconds;
+  }
 
-    public Integer getThreeHallUpSeconds() {
-        return threeHallUpSeconds;
-    }
+  public Integer getThreeHallUpSeconds() {
+    return threeHallUpSeconds;
+  }
 
-    public void setThreeHallUpSeconds(Integer threeUpSeconds) {
-        this.threeHallUpSeconds = threeUpSeconds;
-    }
+  public void setThreeHallUpSeconds(Integer threeUpSeconds) {
+    this.threeHallUpSeconds = threeUpSeconds;
+  }
 
-    public Integer getFourHallUpSeconds() {
-        return fourHallUpSeconds;
-    }
+  public Integer getFourHallUpSeconds() {
+    return fourHallUpSeconds;
+  }
 
-    public void setFourHallUpSeconds(Integer fourHallUpSeconds) {
-        this.fourHallUpSeconds = fourHallUpSeconds;
-    }
+  public void setFourHallUpSeconds(Integer fourHallUpSeconds) {
+    this.fourHallUpSeconds = fourHallUpSeconds;
+  }
 
-    public Integer getAnyHallUpSeconds() {
-        return anyHallUpSeconds;
-    }
+  public Integer getAnyHallUpSeconds() {
+    return anyHallUpSeconds;
+  }
 
-    public void setAnyHallUpSeconds(Integer anyUpSeconds) {
-        this.anyHallUpSeconds = anyUpSeconds;
-    }
+  public void setAnyHallUpSeconds(Integer anyUpSeconds) {
+    this.anyHallUpSeconds = anyUpSeconds;
+  }
 
-    public Integer getAllHallUpSeconds() {
-        return allHallUpSeconds;
-    }
+  public Integer getAllHallUpSeconds() {
+    return allHallUpSeconds;
+  }
 
-    public void setAllHallUpSeconds(Integer allUpSeconds) {
-        this.allHallUpSeconds = allUpSeconds;
-    }
+  public void setAllHallUpSeconds(Integer allUpSeconds) {
+    this.allHallUpSeconds = allUpSeconds;
+  }
 
-    public Integer getDownHardSeconds() {
-        return downHardSeconds;
-    }
+  public Integer getDownHardSeconds() {
+    return downHardSeconds;
+  }
 
-    public void setDownHardSeconds(Integer downHardSeconds) {
-        this.downHardSeconds = downHardSeconds;
-    }
+  public void setDownHardSeconds(Integer downHardSeconds) {
+    this.downHardSeconds = downHardSeconds;
+  }
 }

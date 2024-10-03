@@ -3,19 +3,18 @@ package org.jlab.btm.business.service.epics;
 import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
-import org.jlab.btm.business.util.HourUtil;
-import org.jlab.btm.persistence.entity.CcHallHour;
-import org.jlab.btm.persistence.entity.CcMultiplicityHour;
-import org.jlab.btm.persistence.epics.MultiplicityBeamAvailability;
-import org.jlab.btm.persistence.epics.MultiplicityBeamAvailabilityDao;
-
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import org.jlab.btm.business.util.HourUtil;
+import org.jlab.btm.persistence.entity.CcHallHour;
+import org.jlab.btm.persistence.entity.CcMultiplicityHour;
+import org.jlab.btm.persistence.epics.MultiplicityBeamAvailability;
+import org.jlab.btm.persistence.epics.MultiplicityBeamAvailabilityDao;
 
 /**
  * Responsible for querying experimenter hall EPICS time accounting data.
@@ -25,47 +24,50 @@ import java.util.logging.Logger;
 @Stateless
 public class CcEpicsMultiplicityHourService {
 
-    private static final Logger logger = Logger.getLogger(CcEpicsMultiplicityHourService.class.getName());
-    @EJB
-    ContextFactory factory;
+  private static final Logger logger =
+      Logger.getLogger(CcEpicsMultiplicityHourService.class.getName());
+  @EJB ContextFactory factory;
 
-    public List<CcMultiplicityHour> find(Date startDayAndHour,
-                                         Date endDayAndHour, List<List<CcHallHour>> hallHoursList) throws TimeoutException,
-            InterruptedException, CAException {
-        List<CcMultiplicityHour> hours;
+  public List<CcMultiplicityHour> find(
+      Date startDayAndHour, Date endDayAndHour, List<List<CcHallHour>> hallHoursList)
+      throws TimeoutException, InterruptedException, CAException {
+    List<CcMultiplicityHour> hours;
 
-        if (HourUtil.isInEpicsWindow(endDayAndHour)) {
-            hours = loadAccounting();
+    if (HourUtil.isInEpicsWindow(endDayAndHour)) {
+      hours = loadAccounting();
 
-            hours = HourUtil.subset(startDayAndHour, endDayAndHour, hours);
+      hours = HourUtil.subset(startDayAndHour, endDayAndHour, hours);
 
-            HourRounder rounder = new HourRounder();
-            rounder.roundMultiplicityHourList(hours, hallHoursList);
-        } else {
-            hours = new ArrayList<>();
-        }
-
-        return hours;
+      HourRounder rounder = new HourRounder();
+      rounder.roundMultiplicityHourList(hours, hallHoursList);
+    } else {
+      hours = new ArrayList<>();
     }
 
-    private List<CcMultiplicityHour> loadAccounting() throws TimeoutException,
-            InterruptedException, CAException {
+    return hours;
+  }
 
-        MultiplicityBeamAvailability accounting;
+  private List<CcMultiplicityHour> loadAccounting()
+      throws TimeoutException, InterruptedException, CAException {
 
-        CAJContext context = factory.getContext();
+    MultiplicityBeamAvailability accounting;
 
-        try {
-            MultiplicityBeamAvailabilityDao dao = new MultiplicityBeamAvailabilityDao(context);
+    CAJContext context = factory.getContext();
 
-            long start = System.currentTimeMillis();
-            accounting = dao.loadAccounting();
-            long end = System.currentTimeMillis();
-            logger.log(Level.FINEST, "EPICS multiplicity hall hours load time (milliseconds): {0}", (end - start));
-        } finally {
-            factory.returnContext(context);
-        }
+    try {
+      MultiplicityBeamAvailabilityDao dao = new MultiplicityBeamAvailabilityDao(context);
 
-        return accounting.getOpMultiplicityHours();
+      long start = System.currentTimeMillis();
+      accounting = dao.loadAccounting();
+      long end = System.currentTimeMillis();
+      logger.log(
+          Level.FINEST,
+          "EPICS multiplicity hall hours load time (milliseconds): {0}",
+          (end - start));
+    } finally {
+      factory.returnContext(context);
     }
+
+    return accounting.getOpMultiplicityHours();
+  }
 }

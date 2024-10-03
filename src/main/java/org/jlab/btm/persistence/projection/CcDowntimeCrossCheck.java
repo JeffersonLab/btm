@@ -8,29 +8,34 @@ import org.jlab.btm.presentation.util.BtmFunctions;
  */
 public class CcDowntimeCrossCheck {
 
-    private static final int TEN_MINUTES_OF_SECONDS = 600;
+  private static final int TEN_MINUTES_OF_SECONDS = 600;
 
-    private final boolean passed;
-    private final boolean lowProgramPassed;
+  private final boolean passed;
+  private final boolean lowProgramPassed;
 
-    private final String lowProgramMessage;
+  private final String lowProgramMessage;
 
-    public CcDowntimeCrossCheck(CcAccShiftTotals acc, long dtmEventDownSeconds) {
+  public CcDowntimeCrossCheck(CcAccShiftTotals acc, long dtmEventDownSeconds) {
 
-        int possibleDowntimeSeconds = acc.calculatePossibleDowntimeSeconds();
+    int possibleDowntimeSeconds = acc.calculatePossibleDowntimeSeconds();
 
-        lowProgramMessage = "DTM event down (" + BtmFunctions.formatDuration((int) dtmEventDownSeconds, DurationUnits.HOURS) + " hours) is significantly greater than BTM possible down time [PHYSICS + INTERNAL DOWN] (" + BtmFunctions.formatDuration(possibleDowntimeSeconds, DurationUnits.HOURS) + " hours)";
+    lowProgramMessage =
+        "DTM event down ("
+            + BtmFunctions.formatDuration((int) dtmEventDownSeconds, DurationUnits.HOURS)
+            + " hours) is significantly greater than BTM possible down time [PHYSICS + INTERNAL DOWN] ("
+            + BtmFunctions.formatDuration(possibleDowntimeSeconds, DurationUnits.HOURS)
+            + " hours)";
 
-        lowProgramPassed = possibleDowntimeSeconds >= dtmEventDownSeconds - TEN_MINUTES_OF_SECONDS;
+    lowProgramPassed = possibleDowntimeSeconds >= dtmEventDownSeconds - TEN_MINUTES_OF_SECONDS;
 
-        passed = lowProgramPassed;
-    }
+    passed = lowProgramPassed;
+  }
 
-    public boolean isPassed() {
-        return passed;
-    }
+  public boolean isPassed() {
+    return passed;
+  }
 
-    public String getLowProgramMessage() {
-        return lowProgramMessage;
-    }
+  public String getLowProgramMessage() {
+    return lowProgramMessage;
+  }
 }

@@ -7,6 +7,4 @@ import javax.ws.rs.core.Application;
  * @author ryans
  */
 @ApplicationPath("/rest")
-public class BtmApplication extends Application {
-
-}
+public class BtmApplication extends Application {}
