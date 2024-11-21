@@ -23,7 +23,7 @@
                 </th>
                 <th colspan="4">INTERNAL</th>
                 <th rowspan="2"
-                    title="Machine is scheduled to be off for holiday, maintenance, or budget restrictions (Scheduled Accelerator Down)">
+                    title="Machine is scheduled to be off for holiday, maintenance, or budget restrictions (Scheduled Accelerator Maintenance)">
                     OFF (SAM)
                 </th>
             </tr>
