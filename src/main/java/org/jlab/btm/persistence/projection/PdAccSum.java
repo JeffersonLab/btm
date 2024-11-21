@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class PdAccSum {
 
-  private final long programSeconds; // anything but OFF (SAD) or implied OFF
+  private final long programSeconds; // anything but OFF (SAM) or implied OFF
   private final long physicsSeconds;
   private final long offSeconds;
   private final long studiesSeconds;

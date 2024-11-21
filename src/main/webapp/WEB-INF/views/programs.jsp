@@ -49,8 +49,8 @@
                                 <td>Machine is being studied/tested/developed</td>
                             </tr>
                             <tr>
-                                <td>SAD Restore</td>
-                                <td>Machine is being restored after being OFF (SAD). SAD Restore is not to be confused
+                                <td>SAM Restore</td>
+                                <td>Machine is being restored after being OFF (SAM). SAM Restore is not to be confused
                                     with recovery after component failure, which is rolled up into down. Similarly,
                                     recovery from studies is counted as studies and should be scheduled accordingly.
                                     Excessive recovery (tuning) beyond the schedule is recorded as Down.
@@ -69,9 +69,9 @@
                             </tr>
                             <tr>
                                 <td rowspan="2">OFF</td>
-                                <td>SAD</td>
+                                <td>SAM</td>
                                 <td>Machine is scheduled to be off for holiday, maintenance, or budget restrictions
-                                    (Scheduled Accelerator Down).
+                                    (Scheduled Accelerator Maintenance).
                                 </td>
                             </tr>
                             <tr>

@@ -545,7 +545,7 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
     if (schedule != null) {
       ScheduleDay sd = schedule.getScheduleDay(today);
 
-      // If most recent schedule says today we're not OFF (SAD) then a current run exists!
+      // If most recent schedule says today we're not OFF (SAM) then a current run exists!
       if (sd != null && !"OFF".equals(sd.getAccProgram())) {
         // Great, current run exists; now we have to find bounds by checking one month at a time in
         // both directions
@@ -573,11 +573,11 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
 
       // LOGGER.log(Level.WARNING, "Scheduled Day: " + sd);
 
-      // If most recent schedule says previousToDate we're not OFF (SAD) then a current run exists
+      // If most recent schedule says previousToDate we're not OFF (SAM) then a current run exists
       // so we can't continue
       if (sd != null && "OFF".equals(sd.getAccProgram())) {
-        // LOGGER.log(Level.WARNING, "We are in SAD!");
-        // Great, we are in SAD; now we have to find bounds of previous run
+        // LOGGER.log(Level.WARNING, "We are in SAM!");
+        // Great, we are in SAM; now we have to find bounds of previous run
         Date end = findPreviousOff(previousToDate, schedule, true);
         if (end != null) { // Only continue if not null, else return null
           schedule = findMostRecentPublished(TimeUtil.startOfMonth(end, Calendar.getInstance()));
@@ -588,7 +588,7 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
 
           if (start != null && end != null) {
             // Because of inverse lookup we need to add 1 to end date to keep boundary days always
-            // SAD days
+            // SAM days
             // But we need to do this here instead of above so we don't sabotage second
             // findPreviousOff call
             bounds = new DateRange(start, TimeUtil.addDays(end, 1));

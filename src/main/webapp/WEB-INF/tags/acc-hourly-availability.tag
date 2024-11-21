@@ -16,11 +16,11 @@
                     <th rowspan="2"></th>
                     <th rowspan="2" class="duration-header">PHYSICS</th>
                     <th colspan="4">INTERNAL</th>
-                    <th rowspan="2" class="duration-header">OFF (SAD)</th>
+                    <th rowspan="2" class="duration-header">OFF (SAM)</th>
                 </tr>
                 <tr>
                     <th class="duration-header">STUDIES</th>
-                    <th class="duration-header">SAD RESTORE</th>
+                    <th class="duration-header">SAM RESTORE</th>
                     <th class="duration-header">ACC</th>
                     <th class="duration-header">INTERNAL DOWN</th>
                 </tr>
@@ -68,14 +68,14 @@
                 <th rowspan="2"></th>
                 <th rowspan="2" class="duration-header">PHYSICS</th>
                 <th colspan="4" style="width: 320px;">INTERNAL</th>
-                <th rowspan="2" class="duration-header">OFF (SAD)</th>
+                <th rowspan="2" class="duration-header">OFF (SAM)</th>
                 <th rowspan="2">Hour Total</th>
                 <th rowspan="2">Source</th>
                 <th rowspan="2" style="width: 50px;"></th>
             </tr>
             <tr>
                 <th class="duration-header">STUDIES</th>
-                <th class="duration-header">SAD RESTORE</th>
+                <th class="duration-header">SAM RESTORE</th>
                 <th class="duration-header">ACC</th>
                 <th class="duration-header">INTERNAL DOWN</th>
             </tr>

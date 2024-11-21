@@ -136,7 +136,7 @@ public class ExcelBeamSummaryService {
 
     // Explicit OFF
     row = sheet1.createRow(rownum++);
-    row.createCell(0).setCellValue("Explicit Off (SAD)");
+    row.createCell(0).setCellValue("Explicit Off (SAM)");
     c = row.createCell(1);
     c.setCellStyle(numberStyle);
     c.setCellValue(ccSum.getSadSeconds() / 3600);

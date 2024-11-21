@@ -128,7 +128,7 @@
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <th>SAD Restore (${durationUnits.label}):</th>
+                                <th>SAM Restore (${durationUnits.label}):</th>
                                 <c:forEach items="${entityList}" var="entity">
                                     <td>
                                         <c:out value="${btm:formatDuration(entity.restoreSeconds, durationUnits)}"/>
@@ -152,7 +152,7 @@
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <th>SAD (${durationUnits.label}):</th>
+                                <th>SAM (${durationUnits.label}):</th>
                                 <c:forEach items="${entityList}" var="entity">
                                     <td>
                                         <c:out value="${btm:formatDuration(entity.sadSeconds, durationUnits)}"/>

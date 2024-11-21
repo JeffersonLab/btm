@@ -24,15 +24,15 @@
                 <th colspan="4">INTERNAL</th>
                 <th rowspan="2"
                     title="Machine is scheduled to be off for holiday, maintenance, or budget restrictions (Scheduled Accelerator Down)">
-                    OFF (SAD)
+                    OFF (SAM)
                 </th>
             </tr>
             <tr>
                 <th title="Machine is being studied/tested/developed.  This does not include opportunistic beam studies.">
                     STUDIES
                 </th>
-                <th title="Machine is being restored after being OFF (SAD) - is not to be confused with restore after component failure, which is rolled up into down">
-                    SAD RESTORE
+                <th title="Machine is being restored after being OFF (SAM) - is not to be confused with restore after component failure, which is rolled up into down">
+                    SAM RESTORE
                 </th>
                 <th title="Machine is changing configurations (Accelerator Configuration Change)">ACC</th>
                 <th title="Machine is down due to component failures + FSDs that occurred during Studies, Restore, and ACC, but not during Physics">

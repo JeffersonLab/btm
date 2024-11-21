@@ -21,7 +21,7 @@
         <th title="Machine restoration after system failure">RESTORE</th>
         <th title="Accelerator Configuration Change">ACC</th>
         <th title="System Failures + FSDs">DOWN</th>
-        <th title="Scheduled Accelerator Down">OFF (SAD)</th>
+        <th title="Scheduled Accelerator Maintenance">OFF (SAM)</th>
     </tr>
     </thead>
     <tbody>

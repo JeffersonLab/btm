@@ -13,7 +13,7 @@ public class CcAccSum {
   private final Date end;
 
   private final long possibleDownSeconds; // Physics and Internal Down
-  private final long programSeconds; // anything but OFF (SAD) or implied OFF
+  private final long programSeconds; // anything but OFF (SAM) or implied OFF
   private final long upSeconds;
   private final long sadSeconds;
   private final long downSeconds;

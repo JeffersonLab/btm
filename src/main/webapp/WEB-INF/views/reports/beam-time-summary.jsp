@@ -199,7 +199,7 @@
                                     <th>
                                         <div class="color-box"></div>
                                     </th>
-                                    <td class="legend-label">SAD Restore</td>
+                                    <td class="legend-label">SAM Restore</td>
                                     <td><fmt:formatNumber value="${ccSum.restoreSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
                                     <td>(<fmt:formatNumber value="${(ccSum.restoreSeconds / 3600) / ccSum.periodHours * 100}"
@@ -253,7 +253,7 @@
                                     <th>
                                         <div class="color-box"></div>
                                     </th>
-                                    <td class="legend-label">SAD</td>
+                                    <td class="legend-label">SAM</td>
                                     <td><fmt:formatNumber value="${ccSum.sadSeconds / 3600}" pattern="#,##0.0"/></td>
                                     <td>(<fmt:formatNumber value="${(ccSum.sadSeconds / 3600) / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
