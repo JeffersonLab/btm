@@ -1,7 +1,7 @@
 var jlab = jlab || {};
 jlab.btm = jlab.btm || {};
 
-$(document).on("click", "#filter-form-submit-button", function () {
+$(document).on("click", ".filter-form-submit-button", function () {
     if ($("#date").val() === '') {
         return false;
     }
