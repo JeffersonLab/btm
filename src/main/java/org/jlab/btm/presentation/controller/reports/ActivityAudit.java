@@ -73,7 +73,7 @@ public class ActivityAudit extends HttpServlet {
     try {
       modifiedStart = ParamConverter.convertFriendlyDateTime(request, "start");
       modifiedEnd = ParamConverter.convertFriendlyDateTime(request, "end");
-    } catch (ParseException e) {
+    } catch (Exception e) {
       throw new RuntimeException("Date format error", e);
     }
 

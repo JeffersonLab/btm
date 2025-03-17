@@ -6,7 +6,6 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -55,7 +54,7 @@ public class MyqueryInterval extends HttpServlet {
     try {
       ParamConverter.convertISO8601Date(request, "b");
       ParamConverter.convertISO8601Date(request, "e");
-    } catch (ParseException e) {
+    } catch (Exception e) {
       throw new ServletException("Date format invalid");
     }
 
