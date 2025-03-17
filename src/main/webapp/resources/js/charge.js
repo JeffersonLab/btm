@@ -414,7 +414,7 @@ jlab.toScientificNotationHTML = function(number, units) {
 
         /*result = number.toExponential(2);*/
 
-        if(number !== 0) {
+        if(number !== undefined && number !== 0) {
             var exp = number.toExponential(1),
                 tokens = exp.split("e"),
                 sci = tokens[0] + "x10",
@@ -577,7 +577,7 @@ jlab.doLineChart = function () {
     /*console.log(jlab.ratioData);*/
     /*console.log(jlab.series);*/
 
-    $("#chart-wrap").addClass("has-y-axis-label").addClass("has-x-axis-label");
+    $(".chart-wrap").addClass("has-y-axis-label").addClass("has-x-axis-label");
 
     jlab.ratioChart = $.plot($("#chart-placeholder"), jlab.ratioData, {
         lines: {

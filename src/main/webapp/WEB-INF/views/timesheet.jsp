@@ -13,7 +13,7 @@
               href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/timesheet.css"/>
         <style type="text/css">
             #comparison-table .ui-icon {
-                background-image: url("${pageContext.request.contextPath}/resources/jquery-ui-1.13.2/images/ui-icons_2e83ff_256x240.png");
+                background-image: url("${pageContext.request.contextPath}/resources/jquery-ui-1.14.1/images/ui-icons_2e83ff_256x240.png");
             }
         </style>
     </jsp:attribute>
@@ -47,7 +47,7 @@
                 </ul>
             </div>
             <s:filter-flyout-widget ribbon="true">
-                <form id="filter-form" action="timesheet" method="get">
+                <form class="filter-form" action="timesheet" method="get">
                     <fieldset>
                         <legend>Filter</legend>
                         <ul class="key-value-list">
@@ -110,10 +110,10 @@
                             <li><a href="${pageContext.request.contextPath}/timesheet/ed">Experimenter D</a></li>
                         </ul>
                     </fieldset>
-                    <button id="filter-form-submit-button">Apply</button>
+                    <button class="filter-form-submit-button">Apply</button>
                 </form>
             </s:filter-flyout-widget>
-            <h2 id="page-header-title">Timesheet</h2>
+            <h2 class="page-header-title">Timesheet</h2>
             <div class="message-box"><c:out value="${message}"/></div>
         </section>
         <section class="${editable ? 'editable-timesheet' : ''}">

@@ -38,7 +38,7 @@
         <ul>
             <li>
                 <s:filter-flyout-widget>
-                    <form id="filter-form" action="schedule" method="get">
+                    <form class="filter-form" action="schedule" method="get">
                         <fieldset>
                             <legend>Filter</legend>
                             <ul class="key-value-list">
@@ -81,7 +81,7 @@
                         </fieldset>
                         <input id="print-input" type="hidden" name="print" value="${fn:escapeXml(param.print)}"/>
                         <input id="fullscreen-input" type="hidden" name="fullscreen" value="${fn:escapeXml(param.fullscreen)}"/>
-                        <button id="filter-form-submit-button">Apply</button>
+                        <button class="filter-form-submit-button">Apply</button>
                     </form>
                 </s:filter-flyout-widget>
             </li>

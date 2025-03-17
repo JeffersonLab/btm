@@ -442,7 +442,7 @@ $(document).on("click", "#toolbar-save-button", function () {
     jlab.btm.toolbarSaveAction();
 });
 
-$(document).on("click", "#filter-form-submit-button", function () {
+$(document).on("click", ".filter-form-submit-button", function () {
     jlab.btm.doFilterFormSubmit();
     return false;
 });

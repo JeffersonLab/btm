@@ -187,7 +187,7 @@ doBarChart = function () {
         }
     ];
 
-    $("#chart-wrap").addClass("has-y-axis-label").addClass("has-x-axis-label");
+    $(".chart-wrap").addClass("has-y-axis-label").addClass("has-x-axis-label");
 
     jlab.flotplot = $.plot($("#chart-placeholder"), ds, {
         series: {
@@ -245,7 +245,7 @@ doPieChart = function () {
         });
     });
 
-    $("#chart-wrap").addClass("chart-wrap-backdrop");
+    $(".chart-wrap").addClass("chart-wrap-backdrop");
 
     jlab.flotplot = $.plot($graph, ds, {
         series: {

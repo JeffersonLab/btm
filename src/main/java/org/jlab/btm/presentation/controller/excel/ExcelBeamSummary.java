@@ -1,7 +1,6 @@
 package org.jlab.btm.presentation.controller.excel;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -53,7 +52,7 @@ public class ExcelBeamSummary extends HttpServlet {
     try {
       start = ParamConverter.convertFriendlyDate(request, "start");
       end = ParamConverter.convertFriendlyDate(request, "end");
-    } catch (ParseException e) {
+    } catch (Exception e) {
       throw new ServletException("Unable to parse date", e);
     }
 

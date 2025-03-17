@@ -75,13 +75,6 @@ public class ScheduleController extends HttpServlet {
       view = "calendar";
     }
 
-    boolean publicProxy = ParamUtil.convertAndValidateYNBoolean(request, "public-proxy", false);
-
-    if (request.getHeader("X-Public-Proxy") != null
-        || request.getParameter("public-proxy") != null) {
-      publicProxy = true; // You don't have a choice if proxy server sets this
-    }
-
     List<MonthlySchedule> scheduleList = monthlyScheduleService.findAll(start);
     MonthlySchedule schedule = null;
 
@@ -141,11 +134,7 @@ public class ScheduleController extends HttpServlet {
     request.setAttribute("previousUrl", getPreviousUrl(request, start));
     request.setAttribute("nextUrl", getNextUrl(request, start));
 
-    if (publicProxy) {
-      request.getRequestDispatcher("/WEB-INF/views/public-schedule.jsp").forward(request, response);
-    } else {
-      request.getRequestDispatcher("/WEB-INF/views/schedule.jsp").forward(request, response);
-    }
+    request.getRequestDispatcher("/WEB-INF/views/schedule.jsp").forward(request, response);
   }
 
   private String getPreviousUrl(HttpServletRequest request, Date date) {
