@@ -37,7 +37,7 @@
                         </ul>
                     </fieldset>
                         <input type="hidden" id="offset-input" name="offset" value="0"/>
-                        <input id="filter-form-submit-button" type="submit" value="Apply"/>
+                        <input class="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
             </s:filter-flyout-widget>
             <h2 id="page-header-title">Activity Audit: CcShift <c:out value="${selectionMessage}"/></h2>

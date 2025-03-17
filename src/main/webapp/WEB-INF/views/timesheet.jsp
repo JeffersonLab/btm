@@ -110,7 +110,7 @@
                             <li><a href="${pageContext.request.contextPath}/timesheet/ed">Experimenter D</a></li>
                         </ul>
                     </fieldset>
-                    <button id="filter-form-submit-button">Apply</button>
+                    <button class="filter-form-submit-button">Apply</button>
                 </form>
             </s:filter-flyout-widget>
             <h2 id="page-header-title">Timesheet</h2>

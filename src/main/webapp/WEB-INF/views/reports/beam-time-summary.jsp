@@ -142,7 +142,7 @@
                         <s:date-range datetime="${true}" sevenAmOffset="${true}"/>
                         <div class="sched-info">Schedule granularities differ.  The PD Shift Plan is queried by adjusting the date range to CC shift boundaries (7:00, 15:00, 23:00).  The PAC Schedule is queried by adjusting the date range to day boundaries (midnight).  Select start and end dates within SADs to avoid boundary concerns.</div>
                     </fieldset>
-                    <input id="filter-form-submit-button" type="submit" value="Apply"/>
+                    <input class="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
             </s:filter-flyout-widget>
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
