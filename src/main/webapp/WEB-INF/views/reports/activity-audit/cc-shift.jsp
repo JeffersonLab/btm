@@ -40,7 +40,7 @@
                         <input class="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
             </s:filter-flyout-widget>
-            <h2 id="page-header-title">Activity Audit: CcShift <c:out value="${selectionMessage}"/></h2>
+            <h2 class="page-header-title">Activity Audit: CcShift <c:out value="${selectionMessage}"/></h2>
             <ul class="bracket-horizontal-nav">
                 <li><a href="${pageContext.request.contextPath}/reports/activity-audit">Transactions</a></li>
                 <li><a href="${pageContext.request.contextPath}/reports/activity-audit/exp-shift">ExpShift</a></li>
