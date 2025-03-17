@@ -50,7 +50,7 @@
                 </div>
             </div>
             <s:filter-flyout-widget requiredMessage="true">
-                <form id="filter-form" method="get" action="physics-summary">
+                <form class="filter-form" method="get" action="physics-summary">
                     <fieldset>
                         <legend>Filter</legend>
                         <s:date-range datetime="${true}" sevenAmOffset="${true}"/>

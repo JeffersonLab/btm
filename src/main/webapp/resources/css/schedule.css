@@ -14,7 +14,7 @@ body.print.fullscreen .fork-option-pair {
     top: 47px;
 }
 
-body.print.fullscreen #filter-flyout-widget {
+body.print.fullscreen .filter-flyout-widget {
     display: inline-block;
 }
 
@@ -263,7 +263,7 @@ h3 {
     margin-bottom: 0;
 }
 
-#filter-flyout-widget {
+.filter-flyout-widget {
     margin-bottom: 12px;
 }
 

@@ -44,7 +44,7 @@
                 </div>
             </div>
             <s:filter-flyout-widget requiredMessage="true">
-                <form id="filter-form" method="get" action="bt-calendar">
+                <form class="filter-form" method="get" action="bt-calendar">
                     <fieldset>
                         <legend>Time</legend>
                         <ul class="key-value-list">

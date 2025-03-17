@@ -43,7 +43,7 @@
                 </div>
             </div>
             <s:filter-flyout-widget requiredMessage="true">
-                <form id="filter-form" method="get" action="hall-availability">
+                <form class="filter-form" method="get" action="hall-availability">
                     <fieldset>
                         <legend>Filter</legend>
                         <s:date-range datetime="${true}" sevenAmOffset="${true}"/>

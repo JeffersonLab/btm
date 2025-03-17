@@ -136,7 +136,7 @@
                 </div>
             </div>
             <s:filter-flyout-widget requiredMessage="true">
-                <form id="filter-form" method="get" action="beam-time-summary">
+                <form class="filter-form" method="get" action="beam-time-summary">
                     <fieldset>
                         <legend>Time</legend>
                         <s:date-range datetime="${true}" sevenAmOffset="${true}"/>

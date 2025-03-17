@@ -24,7 +24,7 @@
     <jsp:body>
         <section>
             <s:filter-flyout-widget clearButton="true">
-                <form id="filter-form" method="get" action="activity-audit">
+                <form class="filter-form" method="get" action="activity-audit">
                     <fieldset>
                         <legend>Modified Between</legend>
                         <s:date-range datetime="${true}" sevenAmOffset="${true}"/>

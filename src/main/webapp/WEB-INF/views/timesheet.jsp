@@ -47,7 +47,7 @@
                 </ul>
             </div>
             <s:filter-flyout-widget ribbon="true">
-                <form id="filter-form" action="timesheet" method="get">
+                <form class="filter-form" action="timesheet" method="get">
                     <fieldset>
                         <legend>Filter</legend>
                         <ul class="key-value-list">

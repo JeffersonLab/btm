@@ -38,7 +38,7 @@
         <ul>
             <li>
                 <s:filter-flyout-widget>
-                    <form id="filter-form" action="schedule" method="get">
+                    <form class="filter-form" action="schedule" method="get">
                         <fieldset>
                             <legend>Filter</legend>
                             <ul class="key-value-list">

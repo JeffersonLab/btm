@@ -14,7 +14,7 @@
     <jsp:body>
         <section>
             <s:filter-flyout-widget requiredMessage="true">
-                <form id="filter-form" method="get" action="cc-shift">
+                <form class="filter-form" method="get" action="cc-shift">
                     <fieldset>
                         <legend>Filter</legend>
                         <ul class="key-value-list">                      

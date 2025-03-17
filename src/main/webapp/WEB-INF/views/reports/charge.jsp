@@ -97,7 +97,7 @@
                 </div>
             </div>
             <s:filter-flyout-widget requiredMessage="true">
-                <form id="filter-form" method="get" action="charge">
+                <form class="filter-form" method="get" action="charge">
                     <fieldset>
                         <legend>Filter</legend>
                         <s:date-range/>
