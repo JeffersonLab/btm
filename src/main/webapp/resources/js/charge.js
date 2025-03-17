@@ -577,7 +577,7 @@ jlab.doLineChart = function () {
     /*console.log(jlab.ratioData);*/
     /*console.log(jlab.series);*/
 
-    $("#chart-wrap").addClass("has-y-axis-label").addClass("has-x-axis-label");
+    $(".chart-wrap").addClass("has-y-axis-label").addClass("has-x-axis-label");
 
     jlab.ratioChart = $.plot($("#chart-placeholder"), jlab.ratioData, {
         lines: {
