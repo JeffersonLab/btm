@@ -273,6 +273,7 @@
     <span class="login-message">You must authenticate as a Crew Chief or Operability Manager to edit</span>
 </c:if>
 <div id="shift-info-dialog" class="dialog" title="View EPICS Shift Information">
+    <section>
     <form>
         <ul class="key-value-list">
             <li>
@@ -300,8 +301,10 @@
             <button class="dialog-close-button" type="button">OK</button>
         </div>
     </form>
+    </section>
 </div>
 <div id="status-dialog" class="dialog" title="Timesheet Status">
+    <section>
     <form>
         <span id="availability-status-header">Beam Availability and Utilization:</span>
         <ul id="availability-status-list" class="key-value-list">
@@ -416,4 +419,5 @@
             <button class="dialog-close-button" type="button">OK</button>
         </div>
     </form>
+    </section>
 </div>
