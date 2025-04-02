@@ -18,7 +18,7 @@ import org.jlab.smoothness.business.util.TimeUtil;
 @Stateless
 public class PdShiftPlanService extends AbstractService<PdShiftPlan> {
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   public PdShiftPlanService() {

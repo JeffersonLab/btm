@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
  * @author ryans
  */
 @WebServlet(
-    name = "PdShiftPlanController",
-    urlPatterns = {"/pd-shift-plan"})
-public class PdShiftPlanController extends HttpServlet {
+    name = "ContextRootController",
+    urlPatterns = {""})
+public class ContextRootController extends HttpServlet {
 
   /**
    * Handles the HTTP <code>GET</code> method.
@@ -26,6 +26,7 @@ public class PdShiftPlanController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    request.getRequestDispatcher("/WEB-INF/views/pd-shift-plan.jsp").forward(request, response);
+
+    response.sendRedirect(request.getContextPath() + "/timesheet");
   }
 }

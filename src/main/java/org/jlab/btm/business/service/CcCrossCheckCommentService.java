@@ -21,7 +21,7 @@ public class CcCrossCheckCommentService extends AbstractService<CcCrossCheckComm
 
   @EJB CcEpicsShiftService epicsService;
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   public CcCrossCheckCommentService() {

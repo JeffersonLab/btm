@@ -38,7 +38,7 @@ public class ExpHourService extends AbstractService<ExpHour> {
 
   private static final Logger logger = Logger.getLogger(ExpHourService.class.getName());
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   @EJB ExpEpicsHourService epicsHourService;

@@ -17,7 +17,7 @@ import org.jlab.btm.persistence.entity.audit.CcAccHourAud;
  */
 @Stateless
 public class CcAccHourAudService extends AbstractService<CcAccHourAud> {
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   @Override

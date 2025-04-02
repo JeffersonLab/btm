@@ -36,7 +36,7 @@ public class CcHallHourService extends AbstractService<CcHallHour> {
   private static final Logger logger = Logger.getLogger(CcHallHourService.class.getName());
   @EJB CcEpicsHallHourService epicsService;
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   public CcHallHourService() {

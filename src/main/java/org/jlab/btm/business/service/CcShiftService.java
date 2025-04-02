@@ -24,7 +24,7 @@ public class CcShiftService extends AbstractService<CcShift> {
 
   @EJB CcEpicsShiftService epicsService;
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   public CcShiftService() {

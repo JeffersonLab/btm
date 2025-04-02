@@ -22,7 +22,7 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
 @Stateless
 public class ExpProgramService extends AbstractService<ExpProgram> {
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   public ExpProgramService() {

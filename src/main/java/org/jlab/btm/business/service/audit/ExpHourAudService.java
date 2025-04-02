@@ -17,7 +17,7 @@ import org.jlab.btm.persistence.entity.audit.ExpHourAud;
  */
 @Stateless
 public class ExpHourAudService extends AbstractService<ExpHourAud> {
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   @Override

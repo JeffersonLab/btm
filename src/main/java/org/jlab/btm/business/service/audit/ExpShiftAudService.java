@@ -17,7 +17,7 @@ import org.jlab.btm.persistence.entity.audit.ExpShiftAud;
  */
 @Stateless
 public class ExpShiftAudService extends AbstractService<ExpShiftAud> {
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   @Override

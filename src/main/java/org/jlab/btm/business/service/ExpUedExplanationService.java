@@ -26,7 +26,7 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
 @Stateless
 public class ExpUedExplanationService extends AbstractService<ExpUedExplanation> {
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   @EJB ExpHourService hourService;

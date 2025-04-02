@@ -7,7 +7,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <c:set var="title" value="${type.label} Timesheet"/>
 <fmt:formatDate value="${day}" pattern="dd MMM yyyy" var="formattedDate"/>
-<t:page title="${title}">
+<s:page title="${title}">
     <jsp:attribute name="stylesheets">
         <link rel="stylesheet" type="text/css"
               href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/timesheet.css"/>
@@ -152,4 +152,4 @@
             </div>
         </section>
     </jsp:body>
-</t:page>
+</s:page>
