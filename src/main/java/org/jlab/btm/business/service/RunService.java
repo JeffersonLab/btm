@@ -17,7 +17,7 @@ public class RunService extends AbstractService<Run> {
 
   private static final Logger LOGGER = Logger.getLogger(RunService.class.getName());
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   public RunService() {

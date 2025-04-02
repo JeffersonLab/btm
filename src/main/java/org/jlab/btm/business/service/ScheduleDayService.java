@@ -21,7 +21,7 @@ import org.jlab.smoothness.persistence.util.JPAUtil;
 @Stateless
 public class ScheduleDayService extends AbstractService<ScheduleDay> {
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   public ScheduleDayService() {

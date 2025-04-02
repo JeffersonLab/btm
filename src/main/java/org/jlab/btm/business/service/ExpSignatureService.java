@@ -26,7 +26,7 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
 @Stateless
 public class ExpSignatureService extends AbstractService<ExpSignature> {
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   protected EntityManager em;
 
   @EJB ExpUedExplanationService explanationService;

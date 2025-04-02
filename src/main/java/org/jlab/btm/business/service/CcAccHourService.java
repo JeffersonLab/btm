@@ -39,7 +39,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
 
   @EJB CcEpicsAccHourService epicsService;
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   public CcAccHourService() {

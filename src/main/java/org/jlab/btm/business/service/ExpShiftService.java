@@ -25,7 +25,7 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
 @Stateless
 public class ExpShiftService extends AbstractService<ExpShift> {
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   public ExpShiftService() {

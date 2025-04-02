@@ -17,7 +17,7 @@ import org.jlab.btm.persistence.entity.audit.CcShiftAud;
  */
 @Stateless
 public class CcShiftAudService extends AbstractService<CcShiftAud> {
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   @Override

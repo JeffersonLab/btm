@@ -30,7 +30,7 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
 
   @EJB ScheduleDayService scheduleDayService;
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   public MonthlyScheduleService() {

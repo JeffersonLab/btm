@@ -38,7 +38,7 @@ public class CcMultiplicityHourService extends AbstractService<CcMultiplicityHou
   private static final Logger logger = Logger.getLogger(CcMultiplicityHourService.class.getName());
   @EJB CcEpicsMultiplicityHourService epicsService;
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   public CcMultiplicityHourService() {

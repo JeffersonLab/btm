@@ -39,7 +39,7 @@ public class CcSignatureService extends AbstractService<CcSignature> {
   @EJB PdShiftPlanService planService;
   @EJB DowntimeService downService;
 
-  @PersistenceContext(unitName = "btmPU")
+  @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
 
   public CcSignatureService() {
