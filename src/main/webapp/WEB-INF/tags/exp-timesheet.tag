@@ -99,6 +99,7 @@
 <div class="readonly-reason"><c:out value="${readonlyReason}"/></div>
 <button id="sign-button" type="button" class="ajax-submit"${editable ? '' : ' disabled="disabled"'}>Sign</button>
 <div id="status-dialog" class="dialog" title="Timesheet Status">
+    <section>
     <form>
         <div class="status-section-header">Needed For Crew Chief Shift</div>
         <ul class="key-value-list">
@@ -188,6 +189,7 @@
             <button class="dialog-close-button" type="button">OK</button>
         </div>
     </form>
+    </section>
 </div>
 <div id="flyouts">
     <div class="off-flyout">
