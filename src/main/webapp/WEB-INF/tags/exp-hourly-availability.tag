@@ -12,7 +12,7 @@
 <div id="exp-avail-panel" class="accordion">
     <form>
         <h3>Hall ${hall} Planned</h3>
-        <div>
+        <div class="plan-div">
             <p>
                 All of the metrics are based on comparing what actually happened vs a plan.   The plan can change rapidly to ensure the machine utilization is maximized.  For
                 experiment timekeepers this means you may need to stay in contact with the Crew Chief during dynamic program times.
@@ -20,7 +20,7 @@
             <p>
                 There are at least four plans, each one informs the next, and in increasing granularity they are:
             </p>
-            <ul class="plan-list">
+            <ul>
                 <li><a target="_blank" href="https://ace.jlab.org/btm/schedule">Nuclear Physics Experiment Scheduling (NPES) Schedule</a> - day resolution, months in advance</li>
                 <li><a target="_blank" href="https://cebaf.jlab.org/files/ops/accboard/">MCC Whiteboard</a> - shift resolution, week in advance</li>
                 <li><a target="_blank" href="https://ace.jlab.org/apps/pd/shift-plans">PD Shift Plan</a> - shift resolution, shift in advance</li>

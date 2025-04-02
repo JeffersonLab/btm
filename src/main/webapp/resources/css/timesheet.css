@@ -73,7 +73,7 @@
     font-size: 0.75em;
     color: rgb(128, 128, 128);
 }
-.plan-list a {
+.plan-div a {
     font-weight: bold;
     color: blue;
     text-decoration: underline;
