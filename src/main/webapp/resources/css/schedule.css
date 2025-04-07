@@ -313,6 +313,9 @@ h3 {
 .fixed-size-first-row .notes {
     width: 175px;
 }
+#table-wrap {
+    margin-top: 1em;
+}
 .priority-hall-color,
 .priority-hall {
     background-color: #d0e6e0;

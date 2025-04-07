@@ -135,6 +135,7 @@
                 </c:otherwise>
             </c:choose>
             <div id="form-panel">
+                <a href="https://www.jlab.org/physics/experiments/NPEScommittee">Nuclear Physics Experiment Scheduling (NPES)</a>
                 <form id="html-form" method="get" action="/btm/schedule/schedule.html">
                     <input type="hidden" name="scheduleId" value="${schedule.monthlyScheduleId}"/>
                     <input type="submit" value="HTML"/>

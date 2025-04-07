@@ -5,7 +5,7 @@
 <%@taglib prefix="btm" uri="http://jlab.org/btm/functions" %>
 <%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<c:set var="title" value="Program Schedule"/>
+<c:set var="title" value="Program Schedule (NPES)"/>
 <s:page title="${title}">
     <jsp:attribute name="stylesheets">
         <link rel="stylesheet" type="text/css"
