@@ -52,7 +52,7 @@ This application requires a Java 11+ JVM and standard library to run, plus a Jav
 ### Configtime
 Wildfly must be pre-configured before the first deployment of the app. The [wildfly bash scripts](https://github.com/JeffersonLab/wildfly#configure) can be used to accomplish this. See the [Dockerfile](https://github.com/JeffersonLab/btm/blob/main/Dockerfile) for an example.
 
-**Note**: In production users often leave multiple instances of the app open per counting house and concurrent hourly refreshes may result in concurrent DB request contention for the BTM connection pool.   Bumping up the [max allowed concurrent](https://github.com/JeffersonLab/wildfly/blob/92972bd45dc363c2ed4959bb725e0ba3ba052a6b/scripts/app-setup.sh#L99) DB connections can ameliorate this.
+**Note**: In production users often leave multiple instances of the app open per counting house and concurrent hourly refreshes may result in concurrent DB request contention for the BTM connection pool.   Bumping up the [max allowed concurrent](https://github.com/JeffersonLab/wildfly/blob/92972bd45dc363c2ed4959bb725e0ba3ba052a6b/scripts/app-setup.sh#L99) DB connections can ameliorate this.  See Also: https://github.com/JeffersonLab/btm/issues/9#issuecomment-2819393849
 
 ### Runtime
 Uses the [Smoothness Environment Variables](https://github.com/JeffersonLab/smoothness#environment-variables) plus the following application specific:
