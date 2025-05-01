@@ -300,7 +300,7 @@
                 field(SIMS,"NO_ALARM")
                 field(ASG,"DEFAULT")
         }
-        record(histogram,"HL$(HALL):bta_sec_off_h") {
+        record(histogram,"HL$(HALL):bta_sec_hall_off_h") {
                  field(DESC,"histogram record")
                  field(SCAN,"Passive")
                  field(PINI,"NO")
