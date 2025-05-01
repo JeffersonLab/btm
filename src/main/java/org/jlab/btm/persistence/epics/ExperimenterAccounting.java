@@ -172,7 +172,6 @@ public class ExperimenterAccounting {
       hour.setPccSeconds((short) pcc[i]);
       hour.setUedSeconds((short) ued[i]);
 
-      // This is really part of CC PVS...
       hour.setOffSeconds((short) off[i]);
 
       hours.add(hour);

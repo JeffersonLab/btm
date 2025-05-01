@@ -50,7 +50,7 @@ public class ExperimenterAccountingDao {
     channelNames.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_PCC_SUFFIX);
     channelNames.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_UED_SUFFIX);
 
-    channelNames.add(Constant.HALL_PREFIX + hall + Constant.HALL_OFF_SUFFIX);
+    channelNames.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_OFF_SUFFIX);
 
     List<DBR> dbrs = SimpleGet.doAsyncGet(context, channelNames);
 

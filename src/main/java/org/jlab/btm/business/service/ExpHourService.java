@@ -148,7 +148,7 @@ public class ExpHourService extends AbstractService<ExpHour> {
       try {
         epicsHourList = findInEpics(hall, startHour, endHour, true);
       } catch (UserFriendlyException e) {
-        logger.log(Level.FINEST, "Unable to obtain EPICS hall hour data", e);
+        logger.log(Level.WARNING, "Unable to obtain EPICS hall hour data", e);
         epicsHourList = new ArrayList<>();
       }
     } else {
