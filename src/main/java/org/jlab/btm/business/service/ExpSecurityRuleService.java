@@ -54,13 +54,13 @@ public class ExpSecurityRuleService {
     boolean hallSigned = sigChecker.isHallManagerSigned(hall);
     boolean userSigned = sigChecker.isUserSigned();
     boolean callerIsOperabilityManager = context.isCallerInRole("btm-admin");
-    boolean callerIsHallManager = context.isCallerInRole(Role.getHallManagerRole(hall).getLabel());
+    boolean callerIsHallManager = context.isCallerInRole(Role.getHallManagerRole(hall).getName());
     String username = context.getCallerPrincipal().getName();
 
     boolean anonymous = (username == null || username.equalsIgnoreCase("ANONYMOUS"));
 
     /*logger.log(Level.WARNING, "hall: {0}", hall);
-    logger.log(Level.WARNING, "hall role: {0}", Role.getHallManagerRole(hall).getLabel());
+    logger.log(Level.WARNING, "hall role: {0}", Role.getHallManagerRole(hall).getName());
     logger.log(Level.WARNING, "anonymous: {0}", anonymous);
     logger.log(Level.WARNING, "username: {0}", username);
     logger.log(Level.WARNING, "opSigned: {0}", opSigned);
