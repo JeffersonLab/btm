@@ -10,11 +10,13 @@ create_role
 KEYCLOAK_ROLE_NAME=${KEYCLOAK_RESOURCE}-admin
 create_role
 
-KEYCLOAK_ROLE_NAME=group1Leaders
+KEYCLOAK_ROLE_NAME=halead
 create_role
-KEYCLOAK_ROLE_NAME=group2Leaders
+KEYCLOAK_ROLE_NAME=hblead
 create_role
-KEYCLOAK_ROLE_NAME=group3Leaders
+KEYCLOAK_ROLE_NAME=hclead
+create_role
+KEYCLOAK_ROLE_NAME=hdlead
 create_role
 
 echo "----------------"
@@ -27,6 +29,8 @@ KEYCLOAK_EMAIL=jadams@example.com
 KEYCLOAK_PASSWORD=password
 KEYCLOAK_ROLE_NAME=${KEYCLOAK_RESOURCE}-user
 create_user
+assign_role
+KEYCLOAK_ROLE_NAME=hblead
 assign_role
 
 KEYCLOAK_USERNAME=jsmith
