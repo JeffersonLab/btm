@@ -1,8 +1,8 @@
 package org.jlab.btm.business.service.epics;
 
-import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
+import gov.aps.jca.dbr.DBR;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,8 +12,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.CcHallHour;
-import org.jlab.btm.persistence.epics.HallBeamAvailability;
-import org.jlab.btm.persistence.epics.HallBeamAvailabilityDao;
+import org.jlab.btm.persistence.epics.*;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 /**
@@ -25,7 +24,7 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
 public class CcEpicsHallHourService {
 
   private static final Logger logger = Logger.getLogger(CcEpicsHallHourService.class.getName());
-  @EJB ContextFactory factory;
+  @EJB PVCache cache;
 
   /**
    * Fetches EPICS accounting information for a particular experimenter hall, optionally rounded,
@@ -79,19 +78,33 @@ public class CcEpicsHallHourService {
 
     HallBeamAvailability accounting;
 
-    CAJContext context = factory.getContext();
-
-    try {
-      HallBeamAvailabilityDao dao = new HallBeamAvailabilityDao(context);
-
-      long start = System.currentTimeMillis();
-      accounting = dao.loadAccounting(hall);
-      long end = System.currentTimeMillis();
-      logger.log(Level.FINEST, "EPICS hall hours load time (milliseconds): {0}", (end - start));
-    } finally {
-      factory.returnContext(context);
-    }
+    long start = System.currentTimeMillis();
+    accounting = getFromCache(hall);
+    long end = System.currentTimeMillis();
+    logger.log(Level.FINEST, "EPICS hall hours load time (milliseconds): {0}", (end - start));
 
     return accounting.getOpHallHours();
+  }
+
+  private HallBeamAvailability getFromCache(Hall hall) {
+    HallBeamAvailability accounting = new HallBeamAvailability();
+
+    List<DBR> dbrs = new ArrayList<>();
+
+    dbrs.add(cache.get(Constant.TIME_CHANNEL_NAME));
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_UP_SUFFIX));
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_TUNE_SUFFIX));
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_BNR_SUFFIX));
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_DOWN_SUFFIX));
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_OFF_SUFFIX));
+
+    accounting.setTime(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setUp(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setTune(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setBnr(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setDown(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setOff(SimpleGet.getDoubleValue(dbrs.remove(0)));
+
+    return accounting;
   }
 }
