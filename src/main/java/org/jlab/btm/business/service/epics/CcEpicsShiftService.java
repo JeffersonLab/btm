@@ -1,17 +1,17 @@
 package org.jlab.btm.business.service.epics;
 
-import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
+import gov.aps.jca.dbr.DBR;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import org.jlab.btm.business.service.CcAccHourService;
 import org.jlab.btm.persistence.entity.CcShift;
-import org.jlab.btm.persistence.epics.ShiftInfo;
-import org.jlab.btm.persistence.epics.ShiftInfoDao;
+import org.jlab.btm.persistence.epics.*;
 import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.enumeration.Shift;
 
@@ -24,8 +24,7 @@ import org.jlab.smoothness.persistence.enumeration.Shift;
 public class CcEpicsShiftService {
 
   private static final Logger logger = Logger.getLogger(CcEpicsShiftService.class.getName());
-  @EJB ContextFactory factory;
-  @EJB CcAccHourService accHourService;
+  @EJB PVCache cache;
 
   private boolean isCurrentLastOrNextShiftStart(Date startDayAndHour) {
     Date now = new Date();
@@ -102,19 +101,31 @@ public class CcEpicsShiftService {
 
     ShiftInfo accounting;
 
-    CAJContext context = factory.getContext();
-
-    try {
-      ShiftInfoDao dao = new ShiftInfoDao(context);
-
-      long start = System.currentTimeMillis();
-      accounting = dao.loadAccounting();
-      long end = System.currentTimeMillis();
-      logger.log(Level.FINEST, "EPICS shift load time (milliseconds): {0}", (end - start));
-    } finally {
-      factory.returnContext(context);
-    }
+    long start = System.currentTimeMillis();
+    accounting = getFromCache();
+    long end = System.currentTimeMillis();
+    logger.log(Level.FINEST, "EPICS shift load time (milliseconds): {0}", (end - start));
 
     return accounting.getOpShift();
+  }
+
+  private ShiftInfo getFromCache() {
+    ShiftInfo accounting = new ShiftInfo();
+
+    List<DBR> dbrs = new ArrayList<>();
+
+    dbrs.add(cache.get(Constant.CREW_CHIEF_CHANNEL_NAME));
+    dbrs.add(cache.get(Constant.OPERATORS_CHANNEL_NAME));
+    dbrs.add(cache.get(Constant.PROGRAM_CHANNEL_NAME));
+    dbrs.add(cache.get(Constant.PROGRAM_DEPUTY_CHANNEL_NAME));
+    dbrs.add(cache.get(Constant.COMMENTS_CHANNEL_NAME));
+
+    accounting.setCrewChief(SimpleGet.getStringValue(dbrs.remove(0))[0]);
+    accounting.setOperators(SimpleGet.getStringValue(dbrs.remove(0))[0]);
+    accounting.setProgram(SimpleGet.getStringValue(dbrs.remove(0))[0]);
+    accounting.setProgramDeputy(SimpleGet.getStringValue(dbrs.remove(0))[0]);
+    accounting.setComments(SimpleGet.getStringValue(dbrs.remove(0))[0]);
+
+    return accounting;
   }
 }
