@@ -1,15 +1,13 @@
 package org.jlab.btm.business.service.epics;
 
-import gov.aps.jca.CAException;
-import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.DBR;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.CcHallHour;
 import org.jlab.btm.persistence.entity.CcMultiplicityHour;
@@ -29,7 +27,7 @@ public class CcEpicsMultiplicityHourService {
 
   public List<CcMultiplicityHour> find(
       Date startDayAndHour, Date endDayAndHour, List<List<CcHallHour>> hallHoursList)
-      throws TimeoutException, InterruptedException, CAException {
+      throws CALoadException {
     List<CcMultiplicityHour> hours;
 
     if (HourUtil.isInEpicsWindow(endDayAndHour)) {
@@ -46,16 +44,11 @@ public class CcEpicsMultiplicityHourService {
     return hours;
   }
 
-  private List<CcMultiplicityHour> loadAccounting()
-      throws TimeoutException, InterruptedException, CAException {
+  private List<CcMultiplicityHour> loadAccounting() throws CALoadException {
 
     MultiplicityBeamAvailability accounting;
 
-    long start = System.currentTimeMillis();
     accounting = getFromCache();
-    long end = System.currentTimeMillis();
-    logger.log(
-        Level.FINEST, "EPICS multiplicity hall hours load time (milliseconds): {0}", (end - start));
 
     return accounting.getOpMultiplicityHours();
   }

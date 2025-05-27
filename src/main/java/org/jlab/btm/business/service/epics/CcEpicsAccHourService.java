@@ -1,15 +1,13 @@
 package org.jlab.btm.business.service.epics;
 
-import gov.aps.jca.CAException;
-import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.DBR;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.CcAccHour;
 import org.jlab.btm.persistence.epics.AcceleratorBeamAvailability;
@@ -40,12 +38,9 @@ public class CcEpicsAccHourService {
    * @param startDayAndHour the start day and hour.
    * @param endDayAndHour the end day and hour.
    * @return a list of experimenter hall hours.
-   * @throws TimeoutException if a network request takes too long.
-   * @throws InterruptedException if a thread gets unexpectedly interrupted.
-   * @throws CAException if a channel access problem occurs.
+   * @throws CALoadException if unable to obtain EPICS CA data.
    */
-  public List<CcAccHour> find(Date startDayAndHour, Date endDayAndHour)
-      throws TimeoutException, InterruptedException, CAException {
+  public List<CcAccHour> find(Date startDayAndHour, Date endDayAndHour) throws CALoadException {
     List<CcAccHour> hours;
 
     if (HourUtil.isInEpicsWindow(endDayAndHour)) {
@@ -69,19 +64,12 @@ public class CcEpicsAccHourService {
    * data, up to, and including the current hour.
    *
    * @return the accounting information as a list of experimenter hall hours.
-   * @throws TimeoutException if a network request takes too long.
-   * @throws InterruptedException if a thread gets unexpectedly interrupted.
-   * @throws CAException if a channel access problem occurs.
+   * @throws CALoadException If unable to load EPICS data
    */
-  private List<CcAccHour> loadAccounting()
-      throws TimeoutException, InterruptedException, CAException {
-
+  private List<CcAccHour> loadAccounting() throws CALoadException {
     AcceleratorBeamAvailability accounting;
 
-    long start = System.currentTimeMillis();
     accounting = getFromCache();
-    long end = System.currentTimeMillis();
-    logger.log(Level.FINEST, "EPICS acc hours load time (milliseconds): {0}", (end - start));
 
     return accounting.getOpAccHours();
   }

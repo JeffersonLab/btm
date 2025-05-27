@@ -1,15 +1,13 @@
 package org.jlab.btm.business.service.epics;
 
-import gov.aps.jca.CAException;
-import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.DBR;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.CcHallHour;
 import org.jlab.btm.persistence.epics.*;
@@ -40,12 +38,10 @@ public class CcEpicsHallHourService {
    * @param startDayAndHour the start day and hour.
    * @param endDayAndHour the end day and hour.
    * @return a list of experimenter hall hours.
-   * @throws TimeoutException if a network request takes too long.
-   * @throws InterruptedException if a thread gets unexpectedly interrupted.
-   * @throws CAException if a channel access problem occurs.
+   * @throws CALoadException If unable to load CA data
    */
   public List<CcHallHour> find(Hall hall, Date startDayAndHour, Date endDayAndHour)
-      throws TimeoutException, InterruptedException, CAException {
+      throws CALoadException {
     List<CcHallHour> hours;
 
     if (HourUtil.isInEpicsWindow(endDayAndHour)) {
@@ -69,19 +65,13 @@ public class CcEpicsHallHourService {
    * data, up to, and including the current hour.
    *
    * @return the accounting information as a list of experimenter hall hours.
-   * @throws TimeoutException if a network request takes too long.
-   * @throws InterruptedException if a thread gets unexpectedly interrupted.
-   * @throws CAException if a channel access problem occurs.
+   * @throws CALoadException If unable to load CA data
    */
-  private List<CcHallHour> loadAccounting(Hall hall)
-      throws TimeoutException, InterruptedException, CAException {
+  private List<CcHallHour> loadAccounting(Hall hall) throws CALoadException {
 
     HallBeamAvailability accounting;
 
-    long start = System.currentTimeMillis();
     accounting = getFromCache(hall);
-    long end = System.currentTimeMillis();
-    logger.log(Level.FINEST, "EPICS hall hours load time (milliseconds): {0}", (end - start));
 
     return accounting.getOpHallHours();
   }

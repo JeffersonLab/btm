@@ -1,7 +1,5 @@
 package org.jlab.btm.business.service;
 
-import gov.aps.jca.CAException;
-import gov.aps.jca.TimeoutException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -17,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.hibernate.envers.RevisionType;
 import org.jlab.btm.business.service.epics.CcEpicsAccHourService;
+import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.CcAccHour;
 import org.jlab.btm.persistence.entity.PdShiftPlan;
@@ -99,12 +98,8 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
   }
 
   @PermitAll
-  public List<CcAccHour> findInEpics(Date start, Date end) throws UserFriendlyException {
-    try {
-      return epicsService.find(start, end);
-    } catch (TimeoutException | InterruptedException | CAException e) {
-      throw new UserFriendlyException("Unable to query EPICS", e);
-    }
+  public List<CcAccHour> findInEpics(Date start, Date end) throws CALoadException {
+    return epicsService.find(start, end);
   }
 
   @PermitAll
@@ -390,8 +385,8 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
     if (queryEpics) {
       try {
         epicsAccHourList = findInEpics(startHour, endHour);
-      } catch (UserFriendlyException e) {
-        logger.log(Level.FINEST, "Unable to obtain EPICS acc hour data", e);
+      } catch (CALoadException e) {
+        logger.log(Level.INFO, "Unable to obtain EPICS acc hour data", e);
         epicsAccHourList = new ArrayList<>();
       }
     } else {

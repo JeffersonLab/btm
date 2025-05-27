@@ -1,7 +1,5 @@
 package org.jlab.btm.business.service.epics;
 
-import gov.aps.jca.CAException;
-import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.DBR;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.ExpHour;
 import org.jlab.btm.persistence.epics.*;
@@ -45,13 +44,10 @@ public class ExpEpicsHourService {
    * @param endDayAndHour the end day and hour.
    * @param round whether or not to round time.
    * @return a list of experimenter hall hours.
-   * @throws TimeoutException if a network request takes too long.
-   * @throws InterruptedException if a thread gets unexpectedly interrupted.
-   * @throws CAException if a channel access problem occurs.
+   * @throws CALoadException If unable to load from CA
    */
   public List<ExpHour> loadAccounting(
-      Hall hall, Date startDayAndHour, Date endDayAndHour, boolean round)
-      throws TimeoutException, InterruptedException, CAException {
+      Hall hall, Date startDayAndHour, Date endDayAndHour, boolean round) throws CALoadException {
     List<ExpHour> hours = null;
 
     if (HourUtil.isInEpicsWindow(endDayAndHour)) {
@@ -78,20 +74,14 @@ public class ExpEpicsHourService {
    *
    * @param hall The experimenter hall.
    * @return the accounting information as a list of experimenter hall hours.
-   * @throws TimeoutException if a network request takes too long.
-   * @throws InterruptedException if a thread gets unexpectedly interrupted.
-   * @throws CAException if a channel access problem occurs.
+   * @throws CALoadException If unable to load from CA
    */
-  public List<ExpHour> loadAccounting(Hall hall)
-      throws TimeoutException, InterruptedException, CAException {
+  public List<ExpHour> loadAccounting(Hall hall) throws CALoadException {
     logger.log(Level.FINEST, "EpicsDataSource.loadAccounting.hall: {}", hall);
 
     ExperimenterAccounting accounting = null;
 
-    long start = System.currentTimeMillis();
     accounting = getFromCache(hall);
-    long end = System.currentTimeMillis();
-    logger.log(Level.FINEST, "EPICS load time (milliseconds): {}", (end - start));
 
     return accounting.getExpHallHours();
   }

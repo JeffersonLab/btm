@@ -6,7 +6,6 @@ import gov.aps.jca.dbr.DBR;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -75,8 +74,7 @@ public class CcEpicsShiftService {
    * @throws InterruptedException if a thread gets unexpectedly interrupted.
    * @throws CAException if a channel access problem occurs.
    */
-  public CcShift find(Date startDayAndHour)
-      throws TimeoutException, InterruptedException, CAException {
+  public CcShift find(Date startDayAndHour) {
     CcShift shift = null;
 
     if (isCurrentLastOrNextShiftStart(startDayAndHour)) {
@@ -93,18 +91,12 @@ public class CcEpicsShiftService {
    * data, up to, and including the current hour.
    *
    * @return the accounting information as a list of experimenter hall hours.
-   * @throws TimeoutException if a network request takes too long.
-   * @throws InterruptedException if a thread gets unexpectedly interrupted.
-   * @throws CAException if a channel access problem occurs.
    */
-  private CcShift loadAccounting() throws TimeoutException, InterruptedException, CAException {
+  private CcShift loadAccounting() {
 
     ShiftInfo accounting;
 
-    long start = System.currentTimeMillis();
     accounting = getFromCache();
-    long end = System.currentTimeMillis();
-    logger.log(Level.FINEST, "EPICS shift load time (milliseconds): {0}", (end - start));
 
     return accounting.getOpShift();
   }
