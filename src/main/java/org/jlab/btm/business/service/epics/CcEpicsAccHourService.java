@@ -1,8 +1,8 @@
 package org.jlab.btm.business.service.epics;
 
-import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.CAException;
 import gov.aps.jca.TimeoutException;
+import gov.aps.jca.dbr.DBR;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +13,8 @@ import javax.ejb.Stateless;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.CcAccHour;
 import org.jlab.btm.persistence.epics.AcceleratorBeamAvailability;
-import org.jlab.btm.persistence.epics.AcceleratorBeamAvailabilityDao;
+import org.jlab.btm.persistence.epics.Constant;
+import org.jlab.btm.persistence.epics.SimpleGet;
 
 /**
  * Responsible for querying experimenter hall EPICS time accounting data.
@@ -24,7 +25,7 @@ import org.jlab.btm.persistence.epics.AcceleratorBeamAvailabilityDao;
 public class CcEpicsAccHourService {
 
   private static final Logger logger = Logger.getLogger(CcEpicsAccHourService.class.getName());
-  @EJB ContextFactory factory;
+  @EJB PVCache cache;
 
   /**
    * Fetches EPICS accounting information for a particular experimenter hall, optionally rounded,
@@ -77,19 +78,35 @@ public class CcEpicsAccHourService {
 
     AcceleratorBeamAvailability accounting;
 
-    CAJContext context = factory.getContext();
-
-    try {
-      AcceleratorBeamAvailabilityDao dao = new AcceleratorBeamAvailabilityDao(context);
-
-      long start = System.currentTimeMillis();
-      accounting = dao.loadAccounting();
-      long end = System.currentTimeMillis();
-      logger.log(Level.FINEST, "EPICS acc hours load time (milliseconds): {0}", (end - start));
-    } finally {
-      factory.returnContext(context);
-    }
+    long start = System.currentTimeMillis();
+    accounting = getFromCache();
+    long end = System.currentTimeMillis();
+    logger.log(Level.FINEST, "EPICS acc hours load time (milliseconds): {0}", (end - start));
 
     return accounting.getOpAccHours();
+  }
+
+  private AcceleratorBeamAvailability getFromCache() {
+    AcceleratorBeamAvailability accounting = new AcceleratorBeamAvailability();
+
+    List<DBR> dbrs = new ArrayList<>();
+
+    dbrs.add(cache.get(Constant.TIME_CHANNEL_NAME));
+    dbrs.add(cache.get(Constant.ACC_UP_CHANNEL_NAME));
+    dbrs.add(cache.get(Constant.ACC_SAD_CHANNEL_NAME));
+    dbrs.add(cache.get(Constant.ACC_DOWN_CHANNEL_NAME));
+    dbrs.add(cache.get(Constant.ACC_STUDIES_CHANNEL_NAME));
+    dbrs.add(cache.get(Constant.ACC_RESTORE_CHANNEL_NAME));
+    dbrs.add(cache.get(Constant.ACC_ACC_CHANNEL_NAME));
+
+    accounting.setTime(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setUp(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setSad(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setDown(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setStudies(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setRestore(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setAcc(SimpleGet.getDoubleValue(dbrs.remove(0)));
+
+    return accounting;
   }
 }

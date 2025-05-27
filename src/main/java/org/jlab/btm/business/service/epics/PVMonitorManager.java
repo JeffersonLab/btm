@@ -10,9 +10,7 @@ import gov.aps.jca.configuration.DefaultConfiguration;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -36,41 +34,55 @@ public class PVMonitorManager {
   private Map<String, CAJChannel> channels;
   private Map<String, Monitor> monitors;
 
-  public static final List<String> PV_LIST =
-      List.of(
-          Constant.CREW_CHIEF_CHANNEL_NAME,
-          Constant.OPERATORS_CHANNEL_NAME,
-          Constant.PROGRAM_CHANNEL_NAME,
-          Constant.PROGRAM_DEPUTY_CHANNEL_NAME,
-          Constant.COMMENTS_CHANNEL_NAME,
-          Constant.TIME_CHANNEL_NAME,
-          Constant.ACC_UP_CHANNEL_NAME,
-          Constant.ACC_SAD_CHANNEL_NAME,
-          Constant.ACC_DOWN_CHANNEL_NAME,
-          Constant.ACC_STUDIES_CHANNEL_NAME,
-          Constant.ACC_RESTORE_CHANNEL_NAME,
-          Constant.ACC_ACC_CHANNEL_NAME,
-          Constant.HALL_PREFIX + Hall.A + Constant.HALL_UP_SUFFIX,
-          Constant.HALL_PREFIX + Hall.A + Constant.HALL_TUNE_SUFFIX,
-          Constant.HALL_PREFIX + Hall.A + Constant.HALL_BNR_SUFFIX,
-          Constant.HALL_PREFIX + Hall.A + Constant.HALL_DOWN_SUFFIX,
-          Constant.HALL_PREFIX + Hall.A + Constant.HALL_OFF_SUFFIX,
-          Constant.MULTI_ONE_UP,
-          Constant.MULTI_TWO_UP,
-          Constant.MULTI_THREE_UP,
-          Constant.MULTI_FOUR_UP,
-          Constant.MULTI_ANY_UP,
-          Constant.MULTI_ALL_UP,
-          Constant.MULTI_DOWN,
-          Constant.EXP_HALL_PREFIX + Hall.A + Constant.EXP_TIME_SUFFIX,
-          Constant.EXP_HALL_PREFIX + Hall.A + Constant.EXP_ABU_SUFFIX,
-          Constant.EXP_HALL_PREFIX + Hall.A + Constant.EXP_BANU_SUFFIX,
-          Constant.EXP_HALL_PREFIX + Hall.A + Constant.EXP_BNA_SUFFIX,
-          Constant.EXP_HALL_PREFIX + Hall.A + Constant.EXP_ACC_SUFFIX,
-          Constant.EXP_HALL_PREFIX + Hall.A + Constant.EXP_ER_SUFFIX,
-          Constant.EXP_HALL_PREFIX + Hall.A + Constant.EXP_PCC_SUFFIX,
-          Constant.EXP_HALL_PREFIX + Hall.A + Constant.EXP_UED_SUFFIX,
-          Constant.EXP_HALL_PREFIX + Hall.A + Constant.EXP_OFF_SUFFIX);
+  public static final List<String> PV_LIST;
+
+  static {
+    final List<String> fixed =
+        List.of(
+            Constant.CREW_CHIEF_CHANNEL_NAME,
+            Constant.OPERATORS_CHANNEL_NAME,
+            Constant.PROGRAM_CHANNEL_NAME,
+            Constant.PROGRAM_DEPUTY_CHANNEL_NAME,
+            Constant.COMMENTS_CHANNEL_NAME,
+            Constant.TIME_CHANNEL_NAME,
+            Constant.ACC_UP_CHANNEL_NAME,
+            Constant.ACC_SAD_CHANNEL_NAME,
+            Constant.ACC_DOWN_CHANNEL_NAME,
+            Constant.ACC_STUDIES_CHANNEL_NAME,
+            Constant.ACC_RESTORE_CHANNEL_NAME,
+            Constant.ACC_ACC_CHANNEL_NAME,
+            Constant.MULTI_ONE_UP,
+            Constant.MULTI_TWO_UP,
+            Constant.MULTI_THREE_UP,
+            Constant.MULTI_FOUR_UP,
+            Constant.MULTI_ANY_UP,
+            Constant.MULTI_ALL_UP,
+            Constant.MULTI_DOWN);
+
+    final List<String> dynamic = new ArrayList<>();
+
+    for (Hall hall : Hall.values()) {
+      dynamic.add(Constant.HALL_PREFIX + hall + Constant.HALL_UP_SUFFIX);
+      dynamic.add(Constant.HALL_PREFIX + hall + Constant.HALL_TUNE_SUFFIX);
+      dynamic.add(Constant.HALL_PREFIX + hall + Constant.HALL_BNR_SUFFIX);
+      dynamic.add(Constant.HALL_PREFIX + hall + Constant.HALL_DOWN_SUFFIX);
+      dynamic.add(Constant.HALL_PREFIX + hall + Constant.HALL_OFF_SUFFIX);
+
+      dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_TIME_SUFFIX);
+      dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ABU_SUFFIX);
+      dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BANU_SUFFIX);
+      dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BNA_SUFFIX);
+      dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ACC_SUFFIX);
+      dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ER_SUFFIX);
+      dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_PCC_SUFFIX);
+      dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_UED_SUFFIX);
+      dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_OFF_SUFFIX);
+    }
+
+    dynamic.addAll(fixed);
+
+    PV_LIST = Collections.unmodifiableList(dynamic);
+  }
 
   @PostConstruct
   public void start() {
@@ -111,7 +123,7 @@ public class PVMonitorManager {
       Monitor monitor =
           channel.addMonitor(
               channel.getFieldType(),
-              1,
+              channel.getElementCount(),
               Monitor.VALUE,
               new MonitorListener() {
 
