@@ -16,7 +16,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation 'org.epics:jca:2.4.2'
+    implementation 'org.epics:jca:2.4.10'
 
     // No matter what smoothness weblib MUST be included in WAR (https://github.com/JeffersonLab/smoothness/issues/4)
     implementation 'org.jlab:smoothness-weblib:4.11.0'
