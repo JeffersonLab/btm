@@ -5,12 +5,16 @@ import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.CAException;
 import gov.aps.jca.JCALibrary;
 import gov.aps.jca.Monitor;
+import gov.aps.jca.TimeoutException;
 import gov.aps.jca.configuration.DefaultConfiguration;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.DependsOn;
@@ -24,11 +28,13 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
 @Startup
 @DependsOn("PVCache")
 public class PVMonitorManager {
+  private static final Logger LOGGER = Logger.getLogger(PVMonitorManager.class.getName());
+
   @EJB PVCache cache;
 
   private CAJContext context;
-  private List<CAJChannel> channels;
-  private List<Monitor> monitors;
+  private Map<String, CAJChannel> channels;
+  private Map<String, Monitor> monitors;
 
   public static final List<String> PV_LIST =
       List.of(
@@ -67,16 +73,40 @@ public class PVMonitorManager {
           Constant.EXP_HALL_PREFIX + Hall.A + Constant.EXP_OFF_SUFFIX);
 
   @PostConstruct
-  public void startMonitors() throws CAException {
+  public void start() {
+    try {
+      startMonitors();
+    } catch (CAException
+        | TimeoutException e) { // @PostConstruct isn't supposed to throw checked exceptions...
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+    }
+  }
+
+  @PreDestroy
+  public void stop() {
+    try {
+      stopMonitors();
+    } catch (CAException e) { // @PreDestroy isn't supposed to throw exceptions...
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+    }
+  }
+
+  public void startMonitors() throws CAException, TimeoutException {
     context = createContext();
 
-    channels = new ArrayList<>();
-    monitors = new ArrayList<>();
+    channels = new HashMap<>();
+    monitors = new HashMap<>();
 
     for (String pv : PV_LIST) {
       CAJChannel channel = (CAJChannel) context.createChannel(pv);
 
-      channels.add(channel);
+      channels.put(pv, channel);
+    }
+
+    context.pendIO(10000);
+
+    for (String pv : PV_LIST) {
+      CAJChannel channel = channels.get(pv);
 
       Monitor monitor =
           channel.addMonitor(
@@ -92,17 +122,18 @@ public class PVMonitorManager {
                 }
               });
 
-      monitors.add(monitor);
+      monitors.put(pv, monitor);
     }
+
+    context.pendIO(10000);
   }
 
-  @PreDestroy
   public void stopMonitors() throws CAException {
-    for (Monitor monitor : monitors) {
+    for (Monitor monitor : monitors.values()) {
       monitor.clear();
     }
 
-    for (CAJChannel channel : channels) {
+    for (CAJChannel channel : channels.values()) {
       context.destroyChannel(channel, true);
     }
 
