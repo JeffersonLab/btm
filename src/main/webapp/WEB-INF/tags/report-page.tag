@@ -30,6 +30,9 @@
                                     <li${'/reports/activity-audit' eq currentPath ? ' class="current-secondary"' : ''}><a
                                             href="${pageContext.request.contextPath}/reports/activity-audit">Activity Audit</a>
                                     </li>
+                                    <li${'/reports/ca-status' eq currentPath ? ' class="current-secondary"' : ''}><a
+                                            href="${pageContext.request.contextPath}/reports/ca-status">CA Status</a>
+                                    </li>
                                 </ul>
     </jsp:attribute>
     <jsp:body>

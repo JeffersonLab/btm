@@ -106,11 +106,11 @@ public class CcEpicsShiftService {
 
     List<DBR> dbrs = new ArrayList<>();
 
-    dbrs.add(cache.get(Constant.CREW_CHIEF_CHANNEL_NAME));
-    dbrs.add(cache.get(Constant.OPERATORS_CHANNEL_NAME));
-    dbrs.add(cache.get(Constant.PROGRAM_CHANNEL_NAME));
-    dbrs.add(cache.get(Constant.PROGRAM_DEPUTY_CHANNEL_NAME));
-    dbrs.add(cache.get(Constant.COMMENTS_CHANNEL_NAME));
+    dbrs.add(cache.get(Constant.CREW_CHIEF_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.get(Constant.OPERATORS_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.get(Constant.PROGRAM_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.get(Constant.PROGRAM_DEPUTY_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.get(Constant.COMMENTS_CHANNEL_NAME).getDbr());
 
     accounting.setCrewChief(SimpleGet.getStringValue(dbrs.remove(0))[0]);
     accounting.setOperators(SimpleGet.getStringValue(dbrs.remove(0))[0]);

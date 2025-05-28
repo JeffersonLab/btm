@@ -81,12 +81,12 @@ public class CcEpicsHallHourService {
 
     List<DBR> dbrs = new ArrayList<>();
 
-    dbrs.add(cache.get(Constant.TIME_CHANNEL_NAME));
-    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_UP_SUFFIX));
-    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_TUNE_SUFFIX));
-    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_BNR_SUFFIX));
-    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_DOWN_SUFFIX));
-    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_OFF_SUFFIX));
+    dbrs.add(cache.get(Constant.TIME_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_UP_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_TUNE_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_BNR_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_DOWN_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_OFF_SUFFIX).getDbr());
 
     accounting.setTime(SimpleGet.getDoubleValue(dbrs.remove(0)));
     accounting.setUp(SimpleGet.getDoubleValue(dbrs.remove(0)));

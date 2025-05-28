@@ -92,15 +92,15 @@ public class ExpEpicsHourService {
 
     List<DBR> dbrs = new ArrayList<>();
 
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_TIME_SUFFIX));
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ABU_SUFFIX));
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BANU_SUFFIX));
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BNA_SUFFIX));
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ACC_SUFFIX));
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ER_SUFFIX));
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_PCC_SUFFIX));
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_UED_SUFFIX));
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_OFF_SUFFIX));
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_TIME_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ABU_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BANU_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BNA_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ACC_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ER_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_PCC_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_UED_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_OFF_SUFFIX).getDbr());
 
     accounting.setTime(SimpleGet.getDoubleValue(dbrs.remove(0)));
     accounting.setABU(SimpleGet.getDoubleValue(dbrs.remove(0)));

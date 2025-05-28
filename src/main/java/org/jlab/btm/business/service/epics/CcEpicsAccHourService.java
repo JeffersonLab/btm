@@ -79,13 +79,13 @@ public class CcEpicsAccHourService {
 
     List<DBR> dbrs = new ArrayList<>();
 
-    dbrs.add(cache.get(Constant.TIME_CHANNEL_NAME));
-    dbrs.add(cache.get(Constant.ACC_UP_CHANNEL_NAME));
-    dbrs.add(cache.get(Constant.ACC_SAD_CHANNEL_NAME));
-    dbrs.add(cache.get(Constant.ACC_DOWN_CHANNEL_NAME));
-    dbrs.add(cache.get(Constant.ACC_STUDIES_CHANNEL_NAME));
-    dbrs.add(cache.get(Constant.ACC_RESTORE_CHANNEL_NAME));
-    dbrs.add(cache.get(Constant.ACC_ACC_CHANNEL_NAME));
+    dbrs.add(cache.get(Constant.TIME_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.get(Constant.ACC_UP_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.get(Constant.ACC_SAD_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.get(Constant.ACC_DOWN_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.get(Constant.ACC_STUDIES_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.get(Constant.ACC_RESTORE_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.get(Constant.ACC_ACC_CHANNEL_NAME).getDbr());
 
     accounting.setTime(SimpleGet.getDoubleValue(dbrs.remove(0)));
     accounting.setUp(SimpleGet.getDoubleValue(dbrs.remove(0)));

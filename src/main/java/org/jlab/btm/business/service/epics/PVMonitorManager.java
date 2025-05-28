@@ -2,10 +2,7 @@ package org.jlab.btm.business.service.epics;
 
 import com.cosylab.epics.caj.CAJChannel;
 import com.cosylab.epics.caj.CAJContext;
-import gov.aps.jca.CAException;
-import gov.aps.jca.JCALibrary;
-import gov.aps.jca.Monitor;
-import gov.aps.jca.TimeoutException;
+import gov.aps.jca.*;
 import gov.aps.jca.configuration.DefaultConfiguration;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.event.MonitorEvent;
@@ -129,8 +126,9 @@ public class PVMonitorManager {
 
                 @Override
                 public void monitorChanged(MonitorEvent ev) {
+                  CAStatus status = ev.getStatus();
                   DBR dbr = ev.getDBR();
-                  cache.put(pv, dbr);
+                  cache.put(pv, new PVCacheEntry(status, dbr, new Date()));
                 }
               });
 
