@@ -18,7 +18,7 @@ public final class PVCacheEntry {
   /**
    * This is the local timestamp of when the monitor update was received. This differs from the
    * timestamp provided by IOCs in DBR_TIME type structs (which is also interesting, but often
-   * unreliable).
+   * unreliable). We use the legacy Date object because JSTL format expects a Date.
    */
   private final Date ts;
 

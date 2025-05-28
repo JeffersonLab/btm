@@ -7,17 +7,20 @@
 <c:set var="title" value="CA Status"/>
 <t:report-page title="${title}">  
     <jsp:attribute name="stylesheets">
-        <link rel="stylesheet" type="text/css"
-              href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/ca-status.css"/>
+        <style>
+            td:nth-child(3) {
+                word-break: break-word;
+            }
+        </style>
     </jsp:attribute>
     <jsp:attribute name="scripts">
-        <script type="text/javascript"
-                src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/ca-status.js"></script>
     </jsp:attribute>
     <jsp:body>
         <section>
             <h2 class="page-header-title"><c:out value="${title}"/></h2>
-            <p>The measured time accounting values are provided to this app via Experimental Physics and Industrial Control System (EPICS) Channel Access (CA) Process Variables (PVs).  This report shows the monitor status.</p>
+            <p>The measured time accounting values are provided to this app via Experimental Physics and Industrial Control System (EPICS) Channel Access (CA) Process Variables (PVs).</p>
+            <p>Often when an EPICS IOC reboots monitors don't come back properly (especially if a PV is accessed via a gateway, which many of these are). If any of the monitors show anything other than "NORMAL", a Crew Chief or Admin can Forcibly Reset the CA Client Context via the button here:</p>
+            <button type="button" disabled="disabled">Forcibly Reset</button>
             <table class="data-table">
                 <thead>
                     <tr>

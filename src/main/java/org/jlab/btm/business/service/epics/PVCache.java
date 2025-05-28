@@ -31,8 +31,9 @@ public class PVCache {
 
   /**
    * Returns a new Map with the same entries as those underlying the cache. This new Map can then be
-   * iterated or accessed with the full Map API. Since both String keys and PVCacheEntry objects are
-   * immutable, it's safe to expose the entries.
+   * iterated or accessed with the full Map API. Since both String keys and PVCacheEntry value
+   * objects are immutable, it's safe to expose the entries. The new map keys are sorted naturally
+   * (alphabetical).
    *
    * @return A new map
    */
