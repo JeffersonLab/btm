@@ -19,8 +19,10 @@
         <section>
             <h2 class="page-header-title"><c:out value="${title}"/></h2>
             <p>The measured time accounting values are provided to this app via Experimental Physics and Industrial Control System (EPICS) Channel Access (CA) Process Variables (PVs).</p>
-            <p>Often when an EPICS IOC reboots monitors don't come back properly (especially if a PV is accessed via a gateway, which many of these are). If any of the monitors show anything other than "NORMAL", a Crew Chief or Admin can Forcibly Reset the CA Client Context via the button here:</p>
-            <button type="button" disabled="disabled">Forcibly Reset</button>
+            <p>Often when an EPICS Input/Output Controller (IOC) reboots monitors don't come back properly (especially if a PV is accessed via a gateway, which many of these are). If any of the monitors show anything other than "NORMAL", a Crew Chief or Admin can Forcibly Reset the CA Client Context via the button here:</p>
+            <form action="${pageContext.request.contextPath}/ajax/ca-reset" method="post">
+                <button type="submit" ${pageContext.request.isUserInRole('cc') || pageContext.request.isUserInRole('btm-admin') ? '' : 'disabled="disabled"'}>Forcibly Reset</button>
+            </form>
             <table class="data-table">
                 <thead>
                     <tr>

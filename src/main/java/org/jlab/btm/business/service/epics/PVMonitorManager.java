@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.DependsOn;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -100,7 +101,7 @@ public class PVMonitorManager {
     }
   }
 
-  public void startMonitors() throws CAException, TimeoutException {
+  private void startMonitors() throws CAException, TimeoutException {
     context = createContext();
 
     channels = new HashMap<>();
@@ -138,7 +139,7 @@ public class PVMonitorManager {
     context.pendIO(10000);
   }
 
-  public void stopMonitors() throws CAException {
+  private void stopMonitors() throws CAException {
     for (Monitor monitor : monitors.values()) {
       monitor.clear();
     }
@@ -164,5 +165,11 @@ public class PVMonitorManager {
     config.setAttribute("class", JCALibrary.CHANNEL_ACCESS_JAVA);
 
     return (CAJContext) JCALibrary.getInstance().createContext(config);
+  }
+
+  @RolesAllowed({"cc", "btm-admin"})
+  public void reset() {
+    stop();
+    start();
   }
 }
