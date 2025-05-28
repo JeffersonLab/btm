@@ -1,8 +1,6 @@
 package org.jlab.btm.business.service.epics;
 
-import com.cosylab.epics.caj.CAJContext;
-import gov.aps.jca.CAException;
-import gov.aps.jca.TimeoutException;
+import gov.aps.jca.dbr.DBR;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,10 +8,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.ExpHour;
-import org.jlab.btm.persistence.epics.ExperimenterAccounting;
-import org.jlab.btm.persistence.epics.ExperimenterAccountingDao;
+import org.jlab.btm.persistence.epics.*;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 /**
@@ -24,7 +22,7 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
 @Stateless
 public class ExpEpicsHourService {
 
-  @EJB ContextFactory factory;
+  @EJB PVCache cache;
 
   private static final Logger logger = Logger.getLogger(ExpEpicsHourService.class.getName());
 
@@ -46,13 +44,10 @@ public class ExpEpicsHourService {
    * @param endDayAndHour the end day and hour.
    * @param round whether or not to round time.
    * @return a list of experimenter hall hours.
-   * @throws TimeoutException if a network request takes too long.
-   * @throws InterruptedException if a thread gets unexpectedly interrupted.
-   * @throws CAException if a channel access problem occurs.
+   * @throws CALoadException If unable to load from CA
    */
   public List<ExpHour> loadAccounting(
-      Hall hall, Date startDayAndHour, Date endDayAndHour, boolean round)
-      throws TimeoutException, InterruptedException, CAException {
+      Hall hall, Date startDayAndHour, Date endDayAndHour, boolean round) throws CALoadException {
     List<ExpHour> hours = null;
 
     if (HourUtil.isInEpicsWindow(endDayAndHour)) {
@@ -79,30 +74,44 @@ public class ExpEpicsHourService {
    *
    * @param hall The experimenter hall.
    * @return the accounting information as a list of experimenter hall hours.
-   * @throws TimeoutException if a network request takes too long.
-   * @throws InterruptedException if a thread gets unexpectedly interrupted.
-   * @throws CAException if a channel access problem occurs.
+   * @throws CALoadException If unable to load from CA
    */
-  public List<ExpHour> loadAccounting(Hall hall)
-      throws TimeoutException, InterruptedException, CAException {
+  public List<ExpHour> loadAccounting(Hall hall) throws CALoadException {
     logger.log(Level.FINEST, "EpicsDataSource.loadAccounting.hall: {}", hall);
 
-    ExperimenterAccountingDao dao = null;
     ExperimenterAccounting accounting = null;
 
-    CAJContext context = factory.getContext();
-
-    try {
-      dao = new ExperimenterAccountingDao(hall, context);
-
-      long start = System.currentTimeMillis();
-      accounting = dao.loadAccounting();
-      long end = System.currentTimeMillis();
-      logger.log(Level.FINEST, "EPICS load time (milliseconds): {}", (end - start));
-    } finally {
-      factory.returnContext(context);
-    }
+    accounting = getFromCache(hall);
 
     return accounting.getExpHallHours();
+  }
+
+  private ExperimenterAccounting getFromCache(Hall hall) {
+    ExperimenterAccounting accounting = new ExperimenterAccounting();
+    accounting.setHall(hall);
+
+    List<DBR> dbrs = new ArrayList<>();
+
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_TIME_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ABU_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BANU_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BNA_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ACC_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ER_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_PCC_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_UED_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_OFF_SUFFIX).getDbr());
+
+    accounting.setTime(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setABU(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setBANU(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setBNA(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setACC(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setER(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setPCC(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setUED(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setOFF(SimpleGet.getDoubleValue(dbrs.remove(0)));
+
+    return accounting;
   }
 }

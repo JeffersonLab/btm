@@ -1,19 +1,16 @@
 package org.jlab.btm.business.service.epics;
 
-import com.cosylab.epics.caj.CAJContext;
-import gov.aps.jca.CAException;
-import gov.aps.jca.TimeoutException;
+import gov.aps.jca.dbr.DBR;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.CcHallHour;
-import org.jlab.btm.persistence.epics.HallBeamAvailability;
-import org.jlab.btm.persistence.epics.HallBeamAvailabilityDao;
+import org.jlab.btm.persistence.epics.*;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 /**
@@ -25,7 +22,7 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
 public class CcEpicsHallHourService {
 
   private static final Logger logger = Logger.getLogger(CcEpicsHallHourService.class.getName());
-  @EJB ContextFactory factory;
+  @EJB PVCache cache;
 
   /**
    * Fetches EPICS accounting information for a particular experimenter hall, optionally rounded,
@@ -41,12 +38,10 @@ public class CcEpicsHallHourService {
    * @param startDayAndHour the start day and hour.
    * @param endDayAndHour the end day and hour.
    * @return a list of experimenter hall hours.
-   * @throws TimeoutException if a network request takes too long.
-   * @throws InterruptedException if a thread gets unexpectedly interrupted.
-   * @throws CAException if a channel access problem occurs.
+   * @throws CALoadException If unable to load CA data
    */
   public List<CcHallHour> find(Hall hall, Date startDayAndHour, Date endDayAndHour)
-      throws TimeoutException, InterruptedException, CAException {
+      throws CALoadException {
     List<CcHallHour> hours;
 
     if (HourUtil.isInEpicsWindow(endDayAndHour)) {
@@ -70,28 +65,36 @@ public class CcEpicsHallHourService {
    * data, up to, and including the current hour.
    *
    * @return the accounting information as a list of experimenter hall hours.
-   * @throws TimeoutException if a network request takes too long.
-   * @throws InterruptedException if a thread gets unexpectedly interrupted.
-   * @throws CAException if a channel access problem occurs.
+   * @throws CALoadException If unable to load CA data
    */
-  private List<CcHallHour> loadAccounting(Hall hall)
-      throws TimeoutException, InterruptedException, CAException {
+  private List<CcHallHour> loadAccounting(Hall hall) throws CALoadException {
 
     HallBeamAvailability accounting;
 
-    CAJContext context = factory.getContext();
-
-    try {
-      HallBeamAvailabilityDao dao = new HallBeamAvailabilityDao(context);
-
-      long start = System.currentTimeMillis();
-      accounting = dao.loadAccounting(hall);
-      long end = System.currentTimeMillis();
-      logger.log(Level.FINEST, "EPICS hall hours load time (milliseconds): {0}", (end - start));
-    } finally {
-      factory.returnContext(context);
-    }
+    accounting = getFromCache(hall);
 
     return accounting.getOpHallHours();
+  }
+
+  private HallBeamAvailability getFromCache(Hall hall) {
+    HallBeamAvailability accounting = new HallBeamAvailability();
+
+    List<DBR> dbrs = new ArrayList<>();
+
+    dbrs.add(cache.get(Constant.TIME_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_UP_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_TUNE_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_BNR_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_DOWN_SUFFIX).getDbr());
+    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_OFF_SUFFIX).getDbr());
+
+    accounting.setTime(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setUp(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setTune(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setBnr(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setDown(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setOff(SimpleGet.getDoubleValue(dbrs.remove(0)));
+
+    return accounting;
   }
 }

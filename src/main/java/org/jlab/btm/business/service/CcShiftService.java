@@ -1,7 +1,5 @@
 package org.jlab.btm.business.service;
 
-import gov.aps.jca.CAException;
-import gov.aps.jca.TimeoutException;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -58,12 +56,8 @@ public class CcShiftService extends AbstractService<CcShift> {
   }
 
   @PermitAll
-  public CcShift findInEpics(Date startHour) throws UserFriendlyException {
-    try {
-      return epicsService.find(startHour);
-    } catch (TimeoutException | InterruptedException | CAException e) {
-      throw new UserFriendlyException("Unable to query EPICS", e);
-    }
+  public CcShift findInEpics(Date startHour) {
+    return epicsService.find(startHour);
   }
 
   @RolesAllowed({"cc", "btm-admin"})

@@ -1,7 +1,5 @@
 package org.jlab.btm.business.service;
 
-import gov.aps.jca.CAException;
-import gov.aps.jca.TimeoutException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -16,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.hibernate.envers.RevisionType;
 import org.jlab.btm.business.service.epics.ExpEpicsHourService;
+import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.ExpHour;
 import org.jlab.btm.persistence.enumeration.DataSource;
@@ -147,8 +146,8 @@ public class ExpHourService extends AbstractService<ExpHour> {
     if (queryEpics) {
       try {
         epicsHourList = findInEpics(hall, startHour, endHour, true);
-      } catch (UserFriendlyException e) {
-        logger.log(Level.WARNING, "Unable to obtain EPICS hall hour data", e);
+      } catch (CALoadException e) {
+        logger.log(Level.INFO, "Unable to obtain EPICS hall " + hall + " hour data", e);
         epicsHourList = new ArrayList<>();
       }
     } else {
@@ -341,20 +340,15 @@ public class ExpHourService extends AbstractService<ExpHour> {
    * @param endDayAndHour the end day and hour.
    * @param round whether or not to round data.
    * @return the list of experimenter hall hours.
-   * @throws UserFriendlyException if unable to fetch the hours.
+   * @throws CALoadException if unable to fetch the hours.
    */
   @PermitAll
   public List<ExpHour> findInEpics(
-      Hall hall, Date startDayAndHour, Date endDayAndHour, boolean round)
-      throws UserFriendlyException {
+      Hall hall, Date startDayAndHour, Date endDayAndHour, boolean round) throws CALoadException {
 
     List<ExpHour> hours = null;
 
-    try {
-      hours = epicsHourService.loadAccounting(hall, startDayAndHour, endDayAndHour, round);
-    } catch (CAException | TimeoutException | InterruptedException e) {
-      throw new UserFriendlyException("Unable to query EPICS", e);
-    }
+    hours = epicsHourService.loadAccounting(hall, startDayAndHour, endDayAndHour, round);
 
     return hours;
   }

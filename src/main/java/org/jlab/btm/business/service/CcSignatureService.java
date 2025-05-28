@@ -3,7 +3,6 @@ package org.jlab.btm.business.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -243,11 +242,7 @@ public class CcSignatureService extends AbstractService<CcSignature> {
     CcShift dbShiftInfo = ccShiftService.findInDatabase(startHour);
     CcShift epicsShiftInfo = null;
 
-    try {
-      epicsShiftInfo = ccShiftService.findInEpics(startHour);
-    } catch (UserFriendlyException e) {
-      logger.log(Level.FINEST, "Unable to obtain EPICS shift info data", e);
-    }
+    epicsShiftInfo = ccShiftService.findInEpics(startHour);
 
     CcShift shiftInfo = dbShiftInfo;
 

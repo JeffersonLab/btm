@@ -3,6 +3,7 @@ package org.jlab.btm.persistence.epics;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.persistence.entity.ExpHour;
 import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.enumeration.Hall;
@@ -142,11 +143,11 @@ public class ExperimenterAccounting {
    *
    * @return the list of experimenter hall hours.
    */
-  public List<ExpHour> getExpHallHours() {
+  public List<ExpHour> getExpHallHours() throws CALoadException {
     List<ExpHour> hours = new ArrayList<ExpHour>();
 
     if (!isValidValue()) {
-      throw new IllegalStateException("EPICS channel access values are uninitialized or invalid");
+      throw new CALoadException("EPICS channel access values are uninitialized or invalid");
     }
 
     for (int i = 0; i < time.length; i++) {
