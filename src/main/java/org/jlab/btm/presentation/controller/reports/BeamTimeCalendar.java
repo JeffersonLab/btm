@@ -1,7 +1,6 @@
 package org.jlab.btm.presentation.controller.reports;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,8 +43,9 @@ public class BeamTimeCalendar extends HttpServlet {
 
     try {
       start = BtmParamConverter.convertMonthAndYear2(request, "date");
-    } catch (ParseException e) {
-      throw new ServletException("Unable to parse date", e);
+    } catch (Exception e) {
+      response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+      return;
     }
 
     int offset = ParamUtil.convertAndValidateNonNegativeInt(request, "offset", 0);

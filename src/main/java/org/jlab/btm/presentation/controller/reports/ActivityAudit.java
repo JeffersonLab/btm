@@ -45,9 +45,15 @@ public class ActivityAudit extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    ActivityAuditParams params = convert(request);
+    ActivityAuditParams params = null;
 
-    validate(params);
+    try {
+      params = convert(request);
+      validate(params);
+    } catch (Exception e) {
+      response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+      return;
+    }
 
     List<RevisionInfo> revisionList = revisionService.filterList(params);
     Long totalRecords = revisionService.countFilterList(params);

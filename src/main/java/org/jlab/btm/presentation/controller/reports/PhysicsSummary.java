@@ -3,7 +3,6 @@ package org.jlab.btm.presentation.controller.reports;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,8 +55,9 @@ public class PhysicsSummary extends HttpServlet {
     try {
       start = BtmParamConverter.convertJLabDateTime(request, "start");
       end = BtmParamConverter.convertJLabDateTime(request, "end");
-    } catch (ParseException e) {
-      throw new ServletException("Unable to parse date", e);
+    } catch (Exception e) {
+      response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+      return;
     }
 
     Calendar c = Calendar.getInstance();

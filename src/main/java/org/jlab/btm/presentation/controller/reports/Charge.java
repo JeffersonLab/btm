@@ -1,7 +1,6 @@
 package org.jlab.btm.presentation.controller.reports;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -53,8 +52,9 @@ public class Charge extends HttpServlet {
     try {
       start = BtmParamConverter.convertJLabDate(request, "start");
       end = BtmParamConverter.convertJLabDate(request, "end");
-    } catch (ParseException e) {
-      throw new ServletException("Unable to parse date", e);
+    } catch (Exception e) {
+      response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+      return;
     }
 
     Double period = null;
