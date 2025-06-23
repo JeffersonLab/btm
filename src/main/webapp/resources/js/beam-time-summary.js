@@ -35,7 +35,7 @@ jlab.addPieTooltips = function () {
 
 doPieChart = function () {
     var ds = [];
-    var colors = ['green', 'lightblue', 'orange', 'purple', 'red', 'darkgray', 'lightgray'];
+    var colors = ['green', 'yellow', 'lightblue', 'orange', 'purple', 'red', 'darkgray', 'lightgray'];
 
     $(".chart-legend tbody tr.data-row").each(function (index, value) {
 

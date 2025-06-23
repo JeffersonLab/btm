@@ -170,7 +170,7 @@
                                     <th>
                                         <div class="color-box"></div>
                                     </th>
-                                    <td class="legend-label">Physics</td>
+                                    <td class="legend-label">Delivery</td>
                                     <td><fmt:formatNumber value="${ccSum.upSeconds / 3600}" pattern="#,##0.0"/></td>
                                     <td>(<fmt:formatNumber value="${(ccSum.upSeconds / 3600) / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
@@ -179,6 +179,18 @@
                                                           pattern="#,##0.0"/></td>
                                     <td><fmt:formatNumber value="${pacSum.physicsDays * 24}"
                                                           pattern="#,##0.0"/></td>
+                                </tr>
+                                <tr class="data-row">
+                                    <th>
+                                        <div class="color-box"></div>
+                                    </th>
+                                    <td class="legend-label">Tuning</td>
+                                    <td><fmt:formatNumber value="${ccSum.tuningSeconds / 3600}" pattern="#,##0.0"/></td>
+                                    <td>(<fmt:formatNumber value="${(ccSum.tuningSeconds / 3600) / ccSum.periodHours * 100}"
+                                                           pattern="#,##0.0"/>%)
+                                    </td>
+                                    <td>-</td>
+                                    <td>-</td>
                                 </tr>
                                 <tr class="data-row">
                                     <th>

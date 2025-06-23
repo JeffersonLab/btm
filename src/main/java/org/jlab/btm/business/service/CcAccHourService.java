@@ -106,11 +106,11 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
   public CcAccSum findSummary(Date start, Date end) {
     Query q =
         em.createNativeQuery(
-            "select :start0, :end0, sum(up_seconds), sum(sad_seconds), sum(down_seconds), sum(studies_seconds), sum(restore_seconds), sum(acc_seconds) "
+            "select :start0, :end0, sum(up_seconds), sum(tuning_seconds), sum(sad_seconds), sum(down_seconds), sum(studies_seconds), sum(restore_seconds), sum(acc_seconds) "
                 + "from ("
-                + "select up_seconds, sad_seconds, down_seconds, studies_seconds, restore_seconds, acc_seconds from CC_acc_hour "
+                + "select up_seconds, tuning_seconds, sad_seconds, down_seconds, studies_seconds, restore_seconds, acc_seconds from CC_acc_hour "
                 + "where day_and_hour >= :start1 and day_and_hour < :end1 "
-                + "union all select 0, 0, 0, 0, 0, 0 from dual)");
+                + "union all select 0, 0, 0, 0, 0, 0, 0 from dual)");
 
     q.setParameter("start0", start);
     q.setParameter("end0", end);

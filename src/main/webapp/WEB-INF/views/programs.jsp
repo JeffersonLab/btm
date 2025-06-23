@@ -38,11 +38,16 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td colspan="2">PHYSICS</td>
+                                <td rowspan="2">PHYSICS</td>
+                                <td>Delivery</td>
                                 <td>Machine is provided to the Physics division with the goal of delivering beam to at
                                     least one experimental hall (even if down - choose Physics, then Physics Down for
                                     hall)
                                 </td>
+                            </tr>
+                            <tr>
+                                <td>Tuning</td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td rowspan="4">INTERNAL</td>

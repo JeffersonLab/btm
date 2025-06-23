@@ -11,6 +11,7 @@ public class PdAccSum {
 
   private final long programSeconds; // anything but OFF (SAM) or implied OFF
   private final long physicsSeconds;
+  private final long tuningSeconds;
   private final long offSeconds;
   private final long studiesSeconds;
   private final long restoreSeconds;
@@ -27,6 +28,7 @@ public class PdAccSum {
       Date start,
       Date end,
       Number physicsSeconds,
+      Number tuningSeconds,
       Number offSeconds,
       Number studiesSeconds,
       Number restoreSeconds,
@@ -34,6 +36,7 @@ public class PdAccSum {
     this.start = start;
     this.end = end;
     this.physicsSeconds = physicsSeconds.longValue();
+    this.tuningSeconds = tuningSeconds.longValue();
     this.offSeconds = offSeconds.longValue();
     this.studiesSeconds = studiesSeconds.longValue();
     this.restoreSeconds = restoreSeconds.longValue();
@@ -41,6 +44,7 @@ public class PdAccSum {
 
     this.programSeconds =
         this.getPhysicsSeconds()
+            + this.getTuningSeconds()
             + this.getStudiesSeconds()
             + this.getRestoreSeconds()
             + this.getAccSeconds();
@@ -53,6 +57,10 @@ public class PdAccSum {
 
   public long getPhysicsSeconds() {
     return physicsSeconds;
+  }
+
+  public long getTuningSeconds() {
+    return tuningSeconds;
   }
 
   public long getOffSeconds() {
