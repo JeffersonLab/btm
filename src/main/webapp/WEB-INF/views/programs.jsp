@@ -47,7 +47,7 @@
                             </tr>
                             <tr>
                                 <td>Tuning</td>
-                                <td></td>
+                                <td>Procedural Tuning such as QE Measurements and BCM Calibrations, and other performance measurement and adjustment activities</td>
                             </tr>
                             <tr>
                                 <td rowspan="4">INTERNAL</td>
