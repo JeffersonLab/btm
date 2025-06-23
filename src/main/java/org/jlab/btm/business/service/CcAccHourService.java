@@ -172,6 +172,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
   public void editAccHours(
       Date[] hourArray,
       Short[] upArray,
+      Short[] tuningArray,
       Short[] sadArray,
       Short[] downArray,
       Short[] studiesArray,
@@ -180,6 +181,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
       throws UserFriendlyException {
     if (hourArray == null
         || upArray == null
+        || tuningArray == null
         || sadArray == null
         || downArray == null
         || studiesArray == null
@@ -197,7 +199,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
     }
 
     if (hourArray.length != upArray.length
-        || hourArray.length != upArray.length
+        || hourArray.length != tuningArray.length
         || hourArray.length != sadArray.length
         || hourArray.length != downArray.length
         || hourArray.length != studiesArray.length
@@ -232,7 +234,13 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
       CcAccHour accHour = hourMap.get(hour);
 
       int total =
-          upArray[i] + sadArray[i] + downArray[i] + studiesArray[i] + restoreArray[i] + accArray[i];
+          upArray[i]
+              + tuningArray[i]
+              + sadArray[i]
+              + downArray[i]
+              + studiesArray[i]
+              + restoreArray[i]
+              + accArray[i];
 
       if (total != 3600) {
         SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
@@ -246,6 +254,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
       }
 
       accHour.setUpSeconds(upArray[i]);
+      accHour.setTuningSeconds(tuningArray[i]);
       accHour.setSadSeconds(sadArray[i]);
       accHour.setDownSeconds(downArray[i]);
       accHour.setStudiesSeconds(studiesArray[i]);
@@ -318,7 +327,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
 
     Query audq =
         em.createNativeQuery(
-            "insert into cc_acc_hour_aud (REVTYPE, DAY_AND_HOUR, UP_SECONDS, SAD_SECONDS, DOWN_SECONDS, STUDIES_SECONDS, RESTORE_SECONDS, ACC_SECONDS, CC_ACC_HOUR_ID, REV) values (:revtype, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :up, :sad, :down, :studies, :restore, :acc, :hour_id, :rev)");
+            "insert into cc_acc_hour_aud (REVTYPE, DAY_AND_HOUR, UP_SECONDS, TUNING_SECONDS, SAD_SECONDS, DOWN_SECONDS, STUDIES_SECONDS, RESTORE_SECONDS, ACC_SECONDS, CC_ACC_HOUR_ID, REV) values (:revtype, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :up, :tuning, :sad, :down, :studies, :restore, :acc, :hour_id, :rev)");
 
     String dayAndHourStr = TimeUtil.formatDatabaseDateTimeTZ(hour.getDayAndHour());
 
@@ -330,6 +339,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
     audq.setParameter("revtype", type.getRepresentation());
     audq.setParameter("dayAndHour", dayAndHourStr);
     audq.setParameter("up", hour.getUpSeconds());
+    audq.setParameter("tuning", hour.getTuningSeconds());
     audq.setParameter("sad", hour.getSadSeconds());
     audq.setParameter("down", hour.getDownSeconds());
     audq.setParameter("studies", hour.getStudiesSeconds());
@@ -360,6 +370,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
     q.setParameter("id", id);
     q.setParameter("dayAndHour", dayAndHourStr);
     q.setParameter("up", hour.getUpSeconds());
+    q.setParameter("tuning", hour.getTuningSeconds());
     q.setParameter("sad", hour.getSadSeconds());
     q.setParameter("down", hour.getDownSeconds());
     q.setParameter("studies", hour.getStudiesSeconds());

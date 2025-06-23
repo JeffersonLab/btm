@@ -23,7 +23,7 @@ import org.jlab.btm.persistence.enumeration.DataSource;
   @NamedNativeQuery(
       name = "CcAccHour.insertNATIVE",
       query =
-          "INSERT into CC_ACC_HOUR (CC_ACC_HOUR_ID, DAY_AND_HOUR, UP_SECONDS, SAD_SECONDS, DOWN_SECONDS, STUDIES_SECONDS, ACC_SECONDS, RESTORE_SECONDS) values (:id, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :up, :sad, :down, :studies, :acc, :restore)",
+          "INSERT into CC_ACC_HOUR (CC_ACC_HOUR_ID, DAY_AND_HOUR, UP_SECONDS, TUNING_SECONDS, SAD_SECONDS, DOWN_SECONDS, STUDIES_SECONDS, ACC_SECONDS, RESTORE_SECONDS) values (:id, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :up, :tuning, :sad, :down, :studies, :acc, :restore)",
       resultClass = CcAccHour.class)
 })
 public class CcAccHour implements Serializable, HourEntity {

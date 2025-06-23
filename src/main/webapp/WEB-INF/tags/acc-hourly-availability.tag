@@ -14,11 +14,13 @@
                 <thead>
                 <tr>
                     <th rowspan="2"></th>
-                    <th rowspan="2" class="duration-header">PHYSICS</th>
+                    <th colspan="2">PHYSICS</th>
                     <th colspan="4">INTERNAL</th>
                     <th rowspan="2" class="duration-header">OFF (SAM)</th>
                 </tr>
                 <tr>
+                    <th class="duration-header">DELIVERY</th>
+                    <th class="duration-header">TUNING</th>
                     <th class="duration-header">STUDIES</th>
                     <th class="duration-header">SAM RESTORE</th>
                     <th class="duration-header">ACC</th>
@@ -29,6 +31,7 @@
                 <tr>
                     <th>Shift Total</th>
                     <th>${btm:formatDuration(availability.epicsShiftTotals.upSeconds, durationUnits)}</th>
+                    <th>${btm:formatDuration(availability.epicsShiftTotals.tuningSeconds, durationUnits)}</th>
                     <th>${btm:formatDuration(availability.epicsShiftTotals.studiesSeconds, durationUnits)}</th>
                     <th>${btm:formatDuration(availability.epicsShiftTotals.restoreSeconds, durationUnits)}</th>
                     <th>${btm:formatDuration(availability.epicsShiftTotals.accSeconds, durationUnits)}</th>
@@ -44,6 +47,7 @@
                         <th title="${fullDate}" data-hour="${isoDate}"><fmt:formatDate value="${hour.dayAndHour}"
                                                                                        pattern="HH"/></th>
                         <td>${btm:formatDuration(hour.upSeconds, durationUnits)}</td>
+                        <td>${btm:formatDuration(hour.tuningSeconds, durationUnits)}</td>
                         <td>${btm:formatDuration(hour.studiesSeconds, durationUnits)}</td>
                         <td>${btm:formatDuration(hour.restoreSeconds, durationUnits)}</td>
                         <td>${btm:formatDuration(hour.accSeconds, durationUnits)}</td>
@@ -66,7 +70,7 @@
             <thead>
             <tr>
                 <th rowspan="2"></th>
-                <th rowspan="2" class="duration-header">PHYSICS</th>
+                <th colspan="2">PHYSICS</th>
                 <th colspan="4" style="width: 320px;">INTERNAL</th>
                 <th rowspan="2" class="duration-header">OFF (SAM)</th>
                 <th rowspan="2">Hour Total</th>
@@ -74,6 +78,8 @@
                 <th rowspan="2" style="width: 50px;"></th>
             </tr>
             <tr>
+                <th class="duration-header">DELIVERY</th>
+                <th class="duration-header">TUNING</th>
                 <th class="duration-header">STUDIES</th>
                 <th class="duration-header">SAM RESTORE</th>
                 <th class="duration-header">ACC</th>
@@ -84,6 +90,7 @@
             <tr>
                 <th>Shift Total</th>
                 <th>${btm:formatDuration(availability.shiftTotals.upSeconds, durationUnits)}</th>
+                <th>${btm:formatDuration(availability.shiftTotals.tuningSeconds, durationUnits)}</th>
                 <th>${btm:formatDuration(availability.shiftTotals.studiesSeconds, durationUnits)}</th>
                 <th>${btm:formatDuration(availability.shiftTotals.restoreSeconds, durationUnits)}</th>
                 <th>${btm:formatDuration(availability.shiftTotals.accSeconds, durationUnits)}</th>
@@ -104,6 +111,9 @@
                     <td><span><c:out value="${btm:formatDuration(hour.upSeconds, durationUnits)}"/></span><input
                             style="display: none;" type="text"
                             value="${btm:formatDuration(hour.upSeconds, durationUnits)}"/></td>
+                    <td><span><c:out value="${btm:formatDuration(hour.tuningSeconds, durationUnits)}"/></span><input
+                            style="display: none;" type="text"
+                            value="${btm:formatDuration(hour.tuningSeconds, durationUnits)}"/></td>
                     <td><span><c:out value="${btm:formatDuration(hour.studiesSeconds, durationUnits)}"/></span><input
                             style="display: none;" type="text"
                             value="${btm:formatDuration(hour.studiesSeconds, durationUnits)}"/></td>
