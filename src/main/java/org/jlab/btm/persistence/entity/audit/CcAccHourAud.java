@@ -48,6 +48,13 @@ public class CcAccHourAud implements Serializable {
 
   @Basic(optional = false)
   @NotNull
+  @Column(name = "TUNING_SECONDS", nullable = false)
+  @Max(value = 3600, message = "TUNING must be less than or equal to 1 hour")
+  @Min(value = 0, message = "TUNING must be greater than or equal to 0")
+  private short tuningSeconds;
+
+  @Basic(optional = false)
+  @NotNull
   @Column(name = "SAD_SECONDS", nullable = false)
   @Max(value = 3600, message = "OFF must be less than or equal to 1 hour")
   @Min(value = 0, message = "OFF must be greater than or equal to 0")
@@ -113,6 +120,14 @@ public class CcAccHourAud implements Serializable {
 
   public void setUpSeconds(short upSeconds) {
     this.upSeconds = upSeconds;
+  }
+
+  public short getTuningSeconds() {
+    return tuningSeconds;
+  }
+
+  public void setTuningSeconds(short tuningSeconds) {
+    this.tuningSeconds = tuningSeconds;
   }
 
   public short getSadSeconds() {

@@ -138,6 +138,10 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
             totals.getUpSeconds() == null
                 ? hour.getUpSeconds()
                 : totals.getUpSeconds() + hour.getUpSeconds());
+        totals.setTuningSeconds(
+            totals.getTuningSeconds() == null
+                ? hour.getTuningSeconds()
+                : totals.getTuningSeconds() + hour.getTuningSeconds());
         totals.setSadSeconds(
             totals.getSadSeconds() == null
                 ? hour.getSadSeconds()
