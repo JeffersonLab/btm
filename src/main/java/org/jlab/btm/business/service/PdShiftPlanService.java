@@ -88,7 +88,7 @@ public class PdShiftPlanService extends AbstractService<PdShiftPlan> {
 
   @PermitAll
   public PdAccSum findSummary(Date start, Date end) {
-    Long[] values = new Long[5];
+    Long[] values = new Long[6];
 
     // PD Shift Plans line up with CC Shifts
     start = TimeUtil.getCcShiftStart(start);
@@ -96,7 +96,7 @@ public class PdShiftPlanService extends AbstractService<PdShiftPlan> {
 
     Query q =
         em.createNativeQuery(
-            "select sum(physics_seconds), sum(sad_seconds), sum(studies_seconds), sum(restore_seconds), sum(acc_seconds) from pd_shift_plan where start_day_and_hour < :end and start_day_and_hour  >= :start");
+            "select sum(physics_seconds), 0, sum(sad_seconds), sum(studies_seconds), sum(restore_seconds), sum(acc_seconds) from pd_shift_plan where start_day_and_hour < :end and start_day_and_hour  >= :start");
 
     q.setParameter("start", start);
     q.setParameter("end", end);
@@ -105,13 +105,14 @@ public class PdShiftPlanService extends AbstractService<PdShiftPlan> {
 
     if (resultList != null && resultList.size() == 1) {
       Object[] row = (Object[]) resultList.get(0);
-      for (int i = 0; i < 5; i++) {
+      for (int i = 0; i < 6; i++) {
         Object item = row[i];
         Number n = (Number) item;
         values[i] = n == null ? 0 : n.longValue();
       }
     }
 
-    return new PdAccSum(start, end, values[0], values[1], values[2], values[3], values[4]);
+    return new PdAccSum(
+        start, end, values[0], values[1], values[2], values[3], values[4], values[5]);
   }
 }

@@ -5,6 +5,7 @@ package org.jlab.btm.persistence.projection;
  */
 public class CcAccShiftTotals {
   private Integer upSeconds;
+  private Integer tuningSeconds;
   private Integer sadSeconds;
   private Integer downSeconds;
   private Integer studiesSeconds;
@@ -17,6 +18,14 @@ public class CcAccShiftTotals {
 
   public void setUpSeconds(Integer upSeconds) {
     this.upSeconds = upSeconds;
+  }
+
+  public Integer getTuningSeconds() {
+    return tuningSeconds;
+  }
+
+  public void setTuningSeconds(Integer tuningSeconds) {
+    this.tuningSeconds = tuningSeconds;
   }
 
   public Integer getSadSeconds() {

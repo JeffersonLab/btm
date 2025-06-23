@@ -10,6 +10,7 @@ import java.util.Date;
  */
 public class PacAccSum {
   public int programDays = 0; // Anything but OFF or implied OFF
+  public int tuningDays = 0;
   public int restoreDays = 0;
   public int physicsDays = 0;
   public int studiesDays = 0;
@@ -40,6 +41,14 @@ public class PacAccSum {
 
   public int getPhysicsDays() {
     return physicsDays;
+  }
+
+  public int getTuningDays() {
+    return tuningDays;
+  }
+
+  public void setTuningDays(int tuningDays) {
+    this.tuningDays = tuningDays;
   }
 
   public void setPhysicsDays(int physicsDays) {

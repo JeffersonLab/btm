@@ -57,6 +57,7 @@ public class EditAccHours extends HttpServlet {
 
       Date[] hourArray = BtmParamConverter.convertDayHourArray(request, "hour[]");
       Short[] upArray = ParamConverter.convertShortArray(request, "up[]", (short) 0);
+      Short[] tuningArray = ParamConverter.convertShortArray(request, "tuning[]", (short) 0);
       Short[] sadArray = ParamConverter.convertShortArray(request, "sad[]", (short) 0);
       Short[] downArray = ParamConverter.convertShortArray(request, "down[]", (short) 0);
       Short[] studiesArray = ParamConverter.convertShortArray(request, "studies[]", (short) 0);
@@ -64,7 +65,14 @@ public class EditAccHours extends HttpServlet {
       Short[] accArray = ParamConverter.convertShortArray(request, "acc[]", (short) 0);
 
       accHourService.editAccHours(
-          hourArray, upArray, sadArray, downArray, studiesArray, restoreArray, accArray);
+          hourArray,
+          upArray,
+          tuningArray,
+          sadArray,
+          downArray,
+          studiesArray,
+          restoreArray,
+          accArray);
     } catch (NumberFormatException e) {
       logger.log(Level.WARNING, "Unable to edit accelerator availability hours", e);
       errorReason = "Numeric field out of range or not a number";

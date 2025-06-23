@@ -23,7 +23,7 @@ import org.jlab.btm.persistence.enumeration.DataSource;
   @NamedNativeQuery(
       name = "CcAccHour.insertNATIVE",
       query =
-          "INSERT into CC_ACC_HOUR (CC_ACC_HOUR_ID, DAY_AND_HOUR, UP_SECONDS, SAD_SECONDS, DOWN_SECONDS, STUDIES_SECONDS, ACC_SECONDS, RESTORE_SECONDS) values (:id, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :up, :sad, :down, :studies, :acc, :restore)",
+          "INSERT into CC_ACC_HOUR (CC_ACC_HOUR_ID, DAY_AND_HOUR, UP_SECONDS, TUNING_SECONDS, SAD_SECONDS, DOWN_SECONDS, STUDIES_SECONDS, ACC_SECONDS, RESTORE_SECONDS) values (:id, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :up, :tuning, :sad, :down, :studies, :acc, :restore)",
       resultClass = CcAccHour.class)
 })
 public class CcAccHour implements Serializable, HourEntity {
@@ -50,6 +50,13 @@ public class CcAccHour implements Serializable, HourEntity {
   @Max(value = 3600, message = "PHYSICS must be less than or equal to 1 hour")
   @Min(value = 0, message = "PHYSICS must be greater than or equal to 0")
   private short upSeconds;
+
+  @Basic(optional = false)
+  @NotNull
+  @Column(name = "TUNING_SECONDS", nullable = false)
+  @Max(value = 3600, message = "TUNING must be less than or equal to 1 hour")
+  @Min(value = 0, message = "TUNING must be greater than or equal to 0")
+  private short tuningSeconds;
 
   @Basic(optional = false)
   @NotNull
@@ -128,6 +135,14 @@ public class CcAccHour implements Serializable, HourEntity {
 
   public void setUpSeconds(short upSeconds) {
     this.upSeconds = upSeconds;
+  }
+
+  public short getTuningSeconds() {
+    return tuningSeconds;
+  }
+
+  public void setTuningSeconds(short tuningSeconds) {
+    this.tuningSeconds = tuningSeconds;
   }
 
   public short getSadSeconds() {
