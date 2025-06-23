@@ -55,8 +55,8 @@
                                 <td>Machine is being studied/tested/developed</td>
                             </tr>
                             <tr>
-                                <td>SAM Restore</td>
-                                <td>Machine is being restored after being OFF (SAM). SAM Restore is not to be confused
+                                <td>NPES Restore</td>
+                                <td>Machine is being restored after being OFF. NPES Restore is not to be confused
                                     with recovery after component failure, which is rolled up into down. Similarly,
                                     recovery from studies is counted as studies and should be scheduled accordingly.
                                     Excessive recovery (tuning) beyond the schedule is recorded as Down.

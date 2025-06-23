@@ -22,7 +22,7 @@
                     <th class="duration-header">DELIVERY</th>
                     <th class="duration-header">TUNING</th>
                     <th class="duration-header">STUDIES</th>
-                    <th class="duration-header">SAM RESTORE</th>
+                    <th class="duration-header">NPES RESTORE</th>
                     <th class="duration-header">ACC</th>
                     <th class="duration-header">INTERNAL DOWN</th>
                 </tr>
@@ -81,7 +81,7 @@
                 <th class="duration-header">DELIVERY</th>
                 <th class="duration-header">TUNING</th>
                 <th class="duration-header">STUDIES</th>
-                <th class="duration-header">SAM RESTORE</th>
+                <th class="duration-header">NPES RESTORE</th>
                 <th class="duration-header">ACC</th>
                 <th class="duration-header">INTERNAL DOWN</th>
             </tr>
