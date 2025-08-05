@@ -31,14 +31,12 @@ public class HallHourCrossCheck {
   private final boolean highAbuAccCheck;
   private final boolean highBanuAccCheck;
   private final boolean highBnaAccCheck;
-  private final boolean highAccAccCheck;
 
   private final boolean highAbu;
   private final boolean lowAbu;
   private final boolean lowBanu;
   private final boolean highBna;
   private final boolean highOff;
-  private final boolean highAcc;
 
   // Check messages
   private final String highHallPhysicsMessage;
@@ -47,14 +45,12 @@ public class HallHourCrossCheck {
   private final String highAbuAccMessage;
   private final String highBanuAccMessage;
   private final String highBnaAccMessage;
-  private final String highAccAccMessage;
 
   private final String highAbuMessage;
   private final String lowAbuMessage;
   private final String lowBanuMessage;
   private final String highBnaMessage;
   private final String highOffMessage;
-  private final String highAccMessage;
 
   public HallHourCrossCheck(
       Hall hall,
@@ -123,14 +119,6 @@ public class HallHourCrossCheck {
             + " minutes) than the Operations reported PHYSICS ("
             + BtmFunctions.formatDuration(ccAccHour.getUpSeconds(), DurationUnits.MINUTES)
             + " minutes)";
-    highAccAccMessage =
-        "Experimenter Hall "
-            + hall
-            + " reports significantly more ACC ("
-            + BtmFunctions.formatDuration(expHour.getAccSeconds(), DurationUnits.MINUTES)
-            + " minutes) than the Operations reported ACC ("
-            + BtmFunctions.formatDuration(ccAccHour.getAccSeconds(), DurationUnits.MINUTES)
-            + " minutes)";
 
     // Hall Experimeneter vs Operations
     highAbuMessage =
@@ -187,14 +175,6 @@ public class HallHourCrossCheck {
             + " minutes) than the Operations reported OFF ("
             + BtmFunctions.formatDuration(ccHallHour.getOffSeconds(), DurationUnits.MINUTES)
             + " minutes)";
-    highAccMessage =
-        "Experimenter Hall "
-            + hall
-            + " reports significantly more ACC ("
-            + BtmFunctions.formatDuration(expHour.getAccSeconds(), DurationUnits.MINUTES)
-            + " minutes) than the Operations reported OFF ("
-            + BtmFunctions.formatDuration(ccHallHour.getOffSeconds(), DurationUnits.MINUTES)
-            + " minutes)";
 
     // Beam mode and multiplicity
     highHallPhysics =
@@ -214,7 +194,6 @@ public class HallHourCrossCheck {
                 + TEN_MINUTES_OF_SECONDS;
     highBanuAccCheck = expHour.getBanuSeconds() > ccAccHour.getUpSeconds() + TEN_MINUTES_OF_SECONDS;
     highBnaAccCheck = expHour.getBnaSeconds() > ccAccHour.getUpSeconds() + TEN_MINUTES_OF_SECONDS;
-    highAccAccCheck = expHour.getAccSeconds() > ccAccHour.getAccSeconds() + TEN_MINUTES_OF_SECONDS;
 
     // Hall Experimenter vs Operations
     highAbu =
@@ -238,7 +217,6 @@ public class HallHourCrossCheck {
                 + ccHallHour.getTuneSeconds()
                 + TEN_MINUTES_OF_SECONDS;
     highOff = expHour.getOffSeconds() > ccHallHour.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
-    highAcc = expHour.getAccSeconds() > ccHallHour.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
   }
 
   public Hall getHall() {
@@ -285,10 +263,6 @@ public class HallHourCrossCheck {
     return highOff;
   }
 
-  public boolean isHighAcc() {
-    return highAcc;
-  }
-
   public String getHighAbuMessage() {
     return highAbuMessage;
   }
@@ -309,10 +283,6 @@ public class HallHourCrossCheck {
     return highOffMessage;
   }
 
-  public String getHighAccMessage() {
-    return highAccMessage;
-  }
-
   public boolean isHighAbuAccCheck() {
     return highAbuAccCheck;
   }
@@ -325,10 +295,6 @@ public class HallHourCrossCheck {
     return highBnaAccCheck;
   }
 
-  public boolean isHighAccAccCheck() {
-    return highAccAccCheck;
-  }
-
   public String getHighAbuAccMessage() {
     return highAbuAccMessage;
   }
@@ -339,9 +305,5 @@ public class HallHourCrossCheck {
 
   public String getHighBnaAccMessage() {
     return highBnaAccMessage;
-  }
-
-  public String getHighAccAccMessage() {
-    return highAccAccMessage;
   }
 }

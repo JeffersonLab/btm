@@ -140,12 +140,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>ACC</td>
-                                <td>Accelerator Configuration Change.</td>
-                            </tr>
-                            <tr>
                                 <td>OFF</td>
-                                <td>Hall is scheduled to be off for holiday, maintenance, or budget restrictions.</td>
+                                <td>Hall is scheduled to be off for holiday, maintenance, or budget restrictions.  A hall is also OFF during internal accelerator activities such as Beam Studies, Restore, and ACC.</td>
                             </tr>
                             </tbody>
                         </table>
@@ -175,7 +171,7 @@
                             </tr>
                             <tr>
                                 <td>OFF</td>
-                                <td>Hall is scheduled to be off for holiday, maintenance, or budget restrictions.</td>
+                                <td>Hall is off per the OFF Accelerator Beam Progress metric (shared state).</td>
                             </tr>
                             </tbody>
                         </table>

@@ -46,7 +46,7 @@
                         <thead>
                         <tr>
                             <th rowspan="2" class="hour-header"></th>
-                            <th colspan="5">Accelerator Beam Time</th>
+                            <th colspan="4">Accelerator Beam Time</th>
                             <th rowspan="2">Hour Total</th>
                             <th colspan="4">Experiment Beam Time</th>
                             <th rowspan="2">Hour Total</th>
@@ -55,7 +55,6 @@
                             <th class="duration-header">ABU</th>
                             <th class="duration-header">BANU</th>
                             <th class="duration-header">BNA</th>
-                            <th class="duration-header">ACC</th>
                             <th class="duration-header">OFF</th>
                             <th class="duration-header">ER</th>
                             <th class="duration-header">PCC</th>
@@ -69,7 +68,6 @@
                             <th>${btm:formatDuration(epicsTotals.abuSeconds, durationUnits)}</th>
                             <th>${btm:formatDuration(epicsTotals.banuSeconds, durationUnits)}</th>
                             <th>${btm:formatDuration(epicsTotals.bnaSeconds, durationUnits)}</th>
-                            <th>${btm:formatDuration(epicsTotals.accSeconds, durationUnits)}</th>
                             <th>${btm:formatDuration(epicsTotals.offSeconds, durationUnits)}</th>
                             <th></th>
                             <th>${btm:formatDuration(epicsTotals.erSeconds, durationUnits)}</th>
@@ -91,7 +89,6 @@
                                 <td>${btm:formatDuration(hour.abuSeconds, durationUnits)}</td>
                                 <td>${btm:formatDuration(hour.banuSeconds, durationUnits)}</td>
                                 <td>${btm:formatDuration(hour.bnaSeconds, durationUnits)}</td>
-                                <td>${btm:formatDuration(hour.accSeconds, durationUnits)}</td>
                                 <td>${btm:formatDuration(hour.offSeconds, durationUnits)}</td>
                                 <th>${btm:formatDuration(hour.calculateAcceleratorTotal(), durationUnits)}</th>
                                 <td>${btm:formatDuration(hour.erSeconds, durationUnits)}</td>
@@ -117,7 +114,7 @@
                     <thead>
                     <tr>
                         <th rowspan="2" class="hour-header"></th>
-                        <th colspan="5">Accelerator Beam Time</th>
+                        <th colspan="4">Accelerator Beam Time</th>
                         <th rowspan="2">Hour Total</th>
                         <th colspan="4">Experiment Beam Time</th>
                         <th rowspan="2">Hour Total</th>
@@ -128,7 +125,6 @@
                         <th class="duration-header" title="Acceptable Beam in Use">ABU</th>
                         <th class="duration-header" title="Beam Available, but Not Used">BANU</th>
                         <th class="duration-header" title="Beam Not Available or unacceptable">BNA</th>
-                        <th class="duration-header" title="Accelerator Configuration Change">ACC</th>
                         <th class="duration-header">OFF<div class="flyout-parent"><a class="flyout-link" data-flyout-type="off-flyout" href="#">*</a></div></th>
                         <th class="duration-header" title="Experiment Ready">ER</th>
                         <th class="duration-header" title="Planned Configuration Change">PCC</th>
@@ -142,7 +138,6 @@
                         <th>${btm:formatDuration(totals.abuSeconds, durationUnits)}</th>
                         <th>${btm:formatDuration(totals.banuSeconds, durationUnits)}</th>
                         <th>${btm:formatDuration(totals.bnaSeconds, durationUnits)}</th>
-                        <th>${btm:formatDuration(totals.accSeconds, durationUnits)}</th>
                         <th>${btm:formatDuration(totals.offSeconds, durationUnits)}</th>
                         <th></th>
                         <th>${btm:formatDuration(totals.erSeconds, durationUnits)}</th>
@@ -178,12 +173,6 @@
                                 <input
                                         style="display: none;" type="text"
                                         value="${btm:formatDuration(hour.bnaSeconds, durationUnits)}"/>
-                            </td>
-                            <td>
-                                <span><c:out value="${btm:formatDuration(hour.accSeconds, durationUnits)}"/></span>
-                                <input
-                                        style="display: none;" type="text"
-                                        value="${btm:formatDuration(hour.accSeconds, durationUnits)}"/>
                             </td>
                             <td>
                                 <span><c:out value="${btm:formatDuration(hour.offSeconds, durationUnits)}"/></span>

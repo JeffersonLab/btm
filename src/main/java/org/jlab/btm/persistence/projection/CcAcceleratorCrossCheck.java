@@ -15,12 +15,10 @@ public class CcAcceleratorCrossCheck {
   private final boolean[] highAbu = new boolean[4];
   private final boolean[] highBanu = new boolean[4];
   private final boolean[] highBna = new boolean[4];
-  private final boolean[] highAcc = new boolean[4];
 
   private final String[] highAbuMessage = new String[4];
   private final String[] highBanuMessage = new String[4];
   private final String[] highBnaMessage = new String[4];
-  private final String[] highAccMessage = new String[4];
 
   public CcAcceleratorCrossCheck(
       CcAccShiftTotals acc,
@@ -58,14 +56,6 @@ public class CcAcceleratorCrossCheck {
               + " hours) than the Operations reported PHYSICS ("
               + BtmFunctions.formatDuration(acc.getUpSeconds(), DurationUnits.HOURS)
               + " hours)";
-      highAccMessage[i] =
-          "Experimenter Hall "
-              + halls[i]
-              + " reports significantly more ACC ("
-              + BtmFunctions.formatDuration(times[i].getAccSeconds(), DurationUnits.HOURS)
-              + " hours) than the Operations reported ACC ("
-              + BtmFunctions.formatDuration(acc.getAccSeconds(), DurationUnits.HOURS)
-              + " hours)";
     }
 
     int accSeconds = acc.getUpSeconds() + acc.getRestoreSeconds() + acc.getStudiesSeconds();
@@ -87,12 +77,6 @@ public class CcAcceleratorCrossCheck {
     highBna[2] = c.getBnaSeconds() <= accSeconds + TEN_MINUTES_OF_SECONDS;
     highBna[3] = d.getBnaSeconds() <= accSeconds + TEN_MINUTES_OF_SECONDS;
 
-    accSeconds = acc.getAccSeconds();
-    highAcc[0] = a.getAccSeconds() <= accSeconds + TEN_MINUTES_OF_SECONDS;
-    highAcc[1] = b.getAccSeconds() <= accSeconds + TEN_MINUTES_OF_SECONDS;
-    highAcc[2] = c.getAccSeconds() <= accSeconds + TEN_MINUTES_OF_SECONDS;
-    highAcc[3] = d.getAccSeconds() <= accSeconds + TEN_MINUTES_OF_SECONDS;
-
     hallPassed[0] = true;
     hallPassed[1] = true;
     hallPassed[2] = true;
@@ -106,9 +90,6 @@ public class CcAcceleratorCrossCheck {
         hallPassed[i] = false;
       }
       if (!highBna[i]) {
-        hallPassed[i] = false;
-      }
-      if (!highAcc[i]) {
         hallPassed[i] = false;
       }
     }
@@ -136,10 +117,6 @@ public class CcAcceleratorCrossCheck {
     return highBna;
   }
 
-  public boolean[] getHighAcc() {
-    return highAcc;
-  }
-
   public String[] getHighAbuMessage() {
     return highAbuMessage;
   }
@@ -150,9 +127,5 @@ public class CcAcceleratorCrossCheck {
 
   public String[] getHighBnaMessage() {
     return highBnaMessage;
-  }
-
-  public String[] getHighAccMessage() {
-    return highAccMessage;
   }
 }

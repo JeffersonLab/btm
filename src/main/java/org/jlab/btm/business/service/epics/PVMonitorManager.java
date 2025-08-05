@@ -70,7 +70,6 @@ public class PVMonitorManager {
       dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ABU_SUFFIX);
       dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BANU_SUFFIX);
       dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BNA_SUFFIX);
-      dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ACC_SUFFIX);
       dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ER_SUFFIX);
       dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_PCC_SUFFIX);
       dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_UED_SUFFIX);

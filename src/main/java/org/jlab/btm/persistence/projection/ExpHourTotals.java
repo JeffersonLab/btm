@@ -15,12 +15,11 @@ public class ExpHourTotals extends ExpShiftTotals {
       Number abuSeconds,
       Number banuSeconds,
       Number bnaSeconds,
-      Number accSeconds,
       Number offSeconds,
       Number erSeconds,
       Number pccSeconds,
       Number uedSeconds) {
-    super(hall, hourCount, abuSeconds, banuSeconds, bnaSeconds, accSeconds, offSeconds);
+    super(hall, hourCount, abuSeconds, banuSeconds, bnaSeconds, offSeconds);
 
     this.erSeconds = erSeconds.intValue();
     this.pccSeconds = pccSeconds.intValue();

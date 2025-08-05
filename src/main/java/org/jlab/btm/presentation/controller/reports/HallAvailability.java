@@ -133,7 +133,6 @@ public class HallAvailability extends HttpServlet {
                 - (totals.getAbuSeconds()
                         + totals.getBanuSeconds()
                         + totals.getBnaSeconds()
-                        + totals.getAccSeconds()
                         + totals.getOffSeconds())
                     / 3600;
         expUnknownList.add(unknown);

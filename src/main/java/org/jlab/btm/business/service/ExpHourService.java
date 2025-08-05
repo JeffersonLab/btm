@@ -63,12 +63,12 @@ public class ExpHourService extends AbstractService<ExpHour> {
   @PermitAll
   public List<ExpShiftTotals> findExpHallShiftTotals(Date start, Date end) {
     String sql =
-        "select hall, count(abu_seconds) - 1 as count, sum(abu_seconds) as abu_seconds, sum(banu_seconds) as banu_seconds, sum(bna_seconds) as bna_seconds, sum(acc_seconds) as acc_seconds, sum(off_seconds) as off_seconds "
-            + "from (select hall, abu_seconds, banu_seconds, bna_seconds, acc_seconds, off_seconds from EXP_hour where day_and_hour between :start and :end "
-            + "union all select 'A', 0, 0, 0, 0, 0 from dual "
-            + "union all select 'B', 0, 0, 0, 0, 0 from dual "
-            + "union all select 'C', 0, 0, 0, 0, 0 from dual "
-            + "union all select 'D', 0, 0, 0, 0, 0 from dual) "
+        "select hall, count(abu_seconds) - 1 as count, sum(abu_seconds) as abu_seconds, sum(banu_seconds) as banu_seconds, sum(bna_seconds) as bna_seconds, sum(off_seconds) as off_seconds "
+            + "from (select hall, abu_seconds, banu_seconds, bna_seconds, off_seconds from EXP_hour where day_and_hour between :start and :end "
+            + "union all select 'A', 0, 0, 0, 0 from dual "
+            + "union all select 'B', 0, 0, 0, 0 from dual "
+            + "union all select 'C', 0, 0, 0, 0 from dual "
+            + "union all select 'D', 0, 0, 0, 0 from dual) "
             + "group by hall order by hall asc";
 
     Query q = em.createNativeQuery(sql);
@@ -84,12 +84,12 @@ public class ExpHourService extends AbstractService<ExpHour> {
   @PermitAll
   public List<ExpHourTotals> findExpHallHourTotals(Date start, Date end) {
     String sql =
-        "select hall, count(abu_seconds) - 1 as count, sum(abu_seconds) as abu_seconds, sum(banu_seconds) as banu_seconds, sum(bna_seconds) as bna_seconds, sum(acc_seconds) as acc_seconds, sum(off_seconds) as off_seconds, sum(er_seconds) as er_seconds, sum(pcc_seconds) as pcc_seconds, sum(ued_seconds) as ued_seconds "
-            + "from (select hall, abu_seconds, banu_seconds, bna_seconds, acc_seconds, off_seconds, er_seconds, pcc_seconds, ued_seconds from EXP_hour where day_and_hour >= :start and day_and_hour < :end "
-            + "union all select 'A', 0, 0, 0, 0, 0, 0, 0, 0 from dual "
-            + "union all select 'B', 0, 0, 0, 0, 0, 0, 0, 0 from dual "
-            + "union all select 'C', 0, 0, 0, 0, 0, 0, 0, 0 from dual "
-            + "union all select 'D', 0, 0, 0, 0, 0, 0, 0, 0 from dual) "
+        "select hall, count(abu_seconds) - 1 as count, sum(abu_seconds) as abu_seconds, sum(banu_seconds) as banu_seconds, sum(bna_seconds) as bna_seconds, sum(off_seconds) as off_seconds, sum(er_seconds) as er_seconds, sum(pcc_seconds) as pcc_seconds, sum(ued_seconds) as ued_seconds "
+            + "from (select hall, abu_seconds, banu_seconds, bna_seconds, off_seconds, er_seconds, pcc_seconds, ued_seconds from EXP_hour where day_and_hour >= :start and day_and_hour < :end "
+            + "union all select 'A', 0, 0, 0, 0, 0, 0, 0 from dual "
+            + "union all select 'B', 0, 0, 0, 0, 0, 0, 0 from dual "
+            + "union all select 'C', 0, 0, 0, 0, 0, 0, 0 from dual "
+            + "union all select 'D', 0, 0, 0, 0, 0, 0, 0 from dual) "
             + "group by hall order by hall asc";
 
     Query q = em.createNativeQuery(sql);
@@ -106,16 +106,16 @@ public class ExpHourService extends AbstractService<ExpHour> {
   public List<PhysicsSummaryTotals> reportTotals(Date start, Date end) {
     Query q =
         em.createNativeQuery(
-            "select a.hall, abu, banu, bna, acc, exp_off, up, tune, bnr, down, CC_off from "
+            "select a.hall, abu, banu, bna, exp_off, up, tune, bnr, down, CC_off from "
                 + "("
-                + "select hall, sum(abu_seconds) as abu, sum(banu_seconds) as banu, sum(bna_seconds) as bna, sum(acc_seconds) as acc, sum(off_seconds) as exp_off from "
-                + "(select hall, abu_seconds, banu_seconds, bna_seconds, acc_seconds, off_seconds "
+                + "select hall, sum(abu_seconds) as abu, sum(banu_seconds) as banu, sum(bna_seconds) as bna, sum(off_seconds) as exp_off from "
+                + "(select hall, abu_seconds, banu_seconds, bna_seconds, off_seconds "
                 + "from EXP_hour "
                 + "where day_and_hour >= :start and day_and_hour < :end "
-                + "union all select 'A', 0, 0, 0, 0, 0 from dual "
-                + "union all select 'B', 0, 0, 0, 0, 0 from dual "
-                + "union all select 'C', 0, 0, 0, 0, 0 from dual "
-                + "union all select 'D', 0, 0, 0, 0, 0 from dual) "
+                + "union all select 'A', 0, 0, 0, 0 from dual "
+                + "union all select 'B', 0, 0, 0, 0 from dual "
+                + "union all select 'C', 0, 0, 0, 0 from dual "
+                + "union all select 'D', 0, 0, 0, 0 from dual) "
                 + "group by hall "
                 + ") a, "
                 + "("
@@ -227,7 +227,6 @@ public class ExpHourService extends AbstractService<ExpHour> {
     Integer abuSeconds = 0;
     Integer banuSeconds = 0;
     Integer bnaSeconds = 0;
-    Integer accSeconds = 0;
     Integer offSeconds = 0;
     Integer erSeconds = 0;
     Integer pccSeconds = 0;
@@ -238,7 +237,6 @@ public class ExpHourService extends AbstractService<ExpHour> {
         abuSeconds = abuSeconds + hour.getAbuSeconds();
         banuSeconds = banuSeconds + hour.getBanuSeconds();
         bnaSeconds = bnaSeconds + hour.getBnaSeconds();
-        accSeconds = accSeconds + hour.getAccSeconds();
         offSeconds = offSeconds + hour.getOffSeconds();
         erSeconds = erSeconds + hour.getErSeconds();
         pccSeconds = pccSeconds + hour.getPccSeconds();
@@ -252,7 +250,6 @@ public class ExpHourService extends AbstractService<ExpHour> {
         abuSeconds,
         banuSeconds,
         bnaSeconds,
-        accSeconds,
         offSeconds,
         erSeconds,
         pccSeconds,
@@ -360,7 +357,6 @@ public class ExpHourService extends AbstractService<ExpHour> {
       Short[] abuArray,
       Short[] banuArray,
       Short[] bnaArray,
-      Short[] accArray,
       Short[] offArray,
       Short[] erArray,
       Short[] pccArray,
@@ -371,7 +367,6 @@ public class ExpHourService extends AbstractService<ExpHour> {
         || abuArray == null
         || banuArray == null
         || bnaArray == null
-        || accArray == null
         || offArray == null
         || erArray == null
         || pccArray == null
@@ -391,7 +386,6 @@ public class ExpHourService extends AbstractService<ExpHour> {
     if (hourArray.length != abuArray.length
         || hourArray.length != banuArray.length
         || hourArray.length != bnaArray.length
-        || hourArray.length != accArray.length
         || hourArray.length != offArray.length
         || hourArray.length != erArray.length
         || hourArray.length != pccArray.length
@@ -438,7 +432,7 @@ public class ExpHourService extends AbstractService<ExpHour> {
       logger.log(Level.FINEST, "Editing hour: {0}", dateFormat.format(hour));
       ExpHour expHour = hourMap.get(hour);
 
-      int total = abuArray[i] + banuArray[i] + bnaArray[i] + accArray[i] + offArray[i];
+      int total = abuArray[i] + banuArray[i] + bnaArray[i] + offArray[i];
 
       if (total != 3600) {
         SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
@@ -463,7 +457,6 @@ public class ExpHourService extends AbstractService<ExpHour> {
       expHour.setAbuSeconds(abuArray[i]);
       expHour.setBanuSeconds(banuArray[i]);
       expHour.setBnaSeconds(bnaArray[i]);
-      expHour.setAccSeconds(accArray[i]);
       expHour.setOffSeconds(offArray[i]);
       expHour.setErSeconds(erArray[i]);
       expHour.setPccSeconds(pccArray[i]);
@@ -538,7 +531,7 @@ public class ExpHourService extends AbstractService<ExpHour> {
 
     Query audq =
         em.createNativeQuery(
-            "insert into exp_hour_aud (REVTYPE, HALL, DAY_AND_HOUR, ABU_SECONDS, BANU_SECONDS, BNA_SECONDS, ACC_SECONDS, ER_SECONDS, PCC_SECONDS, UED_SECONDS, OFF_SECONDS, REMARK, EXP_HOUR_ID, REV) values (:revtype, :hall, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :abu, :banu, :bna, :acc, :er, :pcc, :ued, :off, :remark, :hour_id, :rev)");
+            "insert into exp_hour_aud (REVTYPE, HALL, DAY_AND_HOUR, ABU_SECONDS, BANU_SECONDS, BNA_SECONDS, ER_SECONDS, PCC_SECONDS, UED_SECONDS, OFF_SECONDS, REMARK, EXP_HOUR_ID, REV) values (:revtype, :hall, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :abu, :banu, :bna, :er, :pcc, :ued, :off, :remark, :hour_id, :rev)");
 
     String dayAndHourStr = TimeUtil.formatDatabaseDateTimeTZ(hour.getDayAndHour());
 
@@ -553,7 +546,6 @@ public class ExpHourService extends AbstractService<ExpHour> {
     audq.setParameter("abu", hour.getAbuSeconds());
     audq.setParameter("banu", hour.getBanuSeconds());
     audq.setParameter("bna", hour.getBnaSeconds());
-    audq.setParameter("acc", hour.getAccSeconds());
     audq.setParameter("er", hour.getErSeconds());
     audq.setParameter("pcc", hour.getPccSeconds());
     audq.setParameter("ued", hour.getUedSeconds());
@@ -587,7 +579,6 @@ public class ExpHourService extends AbstractService<ExpHour> {
     q.setParameter("abu", hour.getAbuSeconds());
     q.setParameter("banu", hour.getBanuSeconds());
     q.setParameter("bna", hour.getBnaSeconds());
-    q.setParameter("acc", hour.getAccSeconds());
     q.setParameter("off", hour.getOffSeconds());
     q.setParameter("er", hour.getErSeconds());
     q.setParameter("pcc", hour.getPccSeconds());

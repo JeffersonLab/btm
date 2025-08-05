@@ -20,7 +20,6 @@ public class ExperimenterAccounting {
   private double[] abu = null;
   private double[] banu = null;
   private double[] bna = null;
-  private double[] acc = null;
   private double[] er = null;
   private double[] pcc = null;
   private double[] ued = null;
@@ -64,14 +63,6 @@ public class ExperimenterAccounting {
 
   public void setBNA(double[] bna) {
     this.bna = bna;
-  }
-
-  public double[] getACC() {
-    return acc;
-  }
-
-  public void setACC(double[] acc) {
-    this.acc = acc;
   }
 
   public double[] getER() {
@@ -119,7 +110,6 @@ public class ExperimenterAccounting {
         || abu == null
         || banu == null
         || bna == null
-        || acc == null
         || er == null
         || pcc == null
         || ued == null
@@ -131,7 +121,6 @@ public class ExperimenterAccounting {
         && abu.length == Constant.NUMBER_OF_HOURS_IN_HISTORY
         && banu.length == Constant.NUMBER_OF_HOURS_IN_HISTORY
         && bna.length == Constant.NUMBER_OF_HOURS_IN_HISTORY
-        && acc.length == Constant.NUMBER_OF_HOURS_IN_HISTORY
         && er.length == Constant.NUMBER_OF_HOURS_IN_HISTORY
         && pcc.length == Constant.NUMBER_OF_HOURS_IN_HISTORY
         && ued.length == Constant.NUMBER_OF_HOURS_IN_HISTORY
@@ -168,7 +157,6 @@ public class ExperimenterAccounting {
       hour.setAbuSeconds((short) abu[i]);
       hour.setBanuSeconds((short) banu[i]);
       hour.setBnaSeconds((short) bna[i]);
-      hour.setAccSeconds((short) acc[i]);
       hour.setErSeconds((short) er[i]);
       hour.setPccSeconds((short) pcc[i]);
       hour.setUedSeconds((short) ued[i]);

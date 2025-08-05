@@ -97,14 +97,6 @@ public class CcHallCrossCheck {
               + " hours) than the Operations reported OFF ("
               + BtmFunctions.formatDuration(opTimes[i].getOffSeconds(), DurationUnits.HOURS)
               + " hours)";
-      highAccMessage[i] =
-          "Experimenter Hall "
-              + halls[i]
-              + " reports significantly more ACC ("
-              + BtmFunctions.formatDuration(times[i].getAccSeconds(), DurationUnits.HOURS)
-              + " hours) than the Operations reported OFF ("
-              + BtmFunctions.formatDuration(opTimes[i].getOffSeconds(), DurationUnits.HOURS)
-              + " hours)";
     }
 
     highAbu[0] =
@@ -175,11 +167,6 @@ public class CcHallCrossCheck {
     highOff[1] = b.getOffSeconds() <= opB.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
     highOff[2] = c.getOffSeconds() <= opC.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
     highOff[3] = d.getOffSeconds() <= opD.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
-
-    highAcc[0] = a.getAccSeconds() <= opA.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
-    highAcc[1] = b.getAccSeconds() <= opB.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
-    highAcc[2] = c.getAccSeconds() <= opC.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
-    highAcc[3] = d.getAccSeconds() <= opD.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
 
     hallPassed[0] = true;
     hallPassed[1] = true;

@@ -79,14 +79,13 @@
                                         <thead>
                                         <tr>
                                             <th rowspan="2">Hall</th>
-                                            <th colspan="6">Accelerator Beam Time (Hours)</th>
+                                            <th colspan="5">Accelerator Beam Time (Hours)</th>
                                             <th colspan="3">Experiment Beam Time (Hours)</th>
                                         </tr>
                                         <tr>
                                             <th>ABU</th>
                                             <th>BANU</th>
                                             <th>BNA</th>
-                                            <th>ACC</th>
                                             <th>OFF</th>
                                             <th>Implicit OFF</th>
                                             <th>ER</th>
@@ -104,8 +103,6 @@
                                                                       value="${totals.banuSeconds / 3600}"/></td>
                                                 <td><fmt:formatNumber pattern="###,##0.0"
                                                                       value="${totals.bnaSeconds / 3600}"/></td>
-                                                <td><fmt:formatNumber pattern="###,##0.0"
-                                                                      value="${totals.accSeconds / 3600}"/></td>
                                                 <td><fmt:formatNumber pattern="###,##0.0"
                                                                       value="${totals.offSeconds / 3600}"/></td>
                                                 <td><fmt:formatNumber pattern="###,##0.0"
@@ -144,13 +141,13 @@
                                                        value="${totals.erSeconds + totals.pccSeconds + totals.uedSeconds}"/>
                                                 <td><fmt:formatNumber pattern="###,##0.0" value="${t / 3600}"/></td>
                                                 <td><fmt:formatNumber pattern="##0.0"
-                                                                      value="${t == 0 ? 0 : (totals.abuSeconds + totals.banuSeconds) / (t - totals.accSeconds) * 100}"/>%
+                                                                      value="${t == 0 ? 0 : (totals.abuSeconds + totals.banuSeconds) / (t) * 100}"/>%
                                                 </td>
                                                 <td><fmt:formatNumber pattern="##0.0"
                                                                       value="${t == 0 ? 0 : (totals.erSeconds + totals.pccSeconds) / t * 100}"/>%
                                                 </td>
                                                 <td><fmt:formatNumber pattern="##0.0"
-                                                                      value="${t == 0 ? 0 : totals.abuSeconds / (t - totals.accSeconds) * 100}"/>%
+                                                                      value="${t == 0 ? 0 : totals.abuSeconds / (t) * 100}"/>%
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -178,7 +175,7 @@
                                                 <c:set var="t"
                                                        value="${totals.erSeconds + totals.pccSeconds + totals.uedSeconds}"/>
                                                 <td><fmt:formatNumber pattern="##0.0"
-                                                                      value="${t == 0 ? 0 : (totals.abuSeconds + totals.banuSeconds) / (t - totals.accSeconds) * 100}"/>%
+                                                                      value="${t == 0 ? 0 : (totals.abuSeconds + totals.banuSeconds) / (t) * 100}"/>%
                                                 </td>
                                             </c:forEach>
                                         </tr>
@@ -204,7 +201,7 @@
                                                 <c:set var="t"
                                                        value="${totals.erSeconds + totals.pccSeconds + totals.uedSeconds}"/>
                                                 <td><fmt:formatNumber pattern="##0.0"
-                                                                      value="${t == 0 ? 0 : totals.abuSeconds / (t - totals.accSeconds) * 100}"/>%
+                                                                      value="${t == 0 ? 0 : totals.abuSeconds / (t) * 100}"/>%
                                                 </td>
                                             </c:forEach>
                                         </tr>

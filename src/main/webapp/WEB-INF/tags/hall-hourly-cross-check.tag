@@ -14,7 +14,7 @@
         <thead>
         <tr>
             <th rowspan="3"></th>
-            <th colspan="5">Experimenter</th>
+            <th colspan="4">Experimenter</th>
             <th rowspan="3" style="width: 5px;"></th>
             <th colspan="5">Crew Chief</th>
         </tr>
@@ -22,17 +22,16 @@
             <th>{UP,TUNE}</th>
             <th>{BNR}</th>
             <th>{DOWN}</th>
-            <th colspan="2">{OFF}</th>
+            <th colspan="1">{OFF}</th>
             <th colspan="2">{ABU}</th>
             <th>{BANU}</th>
             <th>{BNA}</th>
-            <th>{ACC,OFF}</th>
+            <th>{OFF}</th>
         </tr>
         <tr>
             <th class="duration-header">ABU</th>
             <th class="duration-header">BANU</th>
             <th class="duration-header">BNA</th>
-            <th class="duration-header">ACC</th>
             <th class="duration-header">OFF</th>
             <th class="duration-header">UP</th>
             <th class="duration-header">TUNE</th>
@@ -52,7 +51,6 @@
                     <td><span><c:out value="${btm:formatDuration(expHour.abuSeconds, durationUnits)}"/></span></td>
                     <td><span><c:out value="${btm:formatDuration(expHour.banuSeconds, durationUnits)}"/></span></td>
                     <td><span><c:out value="${btm:formatDuration(expHour.bnaSeconds, durationUnits)}"/></span></td>
-                    <td><span><c:out value="${btm:formatDuration(expHour.accSeconds, durationUnits)}"/></span></td>
                     <td><span><c:out value="${btm:formatDuration(expHour.offSeconds, durationUnits)}"/></span></td>
                     <th></th>
                     <td><span><c:out value="${btm:formatDuration(ccHour.upSeconds, durationUnits)}"/></span></td>
@@ -113,9 +111,6 @@
             <th title="BANU is no more than ten minutes over PHYSICS: BANU ≤ PHYSICS + 10min">High BANU / Low PHYSICS
             </th>
             <th title="BNA is no more than ten minutes over PHYSICS: BNA ≤ PHYSICS + 10min">High BNA / Low PHYSICS</th>
-            <th title="Experimenter reported ACC is no more than ten minutes over Operations reported ACC: EXP-ACC ≤ OPS-ACC + 10min">
-                High EXP ACC / Low OPS ACC
-            </th>
         </tr>
         </thead>
         <tbody>
@@ -126,7 +121,6 @@
                 <td class="${hour.highAbuAccCheck ? 'ui-state-error' : ''}">${hour.highAbuAccCheck ? 'X' : '✔'}</td>
                 <td class="${hour.highBanuAccCheck ? 'ui-state-error' : ''}">${hour.highBanuAccCheck ? 'X' : '✔'}</td>
                 <td class="${hour.highBnaAccCheck ? 'ui-state-error' : ''}">${hour.highBnaAccCheck ? 'X' : '✔'}</td>
-                <td class="${hour.highAccAccCheck ? 'ui-state-error' : ''}">${hour.highAccAccCheck ? 'X' : '✔'}</td>
             </tr>
         </c:forEach>
         </tbody>
@@ -151,12 +145,6 @@
                         value="${hour.highBnaAccMessage}"/>
                 </li>
             </c:if>
-            <c:if test="${hour.highAccAccCheck}">
-                <li>
-                    <span>[<fmt:formatDate value="${hour.dayAndHour}" pattern="HH"/>]</span> <c:out
-                        value="${hour.highAccAccMessage}"/>
-                </li>
-            </c:if>
         </c:forEach>
     </ul>
     <h5>Hall Time Check: Experimenter vs Operations</h5>
@@ -177,9 +165,6 @@
             <th title="Experimenter OFF is no more than 10 minutes over Operations measured OFF: EXP-OFF ≤ OPS-OFF + 10min">
                 High EXP OFF / Low OPS OFF
             </th>
-            <th title="ACC is no more than ten minutes over Operations measured OFF: ACC ≤ OFF + 10min">High EXP ACC /
-                Low OPS OFF
-            </th>
         </tr>
         </thead>
         <tbody>
@@ -192,7 +177,6 @@
                 <td class="${hour.lowBanu ? 'ui-state-error' : ''}">${hour.lowBanu ? 'X' : '✔'}</td>
                 <td class="${hour.highBna ? 'ui-state-error' : ''}">${hour.highBna ? 'X' : '✔'}</td>
                 <td class="${hour.highOff ? 'ui-state-error' : ''}">${hour.highOff ? 'X' : '✔'}</td>
-                <td class="${hour.highAcc ? 'ui-state-error' : ''}">${hour.highAcc ? 'X' : '✔'}</td>
             </tr>
         </c:forEach>
         </tbody>
@@ -227,12 +211,6 @@
                 <li>
                     <span>[<fmt:formatDate value="${hour.dayAndHour}" pattern="HH"/>]</span> <c:out
                         value="${hour.highOffMessage}"/>
-                </li>
-            </c:if>
-            <c:if test="${hour.highAcc}">
-                <li>
-                    <span>[<fmt:formatDate value="${hour.dayAndHour}" pattern="HH"/>]</span> <c:out
-                        value="${hour.highAccMessage}"/>
                 </li>
             </c:if>
         </c:forEach>

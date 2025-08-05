@@ -149,7 +149,7 @@
                                         <thead>
                                         <tr>
                                             <th rowspan="2">Hall</th>
-                                            <th colspan="6">Experimenter</th>
+                                            <th colspan="5">Experimenter</th>
                                             <th colspan="6">Crew Chief</th>
                                             <th>Program Deputy</th>
                                         </tr>
@@ -157,7 +157,6 @@
                                             <th>ABU</th>
                                             <th>BANU</th>
                                             <th>BNA</th>
-                                            <th>ACC</th>
                                             <th>OFF</th>
                                             <th>Implicit OFF</th>
                                             <th>UP</th>
@@ -179,8 +178,6 @@
                                                                       value="${totals.banuSeconds / 3600}"/></td>
                                                 <td><fmt:formatNumber pattern="#,##0.0"
                                                                       value="${totals.bnaSeconds / 3600}"/></td>
-                                                <td><fmt:formatNumber pattern="#,##0.0"
-                                                                      value="${totals.accSeconds / 3600}"/></td>
                                                 <td><fmt:formatNumber pattern="#,##0.0"
                                                                       value="${totals.expOffSeconds / 3600}"/></td>
                                                 <td><fmt:formatNumber pattern="#,##0.0"
