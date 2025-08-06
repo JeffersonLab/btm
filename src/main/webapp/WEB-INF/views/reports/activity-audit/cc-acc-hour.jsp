@@ -128,7 +128,7 @@
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <th>SAM Restore (${durationUnits.label}):</th>
+                                <th>NPES Restore (${durationUnits.label}):</th>
                                 <c:forEach items="${entityList}" var="entity">
                                     <td>
                                         <c:out value="${btm:formatDuration(entity.restoreSeconds, durationUnits)}"/>

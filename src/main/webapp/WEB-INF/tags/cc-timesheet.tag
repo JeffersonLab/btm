@@ -31,8 +31,8 @@
                 <th title="Machine is being studied/tested/developed.  This does not include opportunistic beam studies.">
                     STUDIES
                 </th>
-                <th title="Machine is being restored after being OFF (SAM) - is not to be confused with restore after component failure, which is rolled up into down">
-                    SAM RESTORE
+                <th title="Machine is being restored after being OFF as scheduled by NPES.  This is not to be confused with recovery after component failure, which is rolled up into down">
+                    NPES RESTORE
                 </th>
                 <th title="Machine is changing configurations (Accelerator Configuration Change)">ACC</th>
                 <th title="Machine is down due to component failures + FSDs that occurred during Studies, Restore, and ACC, but not during Physics">
@@ -84,7 +84,7 @@
                 <th title="Component failures + FSDs that occurred while attempting to deliver beam to a particular hall (only counted if hall is intended to receive beam)">
                     PHYSICS DOWN {BNA}
                 </th>
-                <th title="Scheduled Off (this includes ACC)">OFF {ACC,OFF}</th>
+                <th title="Scheduled Off (this includes ACC)">OFF</th>
             </tr>
             </thead>
             <tbody>

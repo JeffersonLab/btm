@@ -140,7 +140,7 @@
                     <fieldset>
                         <legend>Time</legend>
                         <s:date-range datetime="${true}" sevenAmOffset="${true}"/>
-                        <div class="sched-info">Schedule granularities differ.  The PD Shift Plan is queried by adjusting the date range to CC shift boundaries (7:00, 15:00, 23:00).  The PAC Schedule is queried by adjusting the date range to day boundaries (midnight).  Select start and end dates within SAM periods to avoid boundary concerns.</div>
+                        <div class="sched-info">Schedule granularity differ.  The PD Shift Plan is queried by adjusting the date range to CC shift boundaries (7:00, 15:00, 23:00).  The NPES Schedule is queried by adjusting the date range to day boundaries (midnight).  Select start and end dates within SAM periods to avoid boundary concerns.</div>
                     </fieldset>
                     <input class="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
@@ -162,7 +162,7 @@
                                     <th title="Crew Chief Reported Hours">CC Hrs</th>
                                     <th title="Crew Chief Percent of Total Hours">CC %</th>
                                     <th title="PD Scheduled Hours">PD Sched. Hrs</th>
-                                    <th title="PAC Scheduled Hours">PAC Sched. Hrs</th>
+                                    <th title="NPES Scheduled Hours">NPES Sched. Hrs</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -199,7 +199,7 @@
                                     <th>
                                         <div class="color-box"></div>
                                     </th>
-                                    <td class="legend-label">SAM Restore</td>
+                                    <td class="legend-label">NPES Restore</td>
                                     <td><fmt:formatNumber value="${ccSum.restoreSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
                                     <td>(<fmt:formatNumber value="${(ccSum.restoreSeconds / 3600) / ccSum.periodHours * 100}"
@@ -313,7 +313,7 @@
                                 <div class="li-value"><fmt:formatNumber pattern="#,##0.0" value="${pdSum.periodHours}"/> hours</div>
                             </li>
                         </ul>
-                        <span>PAC</span>
+                        <span>NPES</span>
                         <ul class="key-value-list">
                             <li>
                                 <div class="li-key">Start:</div>
