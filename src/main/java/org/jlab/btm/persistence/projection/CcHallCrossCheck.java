@@ -18,7 +18,6 @@ public class CcHallCrossCheck {
   private final String[] lowBanuMessage = new String[4];
   private final String[] highBnaMessage = new String[4];
   private final String[] highOffMessage = new String[4];
-  private final String[] highAccMessage = new String[4];
 
   private final boolean passed;
   private final boolean[] hallPassed = new boolean[4];
@@ -27,7 +26,6 @@ public class CcHallCrossCheck {
   private final boolean[] lowBanu = new boolean[4];
   private final boolean[] highBna = new boolean[4];
   private final boolean[] highOff = new boolean[4];
-  private final boolean[] highAcc = new boolean[4];
 
   public CcHallCrossCheck(
       CcHallShiftTotals opA,
@@ -189,9 +187,6 @@ public class CcHallCrossCheck {
       if (!highOff[i]) {
         hallPassed[i] = false;
       }
-      if (!highAcc[i]) {
-        hallPassed[i] = false;
-      }
     }
 
     passed = hallPassed[0] && hallPassed[1] && hallPassed[2] && hallPassed[3];
@@ -225,10 +220,6 @@ public class CcHallCrossCheck {
     return highOff;
   }
 
-  public boolean[] getHighAcc() {
-    return highAcc;
-  }
-
   public String[] getHighAbuMessage() {
     return highAbuMessage;
   }
@@ -247,9 +238,5 @@ public class CcHallCrossCheck {
 
   public String[] getHighOffMessage() {
     return highOffMessage;
-  }
-
-  public String[] getHighAccMessage() {
-    return highAccMessage;
   }
 }
