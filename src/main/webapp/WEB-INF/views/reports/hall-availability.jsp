@@ -32,7 +32,7 @@
         <section>
             <div id="report-page-actions">
                 <a id="explanation-link" target="_blank"
-                   href="${pageContext.request.contextPath}/resources/doc/definitions.pdf">Explanation</a>
+                   href="${settings.get('HALL_AVAIL_DOC_URL')}">Explanation</a>
                 <button id="fullscreen-button">Full Screen</button>
                 <div id="export-widget">
                     <button id="export-menu-button">Export</button>
