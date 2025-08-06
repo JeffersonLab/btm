@@ -46,6 +46,10 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>Tuning</td>
+                                <td>Procedural Tuning such as QE Measurements and BCM Calibrations, and other performance measurement and adjustment activities</td>
+                            </tr>
+                            <tr>
                                 <td rowspan="4">INTERNAL</td>
                                 <td>Studies</td>
                                 <td>Machine is being studied/tested/developed</td>

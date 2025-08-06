@@ -140,7 +140,7 @@
                     <fieldset>
                         <legend>Time</legend>
                         <s:date-range datetime="${true}" sevenAmOffset="${true}"/>
-                        <div class="sched-info">Schedule granularity differ.  The PD Shift Plan is queried by adjusting the date range to CC shift boundaries (7:00, 15:00, 23:00).  The NPES Schedule is queried by adjusting the date range to day boundaries (midnight).  Select start and end dates within SAM periods to avoid boundary concerns.</div>
+                        <div class="sched-info">Schedule granularity differ.  The PD Shift Plan is queried by adjusting the date range to CC shift boundaries (7:00, 15:00, 23:00).  The NPES Schedule is queried by adjusting the date range to day boundaries (midnight).  Select start and end dates within OFF periods to avoid boundary concerns.</div>
                     </fieldset>
                     <input class="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
@@ -170,7 +170,7 @@
                                     <th>
                                         <div class="color-box"></div>
                                     </th>
-                                    <td class="legend-label">Physics</td>
+                                    <td class="legend-label">Delivery</td>
                                     <td><fmt:formatNumber value="${ccSum.upSeconds / 3600}" pattern="#,##0.0"/></td>
                                     <td>(<fmt:formatNumber value="${(ccSum.upSeconds / 3600) / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
@@ -179,6 +179,18 @@
                                                           pattern="#,##0.0"/></td>
                                     <td><fmt:formatNumber value="${pacSum.physicsDays * 24}"
                                                           pattern="#,##0.0"/></td>
+                                </tr>
+                                <tr class="data-row">
+                                    <th>
+                                        <div class="color-box"></div>
+                                    </th>
+                                    <td class="legend-label">Tuning</td>
+                                    <td><fmt:formatNumber value="${ccSum.tuningSeconds / 3600}" pattern="#,##0.0"/></td>
+                                    <td>(<fmt:formatNumber value="${(ccSum.tuningSeconds / 3600) / ccSum.periodHours * 100}"
+                                                           pattern="#,##0.0"/>%)
+                                    </td>
+                                    <td>-</td>
+                                    <td>-</td>
                                 </tr>
                                 <tr class="data-row">
                                     <th>
