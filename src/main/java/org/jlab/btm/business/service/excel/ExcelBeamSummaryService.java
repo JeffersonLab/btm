@@ -32,7 +32,7 @@ public class ExcelBeamSummaryService {
     row1.createCell(0).setCellValue("PROGRAM");
     row1.createCell(1).setCellValue("CC HOURS");
     row1.createCell(2).setCellValue("PD HOURS");
-    row1.createCell(3).setCellValue("PAC HOURS");
+    row1.createCell(3).setCellValue("NPES HOURS");
 
     CreationHelper createHelper = wb.getCreationHelper();
     CellStyle numberStyle = wb.createCellStyle();

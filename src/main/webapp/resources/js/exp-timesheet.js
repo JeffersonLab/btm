@@ -2,14 +2,10 @@ var jlab = jlab || {};
 jlab.btm = jlab.btm || {};
 
 jlab.btm.openForm = function() {
-    console.log('form opened');
-
     $("#reload-button").attr("disabled", "disabled");
 };
 
 jlab.btm.closeForm = function() {
-  console.log('form closed');
-
   if(!jlab.btm.isFormOpen()) {
       $("#reload-button").removeAttr("disabled");
   }
@@ -274,28 +270,26 @@ jlab.btm.validateAndUpdateExpRowTotal = function ($tr, units) {
     var abu = $tr.find("td:nth-child(2) input").val() * 1,
         banu = $tr.find("td:nth-child(3) input").val() * 1,
         bna = $tr.find("td:nth-child(4) input").val() * 1,
-        acc = $tr.find("td:nth-child(5) input").val() * 1,
-        off = $tr.find("td:nth-child(6) input").val() * 1,
+        off = $tr.find("td:nth-child(5) input").val() * 1,
         abu = Math.round(abu * conversion),
         banu = Math.round(banu * conversion),
         bna = Math.round(bna * conversion),
-        acc = Math.round(acc * conversion),
         off = Math.round(off * conversion),
-        total = (abu + banu + bna + acc + off) * 1,
+        total = (abu + banu + bna + off) * 1,
         totalForDisplay = (total / conversion).toFixed(4) * 1,
         error = false;
 
-    $tr.find("th:nth-child(7)").text(totalForDisplay);
+    $tr.find("th:nth-child(6)").text(totalForDisplay);
 
     if (total !== 3600) {
         error = true;
     }
 
 
-    var er = $tr.find("td:nth-child(8) input").val() * 1,
-        pcc = $tr.find("td:nth-child(9) input").val() * 1,
-        ued = $tr.find("td:nth-child(10) input").val() * 1,
-        off = $tr.find("td:nth-child(6) input").val() * 1,
+    var er = $tr.find("td:nth-child(7) input").val() * 1,
+        pcc = $tr.find("td:nth-child(8) input").val() * 1,
+        ued = $tr.find("td:nth-child(9) input").val() * 1,
+        off = $tr.find("td:nth-child(5) input").val() * 1,
         er = Math.round(er * conversion),
         pcc = Math.round(pcc * conversion),
         ued = Math.round(ued * conversion),
@@ -303,15 +297,15 @@ jlab.btm.validateAndUpdateExpRowTotal = function ($tr, units) {
         total = (er + pcc + ued + off) * 1,
         totalForDisplay = (total / conversion).toFixed(4) * 1;
 
-    $tr.find("th:nth-child(12)").text(totalForDisplay);
+    $tr.find("th:nth-child(11)").text(totalForDisplay);
 
     if (total !== 3600) {
         error = true;
     }
 
     // Second off column is just mirror image of first
-    var $th = $tr.find("th:nth-child(11)");
-    $th.text($tr.find("td:nth-child(6) input").val());
+    var $th = $tr.find("th:nth-child(10)");
+    $th.text($tr.find("td:nth-child(5) input").val());
     jlab.btm.updateMirrorColumnTotal($th);
 
     if (error === true) {
@@ -338,7 +332,6 @@ jlab.btm.editExpHours = function ($button, ccOnly, saveAllSections) {
         abuArray = [],
         banuArray = [],
         bnaArray = [],
-        accArray = [],
         offArray = [],
         erArray = [],
         pccArray = [],
@@ -359,12 +352,11 @@ jlab.btm.editExpHours = function ($button, ccOnly, saveAllSections) {
             abu = jlab.btm.parseSeconds($row.find("td:nth-child(2) input").val(), units),
             banu = jlab.btm.parseSeconds($row.find("td:nth-child(3) input").val(), units),
             bna = jlab.btm.parseSeconds($row.find("td:nth-child(4) input").val(), units),
-            acc = jlab.btm.parseSeconds($row.find("td:nth-child(5) input").val(), units),
-            off = jlab.btm.parseSeconds($row.find("td:nth-child(6) input").val(), units),
-            er = jlab.btm.parseSeconds($row.find("td:nth-child(8) input").val(), units),
-            pcc = jlab.btm.parseSeconds($row.find("td:nth-child(9) input").val(), units),
-            ued = jlab.btm.parseSeconds($row.find("td:nth-child(10) input").val(), units),
-            uedPrev = jlab.btm.parseSeconds($row.find("td:nth-child(10) span").text(), units),
+            off = jlab.btm.parseSeconds($row.find("td:nth-child(5) input").val(), units),
+            er = jlab.btm.parseSeconds($row.find("td:nth-child(7) input").val(), units),
+            pcc = jlab.btm.parseSeconds($row.find("td:nth-child(8) input").val(), units),
+            ued = jlab.btm.parseSeconds($row.find("td:nth-child(9) input").val(), units),
+            uedPrev = jlab.btm.parseSeconds($row.find("td:nth-child(9) span").text(), units),
             index = $row.parent().children().index($row),
             $commentRow = $commentsTable.find("tbody tr:nth-child(" + (index + 1) + ")"),
             $textarea = $commentRow.find("textarea"),
@@ -378,7 +370,6 @@ jlab.btm.editExpHours = function ($button, ccOnly, saveAllSections) {
         abuArray.push(abu);
         banuArray.push(banu);
         bnaArray.push(bna);
-        accArray.push(acc);
         offArray.push(off);
         erArray.push(er);
         pccArray.push(pcc);
@@ -401,7 +392,6 @@ jlab.btm.editExpHours = function ($button, ccOnly, saveAllSections) {
             'abu[]': abuArray,
             'banu[]': banuArray,
             'bna[]': bnaArray,
-            'acc[]': accArray,
             'off[]': offArray,
             'er[]': erArray,
             'pcc[]': pccArray,
@@ -483,7 +473,6 @@ jlab.btm.editExpHour = function () {
         abuArray = [],
         banuArray = [],
         bnaArray = [],
-        accArray = [],
         offArray = [],
         erArray = [],
         pccArray = [],
@@ -499,12 +488,11 @@ jlab.btm.editExpHour = function () {
         abu = jlab.btm.parseSeconds($row.find("td:nth-child(2) input").val(), units),
         banu = jlab.btm.parseSeconds($row.find("td:nth-child(3) input").val(), units),
         bna = jlab.btm.parseSeconds($row.find("td:nth-child(4) input").val(), units),
-        acc = jlab.btm.parseSeconds($row.find("td:nth-child(5) input").val(), units),
-        off = jlab.btm.parseSeconds($row.find("td:nth-child(6) input").val(), units),
-        er = jlab.btm.parseSeconds($row.find("td:nth-child(8) input").val(), units),
-        pcc = jlab.btm.parseSeconds($row.find("td:nth-child(9) input").val(), units),
-        ued = jlab.btm.parseSeconds($row.find("td:nth-child(10) input").val(), units),
-        uedPrev = jlab.btm.parseSeconds($row.find("td:nth-child(10) span").text(), units),
+        off = jlab.btm.parseSeconds($row.find("td:nth-child(5) input").val(), units),
+        er = jlab.btm.parseSeconds($row.find("td:nth-child(7) input").val(), units),
+        pcc = jlab.btm.parseSeconds($row.find("td:nth-child(8) input").val(), units),
+        ued = jlab.btm.parseSeconds($row.find("td:nth-child(9) input").val(), units),
+        uedPrev = jlab.btm.parseSeconds($row.find("td:nth-child(9) span").text(), units),
         comments =  $textarea.val();
 
     if(ued != uedPrev) {
@@ -515,7 +503,6 @@ jlab.btm.editExpHour = function () {
     abuArray.push(abu);
     banuArray.push(banu);
     bnaArray.push(bna);
-    accArray.push(acc);
     offArray.push(off);
     erArray.push(er);
     pccArray.push(pcc);
@@ -533,7 +520,6 @@ jlab.btm.editExpHour = function () {
             'abu[]': abuArray,
             'banu[]': banuArray,
             'bna[]': bnaArray,
-            'acc[]': accArray,
             'off[]': offArray,
             'er[]': erArray,
             'pcc[]': pccArray,

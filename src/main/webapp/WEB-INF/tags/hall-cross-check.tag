@@ -22,9 +22,6 @@
         <th title="Experimenter OFF is no more than 10 minutes over Operations measured OFF: EXP-OFF ≤ OPS-OFF + 10min">
             High EXP OFF / Low OPS OFF
         </th>
-        <th title="ACC is no more than ten minutes over Operations measured OFF: ACC ≤ OFF + 10min">High EXP ACC / Low
-            OPS OFF
-        </th>
     </tr>
     </thead>
     <tbody>
@@ -37,7 +34,6 @@
             <td class="${check.lowBanu[status.index] ? '' : 'ui-state-error'}">${check.lowBanu[status.index] ? '✔' : 'X'}</td>
             <td class="${check.highBna[status.index] ? '' : 'ui-state-error'}">${check.highBna[status.index] ? '✔' : 'X'}</td>
             <td class="${check.highOff[status.index] ? '' : 'ui-state-error'}">${check.highOff[status.index] ? '✔' : 'X'}</td>
-            <td class="${check.highAcc[status.index] ? '' : 'ui-state-error'}">${check.highAcc[status.index] ? '✔' : 'X'}</td>
         </tr>
     </c:forEach>
     </tbody>
@@ -67,11 +63,6 @@
         <c:if test="${!check.highOff[status.index]}">
             <li>
                 <c:out value="${check.highOffMessage[status.index]}"/>
-            </li>
-        </c:if>
-        <c:if test="${!check.highAcc[status.index]}">
-            <li>
-                <c:out value="${check.highAccMessage[status.index]}"/>
             </li>
         </c:if>
     </c:forEach>

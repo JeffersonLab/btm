@@ -150,7 +150,6 @@ public class WeekSummary {
                         ObjectUtil.coalesce(hallScheduledMap.get(totals.getHall()), 0L))
                     .write("abu-seconds", ObjectUtil.coalesce(totals.getAbuSeconds(), 0))
                     .write("banu-seconds", ObjectUtil.coalesce(totals.getBanuSeconds(), 0))
-                    .write("acc-seconds", ObjectUtil.coalesce(totals.getAccSeconds(), 0))
                     .write("er-seconds", ObjectUtil.coalesce(totals.getErSeconds(), 0))
                     .write("pcc-seconds", ObjectUtil.coalesce(totals.getPccSeconds(), 0))
                     .write("ued-seconds", ObjectUtil.coalesce(totals.getUedSeconds(), 0))

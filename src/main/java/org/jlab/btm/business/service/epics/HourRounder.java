@@ -149,18 +149,16 @@ public class HourRounder {
    */
   public void roundAcceleratorSet(ExpHour hour) {
     // Won't modify off since it is a shared status
-    short[] statuses = new short[4];
+    short[] statuses = new short[3];
     statuses[0] = hour.getAbuSeconds();
     statuses[1] = hour.getBanuSeconds();
     statuses[2] = hour.getBnaSeconds();
-    statuses[3] = hour.getAccSeconds();
 
     roundMutuallyExclusiveWithOff(statuses, hour.getOffSeconds());
 
     hour.setAbuSeconds(statuses[0]);
     hour.setBanuSeconds(statuses[1]);
     hour.setBnaSeconds(statuses[2]);
-    hour.setAccSeconds(statuses[3]);
   }
 
   /**

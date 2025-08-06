@@ -18,7 +18,6 @@ public class CcHallCrossCheck {
   private final String[] lowBanuMessage = new String[4];
   private final String[] highBnaMessage = new String[4];
   private final String[] highOffMessage = new String[4];
-  private final String[] highAccMessage = new String[4];
 
   private final boolean passed;
   private final boolean[] hallPassed = new boolean[4];
@@ -27,7 +26,6 @@ public class CcHallCrossCheck {
   private final boolean[] lowBanu = new boolean[4];
   private final boolean[] highBna = new boolean[4];
   private final boolean[] highOff = new boolean[4];
-  private final boolean[] highAcc = new boolean[4];
 
   public CcHallCrossCheck(
       CcHallShiftTotals opA,
@@ -94,14 +92,6 @@ public class CcHallCrossCheck {
               + halls[i]
               + " reports significantly more OFF ("
               + BtmFunctions.formatDuration(times[i].getOffSeconds(), DurationUnits.HOURS)
-              + " hours) than the Operations reported OFF ("
-              + BtmFunctions.formatDuration(opTimes[i].getOffSeconds(), DurationUnits.HOURS)
-              + " hours)";
-      highAccMessage[i] =
-          "Experimenter Hall "
-              + halls[i]
-              + " reports significantly more ACC ("
-              + BtmFunctions.formatDuration(times[i].getAccSeconds(), DurationUnits.HOURS)
               + " hours) than the Operations reported OFF ("
               + BtmFunctions.formatDuration(opTimes[i].getOffSeconds(), DurationUnits.HOURS)
               + " hours)";
@@ -176,11 +166,6 @@ public class CcHallCrossCheck {
     highOff[2] = c.getOffSeconds() <= opC.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
     highOff[3] = d.getOffSeconds() <= opD.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
 
-    highAcc[0] = a.getAccSeconds() <= opA.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
-    highAcc[1] = b.getAccSeconds() <= opB.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
-    highAcc[2] = c.getAccSeconds() <= opC.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
-    highAcc[3] = d.getAccSeconds() <= opD.getOffSeconds() + TEN_MINUTES_OF_SECONDS;
-
     hallPassed[0] = true;
     hallPassed[1] = true;
     hallPassed[2] = true;
@@ -200,9 +185,6 @@ public class CcHallCrossCheck {
         hallPassed[i] = false;
       }
       if (!highOff[i]) {
-        hallPassed[i] = false;
-      }
-      if (!highAcc[i]) {
         hallPassed[i] = false;
       }
     }
@@ -238,10 +220,6 @@ public class CcHallCrossCheck {
     return highOff;
   }
 
-  public boolean[] getHighAcc() {
-    return highAcc;
-  }
-
   public String[] getHighAbuMessage() {
     return highAbuMessage;
   }
@@ -260,9 +238,5 @@ public class CcHallCrossCheck {
 
   public String[] getHighOffMessage() {
     return highOffMessage;
-  }
-
-  public String[] getHighAccMessage() {
-    return highAccMessage;
   }
 }

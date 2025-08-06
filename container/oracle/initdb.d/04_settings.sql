@@ -32,3 +32,6 @@ insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('EMAIL_
 insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('EMAIL_TESTING_ENABLED', 'N', 'BOOLEAN', 'Send all emails to testlead user group', 'EMAIL', 2);
 insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('EMAIL_DOMAIN_NAME', '@jlab.org', 'STRING', 'The email domain to append to usernames, starting with and including the ampersat.', 'EMAIL', 3);
 insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('EMAIL_SENDER_ADDRESS', 'btm@jlab.org', 'STRING', 'Email address to use as sender from emails generated in this app.  Note: this is not the same as "from".', 'EMAIL', 4);
+
+-- OTHER
+insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('HALL_AVAIL_DOC_URL', 'https://github.com/JeffersonLab/btm/wiki/Hall-Availability-Definitions', 'STRING', 'URL to documentation on Hall Availability', 'OTHER', 1);

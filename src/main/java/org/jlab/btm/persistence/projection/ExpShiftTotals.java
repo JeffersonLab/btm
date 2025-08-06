@@ -11,7 +11,6 @@ public class ExpShiftTotals {
   private Integer abuSeconds;
   private Integer banuSeconds;
   private Integer bnaSeconds;
-  private Integer accSeconds;
   private Integer offSeconds;
 
   public ExpShiftTotals(
@@ -20,14 +19,12 @@ public class ExpShiftTotals {
       Number abuSeconds,
       Number banuSeconds,
       Number bnaSeconds,
-      Number accSeconds,
       Number offSeconds) {
     this.hall = Hall.valueOf(hall.toString());
     this.hourCount = hourCount.intValue();
     this.abuSeconds = abuSeconds.intValue();
     this.banuSeconds = banuSeconds.intValue();
     this.bnaSeconds = bnaSeconds.intValue();
-    this.accSeconds = accSeconds.intValue();
     this.offSeconds = offSeconds.intValue();
   }
 
@@ -69,14 +66,6 @@ public class ExpShiftTotals {
 
   public void setBnaSeconds(Integer bnaSeconds) {
     this.bnaSeconds = bnaSeconds;
-  }
-
-  public Integer getAccSeconds() {
-    return accSeconds;
-  }
-
-  public void setAccSeconds(Integer accSeconds) {
-    this.accSeconds = accSeconds;
   }
 
   public Integer getOffSeconds() {

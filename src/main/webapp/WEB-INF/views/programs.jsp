@@ -46,17 +46,13 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Tuning</td>
-                                <td>Procedural Tuning such as QE Measurements and BCM Calibrations, and other performance measurement and adjustment activities</td>
-                            </tr>
-                            <tr>
                                 <td rowspan="4">INTERNAL</td>
                                 <td>Studies</td>
                                 <td>Machine is being studied/tested/developed</td>
                             </tr>
                             <tr>
                                 <td>NPES Restore</td>
-                                <td>Machine is being restored after being OFF. NPES Restore is not to be confused
+                                <td>Machine is being restored after being OFF as scheduled by NPES. Restore is not to be confused
                                     with recovery after component failure, which is rolled up into down. Similarly,
                                     recovery from studies is counted as studies and should be scheduled accordingly.
                                     Excessive recovery (tuning) beyond the schedule is recorded as Down.

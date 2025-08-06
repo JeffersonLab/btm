@@ -136,14 +136,6 @@
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <th>ACC (${durationUnits.label}):</th>
-                                <c:forEach items="${entityList}" var="entity">
-                                    <td>
-                                        <c:out value="${btm:formatDuration(entity.accSeconds, durationUnits)}"/>
-                                    </td>
-                                </c:forEach>
-                            </tr>
-                            <tr>
                                 <th>OFF (${durationUnits.label}):</th>
                                 <c:forEach items="${entityList}" var="entity">
                                     <td>

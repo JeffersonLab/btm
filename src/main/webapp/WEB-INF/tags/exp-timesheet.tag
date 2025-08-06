@@ -197,7 +197,7 @@
             <button class="close-bubble">X</button>
             <div class="definition-bubble-title">OFF</div>
             <div class="definition-bubble-body">
-                <p>OFF means a hall is not scheduled for Physics.  OFF includes accelerator internal activities such as beam studies and machine restore after a SAM.  However, accelerator downtime and restore from accelerator downtime when a hall is scheduled for Physics is not OFF, but BNA.</p>
+                <p>OFF means a hall is not scheduled for Physics.  OFF includes accelerator internal activities such as Beam Studies, NPES Restore, and Accelerator Configuration Change (ACC; often an energy or pass change).  However, accelerator downtime and restore from accelerator downtime when a hall is scheduled for Physics is not OFF, but BNA.</p>
                 <p>The OFF column editable under Accelerator Beam Time is mirrored automatically under Experiment Beam Time.  Experiment Beam Time must be OFF when the hall is not scheduled for Physics.</p>
             </div>
         </div>

@@ -61,7 +61,6 @@ public class EditExpHours extends HttpServlet {
       Short[] abuArray = ParamConverter.convertShortArray(request, "abu[]", (short) 0);
       Short[] banuArray = ParamConverter.convertShortArray(request, "banu[]", (short) 0);
       Short[] bnaArray = ParamConverter.convertShortArray(request, "bna[]", (short) 0);
-      Short[] accArray = ParamConverter.convertShortArray(request, "acc[]", (short) 0);
       Short[] offArray = ParamConverter.convertShortArray(request, "off[]", (short) 0);
       Short[] erArray = ParamConverter.convertShortArray(request, "er[]", (short) 0);
       Short[] pccArray = ParamConverter.convertShortArray(request, "pcc[]", (short) 0);
@@ -74,7 +73,6 @@ public class EditExpHours extends HttpServlet {
           abuArray,
           banuArray,
           bnaArray,
-          accArray,
           offArray,
           erArray,
           pccArray,

@@ -96,7 +96,6 @@ public class ExpEpicsHourService {
     dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ABU_SUFFIX).getDbr());
     dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BANU_SUFFIX).getDbr());
     dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BNA_SUFFIX).getDbr());
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ACC_SUFFIX).getDbr());
     dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ER_SUFFIX).getDbr());
     dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_PCC_SUFFIX).getDbr());
     dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_UED_SUFFIX).getDbr());
@@ -106,7 +105,6 @@ public class ExpEpicsHourService {
     accounting.setABU(SimpleGet.getDoubleValue(dbrs.remove(0)));
     accounting.setBANU(SimpleGet.getDoubleValue(dbrs.remove(0)));
     accounting.setBNA(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setACC(SimpleGet.getDoubleValue(dbrs.remove(0)));
     accounting.setER(SimpleGet.getDoubleValue(dbrs.remove(0)));
     accounting.setPCC(SimpleGet.getDoubleValue(dbrs.remove(0)));
     accounting.setUED(SimpleGet.getDoubleValue(dbrs.remove(0)));

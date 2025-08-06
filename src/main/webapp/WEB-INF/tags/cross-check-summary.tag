@@ -20,7 +20,7 @@
         <th rowspan="3"></th>
         <th colspan="2" rowspan="2">CC Shift Hours Status</th>
         <th rowspan="3"></th>
-        <th colspan="5">Experimenter</th>
+        <th colspan="4">Experimenter</th>
         <th rowspan="3"></th>
         <th colspan="5">Crew Chief</th>
         <th rowspan="3"></th>
@@ -30,11 +30,11 @@
         <th>{UP,TUNE}</th>
         <th>{BNR}</th>
         <th>{DOWN}</th>
-        <th colspan="2">{OFF}</th>
+        <th colspan="1">{OFF}</th>
         <th colspan="2">{ABU}</th>
         <th>{BANU}</th>
         <th>{BNA}</th>
-        <th>{ACC,OFF}</th>
+        <th>{OFF}</th>
     </tr>
     <tr>
         <th class="duration-header">Experimenter</th>
@@ -42,7 +42,6 @@
         <th title="Acceptable Beam Used">ABU</th>
         <th title="Beam Available, but Not in Use">BANU</th>
         <th title="Beam Not Acceptable (or not available)">BNA</th>
-        <th title="Accelerator Configuration Change">ACC</th>
         <th title="The hall is not expected to be receiving beam">OFF</th>
         <th title="Beam available for physics (CW or TUNE mode beam, but measured as CW)">UP</th>
         <th title="Hall is tuning (CW or pulse/tune mode beam, but measured as pulse/tune mode)">TUNE</th>
@@ -82,7 +81,6 @@
             <td class="exp-td">${btm:formatDurationLossy(expHallHourTotalsList.get(status.index).abuSeconds, durationUnits)}</td>
             <td class="exp-td">${btm:formatDurationLossy(expHallHourTotalsList.get(status.index).banuSeconds, durationUnits)}</td>
             <td class="exp-td">${btm:formatDurationLossy(expHallHourTotalsList.get(status.index).bnaSeconds, durationUnits)}</td>
-            <td class="exp-td">${btm:formatDurationLossy(expHallHourTotalsList.get(status.index).accSeconds, durationUnits)}</td>
             <td class="exp-td">${btm:formatDurationLossy(expHallHourTotalsList.get(status.index).offSeconds, durationUnits)}</td>
             <th></th>
             <td class="exp-td">${btm:formatDurationLossy(hallAvailabilityList.get(status.index).shiftTotals.upSeconds, durationUnits)}</td>

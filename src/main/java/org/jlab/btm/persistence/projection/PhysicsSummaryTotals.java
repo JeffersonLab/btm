@@ -10,7 +10,6 @@ public class PhysicsSummaryTotals {
   private final long abuSeconds;
   private final long banuSeconds;
   private final long bnaSeconds;
-  private final long accSeconds;
   private final long expOffSeconds;
   private final long upSeconds;
   private final long tuningSeconds;
@@ -23,7 +22,6 @@ public class PhysicsSummaryTotals {
       Number abuSeconds,
       Number banuSeconds,
       Number bnaSeconds,
-      Number accSeconds,
       Number expOffSeconds,
       Number upSeconds,
       Number tuningSeconds,
@@ -34,7 +32,6 @@ public class PhysicsSummaryTotals {
     this.abuSeconds = abuSeconds.longValue();
     this.banuSeconds = banuSeconds.longValue();
     this.bnaSeconds = bnaSeconds.longValue();
-    this.accSeconds = accSeconds.longValue();
     this.expOffSeconds = expOffSeconds.longValue();
     this.upSeconds = upSeconds.longValue();
     this.tuningSeconds = tuningSeconds.longValue();
@@ -57,10 +54,6 @@ public class PhysicsSummaryTotals {
 
   public long getBnaSeconds() {
     return bnaSeconds;
-  }
-
-  public long getAccSeconds() {
-    return accSeconds;
   }
 
   public long getExpOffSeconds() {

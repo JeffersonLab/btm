@@ -364,5 +364,17 @@ public class CcSignatureService extends AbstractService<CcSignature> {
     request.setAttribute("hallBHourCrossCheckList", hallBHourCrossCheckList);
     request.setAttribute("hallCHourCrossCheckList", hallCHourCrossCheckList);
     request.setAttribute("hallDHourCrossCheckList", hallDHourCrossCheckList);
+
+    // DEBUG
+    /*for(int i = 0; i < hallAvailabilityList.size(); i++) {
+        CcHallShiftAvailability ha = hallAvailabilityList.get(i);
+
+        boolean mode = modeCrossCheck.getHallPassed()[i];
+        boolean acc = accCrossCheck.getHallPassed()[i];
+        boolean hall = hallCrossCheck.getHallPassed()[i];
+        boolean multi = multiCrossCheck.getHallPassed()[i];
+
+        System.err.println("mode: " + mode + ", acc: " + acc + ", hall: " + hall + ", multi: " + multi);
+    }*/
   }
 }

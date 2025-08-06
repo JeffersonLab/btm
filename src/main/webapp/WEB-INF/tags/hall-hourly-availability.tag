@@ -21,7 +21,7 @@
                     <th>TUNE {ABU}</th>
                     <th>BNR {BANU}</th>
                     <th>PHYSICS DOWN {BNA}</th>
-                    <th>OFF {ACC,OFF}</th>
+                    <th>OFF</th>
                 </tr>
                 </thead>
                 <tfoot>
@@ -68,7 +68,7 @@
                 <th class="duration-header">TUNE {ABU}</th>
                 <th class="duration-header">BNR {BANU}</th>
                 <th class="duration-header">PHYSICS DOWN {BNA}</th>
-                <th class="duration-header">OFF {ACC,OFF}</th>
+                <th class="duration-header">OFF</th>
                 <th>Hour Total</th>
                 <th>Source</th>
                 <th style="width: 50px;"></th>

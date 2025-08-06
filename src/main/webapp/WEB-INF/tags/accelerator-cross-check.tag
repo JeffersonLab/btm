@@ -14,9 +14,6 @@
         </th>
         <th title="BANU is no more than ten minutes over PHYSICS: BANU ≤ PHYSICS + 10min">High BANU / Low PHYSICS</th>
         <th title="BNA is no more than ten minutes over PHYSICS: BNA ≤ PHYSICS + 10min">High BNA / Low PHYSICS</th>
-        <th title="Experimenter reported ACC is no more than ten minutes over Operations reported ACC: EXP-ACC ≤ OPS-ACC + 10min">
-            High EXP ACC / Low OPS ACC
-        </th>
     </tr>
     </thead>
     <tbody>
@@ -27,7 +24,6 @@
             <td class="${check.highAbu[status.index] ? '' : 'ui-state-error'}">${check.highAbu[status.index] ? '✔' : 'X'}</td>
             <td class="${check.highBanu[status.index] ? '' : 'ui-state-error'}">${check.highBanu[status.index] ? '✔' : 'X'}</td>
             <td class="${check.highBna[status.index] ? '' : 'ui-state-error'}">${check.highBna[status.index] ? '✔' : 'X'}</td>
-            <td class="${check.highAcc[status.index] ? '' : 'ui-state-error'}">${check.highAcc[status.index] ? '✔' : 'X'}</td>
         </tr>
     </c:forEach>
     </tbody>
@@ -47,11 +43,6 @@
         <c:if test="${!check.highBna[status.index]}">
             <li>
                 <c:out value="${check.highBnaMessage[status.index]}"/>
-            </li>
-        </c:if>
-        <c:if test="${!check.highAcc[status.index]}">
-            <li>
-                <c:out value="${check.highAccMessage[status.index]}"/>
             </li>
         </c:if>
     </c:forEach>

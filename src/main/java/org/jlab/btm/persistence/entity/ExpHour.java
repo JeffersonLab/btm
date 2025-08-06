@@ -38,7 +38,7 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
   @NamedNativeQuery(
       name = "ExpHour.insertNATIVE",
       query =
-          "INSERT into EXP_HOUR (EXP_HOUR_ID, HALL, DAY_AND_HOUR, ABU_SECONDS, BANU_SECONDS, BNA_SECONDS, ACC_SECONDS, ER_SECONDS, PCC_SECONDS, UED_SECONDS, OFF_SECONDS, REMARK) values (:id, :hall, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :abu, :banu, :bna, :acc, :er, :pcc, :ued, :off, :remark)",
+          "INSERT into EXP_HOUR (EXP_HOUR_ID, HALL, DAY_AND_HOUR, ABU_SECONDS, BANU_SECONDS, BNA_SECONDS, ER_SECONDS, PCC_SECONDS, UED_SECONDS, OFF_SECONDS, REMARK) values (:id, :hall, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :abu, :banu, :bna, :er, :pcc, :ued, :off, :remark)",
       resultClass = ExpHour.class)
 })
 public class ExpHour extends HallHour {
@@ -90,13 +90,6 @@ public class ExpHour extends HallHour {
   private short bnaSeconds;
 
   @Basic(optional = false)
-  @Column(name = "ACC_SECONDS", nullable = false)
-  @NotNull
-  @Min(0)
-  @Max(value = 3600, message = "{org.jlab.bta.maxTime}")
-  private short accSeconds;
-
-  @Basic(optional = false)
   @Column(name = "ER_SECONDS", nullable = false)
   @NotNull
   @Min(0)
@@ -144,7 +137,6 @@ public class ExpHour extends HallHour {
     this.setAbuSeconds(other.getAbuSeconds());
     this.setBanuSeconds(other.getBanuSeconds());
     this.setBnaSeconds(other.getBnaSeconds());
-    this.setAccSeconds(other.getAccSeconds());
     this.setErSeconds(other.getErSeconds());
     this.setPccSeconds(other.getPccSeconds());
     this.setUedSeconds(other.getUedSeconds());
@@ -204,14 +196,6 @@ public class ExpHour extends HallHour {
     this.bnaSeconds = bnaSeconds;
   }
 
-  public short getAccSeconds() {
-    return accSeconds;
-  }
-
-  public void setAccSeconds(short accSeconds) {
-    this.accSeconds = accSeconds;
-  }
-
   public short getErSeconds() {
     return erSeconds;
   }
@@ -263,7 +247,6 @@ public class ExpHour extends HallHour {
     return this.getAbuSeconds()
         + this.getBanuSeconds()
         + this.getBnaSeconds()
-        + this.getAccSeconds()
         + this.getOffSeconds();
   }
 
@@ -323,8 +306,6 @@ public class ExpHour extends HallHour {
             + banuSeconds
             + ", BNA: "
             + bnaSeconds
-            + ", ACC: "
-            + accSeconds
             + ", ER: "
             + erSeconds
             + ", PCC: "
