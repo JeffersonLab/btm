@@ -35,6 +35,9 @@ dependencies {
                     'org.hibernate:hibernate-core:5.3.28.Final',
                     'org.hibernate:hibernate-envers:5.3.28.Final'
 }
+tasks.named('jar') {
+    enabled = false
+}
 war {
     archiveFileName = 'btm.war'
     filesMatching('WEB-INF/web.xml') {
