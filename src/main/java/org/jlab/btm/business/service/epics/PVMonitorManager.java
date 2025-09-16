@@ -112,7 +112,7 @@ public class PVMonitorManager {
       channels.put(pv, channel);
     }
 
-    context.pendIO(10000);
+    context.pendIO(10);
 
     for (String pv : PV_LIST) {
       CAJChannel channel = channels.get(pv);
@@ -135,7 +135,7 @@ public class PVMonitorManager {
       monitors.put(pv, monitor);
     }
 
-    context.pendIO(10000);
+    context.pendIO(10);
   }
 
   private void stopMonitors() throws CAException {
