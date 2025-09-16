@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import org.jlab.btm.business.service.epics.CcEpicsShiftService;
+import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.persistence.entity.CcShift;
 import org.jlab.btm.persistence.enumeration.DataSource;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
@@ -56,7 +57,7 @@ public class CcShiftService extends AbstractService<CcShift> {
   }
 
   @PermitAll
-  public CcShift findInEpics(Date startHour) {
+  public CcShift findInEpics(Date startHour) throws CALoadException {
     return epicsService.find(startHour);
   }
 

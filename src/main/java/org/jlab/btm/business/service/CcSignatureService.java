@@ -3,6 +3,7 @@ package org.jlab.btm.business.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -12,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
+import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.persistence.entity.*;
 import org.jlab.btm.persistence.enumeration.Role;
 import org.jlab.btm.persistence.projection.*;
@@ -242,7 +244,12 @@ public class CcSignatureService extends AbstractService<CcSignature> {
     CcShift dbShiftInfo = ccShiftService.findInDatabase(startHour);
     CcShift epicsShiftInfo = null;
 
-    epicsShiftInfo = ccShiftService.findInEpics(startHour);
+    try {
+      epicsShiftInfo = ccShiftService.findInEpics(startHour);
+    } catch (CALoadException e) {
+      logger.log(Level.INFO, "Unable to obtain EPICS cc shift info", e);
+      epicsShiftInfo = new CcShift();
+    }
 
     CcShift shiftInfo = dbShiftInfo;
 

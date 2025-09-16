@@ -1,7 +1,5 @@
 package org.jlab.btm.business.service.epics;
 
-import gov.aps.jca.CAException;
-import gov.aps.jca.TimeoutException;
 import gov.aps.jca.dbr.DBR;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,6 +7,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.persistence.entity.CcShift;
 import org.jlab.btm.persistence.epics.*;
 import org.jlab.smoothness.business.util.TimeUtil;
@@ -70,11 +69,9 @@ public class CcEpicsShiftService {
    *
    * @param startDayAndHour the start day and hour.
    * @return a list of experimenter hall hours.
-   * @throws TimeoutException if a network request takes too long.
-   * @throws InterruptedException if a thread gets unexpectedly interrupted.
-   * @throws CAException if a channel access problem occurs.
+   * @throws CALoadException if a channel access problem occurs.
    */
-  public CcShift find(Date startDayAndHour) {
+  public CcShift find(Date startDayAndHour) throws CALoadException {
     CcShift shift = null;
 
     if (isCurrentLastOrNextShiftStart(startDayAndHour)) {
@@ -91,8 +88,9 @@ public class CcEpicsShiftService {
    * data, up to, and including the current hour.
    *
    * @return the accounting information as a list of experimenter hall hours.
+   * @throws CALoadException If unable to load CA
    */
-  private CcShift loadAccounting() {
+  private CcShift loadAccounting() throws CALoadException {
 
     ShiftInfo accounting;
 
@@ -101,16 +99,16 @@ public class CcEpicsShiftService {
     return accounting.getOpShift();
   }
 
-  private ShiftInfo getFromCache() {
+  private ShiftInfo getFromCache() throws CALoadException {
     ShiftInfo accounting = new ShiftInfo();
 
     List<DBR> dbrs = new ArrayList<>();
 
-    dbrs.add(cache.get(Constant.CREW_CHIEF_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.get(Constant.OPERATORS_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.get(Constant.PROGRAM_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.get(Constant.PROGRAM_DEPUTY_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.get(Constant.COMMENTS_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.CREW_CHIEF_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.OPERATORS_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.PROGRAM_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.PROGRAM_DEPUTY_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.COMMENTS_CHANNEL_NAME).getDbr());
 
     accounting.setCrewChief(SimpleGet.getStringValue(dbrs.remove(0))[0]);
     accounting.setOperators(SimpleGet.getStringValue(dbrs.remove(0))[0]);

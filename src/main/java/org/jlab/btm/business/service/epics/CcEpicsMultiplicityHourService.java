@@ -53,19 +53,19 @@ public class CcEpicsMultiplicityHourService {
     return accounting.getOpMultiplicityHours();
   }
 
-  private MultiplicityBeamAvailability getFromCache() {
+  private MultiplicityBeamAvailability getFromCache() throws CALoadException {
     MultiplicityBeamAvailability accounting = new MultiplicityBeamAvailability();
 
     List<DBR> dbrs = new ArrayList<>();
 
-    dbrs.add(cache.get(Constant.TIME_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.get(Constant.MULTI_ONE_UP).getDbr());
-    dbrs.add(cache.get(Constant.MULTI_TWO_UP).getDbr());
-    dbrs.add(cache.get(Constant.MULTI_THREE_UP).getDbr());
-    dbrs.add(cache.get(Constant.MULTI_FOUR_UP).getDbr());
-    dbrs.add(cache.get(Constant.MULTI_ANY_UP).getDbr());
-    dbrs.add(cache.get(Constant.MULTI_ALL_UP).getDbr());
-    dbrs.add(cache.get(Constant.MULTI_DOWN).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.TIME_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.MULTI_ONE_UP).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.MULTI_TWO_UP).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.MULTI_THREE_UP).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.MULTI_FOUR_UP).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.MULTI_ANY_UP).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.MULTI_ALL_UP).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.MULTI_DOWN).getDbr());
 
     accounting.setTime(SimpleGet.getDoubleValue(dbrs.remove(0)));
     accounting.setOneUp(SimpleGet.getDoubleValue(dbrs.remove(0)));

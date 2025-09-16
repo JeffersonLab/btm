@@ -76,17 +76,17 @@ public class CcEpicsHallHourService {
     return accounting.getOpHallHours();
   }
 
-  private HallBeamAvailability getFromCache(Hall hall) {
+  private HallBeamAvailability getFromCache(Hall hall) throws CALoadException {
     HallBeamAvailability accounting = new HallBeamAvailability();
 
     List<DBR> dbrs = new ArrayList<>();
 
-    dbrs.add(cache.get(Constant.TIME_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_UP_SUFFIX).getDbr());
-    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_TUNE_SUFFIX).getDbr());
-    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_BNR_SUFFIX).getDbr());
-    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_DOWN_SUFFIX).getDbr());
-    dbrs.add(cache.get(Constant.HALL_PREFIX + hall + Constant.HALL_OFF_SUFFIX).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.TIME_CHANNEL_NAME).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_UP_SUFFIX).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_TUNE_SUFFIX).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_BNR_SUFFIX).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_DOWN_SUFFIX).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_OFF_SUFFIX).getDbr());
 
     accounting.setTime(SimpleGet.getDoubleValue(dbrs.remove(0)));
     accounting.setUp(SimpleGet.getDoubleValue(dbrs.remove(0)));

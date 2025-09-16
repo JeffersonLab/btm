@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.ejb.ConcurrencyManagement;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import org.jlab.btm.business.util.CALoadException;
 
 /**
  * PV Cache.
@@ -21,6 +22,29 @@ import javax.ejb.Startup;
 public class PVCache {
   private final ConcurrentHashMap<String, PVCacheEntry> map = new ConcurrentHashMap<>();
 
+  /**
+   * Get a value from the cache or throw a CALoadException if not found.
+   *
+   * @param name The key
+   * @return The value
+   * @throws CALoadException If not found
+   */
+  public PVCacheEntry getOrThrow(String name) throws CALoadException {
+    PVCacheEntry entry = map.get(name);
+
+    if (entry == null) {
+      throw new CALoadException(name);
+    }
+
+    return entry;
+  }
+
+  /**
+   * Get a value from the cache and returns null if not found.
+   *
+   * @param name The key
+   * @return The value, or null
+   */
   public PVCacheEntry get(String name) {
     return map.get(name);
   }
