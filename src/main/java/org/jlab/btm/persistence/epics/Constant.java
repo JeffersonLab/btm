@@ -46,4 +46,8 @@ public class Constant {
   public static final String EXP_PCC_SUFFIX = ":bta_sec_cc_h";
   public static final String EXP_UED_SUFFIX = ":bta_sec_enr_h";
   public static final String EXP_OFF_SUFFIX = ":bta_sec_hall_off_h";
+
+  // Liveness
+  public static final String EXP_HALL_LIVENESS_PREFIX = "iochl";
+  public static final String EXP_HALL_LIVENESS_SUFFIX = ":heartbeat";
 }

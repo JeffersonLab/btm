@@ -74,6 +74,13 @@ public class PVMonitorManager {
       dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_PCC_SUFFIX);
       dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_UED_SUFFIX);
       dynamic.add(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_OFF_SUFFIX);
+
+      if ("true".equals(System.getenv("CA_IOC_LIVENESS"))) {
+        dynamic.add(
+            Constant.EXP_HALL_LIVENESS_PREFIX
+                + hall.toString().toLowerCase()
+                + Constant.EXP_HALL_LIVENESS_SUFFIX);
+      }
     }
 
     dynamic.addAll(fixed);
