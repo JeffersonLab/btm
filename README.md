@@ -38,7 +38,7 @@ http://localhost:8080/btm
 See: [Docker Compose Strategy](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c)
 
 ## Install
-This application requires a Java 11+ JVM and standard library to run, plus a Java EE 8+ application server (developed with Wildfly).
+This application requires a Java 17+ JVM and standard library to run, plus a Java EE 8+ application server (developed with Wildfly).
 
 
 1. Install service [dependencies](https://github.com/JeffersonLab/btm/blob/main/deps.yaml)
@@ -63,7 +63,7 @@ Uses the [Smoothness Environment Variables](https://github.com/JeffersonLab/smoo
 | BTM_EPICS_ADDR_LIST | EPICS CA Address List for obtaining time keeping measurements. |
 
 ## Build
-This project is built with [Java 17](https://adoptium.net/) (compiled to Java 11 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
+This project is built with [Java 21](https://adoptium.net/) (compiled to Java 17 bytecode), and uses the [Gradle 9](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
 
 ```
 git clone https://github.com/JeffersonLab/btm
