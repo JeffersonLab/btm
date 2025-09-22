@@ -401,7 +401,8 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
       try {
         epicsAccHourList = findInEpics(startHour, endHour);
       } catch (CALoadException e) {
-        logger.log(Level.INFO, "Unable to obtain EPICS acc hour data", e);
+        logger.log(Level.INFO, "CALoadException: " + e.getMessage());
+        logger.log(Level.FINEST, "Unable to obtain EPICS acc hour data", e);
         epicsAccHourList = new ArrayList<>();
       }
     } else {

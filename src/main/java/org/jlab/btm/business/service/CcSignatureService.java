@@ -247,7 +247,8 @@ public class CcSignatureService extends AbstractService<CcSignature> {
     try {
       epicsShiftInfo = ccShiftService.findInEpics(startHour);
     } catch (CALoadException e) {
-      logger.log(Level.INFO, "Unable to obtain EPICS cc shift info", e);
+      logger.log(Level.INFO, "CALoadException: " + e.getMessage());
+      logger.log(Level.FINEST, "Unable to obtain EPICS cc shift info", e);
       epicsShiftInfo = new CcShift();
     }
 

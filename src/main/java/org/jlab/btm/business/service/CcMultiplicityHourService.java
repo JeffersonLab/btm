@@ -267,7 +267,8 @@ public class CcMultiplicityHourService extends AbstractService<CcMultiplicityHou
       try {
         epicsHourList = findInEpics(startHour, endHour, hallHoursList);
       } catch (CALoadException e) {
-        logger.log(Level.INFO, "Unable to obtain EPICS agg hour data", e);
+        logger.log(Level.INFO, "CALoadException: " + e.getMessage());
+        logger.log(Level.FINEST, "Unable to obtain EPICS agg hour data", e);
         epicsHourList = new ArrayList<>();
       }
     } else {

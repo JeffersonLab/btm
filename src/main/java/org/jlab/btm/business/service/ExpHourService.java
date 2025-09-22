@@ -147,7 +147,8 @@ public class ExpHourService extends AbstractService<ExpHour> {
       try {
         epicsHourList = findInEpics(hall, startHour, endHour, true);
       } catch (CALoadException e) {
-        logger.log(Level.INFO, "Unable to obtain EPICS hall " + hall + " hour data", e);
+        logger.log(Level.INFO, "CALoadException: Hall " + hall + ": " + e.getMessage());
+        logger.log(Level.FINEST, "Unable to obtain EPICS hall " + hall + " hour data", e);
         epicsHourList = new ArrayList<>();
       }
     } else {

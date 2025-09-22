@@ -86,20 +86,20 @@ public class ExpEpicsHourService {
     return accounting.getExpHallHours();
   }
 
-  private ExperimenterAccounting getFromCache(Hall hall) {
+  private ExperimenterAccounting getFromCache(Hall hall) throws CALoadException {
     ExperimenterAccounting accounting = new ExperimenterAccounting();
     accounting.setHall(hall);
 
     List<DBR> dbrs = new ArrayList<>();
 
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_TIME_SUFFIX).getDbr());
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ABU_SUFFIX).getDbr());
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BANU_SUFFIX).getDbr());
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BNA_SUFFIX).getDbr());
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ER_SUFFIX).getDbr());
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_PCC_SUFFIX).getDbr());
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_UED_SUFFIX).getDbr());
-    dbrs.add(cache.get(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_OFF_SUFFIX).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_TIME_SUFFIX).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ABU_SUFFIX).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BANU_SUFFIX).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BNA_SUFFIX).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ER_SUFFIX).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_PCC_SUFFIX).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_UED_SUFFIX).getDbr());
+    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_OFF_SUFFIX).getDbr());
 
     accounting.setTime(SimpleGet.getDoubleValue(dbrs.remove(0)));
     accounting.setABU(SimpleGet.getDoubleValue(dbrs.remove(0)));
