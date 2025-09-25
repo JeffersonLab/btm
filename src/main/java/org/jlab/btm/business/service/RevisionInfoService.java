@@ -1,18 +1,18 @@
 package org.jlab.btm.business.service;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.security.PermitAll;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
 import org.hibernate.envers.RevisionType;
 import org.jlab.btm.business.params.ActivityAuditParams;
 import org.jlab.btm.business.util.BtmTimeUtil;
@@ -244,7 +244,7 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
           throw new RuntimeException(e);
         }
 
-        Hall hall = Hall.valueOf((String) row[4]);
+        Hall hall = Hall.valueOf(String.valueOf((Character) row[4]));
         changeList.add(new AuditedEntityChange(revision, type, entityId, entityClass, date, hall));
       }
     }

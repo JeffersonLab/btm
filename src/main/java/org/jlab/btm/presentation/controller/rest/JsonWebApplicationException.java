@@ -1,11 +1,11 @@
 package org.jlab.btm.presentation.controller.rest;
 
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonWriter;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 import java.io.StringWriter;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonWriter;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 import org.jlab.smoothness.business.util.ObjectUtil;
 
 /**

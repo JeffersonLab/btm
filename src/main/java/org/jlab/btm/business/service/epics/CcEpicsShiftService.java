@@ -1,12 +1,12 @@
 package org.jlab.btm.business.service.epics;
 
 import gov.aps.jca.dbr.DBR;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.persistence.entity.CcShift;
 import org.jlab.btm.persistence.epics.*;

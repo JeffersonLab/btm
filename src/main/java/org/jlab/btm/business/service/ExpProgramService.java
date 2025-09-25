@@ -1,15 +1,15 @@
 package org.jlab.btm.business.service;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import org.jlab.btm.persistence.entity.ExpProgram;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.persistence.enumeration.Hall;
@@ -46,7 +46,7 @@ public class ExpProgramService extends AbstractService<ExpProgram> {
     String order = "order by experiment desc, active desc, name asc";
 
     if (active != null) {
-      query = query + "and active = " + (active ? "'1' " : "'0' ");
+      query = query + "and active = :active ";
     }
 
     query = query + order;
@@ -54,6 +54,10 @@ public class ExpProgramService extends AbstractService<ExpProgram> {
     TypedQuery<ExpProgram> q = em.createQuery(query, ExpProgram.class);
 
     q.setParameter("hall", hall);
+
+    if (active != null) {
+      q.setParameter("active", active);
+    }
 
     return q.getResultList();
   }
