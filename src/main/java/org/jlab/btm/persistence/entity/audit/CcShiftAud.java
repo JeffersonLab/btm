@@ -17,7 +17,7 @@ public class CcShiftAud implements Serializable {
   private static final long serialVersionUID = 1L;
   @EmbeddedId protected CcShiftAudPK ccShiftAudPK;
 
-  @Enumerated(EnumType.ORDINAL)
+  //@Enumerated(EnumType.ORDINAL)
   @NotNull
   @Column(name = "REVTYPE")
   private RevisionType type;
