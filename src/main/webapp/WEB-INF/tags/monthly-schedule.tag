@@ -1,9 +1,9 @@
 <%@tag description="Monthly Schedule Tag" pageEncoding="UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness" %>
-<%@taglib prefix="btm" uri="http://jlab.org/btm/functions" %>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fn" uri="jakarta.tags.functions" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@taglib prefix="s" uri="jlab.tags.smoothness" %>
+<%@taglib prefix="btm" uri="jlab.tags.btm" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@attribute name="title" required="true" type="java.lang.String" %>
 <%@attribute name="month" required="true" type="java.util.Date" %>

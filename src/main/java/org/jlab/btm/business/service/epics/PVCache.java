@@ -1,12 +1,12 @@
 package org.jlab.btm.business.service.epics;
 
-import static javax.ejb.ConcurrencyManagementType.BEAN;
+import static jakarta.ejb.ConcurrencyManagementType.BEAN;
 
+import jakarta.ejb.ConcurrencyManagement;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.ejb.ConcurrencyManagement;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import org.jlab.btm.business.util.CALoadException;
 
 /**

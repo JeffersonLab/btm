@@ -1,11 +1,11 @@
 package org.jlab.btm.persistence.entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.logging.Logger;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author ryans

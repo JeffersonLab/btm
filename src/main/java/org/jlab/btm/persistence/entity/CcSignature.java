@@ -1,10 +1,10 @@
 package org.jlab.btm.persistence.entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import org.jlab.btm.persistence.enumeration.Role;
 
 /**

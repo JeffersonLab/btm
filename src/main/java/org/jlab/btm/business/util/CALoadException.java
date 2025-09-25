@@ -1,6 +1,6 @@
 package org.jlab.btm.business.util;
 
-import javax.ejb.ApplicationException;
+import jakarta.ejb.ApplicationException;
 
 /**
  * Signal that request could not load EPICS CA data.

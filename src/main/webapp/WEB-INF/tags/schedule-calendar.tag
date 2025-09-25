@@ -1,8 +1,8 @@
 <%@tag description="Schedule Table Tag" pageEncoding="UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@taglib prefix="btm" uri="http://jlab.org/btm/functions" %>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fn" uri="jakarta.tags.functions" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@taglib prefix="btm" uri="jlab.tags.btm" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@attribute name="calendar" required="true" type="org.jlab.btm.presentation.util.WallCalendar" %>
 <%@attribute name="monthHeader" required="true" %>
