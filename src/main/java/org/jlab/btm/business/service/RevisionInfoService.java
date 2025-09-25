@@ -244,7 +244,7 @@ public class RevisionInfoService extends AbstractService<RevisionInfo> {
           throw new RuntimeException(e);
         }
 
-        Hall hall = Hall.valueOf((String) row[4]);
+        Hall hall = Hall.valueOf(String.valueOf((Character) row[4]));
         changeList.add(new AuditedEntityChange(revision, type, entityId, entityClass, date, hall));
       }
     }
