@@ -44,10 +44,6 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
       name = "ExpHourReasonTime.findByHallAndHourRange",
       query =
           "SELECT e FROM ExpUedExplanation e WHERE e.hall = :hall AND e.expHour.dayAndHour BETWEEN :startDayAndHour AND :endDayAndHour ORDER BY e.expHour.dayAndHour ASC"),
-  @NamedQuery(
-      name = "ExpHourReasonTime.sumByExpHourId",
-      query =
-          "SELECT NVL(SUM(e.seconds), 0) FROM ExpUedExplanation e WHERE e.expHour.expHourId = :expHourId")
 })
 public class ExpUedExplanation implements Comparable<ExpUedExplanation>, Serializable {
   private static final long serialVersionUID = 1L;
