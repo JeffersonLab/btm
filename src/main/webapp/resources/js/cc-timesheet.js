@@ -52,24 +52,22 @@ jlab.btm.validateAndUpdateAccRowTotal = function ($tr, units) {
     }
 
     var up = $tr.find("td:nth-child(2) input").val() * 1,
-        tuning = $tr.find("td:nth-child(3) input").val() * 1,
-        studies = $tr.find("td:nth-child(4) input").val() * 1,
-        restore = $tr.find("td:nth-child(5) input").val() * 1,
-        acc = $tr.find("td:nth-child(6) input").val() * 1,
-        down = $tr.find("td:nth-child(7) input").val() * 1,
-        off = $tr.find("td:nth-child(8) input").val() * 1,
+        sad = $tr.find("td:nth-child(3) input").val() * 1,
+        down = $tr.find("td:nth-child(4) input").val() * 1,
+        studies = $tr.find("td:nth-child(5) input").val() * 1,
+        restore = $tr.find("td:nth-child(6) input").val() * 1,
+        acc = $tr.find("td:nth-child(7) input").val() * 1,
         up = Math.round(up * conversion),
-        tuning = Math.round(tuning * conversion),
+        sad = Math.round(sad * conversion),
+        down = Math.round(down * conversion),
         studies = Math.round(studies * conversion),
         restore = Math.round(restore * conversion),
         acc = Math.round(acc * conversion),
-        down = Math.round(down * conversion),
-        off = Math.round(off * conversion),
-        total = (up + tuning + studies + restore + acc + down + off) * 1,
+        total = (up + sad + down + studies + restore + acc) * 1,
         totalForDisplay = (total / conversion).toFixed(4) * 1,
         error = false;
 
-    $tr.find("th:nth-child(9)").text(totalForDisplay);
+    $tr.find("th:nth-child(8)").text(totalForDisplay);
 
     if (total !== 3600) {
         error = true;
@@ -186,7 +184,6 @@ jlab.btm.editAccHours = function (saveAll) {
 
     var hourArray = [],
         upArray = [],
-        tuningArray = [],
         sadArray = [],
         downArray = [],
         studiesArray = [],
@@ -201,16 +198,14 @@ jlab.btm.editAccHours = function (saveAll) {
             units = $("#units").attr("data-units"),
             hour = $row.find("th").attr("data-hour"),
             up = jlab.btm.parseSeconds($row.find("td:nth-child(2) input").val(), units),
-            tuning = jlab.btm.parseSeconds($row.find("td:nth-child(3) input").val(), units),
-            studies = jlab.btm.parseSeconds($row.find("td:nth-child(4) input").val(), units),
-            restore = jlab.btm.parseSeconds($row.find("td:nth-child(5) input").val(), units),
-            acc = jlab.btm.parseSeconds($row.find("td:nth-child(6) input").val(), units),
-            down = jlab.btm.parseSeconds($row.find("td:nth-child(7) input").val(), units),
-            sad = jlab.btm.parseSeconds($row.find("td:nth-child(8) input").val(), units);
+            studies = jlab.btm.parseSeconds($row.find("td:nth-child(3) input").val(), units),
+            restore = jlab.btm.parseSeconds($row.find("td:nth-child(4) input").val(), units),
+            acc = jlab.btm.parseSeconds($row.find("td:nth-child(5) input").val(), units),
+            down = jlab.btm.parseSeconds($row.find("td:nth-child(6) input").val(), units),
+            sad = jlab.btm.parseSeconds($row.find("td:nth-child(7) input").val(), units);
 
         hourArray.push(hour);
         upArray.push(up);
-        tuningArray.push(tuning);
         studiesArray.push(studies);
         restoreArray.push(restore);
         accArray.push(acc);
@@ -230,7 +225,6 @@ jlab.btm.editAccHours = function (saveAll) {
         data: {
             'hour[]': hourArray,
             'up[]': upArray,
-            'tuning[]': tuningArray,
             'studies[]': studiesArray,
             'restore[]': restoreArray,
             'acc[]': accArray,
@@ -291,7 +285,6 @@ jlab.btm.editAccHour = function () {
 
     var hourArray = [],
         upArray = [],
-        tuningArray = [],
         sadArray = [],
         downArray = [],
         studiesArray = [],
@@ -303,16 +296,14 @@ jlab.btm.editAccHour = function () {
     var units = $("#units").attr("data-units"),
         hour = $row.find("th").attr("data-hour"),
         up = jlab.btm.parseSeconds($row.find("td:nth-child(2) input").val(), units),
-        tuning = jlab.btm.parseSeconds($row.find("td:nth-child(3) input").val(), units),
-        studies = jlab.btm.parseSeconds($row.find("td:nth-child(4) input").val(), units),
-        restore = jlab.btm.parseSeconds($row.find("td:nth-child(5) input").val(), units),
-        acc = jlab.btm.parseSeconds($row.find("td:nth-child(6) input").val(), units),
-        down = jlab.btm.parseSeconds($row.find("td:nth-child(7) input").val(), units),
-        sad = jlab.btm.parseSeconds($row.find("td:nth-child(8) input").val(), units);
+        studies = jlab.btm.parseSeconds($row.find("td:nth-child(3) input").val(), units),
+        restore = jlab.btm.parseSeconds($row.find("td:nth-child(4) input").val(), units),
+        acc = jlab.btm.parseSeconds($row.find("td:nth-child(5) input").val(), units),
+        down = jlab.btm.parseSeconds($row.find("td:nth-child(6) input").val(), units),
+        sad = jlab.btm.parseSeconds($row.find("td:nth-child(7) input").val(), units);
 
     hourArray.push(hour);
     upArray.push(up);
-    tuningArray.push(tuning);
     studiesArray.push(studies);
     restoreArray.push(restore);
     accArray.push(acc);
@@ -327,7 +318,6 @@ jlab.btm.editAccHour = function () {
         data: {
             'hour[]': hourArray,
             'up[]': upArray,
-            'tuning[]': tuningArray,
             'studies[]': studiesArray,
             'restore[]': restoreArray,
             'acc[]': accArray,

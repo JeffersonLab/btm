@@ -184,18 +184,6 @@
                                     <th>
                                         <div class="color-box"></div>
                                     </th>
-                                    <td class="legend-label">Tuning</td>
-                                    <td><fmt:formatNumber value="${ccSum.tuningSeconds / 3600}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${(ccSum.tuningSeconds / 3600) / ccSum.periodHours * 100}"
-                                                           pattern="#,##0.0"/>%)
-                                    </td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr class="data-row">
-                                    <th>
-                                        <div class="color-box"></div>
-                                    </th>
                                     <td class="legend-label">Studies</td>
                                     <td><fmt:formatNumber value="${ccSum.studiesSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>

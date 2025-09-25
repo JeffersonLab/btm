@@ -185,8 +185,6 @@
                                                 <td><fmt:formatNumber pattern="#,##0.0"
                                                                       value="${totals.upSeconds / 3600}"/></td>
                                                 <td><fmt:formatNumber pattern="#,##0.0"
-                                                                      value="${totals.tuningSeconds / 3600}"/></td>
-                                                <td><fmt:formatNumber pattern="#,##0.0"
                                                                       value="${totals.bnrSeconds / 3600}"/></td>
                                                 <td><fmt:formatNumber pattern="#,##0.0"
                                                                       value="${totals.downSeconds / 3600}"/></td>

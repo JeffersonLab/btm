@@ -15,7 +15,6 @@ public class CcAccSum {
   private final long possibleDownSeconds; // Physics and Internal Down
   private final long programSeconds; // anything but OFF (SAM) or implied OFF
   private final long upSeconds;
-  private final long tuningSeconds;
   private final long sadSeconds;
   private final long downSeconds;
   private final long studiesSeconds;
@@ -32,7 +31,6 @@ public class CcAccSum {
       Date start,
       Date end,
       Number upSeconds,
-      Number tuningSeconds,
       Number sadSeconds,
       Number downSeconds,
       Number studiesSeconds,
@@ -41,7 +39,6 @@ public class CcAccSum {
     this.start = start;
     this.end = end;
     this.upSeconds = upSeconds.longValue();
-    this.tuningSeconds = tuningSeconds.longValue();
     this.sadSeconds = sadSeconds.longValue();
     this.downSeconds = downSeconds.longValue();
     this.studiesSeconds = studiesSeconds.longValue();
@@ -50,7 +47,6 @@ public class CcAccSum {
 
     this.programSeconds =
         this.getUpSeconds()
-            + this.getTuningSeconds()
             + this.getStudiesSeconds()
             + this.getRestoreSeconds()
             + this.getAccSeconds()
@@ -66,10 +62,6 @@ public class CcAccSum {
 
   public long getUpSeconds() {
     return upSeconds;
-  }
-
-  public long getTuningSeconds() {
-    return tuningSeconds;
   }
 
   public long getSadSeconds() {

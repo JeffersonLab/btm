@@ -38,16 +38,11 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td rowspan="2">PHYSICS</td>
-                                <td>Delivery</td>
+                                <td colspan="2">PHYSICS</td>
                                 <td>Machine is provided to the Physics division with the goal of delivering beam to at
                                     least one experimental hall (even if down - choose Physics, then Physics Down for
                                     hall)
                                 </td>
-                            </tr>
-                            <tr>
-                                <td>Tuning</td>
-                                <td>Procedural Tuning such as QE Measurements and BCM Calibrations, and other performance measurement and adjustment activities</td>
                             </tr>
                             <tr>
                                 <td rowspan="4">INTERNAL</td>

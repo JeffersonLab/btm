@@ -17,7 +17,10 @@
             <thead>
             <tr>
                 <th rowspan="2"></th>
-                <th colspan="2">PHYSICS</th>
+                <th rowspan="2"
+                    title="Machine program intention is to deliver beam to at least one experimental hall (even if down - choose physics down)">
+                    PHYSICS
+                </th>
                 <th colspan="4">INTERNAL</th>
                 <th rowspan="2"
                     title="Machine is scheduled to be off for holiday, maintenance, or budget restrictions (Scheduled Accelerator Maintenance)">
@@ -25,10 +28,6 @@
                 </th>
             </tr>
             <tr>
-                <th title="Machine program intention is to deliver beam to at least one experimental hall (even if down - choose physics down)">
-                    DELIVERY
-                </th>
-                <th>TUNING</th>
                 <th title="Machine is being studied/tested/developed.  This does not include opportunistic beam studies.">
                     STUDIES
                 </th>
@@ -45,7 +44,6 @@
             <tr>
                 <th>Planned</th>
                 <td>${btm:formatDurationLossy(accAvailability.pdShiftTotals.upSeconds, durationUnits)}</td>
-                <td>${btm:formatDurationLossy(accAvailability.pdShiftTotals.tuningSeconds, durationUnits)}</td>
                 <td>${btm:formatDurationLossy(accAvailability.pdShiftTotals.studiesSeconds, durationUnits)}</td>
                 <td>${btm:formatDurationLossy(accAvailability.pdShiftTotals.restoreSeconds, durationUnits)}</td>
                 <td>${btm:formatDurationLossy(accAvailability.pdShiftTotals.accSeconds, durationUnits)}</td>
@@ -55,7 +53,6 @@
             <tr>
                 <th>Measured</th>
                 <td>${btm:formatDurationLossy(accAvailability.epicsShiftTotals.upSeconds, durationUnits)}</td>
-                <td>${btm:formatDurationLossy(accAvailability.epicsShiftTotals.tuningSeconds, durationUnits)}</td>
                 <td>${btm:formatDurationLossy(accAvailability.epicsShiftTotals.studiesSeconds, durationUnits)}</td>
                 <td>${btm:formatDurationLossy(accAvailability.epicsShiftTotals.restoreSeconds, durationUnits)}</td>
                 <td>${btm:formatDurationLossy(accAvailability.epicsShiftTotals.accSeconds, durationUnits)}</td>
@@ -65,7 +62,6 @@
             <tr>
                 <th>Reported</th>
                 <td>${btm:formatDurationLossy(accAvailability.shiftTotals.upSeconds, durationUnits)}</td>
-                <td>${btm:formatDurationLossy(accAvailability.shiftTotals.tuningSeconds, durationUnits)}</td>
                 <td>${btm:formatDurationLossy(accAvailability.shiftTotals.studiesSeconds, durationUnits)}</td>
                 <td>${btm:formatDurationLossy(accAvailability.shiftTotals.restoreSeconds, durationUnits)}</td>
                 <td>${btm:formatDurationLossy(accAvailability.shiftTotals.accSeconds, durationUnits)}</td>
