@@ -46,7 +46,7 @@ public class ExpProgramService extends AbstractService<ExpProgram> {
     String order = "order by experiment desc, active desc, name asc";
 
     if (active != null) {
-      query = query + "and active = " + (active ? "'1' " : "'0' ");
+      query = query + "and active = :active ";
     }
 
     query = query + order;
@@ -54,6 +54,10 @@ public class ExpProgramService extends AbstractService<ExpProgram> {
     TypedQuery<ExpProgram> q = em.createQuery(query, ExpProgram.class);
 
     q.setParameter("hall", hall);
+
+    if (active != null) {
+      q.setParameter("active", active);
+    }
 
     return q.getResultList();
   }
