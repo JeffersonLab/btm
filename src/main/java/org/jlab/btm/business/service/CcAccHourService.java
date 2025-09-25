@@ -314,7 +314,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
 
     Query audq =
         em.createNativeQuery(
-            "insert into cc_acc_hour_aud (REVTYPE, DAY_AND_HOUR, UP_SECONDS, TUNING_SECONDS, SAD_SECONDS, DOWN_SECONDS, STUDIES_SECONDS, RESTORE_SECONDS, ACC_SECONDS, CC_ACC_HOUR_ID, REV) values (:revtype, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :up, :tuning, :sad, :down, :studies, :restore, :acc, :hour_id, :rev)");
+            "insert into cc_acc_hour_aud (REVTYPE, DAY_AND_HOUR, UP_SECONDS, SAD_SECONDS, DOWN_SECONDS, STUDIES_SECONDS, RESTORE_SECONDS, ACC_SECONDS, CC_ACC_HOUR_ID, REV) values (:revtype, to_timestamp_tz(:dayAndHour, 'YYYY-MM-DD HH24 TZD'), :up, :sad, :down, :studies, :restore, :acc, :hour_id, :rev)");
 
     String dayAndHourStr = TimeUtil.formatDatabaseDateTimeTZ(hour.getDayAndHour());
 
