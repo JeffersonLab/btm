@@ -1,12 +1,12 @@
 package org.jlab.btm.persistence.entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import org.jlab.btm.business.util.HourEntity;
 import org.jlab.btm.persistence.enumeration.DataSource;
 import org.jlab.smoothness.persistence.enumeration.Hall;

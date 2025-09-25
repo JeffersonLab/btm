@@ -1,8 +1,8 @@
 package org.jlab.btm.business.service;
 
+import jakarta.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.security.PermitAll;
 import org.jlab.btm.persistence.entity.CcAccHour;
 import org.jlab.btm.persistence.entity.CcHallHour;
 import org.jlab.btm.persistence.entity.CcMultiplicityHour;
