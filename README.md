@@ -62,6 +62,9 @@ Uses the [Smoothness Environment Variables](https://github.com/JeffersonLab/smoo
 | LOGBOOK_DEBUG       | If set to "true" then TLOG is used as logbook                  |
 | BTM_EPICS_ADDR_LIST | EPICS CA Address List for obtaining time keeping measurements. |
 
+### Database
+This application requires an Oracle 19+ database with the following [schema](https://github.com/JeffersonLab/btm/tree/main/container/oracle/initdb.d) installed.   The application server hosting this app must also be configured with a JNDI datasource.
+
 ## Build
 This project is built with [Java 21](https://adoptium.net/) (compiled to Java 17 bytecode), and uses the [Gradle 9](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
 
