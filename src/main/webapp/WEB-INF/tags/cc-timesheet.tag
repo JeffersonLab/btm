@@ -20,6 +20,7 @@
                 <th rowspan="2"
                     title="Machine program intention is to deliver beam to at least one experimental hall (even if down - choose physics down)">
                     PHYSICS
+                    (Delivered + Tuning + Down)
                 </th>
                 <th colspan="4">INTERNAL</th>
                 <th rowspan="2"

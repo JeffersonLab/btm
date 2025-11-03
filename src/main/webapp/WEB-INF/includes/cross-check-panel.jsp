@@ -12,12 +12,12 @@
     </ul>
     <div id="cross-check-summary-tab" data-signature="${fn:length(signatureList) > 0}">
         <div id="cross-check-summary-panel">
-            <h5>BTM vs DTM</h5>
+            <h5>BTM vs DTM Blocked Program Downtime</h5>
             <table id="dtm-btm-table" class="data-table">
                 <thead>
                 <tr>
-                    <th>BTM Possible Downtime</th>
-                    <th>DTM Event Downtime</th>
+                    <th>BTM Possible Downtime (Physics + Internal Down)</th>
+                    <th><a target="_blank" href="#">DTM Blocked Event Downtime ⮺</a></th>
                     <th>Cross Check Status</th>
                 </tr>
                 </thead>
@@ -26,6 +26,25 @@
                     <td>${btm:formatDurationLossy(accAvailability.shiftTotals.calculatePossibleDowntimeSeconds(), durationUnits)}</td>
                     <td>${btm:formatDurationLossy(dtmTotals.eventSeconds, durationUnits)}</td>
                     <td class="${downCrossCheck.isPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isPassed() ? '✔' : 'X'}</td>
+                </tr>
+                </tbody>
+            </table>
+            <h5>BTM vs DTM Tuning Downtime</h5>
+            <table id="tune-check-table" class="data-table">
+                <thead>
+                <tr>
+                    <th>BTM Physics Total</th>
+                    <th><a target="_blank" href="#">DTM Tuning Downtime ⮺</a></th>
+                    <th>Computed Delivered Physics</th>
+                    <th>Cross Check Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>${btm:formatDurationLossy(accAvailability.shiftTotals.getUpSeconds(), durationUnits)}</td>
+                    <td>${btm:formatDurationLossy(tuningHours.eventSeconds, durationUnits)}</td>
+                    <td>${btm:formatDurationLossy(accAvailability.shiftTotals.getUpSeconds() - tuningHours.eventSeconds, durationUnits)}</td>
+                    <td class="${tuneCrossCheck.isPassed() ? '' : 'ui-state-error'}">${tuneCrossCheck.isPassed() ? '✔' : 'X'}</td>
                 </tr>
                 </tbody>
             </table>

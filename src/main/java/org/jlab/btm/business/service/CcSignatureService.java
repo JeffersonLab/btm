@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.servlet.http.HttpServletRequest;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -345,7 +346,11 @@ public class CcSignatureService extends AbstractService<CcSignature> {
             multiplicityAvailability.getShiftTotals());
 
     // Downtime check
-    DowntimeSummaryTotals dtmTotals = downService.reportTotals(startHour, startOfNextShift);
+    DowntimeSummaryTotals dtmTotals =
+        downService.reportTotals(startHour, startOfNextShift, BigInteger.ONE);
+
+    DowntimeSummaryTotals tuningHours =
+        downService.reportTotals(startHour, startOfNextShift, BigInteger.valueOf(9L));
 
     CcDowntimeCrossCheck downCrossCheck =
         new CcDowntimeCrossCheck(accAvailability.getShiftTotals(), dtmTotals.getEventSeconds());
@@ -368,6 +373,7 @@ public class CcSignatureService extends AbstractService<CcSignature> {
     request.setAttribute("multiCrossCheck", multiCrossCheck);
     request.setAttribute("downCrossCheck", downCrossCheck);
     request.setAttribute("dtmTotals", dtmTotals);
+    request.setAttribute("tuningHours", tuningHours);
     request.setAttribute("hallAHourCrossCheckList", hallAHourCrossCheckList);
     request.setAttribute("hallBHourCrossCheckList", hallBHourCrossCheckList);
     request.setAttribute("hallCHourCrossCheckList", hallCHourCrossCheckList);

@@ -5,6 +5,7 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,18 +38,19 @@ public class DowntimeService extends AbstractService<CcAccHour> {
   }
 
   @PermitAll
-  public DowntimeSummaryTotals reportTotals(Date start, Date end) {
+  public DowntimeSummaryTotals reportTotals(Date start, Date end, BigInteger eventTypeId) {
     Query q =
         em.createNativeQuery(
             "select sum(downtime_seconds) as downtime_seconds "
                 + "from (select "
                 + "btm_owner.interval_to_seconds(least(nvl(a.time_up, sysdate), :end) - greatest(a.time_down, :start)) as downtime_seconds "
                 + "from btm_owner.event_first_incident a "
-                + "where a.event_type_id = 1 "
+                + "where a.event_type_id = :typeId "
                 + "and a.time_down < :end "
                 + "and nvl(a.time_up, sysdate) >= :start "
                 + "union all (select 0 from dual))");
 
+    q.setParameter("typeId", eventTypeId);
     q.setParameter("start", start);
     q.setParameter("end", end);
 
@@ -88,7 +90,7 @@ public class DowntimeService extends AbstractService<CcAccHour> {
       Date realStart = (startDayHourZero.getTime() == day.getTime()) ? start : startOfDay;
       Date realEnd = iterator.hasNext() ? startOfNextDay : end;
 
-      DowntimeSummaryTotals totals = this.reportTotals(realStart, realEnd);
+      DowntimeSummaryTotals totals = this.reportTotals(realStart, realEnd, BigInteger.ONE);
       DayTotals mt = new DayTotals();
       mt.day = startOfDay;
       mt.totals = totals;
@@ -123,7 +125,7 @@ public class DowntimeService extends AbstractService<CcAccHour> {
       Date realStart = (startMonthDayOne.getTime() == month.getTime()) ? start : startOfMonth;
       Date realEnd = iterator.hasNext() ? startOfNextMonth : end;
 
-      DowntimeSummaryTotals totals = this.reportTotals(realStart, realEnd);
+      DowntimeSummaryTotals totals = this.reportTotals(realStart, realEnd, BigInteger.ONE);
       MonthTotals mt = new MonthTotals();
       mt.month = startOfMonth;
       mt.totals = totals;
