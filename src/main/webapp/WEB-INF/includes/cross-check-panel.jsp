@@ -18,7 +18,7 @@
                 <tr>
                     <th>BTM Possible Downtime (Physics + Internal Down)</th>
                     <th>
-                        <c:url var="url" value="/reports/downtime-summary">
+                        <c:url var="url" value="${env['FRONTEND_SERVER_URL']}/dtm/reports/downtime-summary">
                             <c:param name="type" value="1"/>
                             <c:param name="start" value="${param.start}"/>
                             <c:param name="end" value="${param.end}"/>
@@ -49,7 +49,7 @@
                 <tr>
                     <th>BTM Physics Total</th>
                     <th>
-                        <c:url var="url" value="/reports/downtime-summary">
+                        <c:url var="url" value="${env['FRONTEND_SERVER_URL']}/dtm/reports/downtime-summary">
                             <c:param name="type" value="9"/>
                             <c:param name="start" value="${param.start}"/>
                             <c:param name="end" value="${param.end}"/>
