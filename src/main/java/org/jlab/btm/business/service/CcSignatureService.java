@@ -353,7 +353,10 @@ public class CcSignatureService extends AbstractService<CcSignature> {
         downService.reportTotals(startHour, startOfNextShift, BigInteger.valueOf(9L));
 
     CcDowntimeCrossCheck downCrossCheck =
-        new CcDowntimeCrossCheck(accAvailability.getShiftTotals(), dtmTotals.getEventSeconds());
+        new CcDowntimeCrossCheck(
+            accAvailability.getShiftTotals(),
+            dtmTotals.getEventSeconds(),
+            tuningHours.getEventSeconds());
 
     request.setAttribute("plan", plan);
     request.setAttribute("accAvailability", accAvailability);

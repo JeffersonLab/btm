@@ -17,7 +17,14 @@
                 <thead>
                 <tr>
                     <th>BTM Possible Downtime (Physics + Internal Down)</th>
-                    <th><a target="_blank" href="#">DTM Blocked Event Downtime ⮺</a></th>
+                    <th>
+                        <c:url var="url" value="/reports/downtime-summary">
+                            <c:param name="type" value="1"/>
+                            <c:param name="start" value="${param.start}"/>
+                            <c:param name="end" value="${param.end}"/>
+                        </c:url>
+                        <a target="_blank" href="${url}">DTM Blocked Event Downtime ⮺</a>
+                    </th>
                     <th>Cross Check Status</th>
                 </tr>
                 </thead>
@@ -25,16 +32,30 @@
                 <tr>
                     <td>${btm:formatDurationLossy(accAvailability.shiftTotals.calculatePossibleDowntimeSeconds(), durationUnits)}</td>
                     <td>${btm:formatDurationLossy(dtmTotals.eventSeconds, durationUnits)}</td>
-                    <td class="${downCrossCheck.isPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isPassed() ? '✔' : 'X'}</td>
+                    <td class="${downCrossCheck.isLowProgramPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isLowProgramPassed() ? '✔' : 'X'}</td>
                 </tr>
                 </tbody>
             </table>
+            <ul class="reason-list">
+                <c:if test="${!downCrossCheck.isLowProgramPassed()}">
+                    <li>
+                        <c:out value="${downCrossCheck.lowProgramMessage}"/>
+                    </li>
+                </c:if>
+            </ul>
             <h5>BTM vs DTM Tuning Downtime</h5>
             <table id="tune-check-table" class="data-table">
                 <thead>
                 <tr>
                     <th>BTM Physics Total</th>
-                    <th><a target="_blank" href="#">DTM Tuning Downtime ⮺</a></th>
+                    <th>
+                        <c:url var="url" value="/reports/downtime-summary">
+                            <c:param name="type" value="9"/>
+                            <c:param name="start" value="${param.start}"/>
+                            <c:param name="end" value="${param.end}"/>
+                        </c:url>
+                        <a target="_blank" href="${url}">DTM Tuning Downtime ⮺</a>
+                    </th>
                     <th>Computed Delivered Physics</th>
                     <th>Cross Check Status</th>
                 </tr>
@@ -44,14 +65,14 @@
                     <td>${btm:formatDurationLossy(accAvailability.shiftTotals.getUpSeconds(), durationUnits)}</td>
                     <td>${btm:formatDurationLossy(tuningHours.eventSeconds, durationUnits)}</td>
                     <td>${btm:formatDurationLossy(accAvailability.shiftTotals.getUpSeconds() - tuningHours.eventSeconds, durationUnits)}</td>
-                    <td class="${tuneCrossCheck.isPassed() ? '' : 'ui-state-error'}">${tuneCrossCheck.isPassed() ? '✔' : 'X'}</td>
+                    <td class="${downCrossCheck.isHighTuningPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isHighTuningPassed() ? '✔' : 'X'}</td>
                 </tr>
                 </tbody>
             </table>
             <ul class="reason-list">
-                <c:if test="${!downCrossCheck.isPassed()}">
+                <c:if test="${!downCrossCheck.isHighTuningPassed()}">
                     <li>
-                        <c:out value="${downCrossCheck.lowProgramMessage}"/>
+                        <c:out value="${downCrossCheck.highTuningMessage}"/>
                     </li>
                 </c:if>
             </ul>
