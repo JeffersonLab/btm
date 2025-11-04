@@ -246,6 +246,7 @@ table.editable-table tbody td span {
 #exp-avail-panel th.mirror-th,
 #exp-avail-panel td input,
 #exp-reasons-panel td,
+#tune-check-table td,
 #dtm-btm-table td {
     text-align: right;
 }
@@ -347,6 +348,7 @@ table.editable-table tbody td span {
 
 #comparison-table td:last-child,
 .cross-check-details td,
+#tune-check-table td:last-child,
 #dtm-btm-table td:last-child {
     text-align: center;
 }
