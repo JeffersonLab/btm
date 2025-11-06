@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import org.jlab.btm.persistence.entity.CcAccHour;
-import org.jlab.btm.persistence.projection.DowntimeSummaryTotals;
+import org.jlab.btm.persistence.projection.*;
 import org.jlab.smoothness.business.util.DateIterator;
 import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.util.JPAUtil;
@@ -133,6 +133,44 @@ public class DowntimeService extends AbstractService<CcAccHour> {
     }
 
     return monthTotals;
+  }
+
+  @PermitAll
+  public List<DowntimeHourCrossCheck> getCrossCheckHourList(
+      AcceleratorShiftAvailability accAvailability, List<DtmHour> dtmHourList) {
+    List<DowntimeHourCrossCheck> checkList = new ArrayList<>();
+
+    List<CcAccHour> ccAccHourList = accAvailability.getHourList();
+
+    for (int i = 0; i < ccAccHourList.size(); i++) {
+      CcAccHour ccAccHour = ccAccHourList.get(i);
+      DtmHour dtmHour = dtmHourList.get(i);
+
+      DowntimeHourCrossCheck checkHour =
+          new DowntimeHourCrossCheck(ccAccHour.getDayAndHour(), ccAccHour, dtmHour);
+      checkList.add(checkHour);
+    }
+
+    return checkList;
+  }
+
+  @PermitAll
+  public List<DtmHour> getDtmHourList(Date startHour, Date endHour) {
+    List<DtmHour> dtmHourList = new ArrayList<>();
+    DateIterator iterator = new DateIterator(startHour, endHour, Calendar.HOUR_OF_DAY);
+
+    while (iterator.hasNext()) {
+      Date hour = iterator.next();
+
+      short blockedSeconds = 0;
+      short tuneSeconds = 0;
+
+      DtmHour dtmHour = new DtmHour(hour, blockedSeconds, tuneSeconds);
+
+      dtmHourList.add(dtmHour);
+    }
+
+    return dtmHourList;
   }
 
   public class DayTotals {

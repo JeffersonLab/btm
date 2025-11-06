@@ -129,6 +129,9 @@
     <div id="cross-check-hourly-tab" class="cross-check-details">
         <div id="cross-check-hourly-detail-panel">
             <div class="accordion">
+                <t:dtm-hourly-cross-check hourCrossCheckList="${downHourlyCrossCheckList}" dtmHourList="${dtmHourList}" btmHourList="${accAvailability.hourList}"/>
+            </div>
+            <div class="accordion">
                 <t:hall-hourly-cross-check hall="A" hourCrossCheckList="${hallAHourCrossCheckList}" expHourList="${expHallAvailabilityList.get(0).hourList}" ccHourList="${hallAvailabilityList.get(0).hourList}"/>
             </div>
             <div class="accordion">
