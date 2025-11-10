@@ -34,18 +34,20 @@
                     <th class="duration-header">PHYSICS</th>
                     <th class="duration-header">INTERNAL DOWN</th>
                     <th class="duration-header">
+                        <fmt:formatDate value="${startHour}" pattern="dd-MMM-yyyy HH:mm" var="startStr"/>
+                        <fmt:formatDate value="${endHour}" pattern="dd-MMM-yyyy HH:mm" var="endStr"/>
                         <c:url var="url" value="${env['FRONTEND_SERVER_URL']}/dtm/reports/downtime-summary">
                             <c:param name="type" value="1"/>
-                            <c:param name="start" value="${param.start}"/>
-                            <c:param name="end" value="${param.end}"/>
+                            <c:param name="start" value="${startStr}"/>
+                            <c:param name="end" value="${endStr}"/>
                         </c:url>
                         <a target="_blank" href="${url}">BLOCKED</a>
                     </th>
                     <th class="duration-header">
                         <c:url var="url" value="${env['FRONTEND_SERVER_URL']}/dtm/reports/downtime-summary">
                             <c:param name="type" value="9"/>
-                            <c:param name="start" value="${param.start}"/>
-                            <c:param name="end" value="${param.end}"/>
+                            <c:param name="start" value="${startStr}"/>
+                            <c:param name="end" value="${endStr}"/>
                         </c:url>
                         <a target="_blank" href="${url}">TUNING</a>
                     </th>
@@ -66,27 +68,24 @@
                     </tr>
                 </tbody>
             </table>
-
-<table  class="data-table">
-    <tbody>
-    <tr>
-        <th>Low Program Check</th>
-        <td class="${downCrossCheck.isLowProgramPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isLowProgramPassed() ? '✔' : 'X'}</td>
-    </tr>
-    <tr>
-        <th>High Tuning Check</th>
-        <td class="${downCrossCheck.isHighTuningPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isHighTuningPassed() ? '✔' : 'X'}</td>
-    </tr>
-    </tbody>
-</table>
+            <table  class="data-table">
+                <tbody>
+                    <tr>
+                        <th>Low Program Check</th>
+                        <td class="${downCrossCheck.isLowProgramPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isLowProgramPassed() ? '✔' : 'X'}</td>
+                    </tr>
+                    <tr>
+                    <th>High Tuning Check</th>
+                        <td class="${downCrossCheck.isHighTuningPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isHighTuningPassed() ? '✔' : 'X'}</td>
+                    </tr>
+                </tbody>
+            </table>
             <ul class="reason-list">
                 <c:if test="${!downCrossCheck.isLowProgramPassed()}">
                     <li>
                         <c:out value="${downCrossCheck.lowProgramMessage}"/>
                     </li>
                 </c:if>
-            </ul>
-            <ul class="reason-list">
                 <c:if test="${!downCrossCheck.isHighTuningPassed()}">
                     <li>
                         <c:out value="${downCrossCheck.highTuningMessage}"/>
