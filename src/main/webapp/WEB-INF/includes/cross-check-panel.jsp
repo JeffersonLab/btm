@@ -12,30 +12,73 @@
     </ul>
     <div id="cross-check-summary-tab" data-signature="${fn:length(signatureList) > 0}">
         <div id="cross-check-summary-panel">
-            <h5>BTM vs DTM Blocked Program Downtime</h5>
-            <table id="dtm-btm-table" class="data-table">
+
+            <table class="data-table stripped-table cross-check-details">
                 <thead>
                 <tr>
-                    <th>BTM Possible Downtime (Physics + Internal Down)</th>
-                    <th>
+                    <th colspan="2">BTM</th>
+                    <th rowspan="3" style="width: 5px;"></th>
+                    <th colspan="2">DTM</th>
+                    <th rowspan="3" style="width: 5px;"></th>
+                    <th colspan="2">COMPUTED</th>
+                </tr>
+                <tr>
+                    <th>{RESEARCH,TUNING,PHYSICS DOWN}</th>
+                    <th>{BLOCKED}</th>
+                    <th>{PHYSICS, INTERNAL DOWN}</th>
+                    <th>{PHYSICS}</th>
+                    <th>{BLOCKED - INTERNAL DOWN}</th>
+                    <th>{PHYSICS - TUNING - PHYSICS DOWN}</th>
+                </tr>
+                <tr>
+                    <th class="duration-header">PHYSICS</th>
+                    <th class="duration-header">INTERNAL DOWN</th>
+                    <th class="duration-header">
                         <c:url var="url" value="${env['FRONTEND_SERVER_URL']}/dtm/reports/downtime-summary">
                             <c:param name="type" value="1"/>
                             <c:param name="start" value="${param.start}"/>
                             <c:param name="end" value="${param.end}"/>
                         </c:url>
-                        <a target="_blank" href="${url}">DTM Blocked Event Downtime ⮺</a>
+                        <a target="_blank" href="${url}">BLOCKED</a>
                     </th>
-                    <th>Cross Check Status</th>
+                    <th class="duration-header">
+                        <c:url var="url" value="${env['FRONTEND_SERVER_URL']}/dtm/reports/downtime-summary">
+                            <c:param name="type" value="9"/>
+                            <c:param name="start" value="${param.start}"/>
+                            <c:param name="end" value="${param.end}"/>
+                        </c:url>
+                        <a target="_blank" href="${url}">TUNING</a>
+                    </th>
+                    <th class="duration-header" title="Blocked - Internal Down">PHYSICS DOWN</th>
+                    <th class="duration-header" title="Physics - Tuning - Physics Down">RESEARCH</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>${btm:formatDurationLossy(accAvailability.shiftTotals.calculatePossibleDowntimeSeconds(), durationUnits)}</td>
-                    <td>${btm:formatDurationLossy(dtmTotals.eventSeconds, durationUnits)}</td>
-                    <td class="${downCrossCheck.isLowProgramPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isLowProgramPassed() ? '✔' : 'X'}</td>
-                </tr>
+                    <tr>
+                        <td><span><c:out value="${btm:formatDuration(accAvailability.shiftTotals.upSeconds, durationUnits)}"/></span></td>
+                        <td><span><c:out value="${btm:formatDuration(accAvailability.shiftTotals.downSeconds, durationUnits)}"/></span></td>
+                        <th></th>
+                        <td><span><c:out value="${btm:formatDuration(dtmTotals.eventSeconds, durationUnits)}"/></span></td>
+                        <td><span><c:out value="${btm:formatDuration(tuningHours.eventSeconds, durationUnits)}"/></span></td>
+                        <th></th>
+                        <td><span><c:out value="${btm:formatDuration(dtmTotals.eventSeconds - accAvailability.shiftTotals.downSeconds, durationUnits)}"/></span></td>
+                        <td><span><c:out value="${btm:formatDuration(accAvailability.shiftTotals.upSeconds - tuningHours.eventSeconds - (dtmTotals.eventSeconds - accAvailability.shiftTotals.downSeconds), durationUnits)}"/></span></td>
+                    </tr>
                 </tbody>
             </table>
+
+<table  class="data-table">
+    <tbody>
+    <tr>
+        <th>Low Program Check</th>
+        <td class="${downCrossCheck.isLowProgramPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isLowProgramPassed() ? '✔' : 'X'}</td>
+    </tr>
+    <tr>
+        <th>High Tuning Check</th>
+        <td class="${downCrossCheck.isHighTuningPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isHighTuningPassed() ? '✔' : 'X'}</td>
+    </tr>
+    </tbody>
+</table>
             <ul class="reason-list">
                 <c:if test="${!downCrossCheck.isLowProgramPassed()}">
                     <li>
@@ -43,32 +86,6 @@
                     </li>
                 </c:if>
             </ul>
-            <h5>BTM vs DTM Tuning Downtime</h5>
-            <table id="tune-check-table" class="data-table">
-                <thead>
-                <tr>
-                    <th>BTM Physics Total</th>
-                    <th>
-                        <c:url var="url" value="${env['FRONTEND_SERVER_URL']}/dtm/reports/downtime-summary">
-                            <c:param name="type" value="9"/>
-                            <c:param name="start" value="${param.start}"/>
-                            <c:param name="end" value="${param.end}"/>
-                        </c:url>
-                        <a target="_blank" href="${url}">DTM Tuning Downtime ⮺</a>
-                    </th>
-                    <th title="Physics - Tuning - (Blocked - Internal Down)">Computed Research</th>
-                    <th>Cross Check Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>${btm:formatDurationLossy(accAvailability.shiftTotals.getUpSeconds(), durationUnits)}</td>
-                    <td>${btm:formatDurationLossy(tuningHours.eventSeconds, durationUnits)}</td>
-                    <td>${btm:formatDurationLossy(accAvailability.shiftTotals.getUpSeconds() - tuningHours.eventSeconds - (dtmTotals.eventSeconds - accAvailability.shiftTotals.getDownSeconds()), durationUnits)}</td>
-                    <td class="${downCrossCheck.isHighTuningPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isHighTuningPassed() ? '✔' : 'X'}</td>
-                </tr>
-                </tbody>
-            </table>
             <ul class="reason-list">
                 <c:if test="${!downCrossCheck.isHighTuningPassed()}">
                     <li>
