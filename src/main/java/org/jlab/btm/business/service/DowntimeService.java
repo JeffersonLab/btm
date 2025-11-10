@@ -144,6 +144,8 @@ public class DowntimeService extends AbstractService<CcAccHour> {
       CcAccHour ccAccHour = ccAccHourList.get(i);
       DtmHour dtmHour = dtmHourList.get(i);
 
+      // System.err.println(ccAccHour + " " + dtmHour);
+
       DowntimeHourCrossCheck checkHour =
           new DowntimeHourCrossCheck(ccAccHour.getDayAndHour(), ccAccHour, dtmHour);
       checkList.add(checkHour);
@@ -153,14 +155,17 @@ public class DowntimeService extends AbstractService<CcAccHour> {
   }
 
   @PermitAll
-  public List<DtmHour> getDtmHourList(Date startHour, Date endHour) {
+  public List<DtmHour> getDtmHourList(Date startHour, Date endHourExclusive) {
+
+    Date endHourInclusive = TimeUtil.addHours(endHourExclusive, -1);
+
     List<DtmHour> dtmHourList = new ArrayList<>();
-    DateIterator iterator = new DateIterator(startHour, endHour, Calendar.HOUR_OF_DAY);
+    DateIterator iterator = new DateIterator(startHour, endHourInclusive, Calendar.HOUR_OF_DAY);
 
     while (iterator.hasNext()) {
       Date hour = iterator.next();
 
-      Date startOfNextHour = TimeUtil.addHours(hour, Calendar.HOUR_OF_DAY);
+      Date startOfNextHour = TimeUtil.addHours(hour, 1);
 
       short blockedSeconds = 0;
       short tuningSeconds = 0;
@@ -173,6 +178,9 @@ public class DowntimeService extends AbstractService<CcAccHour> {
 
       blockedSeconds = (short) blockedTotals.getEventSeconds();
       tuningSeconds = (short) tuningTotals.getEventSeconds();
+
+      // System.out.println(hour + " - " + startOfNextHour + " blockedSeconds: " + blockedSeconds +
+      // " tuningSeconds: " + tuningSeconds);
 
       DtmHour dtmHour = new DtmHour(hour, blockedSeconds, tuningSeconds);
 

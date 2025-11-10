@@ -198,6 +198,6 @@ public class CcAccHour implements Serializable, HourEntity {
 
   @Override
   public String toString() {
-    return "org.jlab.btm.persistence.entity.CcAccHour[ ccAccHourId=" + ccAccHourId + " ]";
+    return "CcAccHour{" + "dayAndHour=" + dayAndHour + '}';
   }
 }

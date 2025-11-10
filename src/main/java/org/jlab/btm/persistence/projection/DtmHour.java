@@ -61,4 +61,16 @@ public class DtmHour extends Hour {
     return (this.getDayAndHour() != null || other.getDayAndHour() == null)
         && (this.getDayAndHour() == null || this.getDayAndHour().equals(other.getDayAndHour()));
   }
+
+  @Override
+  public String toString() {
+    return "DtmHour{"
+        + "dayAndHour="
+        + dayAndHour
+        + ", blockedSeconds="
+        + blockedSeconds
+        + ", tuneSeconds="
+        + tuneSeconds
+        + '}';
+  }
 }
