@@ -137,10 +137,8 @@ public class DowntimeService extends AbstractService<CcAccHour> {
 
   @PermitAll
   public List<DowntimeHourCrossCheck> getCrossCheckHourList(
-      AcceleratorShiftAvailability accAvailability, List<DtmHour> dtmHourList) {
+      List<CcAccHour> ccAccHourList, List<DtmHour> dtmHourList) {
     List<DowntimeHourCrossCheck> checkList = new ArrayList<>();
-
-    List<CcAccHour> ccAccHourList = accAvailability.getHourList();
 
     for (int i = 0; i < ccAccHourList.size(); i++) {
       CcAccHour ccAccHour = ccAccHourList.get(i);
@@ -162,10 +160,21 @@ public class DowntimeService extends AbstractService<CcAccHour> {
     while (iterator.hasNext()) {
       Date hour = iterator.next();
 
-      short blockedSeconds = 0;
-      short tuneSeconds = 0;
+      Date startOfNextHour = TimeUtil.addHours(hour, Calendar.HOUR_OF_DAY);
 
-      DtmHour dtmHour = new DtmHour(hour, blockedSeconds, tuneSeconds);
+      short blockedSeconds = 0;
+      short tuningSeconds = 0;
+
+      DowntimeSummaryTotals blockedTotals =
+          this.reportTotals(hour, startOfNextHour, BigInteger.ONE);
+
+      DowntimeSummaryTotals tuningTotals =
+          this.reportTotals(hour, startOfNextHour, BigInteger.valueOf(9L));
+
+      blockedSeconds = (short) blockedTotals.getEventSeconds();
+      tuningSeconds = (short) tuningTotals.getEventSeconds();
+
+      DtmHour dtmHour = new DtmHour(hour, blockedSeconds, tuningSeconds);
 
       dtmHourList.add(dtmHour);
     }

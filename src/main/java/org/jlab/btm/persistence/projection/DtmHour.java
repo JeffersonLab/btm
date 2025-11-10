@@ -6,13 +6,12 @@ import java.util.Date;
  * @author ryans
  */
 public class DtmHour extends Hour {
+
   private Date dayAndHour;
 
   private short blockedSeconds;
 
   private short tuneSeconds;
-
-  public DtmHour() {}
 
   public DtmHour(Date dayAndHour, short blockedSeconds, short tuneSeconds) {
     this.dayAndHour = dayAndHour;

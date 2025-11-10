@@ -55,34 +55,16 @@
     </table>
     <ul class="reason-list">
         <c:forEach items="${hourCrossCheckList}" var="hour">
-            <c:if test="${hour.highAbu}">
+            <c:if test="${hour.lowProgramPassed}">
                 <li>
                     <span>[<fmt:formatDate value="${hour.dayAndHour}" pattern="HH"/>]</span> <c:out
-                        value="${hour.highAbuMessage}"/>
+                        value="${hour.lowProgramMessage}"/>
                 </li>
             </c:if>
-            <c:if test="${hour.lowAbu}">
+            <c:if test="${hour.highTuningPassed}">
                 <li>
                     <span>[<fmt:formatDate value="${hour.dayAndHour}" pattern="HH"/>]</span> <c:out
-                        value="${hour.lowAbuMessage}"/>
-                </li>
-            </c:if>
-            <c:if test="${hour.lowBanu}">
-                <li>
-                    <span>[<fmt:formatDate value="${hour.dayAndHour}" pattern="HH"/>]</span> <c:out
-                        value="${hour.lowBanuMessage}"/>
-                </li>
-            </c:if>
-            <c:if test="${hour.highBna}">
-                <li>
-                    <span>[<fmt:formatDate value="${hour.dayAndHour}" pattern="HH"/>]</span> <c:out
-                        value="${hour.highBnaMessage}"/>
-                </li>
-            </c:if>
-            <c:if test="${hour.highOff}">
-                <li>
-                    <span>[<fmt:formatDate value="${hour.dayAndHour}" pattern="HH"/>]</span> <c:out
-                        value="${hour.highOffMessage}"/>
+                        value="${hour.highTuningMessage}"/>
                 </li>
             </c:if>
         </c:forEach>

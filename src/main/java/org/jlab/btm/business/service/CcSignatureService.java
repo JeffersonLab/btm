@@ -361,7 +361,7 @@ public class CcSignatureService extends AbstractService<CcSignature> {
     List<DtmHour> dtmHourList = downService.getDtmHourList(startHour, startOfNextShift);
 
     List<DowntimeHourCrossCheck> downHourlyCrossCheckList =
-        downService.getCrossCheckHourList(accAvailability, dtmHourList);
+        downService.getCrossCheckHourList(accAvailability.getDbHourList(), dtmHourList);
 
     request.setAttribute("plan", plan);
     request.setAttribute("accAvailability", accAvailability);
