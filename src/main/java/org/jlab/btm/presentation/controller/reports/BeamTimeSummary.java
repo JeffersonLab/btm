@@ -8,15 +8,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import org.jlab.btm.business.service.CcAccHourService;
+import org.jlab.btm.business.service.DowntimeService;
 import org.jlab.btm.business.service.MonthlyScheduleService;
 import org.jlab.btm.business.service.PdShiftPlanService;
 import org.jlab.btm.persistence.projection.CcAccSum;
+import org.jlab.btm.persistence.projection.DowntimeSummaryTotals;
 import org.jlab.btm.persistence.projection.PacAccSum;
 import org.jlab.btm.persistence.projection.PdAccSum;
 import org.jlab.btm.presentation.util.BtmParamConverter;
@@ -33,6 +36,7 @@ public class BeamTimeSummary extends HttpServlet {
   @EJB CcAccHourService ccService;
   @EJB PdShiftPlanService pdService;
   @EJB MonthlyScheduleService pacService;
+  @EJB DowntimeService downService;
 
   /**
    * Handles the HTTP <code>GET</code> method.
@@ -105,6 +109,7 @@ public class BeamTimeSummary extends HttpServlet {
     CcAccSum ccSum = null;
     PacAccSum pacSum = null;
     PdAccSum pdSum = null;
+    long tuningSeconds = 0;
 
     if (start != null && end != null) {
       if (start.after(end)) {
@@ -117,6 +122,13 @@ public class BeamTimeSummary extends HttpServlet {
       pdSum = pdService.findSummary(start, end);
       pacSum = pacService.findSummary(start, end);
 
+      DowntimeSummaryTotals tuningTotals =
+          downService.reportTotals(start, end, BigInteger.valueOf(9L));
+
+      tuningSeconds = tuningTotals.getEventSeconds();
+
+      // System.err.println("tuningSeconds: " + tuningSeconds);
+
       selectionMessage = TimeUtil.formatSmartRangeSeparateTime(start, end);
     }
 
@@ -126,6 +138,7 @@ public class BeamTimeSummary extends HttpServlet {
     request.setAttribute("ccSum", ccSum);
     request.setAttribute("pdSum", pdSum);
     request.setAttribute("pacSum", pacSum);
+    request.setAttribute("tuningSeconds", tuningSeconds);
 
     request
         .getRequestDispatcher("/WEB-INF/views/reports/beam-time-summary.jsp")
