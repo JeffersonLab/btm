@@ -184,6 +184,18 @@
                                     <th>
                                         <div></div>
                                     </th>
+                                    <td class="legend-label">Delivery</td>
+                                    <td><fmt:formatNumber value="${(ccSum.upSeconds - tuningSeconds) / 3600}" pattern="#,##0.0"/></td>
+                                    <td>(<fmt:formatNumber value="${((ccSum.upSeconds - tuningSeconds) / 3600) / ccSum.periodHours * 100}"
+                                                           pattern="#,##0.0"/>%)
+                                    </td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="data-subrow">
+                                    <th>
+                                        <div></div>
+                                    </th>
                                     <td class="legend-label">Tuning</td>
                                     <td><fmt:formatNumber value="${tuningSeconds / 3600}" pattern="#,##0.0"/></td>
                                     <td>(<fmt:formatNumber value="${(tuningSeconds / 3600) / ccSum.periodHours * 100}"
@@ -196,9 +208,9 @@
                                     <th>
                                         <div></div>
                                     </th>
-                                    <td class="legend-label">Delivery</td>
-                                    <td><fmt:formatNumber value="${(ccSum.upSeconds - tuningSeconds) / 3600}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${((ccSum.upSeconds - tuningSeconds) / 3600) / ccSum.periodHours * 100}"
+                                    <td class="legend-label">Down</td>
+                                    <td><fmt:formatNumber value="${(blockedSeconds - ccSum.downSeconds) / 3600}" pattern="#,##0.0"/></td>
+                                    <td>(<fmt:formatNumber value="${((blockedSeconds - ccSum.downSeconds) / 3600) / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td>-</td>

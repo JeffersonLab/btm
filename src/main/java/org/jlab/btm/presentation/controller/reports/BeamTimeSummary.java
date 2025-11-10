@@ -109,6 +109,7 @@ public class BeamTimeSummary extends HttpServlet {
     CcAccSum ccSum = null;
     PacAccSum pacSum = null;
     PdAccSum pdSum = null;
+    long blockedSeconds = 0;
     long tuningSeconds = 0;
 
     if (start != null && end != null) {
@@ -122,9 +123,13 @@ public class BeamTimeSummary extends HttpServlet {
       pdSum = pdService.findSummary(start, end);
       pacSum = pacService.findSummary(start, end);
 
+      DowntimeSummaryTotals blockedTotals =
+          downService.reportTotals(start, end, BigInteger.valueOf(1L));
+
       DowntimeSummaryTotals tuningTotals =
           downService.reportTotals(start, end, BigInteger.valueOf(9L));
 
+      blockedSeconds = blockedTotals.getEventSeconds();
       tuningSeconds = tuningTotals.getEventSeconds();
 
       // System.err.println("tuningSeconds: " + tuningSeconds);
@@ -138,6 +143,7 @@ public class BeamTimeSummary extends HttpServlet {
     request.setAttribute("ccSum", ccSum);
     request.setAttribute("pdSum", pdSum);
     request.setAttribute("pacSum", pacSum);
+    request.setAttribute("blockedSeconds", blockedSeconds);
     request.setAttribute("tuningSeconds", tuningSeconds);
 
     request
