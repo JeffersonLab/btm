@@ -1,13 +1,16 @@
 package org.jlab.btm.persistence.projection;
 
+import java.util.Date;
+import org.jlab.btm.persistence.entity.CcAccHour;
 import org.jlab.btm.persistence.enumeration.DurationUnits;
 import org.jlab.btm.presentation.util.BtmFunctions;
 
 /**
  * @author ryans
  */
-public class CcDowntimeCrossCheck {
+public class DowntimeHourCrossCheck {
 
+  private static final int HALF_HOUR_OF_SECONDS = 1800;
   private static final int TEN_MINUTES_OF_SECONDS = 600;
 
   private final boolean passed;
@@ -17,34 +20,40 @@ public class CcDowntimeCrossCheck {
   private final String lowProgramMessage;
   private final String highTuningMessage;
 
-  public CcDowntimeCrossCheck(CcAccShiftTotals acc, long dtmEventDownSeconds, long tuningSeconds) {
+  private final Date dayAndHour;
 
-    int possibleDowntimeSeconds = acc.calculatePossibleDowntimeSeconds();
-    int upSeconds = acc.getUpSeconds();
+  public DowntimeHourCrossCheck(Date dayAndHour, CcAccHour accHour, DtmHour dtmHour) {
+    this.dayAndHour = dayAndHour;
+
+    int possibleDowntimeSeconds = accHour.getUpSeconds() + accHour.getDownSeconds();
+    int upSeconds = accHour.getUpSeconds();
+
+    int blockedSeconds = dtmHour.getBlockedSeconds();
+    int tuneSeconds = dtmHour.getTuneSeconds();
 
     lowProgramMessage =
         "DTM blocked event down ("
-            + BtmFunctions.formatDuration((int) dtmEventDownSeconds, DurationUnits.HOURS)
+            + BtmFunctions.formatDuration((int) blockedSeconds, DurationUnits.HOURS)
             + " hours) is significantly greater than BTM possible down time [PHYSICS + INTERNAL DOWN] ("
             + BtmFunctions.formatDuration(possibleDowntimeSeconds, DurationUnits.HOURS)
             + " hours)";
 
     highTuningMessage =
         "DTM tuning event down ("
-            + BtmFunctions.formatDuration((int) tuningSeconds, DurationUnits.HOURS)
+            + BtmFunctions.formatDuration((int) tuneSeconds, DurationUnits.HOURS)
             + " hours) is significantly greater than BTM possible Tuning [PHYSICS] ("
             + BtmFunctions.formatDuration(upSeconds, DurationUnits.HOURS)
             + " hours)";
 
-    lowProgramPassed = possibleDowntimeSeconds >= dtmEventDownSeconds - TEN_MINUTES_OF_SECONDS;
+    lowProgramPassed = possibleDowntimeSeconds >= blockedSeconds - TEN_MINUTES_OF_SECONDS;
 
-    highTuningPassed = upSeconds >= tuningSeconds - TEN_MINUTES_OF_SECONDS;
+    highTuningPassed = upSeconds >= tuneSeconds - TEN_MINUTES_OF_SECONDS;
 
     passed = lowProgramPassed && highTuningPassed;
   }
 
-  public boolean isPassed() {
-    return passed;
+  public Date getDayAndHour() {
+    return dayAndHour;
   }
 
   public boolean isLowProgramPassed() {

@@ -12,12 +12,19 @@
     </ul>
     <div id="cross-check-summary-tab" data-signature="${fn:length(signatureList) > 0}">
         <div id="cross-check-summary-panel">
-            <h5>BTM vs DTM</h5>
+            <h5>BTM vs DTM Blocked Program Downtime</h5>
             <table id="dtm-btm-table" class="data-table">
                 <thead>
                 <tr>
-                    <th>BTM Possible Downtime</th>
-                    <th>DTM Event Downtime</th>
+                    <th>BTM Possible Downtime (Physics + Internal Down)</th>
+                    <th>
+                        <c:url var="url" value="${env['FRONTEND_SERVER_URL']}/dtm/reports/downtime-summary">
+                            <c:param name="type" value="1"/>
+                            <c:param name="start" value="${param.start}"/>
+                            <c:param name="end" value="${param.end}"/>
+                        </c:url>
+                        <a target="_blank" href="${url}">DTM Blocked Event Downtime ⮺</a>
+                    </th>
                     <th>Cross Check Status</th>
                 </tr>
                 </thead>
@@ -25,14 +32,47 @@
                 <tr>
                     <td>${btm:formatDurationLossy(accAvailability.shiftTotals.calculatePossibleDowntimeSeconds(), durationUnits)}</td>
                     <td>${btm:formatDurationLossy(dtmTotals.eventSeconds, durationUnits)}</td>
-                    <td class="${downCrossCheck.isPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isPassed() ? '✔' : 'X'}</td>
+                    <td class="${downCrossCheck.isLowProgramPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isLowProgramPassed() ? '✔' : 'X'}</td>
                 </tr>
                 </tbody>
             </table>
             <ul class="reason-list">
-                <c:if test="${!downCrossCheck.isPassed()}">
+                <c:if test="${!downCrossCheck.isLowProgramPassed()}">
                     <li>
                         <c:out value="${downCrossCheck.lowProgramMessage}"/>
+                    </li>
+                </c:if>
+            </ul>
+            <h5>BTM vs DTM Tuning Downtime</h5>
+            <table id="tune-check-table" class="data-table">
+                <thead>
+                <tr>
+                    <th>BTM Physics Total</th>
+                    <th>
+                        <c:url var="url" value="${env['FRONTEND_SERVER_URL']}/dtm/reports/downtime-summary">
+                            <c:param name="type" value="9"/>
+                            <c:param name="start" value="${param.start}"/>
+                            <c:param name="end" value="${param.end}"/>
+                        </c:url>
+                        <a target="_blank" href="${url}">DTM Tuning Downtime ⮺</a>
+                    </th>
+                    <th>Computed Delivered Physics</th>
+                    <th>Cross Check Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>${btm:formatDurationLossy(accAvailability.shiftTotals.getUpSeconds(), durationUnits)}</td>
+                    <td>${btm:formatDurationLossy(tuningHours.eventSeconds, durationUnits)}</td>
+                    <td>${btm:formatDurationLossy(accAvailability.shiftTotals.getUpSeconds() - tuningHours.eventSeconds, durationUnits)}</td>
+                    <td class="${downCrossCheck.isHighTuningPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isHighTuningPassed() ? '✔' : 'X'}</td>
+                </tr>
+                </tbody>
+            </table>
+            <ul class="reason-list">
+                <c:if test="${!downCrossCheck.isHighTuningPassed()}">
+                    <li>
+                        <c:out value="${downCrossCheck.highTuningMessage}"/>
                     </li>
                 </c:if>
             </ul>
@@ -88,6 +128,9 @@
     </div>
     <div id="cross-check-hourly-tab" class="cross-check-details">
         <div id="cross-check-hourly-detail-panel">
+            <div class="accordion">
+                <t:dtm-hourly-cross-check hourCrossCheckList="${downHourlyCrossCheckList}" dtmHourList="${dtmHourList}" btmHourList="${accAvailability.hourList}"/>
+            </div>
             <div class="accordion">
                 <t:hall-hourly-cross-check hall="A" hourCrossCheckList="${hallAHourCrossCheckList}" expHourList="${expHallAvailabilityList.get(0).hourList}" ccHourList="${hallAvailabilityList.get(0).hourList}"/>
             </div>

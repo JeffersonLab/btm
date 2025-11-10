@@ -33,3 +33,7 @@ CREATE SEQUENCE BTM_OWNER.RUN_ID
     NOCYCLE
     NOCACHE
     ORDER;
+
+-- Event First Incident
+insert into BTM_OWNER.EVENT_FIRST_INCIDENT values (1, 'Testing Blocked', null, 1, 1, 'Testing Blocked', sysdate, 1);
+insert into BTM_OWNER.EVENT_FIRST_INCIDENT values (2, 'Testing Tuning', null, 9, 2, 'Testing Tuning', sysdate, 1);

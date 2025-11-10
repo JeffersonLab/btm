@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.servlet.http.HttpServletRequest;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -345,10 +346,22 @@ public class CcSignatureService extends AbstractService<CcSignature> {
             multiplicityAvailability.getShiftTotals());
 
     // Downtime check
-    DowntimeSummaryTotals dtmTotals = downService.reportTotals(startHour, startOfNextShift);
+    DowntimeSummaryTotals dtmTotals =
+        downService.reportTotals(startHour, startOfNextShift, BigInteger.ONE);
+
+    DowntimeSummaryTotals tuningHours =
+        downService.reportTotals(startHour, startOfNextShift, BigInteger.valueOf(9L));
 
     CcDowntimeCrossCheck downCrossCheck =
-        new CcDowntimeCrossCheck(accAvailability.getShiftTotals(), dtmTotals.getEventSeconds());
+        new CcDowntimeCrossCheck(
+            accAvailability.getShiftTotals(),
+            dtmTotals.getEventSeconds(),
+            tuningHours.getEventSeconds());
+
+    List<DtmHour> dtmHourList = downService.getDtmHourList(startHour, startOfNextShift);
+
+    List<DowntimeHourCrossCheck> downHourlyCrossCheckList =
+        downService.getCrossCheckHourList(accAvailability.getDbHourList(), dtmHourList);
 
     request.setAttribute("plan", plan);
     request.setAttribute("accAvailability", accAvailability);
@@ -368,10 +381,14 @@ public class CcSignatureService extends AbstractService<CcSignature> {
     request.setAttribute("multiCrossCheck", multiCrossCheck);
     request.setAttribute("downCrossCheck", downCrossCheck);
     request.setAttribute("dtmTotals", dtmTotals);
+    request.setAttribute("tuningHours", tuningHours);
     request.setAttribute("hallAHourCrossCheckList", hallAHourCrossCheckList);
     request.setAttribute("hallBHourCrossCheckList", hallBHourCrossCheckList);
     request.setAttribute("hallCHourCrossCheckList", hallCHourCrossCheckList);
     request.setAttribute("hallDHourCrossCheckList", hallDHourCrossCheckList);
+
+    request.setAttribute("dtmHourList", dtmHourList);
+    request.setAttribute("downHourlyCrossCheckList", downHourlyCrossCheckList);
 
     // DEBUG
     /*for(int i = 0; i < hallAvailabilityList.size(); i++) {

@@ -5,13 +5,14 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import org.jlab.btm.persistence.entity.CcAccHour;
-import org.jlab.btm.persistence.projection.DowntimeSummaryTotals;
+import org.jlab.btm.persistence.projection.*;
 import org.jlab.smoothness.business.util.DateIterator;
 import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.util.JPAUtil;
@@ -37,18 +38,19 @@ public class DowntimeService extends AbstractService<CcAccHour> {
   }
 
   @PermitAll
-  public DowntimeSummaryTotals reportTotals(Date start, Date end) {
+  public DowntimeSummaryTotals reportTotals(Date start, Date end, BigInteger eventTypeId) {
     Query q =
         em.createNativeQuery(
             "select sum(downtime_seconds) as downtime_seconds "
                 + "from (select "
                 + "btm_owner.interval_to_seconds(least(nvl(a.time_up, sysdate), :end) - greatest(a.time_down, :start)) as downtime_seconds "
                 + "from btm_owner.event_first_incident a "
-                + "where a.event_type_id = 1 "
+                + "where a.event_type_id = :typeId "
                 + "and a.time_down < :end "
                 + "and nvl(a.time_up, sysdate) >= :start "
                 + "union all (select 0 from dual))");
 
+    q.setParameter("typeId", eventTypeId);
     q.setParameter("start", start);
     q.setParameter("end", end);
 
@@ -88,7 +90,7 @@ public class DowntimeService extends AbstractService<CcAccHour> {
       Date realStart = (startDayHourZero.getTime() == day.getTime()) ? start : startOfDay;
       Date realEnd = iterator.hasNext() ? startOfNextDay : end;
 
-      DowntimeSummaryTotals totals = this.reportTotals(realStart, realEnd);
+      DowntimeSummaryTotals totals = this.reportTotals(realStart, realEnd, BigInteger.ONE);
       DayTotals mt = new DayTotals();
       mt.day = startOfDay;
       mt.totals = totals;
@@ -123,7 +125,7 @@ public class DowntimeService extends AbstractService<CcAccHour> {
       Date realStart = (startMonthDayOne.getTime() == month.getTime()) ? start : startOfMonth;
       Date realEnd = iterator.hasNext() ? startOfNextMonth : end;
 
-      DowntimeSummaryTotals totals = this.reportTotals(realStart, realEnd);
+      DowntimeSummaryTotals totals = this.reportTotals(realStart, realEnd, BigInteger.ONE);
       MonthTotals mt = new MonthTotals();
       mt.month = startOfMonth;
       mt.totals = totals;
@@ -131,6 +133,61 @@ public class DowntimeService extends AbstractService<CcAccHour> {
     }
 
     return monthTotals;
+  }
+
+  @PermitAll
+  public List<DowntimeHourCrossCheck> getCrossCheckHourList(
+      List<CcAccHour> ccAccHourList, List<DtmHour> dtmHourList) {
+    List<DowntimeHourCrossCheck> checkList = new ArrayList<>();
+
+    for (int i = 0; i < ccAccHourList.size(); i++) {
+      CcAccHour ccAccHour = ccAccHourList.get(i);
+      DtmHour dtmHour = dtmHourList.get(i);
+
+      // System.err.println(ccAccHour + " " + dtmHour);
+
+      DowntimeHourCrossCheck checkHour =
+          new DowntimeHourCrossCheck(ccAccHour.getDayAndHour(), ccAccHour, dtmHour);
+      checkList.add(checkHour);
+    }
+
+    return checkList;
+  }
+
+  @PermitAll
+  public List<DtmHour> getDtmHourList(Date startHour, Date endHourExclusive) {
+
+    Date endHourInclusive = TimeUtil.addHours(endHourExclusive, -1);
+
+    List<DtmHour> dtmHourList = new ArrayList<>();
+    DateIterator iterator = new DateIterator(startHour, endHourInclusive, Calendar.HOUR_OF_DAY);
+
+    while (iterator.hasNext()) {
+      Date hour = iterator.next();
+
+      Date startOfNextHour = TimeUtil.addHours(hour, 1);
+
+      short blockedSeconds = 0;
+      short tuningSeconds = 0;
+
+      DowntimeSummaryTotals blockedTotals =
+          this.reportTotals(hour, startOfNextHour, BigInteger.ONE);
+
+      DowntimeSummaryTotals tuningTotals =
+          this.reportTotals(hour, startOfNextHour, BigInteger.valueOf(9L));
+
+      blockedSeconds = (short) blockedTotals.getEventSeconds();
+      tuningSeconds = (short) tuningTotals.getEventSeconds();
+
+      // System.out.println(hour + " - " + startOfNextHour + " blockedSeconds: " + blockedSeconds +
+      // " tuningSeconds: " + tuningSeconds);
+
+      DtmHour dtmHour = new DtmHour(hour, blockedSeconds, tuningSeconds);
+
+      dtmHourList.add(dtmHour);
+    }
+
+    return dtmHourList;
   }
 
   public class DayTotals {
