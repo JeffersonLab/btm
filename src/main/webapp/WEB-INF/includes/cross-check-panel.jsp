@@ -56,7 +56,7 @@
                         </c:url>
                         <a target="_blank" href="${url}">DTM Tuning Downtime ⮺</a>
                     </th>
-                    <th>Computed Delivered Physics</th>
+                    <th title="Physics - Tuning - (Blocked - Internal Down)">Computed Research</th>
                     <th>Cross Check Status</th>
                 </tr>
                 </thead>
@@ -64,7 +64,7 @@
                 <tr>
                     <td>${btm:formatDurationLossy(accAvailability.shiftTotals.getUpSeconds(), durationUnits)}</td>
                     <td>${btm:formatDurationLossy(tuningHours.eventSeconds, durationUnits)}</td>
-                    <td>${btm:formatDurationLossy(accAvailability.shiftTotals.getUpSeconds() - tuningHours.eventSeconds, durationUnits)}</td>
+                    <td>${btm:formatDurationLossy(accAvailability.shiftTotals.getUpSeconds() - tuningHours.eventSeconds - (dtmTotals.eventSeconds - accAvailability.shiftTotals.getDownSeconds()), durationUnits)}</td>
                     <td class="${downCrossCheck.isHighTuningPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isHighTuningPassed() ? '✔' : 'X'}</td>
                 </tr>
                 </tbody>

@@ -170,7 +170,7 @@
                                     <th>
                                         <div class="color-box"></div>
                                     </th>
-                                    <td class="legend-label">Physics</td>
+                                    <td class="legend-label" title="Research + Tuning + Down">Physics</td>
                                     <td><fmt:formatNumber value="${ccSum.upSeconds / 3600}" pattern="#,##0.0"/></td>
                                     <td>(<fmt:formatNumber value="${(ccSum.upSeconds / 3600) / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
@@ -184,9 +184,9 @@
                                     <th>
                                         <div></div>
                                     </th>
-                                    <td class="legend-label">Delivery</td>
-                                    <td><fmt:formatNumber value="${(ccSum.upSeconds - tuningSeconds) / 3600}" pattern="#,##0.0"/></td>
-                                    <td>(<fmt:formatNumber value="${((ccSum.upSeconds - tuningSeconds) / 3600) / ccSum.periodHours * 100}"
+                                    <td class="legend-label">Research</td>
+                                    <td><fmt:formatNumber value="${(ccSum.upSeconds - tuningSeconds - (blockedSeconds - ccSum.downSeconds)) / 3600}" pattern="#,##0.0"/></td>
+                                    <td>(<fmt:formatNumber value="${((ccSum.upSeconds - tuningSeconds - (blockedSeconds - ccSum.downSeconds)) / 3600) / ccSum.periodHours * 100}"
                                                            pattern="#,##0.0"/>%)
                                     </td>
                                     <td>-</td>

@@ -17,21 +17,23 @@
             <th rowspan="3" style="width: 5px;"></th>
             <th colspan="2">DTM</th>
             <th rowspan="3" style="width: 5px;"></th>
-            <th>COMPUTED</th>
+            <th colspan="2">COMPUTED</th>
         </tr>
         <tr>
-            <th>{DELIVERED,BLOCKED,TUNING}</th>
+            <th>{RESEARCH,TUNING,PHYSICS DOWN}</th>
             <th>{BLOCKED}</th>
             <th>{PHYSICS, INTERNAL DOWN}</th>
             <th>{PHYSICS}</th>
-            <th>{PHYSICS-TUNING}</th>
+            <th>{BLOCKED - INTERNAL DOWN}</th>
+            <th>{PHYSICS - TUNING - PHYSICS DOWN}</th>
         </tr>
         <tr>
             <th class="duration-header">PHYSICS</th>
             <th class="duration-header">INTERNAL DOWN</th>
             <th class="duration-header">BLOCKED</th>
             <th class="duration-header">TUNING</th>
-            <th class="duration-header">DELIVERED</th>
+            <th class="duration-header" title="Blocked - Internal Down">PHYSICS DOWN</th>
+            <th class="duration-header" title="Physics - Tuning - Physics Down">RESEARCH</th>
         </tr>
         </thead>
         <tbody>
@@ -48,7 +50,8 @@
                     <td><span><c:out value="${btm:formatDuration(dtmHour.blockedSeconds, durationUnits)}"/></span></td>
                     <td><span><c:out value="${btm:formatDuration(dtmHour.tuneSeconds, durationUnits)}"/></span></td>
                     <th></th>
-                    <td><span><c:out value="${btm:formatDuration(btmHour.upSeconds - dtmHour.tuneSeconds, durationUnits)}"/></span></td>
+                    <td><span><c:out value="${btm:formatDuration(dtmHour.blockedSeconds - btmHour.downSeconds, durationUnits)}"/></span></td>
+                    <td><span><c:out value="${btm:formatDuration(btmHour.upSeconds - dtmHour.tuneSeconds - (dtmHour.blockedSeconds - btmHour.downSeconds), durationUnits)}"/></span></td>
                 </tr>
             </c:forEach>
         </tbody>
