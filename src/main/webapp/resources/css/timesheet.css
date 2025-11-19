@@ -251,6 +251,10 @@ table.editable-table tbody td span {
     text-align: right;
 }
 
+#dtm-btm-table td:last-child {
+    width: 100px;
+}
+
 #acc-summary-table th {
     width: 75px;
 }

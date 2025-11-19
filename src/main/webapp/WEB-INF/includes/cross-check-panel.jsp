@@ -68,7 +68,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table  class="data-table">
+            <table id="dtm-btm-table"  class="data-table">
                 <tbody>
                     <tr>
                         <th title="The sum of physics + internal down + 10 minutes is less than blocked event downtime; physics + internal down + 10 minutes < blocked">Low Program Check</th>
@@ -144,7 +144,7 @@
     </div>
     <div id="cross-check-hourly-tab" class="cross-check-details">
         <div id="cross-check-hourly-detail-panel">
-            <div class="accordion">
+            <div id="dtm-btm-hourly-accordion" class="accordion">
                 <t:dtm-hourly-cross-check hourCrossCheckList="${downHourlyCrossCheckList}" dtmHourList="${dtmHourList}" btmHourList="${accAvailability.hourList}"/>
             </div>
             <div class="accordion">

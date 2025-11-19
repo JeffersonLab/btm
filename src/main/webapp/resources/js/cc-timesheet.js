@@ -1328,17 +1328,8 @@ $(document).on("click", "#comparison-table .ui-state-error", function () {
 });
 
 $(document).on("click", "#dtm-btm-table .ui-state-error", function () {
-    var startFmt = $("#comparison-table").attr("data-start"),
-        endFmt = $("#comparison-table").attr("data-end"),
-        url = '/dtm/reports/event-downtime?transport='
-            + '&start=' + encodeURIComponent(startFmt)
-            + '&end=' + encodeURIComponent(endFmt)
-            + '&type=1'
-            + '&chart=table'
-            + '&data=downtime'
-            + '&qualified=';
-
-    window.open(url);
+    $('#cross-check-section a[href="#cross-check-hourly-tab"]')[0].click();
+    jlab.btm.showAccordionPanel($('#dtm-btm-hourly-accordion h3'))
 });
 
 $(function () {
