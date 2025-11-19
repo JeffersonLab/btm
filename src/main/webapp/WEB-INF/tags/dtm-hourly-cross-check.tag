@@ -56,6 +56,28 @@
             </c:forEach>
         </tbody>
     </table>
+    <h5>Downtime Check</h5>
+    <table class="data-table stripped-table">
+        <thead>
+        <tr>
+            <th></th>
+            <th title="The sum of physics + internal down + 10 minutes is less than blocked event downtime; physics + internal down + 10 minutes < blocked">
+                Low Program
+            </th>
+            <th title="The sum of physics + 10 minutes is less than tuning event downtime; physics + 10 minutes < tuning">High Tuning</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${hourCrossCheckList}" var="hour">
+            <tr>
+            <fmt:formatDate value="${hour.dayAndHour}" pattern="dd MMM yyyy HH:mm z" var="fullDate"/>
+            <th title="${fullDate}"><fmt:formatDate value="${hour.dayAndHour}" pattern="HH"/></th>
+            <td class="${not hour.lowProgramPassed ? 'ui-state-error' : ''}">${not hour.lowProgramPassed ? 'X' : '✔'}</td>
+            <td class="${not hour.highTuningPassed ? 'ui-state-error' : ''}">${not hour.highTuningPassed ? 'X' : '✔'}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
     <ul class="reason-list">
         <c:forEach items="${hourCrossCheckList}" var="hour">
             <c:if test="${not hour.lowProgramPassed}">

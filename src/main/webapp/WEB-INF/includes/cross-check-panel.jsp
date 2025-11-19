@@ -75,7 +75,7 @@
                         <td class="${downCrossCheck.isLowProgramPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isLowProgramPassed() ? '✔' : 'X'}</td>
                     </tr>
                     <tr>
-                    <th title="The sume of physics + 10 minutes is less than tuning event downtime; physics + 10 minutes < tuning">High Tuning Check</th>
+                    <th title="The sum of physics + 10 minutes is less than tuning event downtime; physics + 10 minutes < tuning">High Tuning Check</th>
                         <td class="${downCrossCheck.isHighTuningPassed() ? '' : 'ui-state-error'}">${downCrossCheck.isHighTuningPassed() ? '✔' : 'X'}</td>
                     </tr>
                 </tbody>
