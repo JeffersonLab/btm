@@ -58,13 +58,13 @@
     </table>
     <ul class="reason-list">
         <c:forEach items="${hourCrossCheckList}" var="hour">
-            <c:if test="${hour.lowProgramPassed}">
+            <c:if test="${not hour.lowProgramPassed}">
                 <li>
                     <span>[<fmt:formatDate value="${hour.dayAndHour}" pattern="HH"/>]</span> <c:out
                         value="${hour.lowProgramMessage}"/>
                 </li>
             </c:if>
-            <c:if test="${hour.highTuningPassed}">
+            <c:if test="${not hour.highTuningPassed}">
                 <li>
                     <span>[<fmt:formatDate value="${hour.dayAndHour}" pattern="HH"/>]</span> <c:out
                         value="${hour.highTuningMessage}"/>
