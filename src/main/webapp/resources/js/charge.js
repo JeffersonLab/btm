@@ -48,26 +48,15 @@ jlab.ratioData = [{
         }
     },
     {
-        label: 'Hall A Scheduled',
-        color: 'blue',
-        data: jlab.series.charge.scheduled.a.data,
-        lines: {show: true}
-    },
-    {
         label: 'Hall B Delivered',
         color: 'red',
+        yaxis: 2,
         data: jlab.series.charge.delivered.b.data,
         dashes: {
             show: true,
             lineWidth: 4,
             dashLength: 10
         }
-    },
-    {
-        label: 'Hall B Scheduled',
-        color: 'red',
-        data: jlab.series.charge.scheduled.b.data,
-        lines: {show: true}
     },
     {
         label: 'Hall C Delivered',
@@ -80,26 +69,15 @@ jlab.ratioData = [{
         }
     },
     {
-        label: 'Hall C Scheduled',
-        color: 'green',
-        data: jlab.series.charge.scheduled.c.data,
-        lines: {show: true}
-    },
-    {
         label: 'Hall D Delivered',
         color: 'orange',
+        yaxis: 2,
         data: jlab.series.charge.delivered.d.data,
         dashes: {
             show: true,
             lineWidth: 4,
             dashLength: 10
         }
-    },
-    {
-        label: 'Hall D Scheduled',
-        color: 'orange',
-        data: jlab.series.charge.scheduled.d.data,
-        lines: {show: true}
     }];
 
 jlab.hallCurrentData = [
@@ -186,7 +164,7 @@ jlab.addYAxisLabelExtra = function (placeholder, label) {
 
 jlab.addAxisLabels = function () {
     /*jlab.addXAxisLabel("Time");*/
-    jlab.addYAxisLabel("Percent of Scheduled");
+    jlab.addYAxisLabel("MilliCoulombs (B & D), Coulombs (A & C)");
     jlab.addYAxisLabelExtra($("#charta-charge-placeholder"), "Coulombs");
     jlab.addYAxisLabelExtra($("#chartb-charge-placeholder"), "MilliCoulombs");
     jlab.addYAxisLabelExtra($("#chartc-charge-placeholder"), "Coulombs");
@@ -458,16 +436,6 @@ jlab.updateKey = function() {
             max = stores[i].data[stores[i].data.length - 1][1],
                 num = jlab.toScientificNotationHTML(max, units[i]);
         }
-        $(this).find("td:nth-child(4)").html(num);
-    });
-
-
-    stores = [jlab.scheduledATotal, jlab.scheduledBTotal, jlab.scheduledCTotal, jlab.scheduledDTotal];
-    units = ['C', 'mC', 'C', 'mC'];
-
-    $(".chart-legend").find("tr:not(.sub-head-row)").each(function(i, row){
-        var max = stores[i][1],
-            num = jlab.toScientificNotationHTML(max, units[i]);
         $(this).find("td:nth-child(3)").html(num);
     });
 }
@@ -499,59 +467,28 @@ jlab.initLineChart = function() {
     jlab.fetchMultiple(params);
 };
 
-jlab.createRatioData = function(scale) {
+jlab.createMainChartData = function(scale) {
     var deliveredA = jlab.ratioData[0].data = [];
-    var scheduledA = jlab.ratioData[1].data = [];
-    var deliveredB = jlab.ratioData[2].data = [];
-    var scheduledB = jlab.ratioData[3].data = [];
-    var deliveredC = jlab.ratioData[4].data = [];
-    var scheduledC = jlab.ratioData[5].data = [];
-    var deliveredD = jlab.ratioData[6].data = [];
-    var scheduledD = jlab.ratioData[7].data = [];
+    var deliveredB = jlab.ratioData[1].data = [];
+    var deliveredC = jlab.ratioData[2].data = [];
+    var deliveredD = jlab.ratioData[3].data = [];
 
-    var source = jlab.series.charge.scheduled.a.data;
-    jlab.scheduledATotal = 0;
-    if(source.length > 0) {
-        jlab.scheduledATotal = [source[source.length - 1][0], source[source.length - 1][1] * scale];
-    }
 
-    source = jlab.series.charge.scheduled.b.data;
-    jlab.scheduledBTotal = 0;
-    if(source.length > 0) {
-        jlab.scheduledBTotal = [source[source.length - 1][0], source[source.length - 1][1] * scale];
-    }
+    jlab.createRatioForSeries(jlab.series.charge.delivered.a.data, deliveredA, 0.01);
+    jlab.createRatioForSeries(jlab.series.charge.delivered.b.data, deliveredB, 0.01);
+    jlab.createRatioForSeries(jlab.series.charge.delivered.c.data, deliveredC, 0.01);
+    jlab.createRatioForSeries(jlab.series.charge.delivered.d.data, deliveredD, 0.01);
 
-    source = jlab.series.charge.scheduled.c.data;
-    jlab.scheduledCTotal = 0;
-    if(source.length > 0) {
-        jlab.scheduledCTotal = [source[source.length - 1][0], source[source.length - 1][1] * scale];
-    }
-
-    source = jlab.series.charge.scheduled.d.data;
-    jlab.scheduledDTotal = 0;
-    if(source.length > 0) {
-        jlab.scheduledDTotal = [source[source.length - 1][0], source[source.length - 1][1] * scale];
-    }
-
-    jlab.createRatioForSeries(jlab.series.charge.delivered.a.data, deliveredA, jlab.scheduledATotal, 1);
-    jlab.createRatioForSeries(jlab.series.charge.scheduled.a.data, scheduledA, jlab.scheduledATotal, scale);
-    jlab.createRatioForSeries(jlab.series.charge.delivered.b.data, deliveredB, jlab.scheduledBTotal, 1);
-    jlab.createRatioForSeries(jlab.series.charge.scheduled.b.data, scheduledB, jlab.scheduledBTotal, scale);
-    jlab.createRatioForSeries(jlab.series.charge.delivered.c.data, deliveredC, jlab.scheduledCTotal, 1);
-    jlab.createRatioForSeries(jlab.series.charge.scheduled.c.data, scheduledC, jlab.scheduledCTotal, scale);
-    jlab.createRatioForSeries(jlab.series.charge.delivered.d.data, deliveredD, jlab.scheduledDTotal, 1);
-    jlab.createRatioForSeries(jlab.series.charge.scheduled.d.data, scheduledD, jlab.scheduledDTotal, scale);
 };
 
-jlab.createRatioForSeries = function(source, out, scheduledTotal, scale) {
+jlab.createRatioForSeries = function(source, out, scale) {
     if(source.length > 0) {
-        var totalRecord = scheduledTotal;
         //var totalRecord = source[source.length - 1];
         for(var i = 0; i < source.length; i++) {
             var record = source[i];
             //var ratio = record[1];
             //var ratio = totalRecord[1];
-            var ratio = (record[1] * scale) / (totalRecord[1]) * 100;
+            var ratio = (record[1] * scale) * 100;
             out.push([record[0], ratio]);
         }
     }
@@ -572,12 +509,14 @@ jlab.doLineChart = function () {
         scale = 1;
     }
 
-    jlab.createRatioData(scale);
+    jlab.createMainChartData(scale);
 
     /*console.log(jlab.ratioData);*/
     /*console.log(jlab.series);*/
 
     $(".chart-wrap").addClass("has-y-axis-label").addClass("has-x-axis-label");
+
+    console.log(jlab.ratioData);
 
     jlab.ratioChart = $.plot($("#chart-placeholder"), jlab.ratioData, {
         lines: {
@@ -595,6 +534,8 @@ jlab.doLineChart = function () {
             }
         },
         yaxes: [{
+            min: 0
+        }, {
             min: 0
         }, {
             position: 'right', /*Last x-axis label may wrap if we don't do this*/
@@ -973,7 +914,7 @@ jlab.scaleScheduled = function(scale) {
 
     jlab.scaleHallScheduled(scale);
 
-    jlab.createRatioData(scale);
+    jlab.createMainChartData(scale);
 
     jlab.redrawAll();
 };

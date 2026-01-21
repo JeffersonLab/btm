@@ -101,14 +101,6 @@
                     <fieldset>
                         <legend>Filter</legend>
                         <s:date-range/>
-                        <ul class="key-value-list">
-                            <li>
-                                <div class="li-key"><label for="scale">Schedule Scale Factor</label></div>
-                                <div class="li-value">
-                                    <input id="scale" name="scale" type="number" value="${fn:escapeXml(param.scale)}" min="0.1" max="2" step="0.1"/>
-                                </div>
-                            </li>
-                        </ul>
                     </fieldset>
                     <input class="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
@@ -127,7 +119,6 @@
                                         <tbody>
                                         <tr class="sub-head-row">
                                             <th colspan="2"><div class="key-header hall-key-header">Hall</div></th>
-                                            <th><div class="key-header scheduled-key-header">Scheduled</div></th>
                                             <th><div class="key-header delivered-key-header">Delivered</div></th>
                                         </tr>
                                         <tr>
@@ -136,14 +127,12 @@
                                             </th>
                                             <th>A</th>
                                             <td></td>
-                                            <td></td>
                                         </tr>
                                         <tr>
                                             <th>
                                                 <div class="color-box" style="background-color: red;"></div>
                                             </th>
                                             <th>B</th>
-                                            <td></td>
                                             <td></td>
                                         </tr>
                                         <tr>
@@ -152,14 +141,12 @@
                                             </th>
                                             <th>C</th>
                                             <td></td>
-                                            <td></td>
                                         </tr>
                                         <tr>
                                             <th>
                                                 <div class="color-box" style="background-color: orange;"></div>
                                             </th>
                                             <th>D</th>
-                                            <td></td>
                                             <td></td>
                                         </tr>
                                         </tbody>
