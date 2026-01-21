@@ -101,14 +101,6 @@
                     <fieldset>
                         <legend>Filter</legend>
                         <s:date-range/>
-                        <ul class="key-value-list">
-                            <li>
-                                <div class="li-key"><label for="scale">Schedule Scale Factor</label></div>
-                                <div class="li-value">
-                                    <input id="scale" name="scale" type="number" value="${fn:escapeXml(param.scale)}" min="0.1" max="2" step="0.1"/>
-                                </div>
-                            </li>
-                        </ul>
                     </fieldset>
                     <input class="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
@@ -121,7 +113,7 @@
                 <c:otherwise>
                     <div class="message-box"><c:out value="${selectionMessage}"/></div>
                     <div class="error-box"></div>
-                    <c:if test="${period > 0}">
+                    <c:if test="${false}">
                                 <s:chart-widget>
                                     <table class="chart-legend">
                                         <tbody>

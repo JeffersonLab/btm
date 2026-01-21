@@ -1,3 +1,6 @@
+.y-axis-label {
+    font-style: italic;
+}
 .chart-legend {
     margin-top: 11px;
 }
@@ -32,6 +35,7 @@
     top: 10px;
     left: 3em;
     z-index: 1;
+    display: none;
 }
 .custom-key th {
     padding: 0 8px;
@@ -59,7 +63,6 @@
 .quad-table {
     width: 100%;
     margin-bottom: 100px;
-    margin-top: 100px;
 }
 .quad-table h3 {
     text-align: center;
