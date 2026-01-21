@@ -107,7 +107,8 @@ jlab.hallCurrentData = [
         label: 'Scheduled',
         color: 'gray',
         data: [],
-        lines: {show: true, steps: true}
+        lines: {show: false, steps: true},
+        points: {show: false}
     },
     {
         label: 'Delivered',
@@ -146,18 +147,13 @@ jlab.hallChargeData = [
         label: 'Scheduled',
         color: 'gray',
         data: [],
-        lines: {show: true},
+        lines: {show: false},
     },
     {
     label: 'Delivered',
     color: 'black',
     data: [],
-    dashes: {
-        show: true,
-        lineWidth: 4,
-        dashLength: 10
-    },
-    lines: {show: true, lineWidth: 0} /*Without lines or points no plothover possible, so we use 0 width line.  Could use 0 radius point instead*/
+    lines: {show: true, lineWidth: 1}
 }];
 
 /* Create hall charge data by deep copying template */
@@ -187,10 +183,10 @@ jlab.addYAxisLabelExtra = function (placeholder, label) {
 jlab.addAxisLabels = function () {
     /*jlab.addXAxisLabel("Time");*/
     jlab.addYAxisLabel("Percent of Scheduled");
-    jlab.addYAxisLabelExtra($("#charta-charge-placeholder"), "Coulombs");
-    jlab.addYAxisLabelExtra($("#chartb-charge-placeholder"), "MilliCoulombs");
-    jlab.addYAxisLabelExtra($("#chartc-charge-placeholder"), "Coulombs");
-    jlab.addYAxisLabelExtra($("#chartd-charge-placeholder"), "MilliCoulombs");
+    jlab.addYAxisLabelExtra($("#charta-charge-placeholder"), "C");
+    jlab.addYAxisLabelExtra($("#chartb-charge-placeholder"), "mC");
+    jlab.addYAxisLabelExtra($("#chartc-charge-placeholder"), "C");
+    jlab.addYAxisLabelExtra($("#chartd-charge-placeholder"), "mC");
 
     jlab.addYAxisLabelExtra($("#charta-current-placeholder"), "µA");
     jlab.addYAxisLabelExtra($("#chartb-current-placeholder"), "nA");
@@ -333,8 +329,8 @@ jlab.fetchMultiple = function (params) {
         Promise.all(promises).then(values => {
             $("#busy-wait").hide();
 
-            jlab.doLineChart();
-            jlab.updateKey();
+            //jlab.doLineChart();
+            //jlab.updateKey();
 
             var options = jlab.defaultHallChartOptions;
 
@@ -352,7 +348,7 @@ jlab.fetchMultiple = function (params) {
                 scale = 1;
             }
 
-            jlab.scaleHallScheduled(scale);
+            //jlab.scaleHallScheduled(scale);
 
 
 
@@ -1020,7 +1016,7 @@ jlab.redrawAll = function() {
     jlab.updateKey();
 };
 
-$(document).on("change", "#scale", function(){
+/*$(document).on("change", "#scale", function(){
 
     var scale = $("#scale").val();
 
@@ -1029,7 +1025,7 @@ $(document).on("change", "#scale", function(){
     }
 
     jlab.scaleScheduled(scale);
-});
+});*/
 
 $(document).on("smoothnessready", function(){
     let start, end;
