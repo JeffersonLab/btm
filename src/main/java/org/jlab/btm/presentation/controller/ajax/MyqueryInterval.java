@@ -15,9 +15,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+
+import org.jlab.smoothness.business.service.SettingsService;
 import org.jlab.smoothness.presentation.util.ParamBuilder;
 import org.jlab.smoothness.presentation.util.ParamConverter;
 import org.jlab.smoothness.presentation.util.ServletUtil;
+import org.jlab.smoothness.presentation.util.SettingsCacheInit;
 
 /**
  * @author ryans
@@ -58,7 +61,7 @@ public class MyqueryInterval extends HttpServlet {
       throw new ServletException("Date format invalid");
     }
 
-    String MYQUERY_SERVER_URL = "https://epicsweb.jlab.org";
+    String MYQUERY_SERVER_URL = SettingsService.cachedSettings.get("MYQUERY_SERVER_URL");
 
     ParamBuilder builder = new ParamBuilder();
     builder.add("c", channel);

@@ -35,3 +35,4 @@ insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('EMAIL_
 
 -- OTHER
 insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('HALL_AVAIL_DOC_URL', 'https://github.com/JeffersonLab/btm/wiki/Hall-Availability-Definitions', 'STRING', 'URL to documentation on Hall Availability', 'OTHER', 1);
+insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('MYQUERY_SERVER_URL', 'https://epicswebtest.acc.jlab.org', 'STRING', 'URL to myquery server', 'OTHER', 2);
