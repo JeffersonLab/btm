@@ -12,6 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -89,14 +90,36 @@ public class MyqueryInterval extends HttpServlet {
 
       HttpResponse<String> proxyResponse = future.get();
 
-      if (endDate.after(new Date())) {
-        // If end date in the past, we need to cancel default CacheFilter behavior of caching all
-        // application/javascript
-        request.setAttribute("CACHEABLE_RESPONSE", false);
-      }
+      // Cache logic resides in setContentType so order matters
+      response.setContentType("application/json");
 
-      // This must come after above check due to cache logic residing in setContentType
-      response.setContentType("application/javascript");
+      // App auto-truncates end date to today if past today.  But if end date is today (after
+      // yesterday) then
+      // don't cache! Otherwise, Cache!
+      Calendar cal = Calendar.getInstance();
+      cal.add(Calendar.DATE, -1);
+      Date yesterday = cal.getTime();
+
+      if (endDate.before(yesterday)) {
+        System.err.println("Cache!");
+
+        // If end date in the past, we need to override default CacheFilter behavior of NOT caching
+        // application/json
+        request.setAttribute("CACHEABLE_RESPONSE", true);
+
+        response.setDateHeader("Expires", System.currentTimeMillis() + 31536000000L);
+        response.setHeader(
+            "Cache-Control", null); // Remove header automatically added by SSL/TLS container module
+        response.setHeader(
+            "Pragma", null); // Remove header automatically added by SSL/TLS container module
+
+      } else {
+        System.err.println("Don't cache!");
+
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate"); // HTTP 1.1
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+        response.setDateHeader("Expires", 0); // Proxies
+      }
 
       response.getWriter().println(proxyResponse.body());
     } catch (URISyntaxException | InterruptedException | ExecutionException e) {
