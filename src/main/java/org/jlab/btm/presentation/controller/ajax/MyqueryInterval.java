@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import org.jlab.smoothness.business.service.SettingsService;
+import org.jlab.smoothness.presentation.filter.CacheFilter;
 import org.jlab.smoothness.presentation.util.ParamBuilder;
 import org.jlab.smoothness.presentation.util.ParamConverter;
 import org.jlab.smoothness.presentation.util.ServletUtil;
@@ -103,11 +104,8 @@ public class MyqueryInterval extends HttpServlet {
       // If end date in the past, we need to override default CacheFilter behavior of NOT caching
       // application/json
       if (endDate.before(yesterday)) {
-        response.setDateHeader("Expires", System.currentTimeMillis() + 31536000000L);
-        response.setHeader(
-            "Cache-Control", null); // Remove header automatically added by SSL/TLS container module
-        response.setHeader(
-            "Pragma", null); // Remove header automatically added by SSL/TLS container module
+        CacheFilter.CacheControlResponse cachableResponse = (CacheFilter.CacheControlResponse) response;
+        cachableResponse.setContentType("application/json", CacheFilter.CachableResponse.MAX);
       }
 
       response.getWriter().println(proxyResponse.body());
