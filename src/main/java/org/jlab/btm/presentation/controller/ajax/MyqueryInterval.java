@@ -104,7 +104,8 @@ public class MyqueryInterval extends HttpServlet {
       // If end date in the past, we need to override default CacheFilter behavior of NOT caching
       // application/json
       if (endDate.before(yesterday)) {
-        CacheFilter.CacheControlResponse cachableResponse = (CacheFilter.CacheControlResponse) response;
+        CacheFilter.CacheControlResponse cachableResponse =
+            (CacheFilter.CacheControlResponse) response;
         cachableResponse.setContentType("application/json", CacheFilter.CachableResponse.MAX);
       }
 
