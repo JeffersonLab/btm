@@ -100,25 +100,14 @@ public class MyqueryInterval extends HttpServlet {
       cal.add(Calendar.DATE, -1);
       Date yesterday = cal.getTime();
 
+      // If end date in the past, we need to override default CacheFilter behavior of NOT caching
+      // application/json
       if (endDate.before(yesterday)) {
-        System.err.println("Cache!");
-
-        // If end date in the past, we need to override default CacheFilter behavior of NOT caching
-        // application/json
-        request.setAttribute("CACHEABLE_RESPONSE", true);
-
         response.setDateHeader("Expires", System.currentTimeMillis() + 31536000000L);
         response.setHeader(
             "Cache-Control", null); // Remove header automatically added by SSL/TLS container module
         response.setHeader(
             "Pragma", null); // Remove header automatically added by SSL/TLS container module
-
-      } else {
-        System.err.println("Don't cache!");
-
-        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate"); // HTTP 1.1
-        response.setHeader("Pragma", "no-cache"); // HTTP 1.0
-        response.setDateHeader("Expires", 0); // Proxies
       }
 
       response.getWriter().println(proxyResponse.body());
