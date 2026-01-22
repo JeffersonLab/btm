@@ -86,8 +86,11 @@ public class MyqueryInterval extends HttpServlet {
 
       HttpResponse<String> proxyResponse = future.get();
 
+      response.setContentType("application/javascript");
+
       response.getWriter().println(proxyResponse.body());
     } catch (URISyntaxException | InterruptedException | ExecutionException e) {
+      e.printStackTrace();
       throw new ServletException("Unable to query myquery", e);
     }
   }

@@ -241,7 +241,7 @@ jlab.fetchMyaData = function (params) {
             e: params.end
         },
         dataType = "json",
-        options = {url: url, type: 'GET', data: data, dataType: dataType, timeout: 60000};
+        options = {url: url, type: 'GET', data: data, dataType: dataType, timeout: 60000, cache: true};
 
     var promise = $.ajax(options);
     promise.done(function (json) {
