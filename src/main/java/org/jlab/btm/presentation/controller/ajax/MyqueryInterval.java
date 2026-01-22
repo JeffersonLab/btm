@@ -12,15 +12,14 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-
 import org.jlab.smoothness.business.service.SettingsService;
 import org.jlab.smoothness.presentation.util.ParamBuilder;
 import org.jlab.smoothness.presentation.util.ParamConverter;
 import org.jlab.smoothness.presentation.util.ServletUtil;
-import org.jlab.smoothness.presentation.util.SettingsCacheInit;
 
 /**
  * @author ryans
@@ -48,6 +47,7 @@ public class MyqueryInterval extends HttpServlet {
     String channel = request.getParameter("c");
     String begin = request.getParameter("b");
     String end = request.getParameter("e");
+    Date endDate;
 
     if (!ALLOWED_CHANNELS.contains(channel)) {
       throw new ServletException("Channel not allowed: " + channel);
@@ -56,7 +56,7 @@ public class MyqueryInterval extends HttpServlet {
     // Let's make sure the dates are formatted correctly
     try {
       ParamConverter.convertISO8601Date(request, "b");
-      ParamConverter.convertISO8601Date(request, "e");
+      endDate = ParamConverter.convertISO8601Date(request, "e");
     } catch (Exception e) {
       throw new ServletException("Date format invalid");
     }
@@ -89,6 +89,13 @@ public class MyqueryInterval extends HttpServlet {
 
       HttpResponse<String> proxyResponse = future.get();
 
+      if (endDate.after(new Date())) {
+        // If end date in the past, we need to cancel default CacheFilter behavior of caching all
+        // application/javascript
+        request.setAttribute("CACHEABLE_RESPONSE", false);
+      }
+
+      // This must come after above check due to cache logic residing in setContentType
       response.setContentType("application/javascript");
 
       response.getWriter().println(proxyResponse.body());
