@@ -25,8 +25,8 @@ RUN /server-setup.sh /app-setup.env wildfly_start_and_wait \
      && /server-setup.sh /app-setup.env config_email \
      && /server-setup.sh /app-setup.env wildfly_reload \
      && /server-setup.sh /app-setup.env wildfly_stop \
-     && rm -rf /opt/wildfly/current/standalone/configuration/standalone_xml_history \
-USER jboss:jboss
+     && rm -rf /opt/wildfly/current/standalone/configuration/standalone_xml_history
+USER dev
 COPY --from=builder /app/build/libs/* /opt/wildfly/current/standalone/deployments
 
 ENV TZ='America/New_York'
