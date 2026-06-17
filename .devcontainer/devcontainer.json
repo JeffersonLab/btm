@@ -1,0 +1,23 @@
+{
+  "dockerComposeFile": "dev.yaml",
+  "service": "dev",
+  "workspaceFolder": "/home/dev/btm",
+  "runServices": [
+    "dev",
+    "oracle",
+    "keycloak",
+    "mailhog",
+    "puppet",
+    "softioc"
+  ],
+  "remoteUser": "dev",
+  "updateRemoteUserUID": false,
+  "customizations": {
+    "jetbrains": {
+      "backend": "IntelliJ"
+    },
+    "vscode": {
+      "extensions": ["vscjava.vscode-java-pack","redhat.vscode-server-connector"]
+    }
+  }
+}

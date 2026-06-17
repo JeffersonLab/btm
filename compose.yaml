@@ -3,30 +3,35 @@ services:
     extends:
       file: deps.yaml
       service: oracle
+    container_name: btm-oracle
 
   keycloak:
     extends:
       file: deps.yaml
       service: keycloak
+    container_name: btm-keycloak
 
   puppet:
     extends:
       file: deps.yaml
       service: puppet
+    container_name: btm-puppet
 
   mailhog:
     extends:
       file: deps.yaml
       service: mailhog
+    container_name: btm-mailhog
 
   softioc:
     extends:
       file: deps.yaml
       service: softioc
+    container_name: btm-softioc
 
   btm:
     hostname: btm
-    container_name: btm
+    container_name: btm-dev
     ports:
       - "8443:8443"
       - "8080:8080"

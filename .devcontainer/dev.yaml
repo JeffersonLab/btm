@@ -1,0 +1,36 @@
+name: btm-devcontainers
+services:
+  oracle:
+    extends:
+      file: ../compose.yaml
+      service: oracle
+    container_name: btm-oracle-devc
+
+  keycloak:
+    extends:
+      file: ../compose.yaml
+      service: keycloak
+    container_name: btm-keycloak-devc
+
+  mailhog:
+    extends:
+      file: ../compose.yaml
+      service: mailhog
+    container_name: btm-mailhog-devc
+
+  puppet:
+    extends:
+      file: ../compose.yaml
+      service: puppet
+    container_name: btm-puppet-devc
+
+  softioc:
+    extends:
+      file: ../compose.yaml
+      service: softioc
+    container_name: btm-softioc-devc
+
+  dev:
+    image: jeffersonlab/btm:latest
+    hostname: dev
+    container_name: btm-dev-devc
