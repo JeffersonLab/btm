@@ -34,36 +34,11 @@
                 dataB = jlab.series.charge.scheduled.b.data,
                 dataC = jlab.series.charge.scheduled.c.data,
                 dataD = jlab.series.charge.scheduled.d.data;
-            <c:forEach items="${scheduledChargeData.chargeListA}" var="record">
-                dataA.push([${record.timestamp}, ${record.coulombs}]);
-            </c:forEach>
-            <c:forEach items="${scheduledChargeData.chargeListB}" var="record">
-                dataB.push([${record.timestamp}, ${record.nC * 0.000001}]);
-            </c:forEach>
-            <c:forEach items="${scheduledChargeData.chargeListC}" var="record">
-                dataC.push([${record.timestamp}, ${record.coulombs}]);
-            </c:forEach>
-            <c:forEach items="${scheduledChargeData.chargeListD}" var="record">
-                dataD.push([${record.timestamp}, ${record.nC * 0.000001}]);
-            </c:forEach>
 
             dataA = jlab.series.current.scheduled.a.data;
             dataB = jlab.series.current.scheduled.b.data;
             dataC = jlab.series.current.scheduled.c.data;
             dataD = jlab.series.current.scheduled.d.data;
-
-            <c:forEach items="${scheduledChargeData.chargeListA}" var="record">
-            dataA.push([${record.timestamp}, ${record.nA * 0.001}]);
-            </c:forEach>
-            <c:forEach items="${scheduledChargeData.chargeListB}" var="record">
-            dataB.push([${record.timestamp}, ${record.nA}]);
-            </c:forEach>
-            <c:forEach items="${scheduledChargeData.chargeListC}" var="record">
-            dataC.push([${record.timestamp}, ${record.nA * 0.001}]);
-            </c:forEach>
-            <c:forEach items="${scheduledChargeData.chargeListD}" var="record">
-            dataD.push([${record.timestamp}, ${record.nA}]);
-            </c:forEach>
 
             dataA = jlab.series.programs.a;
             dataB = jlab.series.programs.b;
