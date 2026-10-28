@@ -9,6 +9,7 @@ A [Jakarta EE 10](https://en.wikipedia.org/wiki/Jakarta_EE) web application for 
 - [Install](https://github.com/JeffersonLab/btm#install)
 - [Configure](https://github.com/JeffersonLab/btm#configure)
 - [Build](https://github.com/JeffersonLab/btm#build)
+- [Test](https://github.com/JeffersonLab/btm#test)
 - [Develop](https://github.com/JeffersonLab/btm#develop) 
 - [Release](https://github.com/JeffersonLab/btm#release)
 - [Deploy](https://github.com/JeffersonLab/btm#deploy)
@@ -66,7 +67,7 @@ Uses the [Smoothness Environment Variables](https://github.com/JeffersonLab/smoo
 This application requires an Oracle 19+ database with the following [schema](https://github.com/JeffersonLab/btm/tree/main/container/oracle/initdb.d) installed.   The application server hosting this app must also be configured with a JNDI datasource.
 
 ## Build
-This project is built with [Java 21](https://adoptium.net/) (compiled to Java 17 bytecode), and uses the [Gradle 9](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
+This project is built with [Java 21](https://adoptium.net/) (compiled to Java 17 bytecode), and uses the [Gradle 9](https://gradle.org/) build tool to automatically download dependencies and build the project from source (the full build also requires Docker for the integration tests):
 
 ```
 git clone https://github.com/JeffersonLab/btm
@@ -78,6 +79,46 @@ gradlew build
 **Note for JLab On-Site Users**: Jefferson Lab has an intercepting [proxy](https://gist.github.com/slominskir/92c25a033db93a90184a5994e71d0b78)
 
 See: [Docker Development Quick Reference](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#development-quick-reference)
+
+## Test
+
+Run the unit tests without external services:
+
+```sh
+./gradlew test
+```
+
+Run the database integration tests with Java 21 and a running Docker daemon:
+
+```sh
+./gradlew integrationTest
+```
+
+On this project's rootless Docker setup, expose the socket to Testcontainers:
+
+```sh
+DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock ./gradlew integrationTest
+```
+
+The suite under `src/integrationTest/java` starts a disposable Oracle XE 21.3.0 container
+with Testcontainers, using the same image as the demo. The first run may take several minutes
+to download and initialize Oracle. It creates `BTM_OWNER` and loads the project's
+[Oracle DDL](container/oracle/initdb.d/02_ddl.sql), without Hibernate schema generation.
+Only synthetic test data is inserted; each test rolls back its transaction. Containers use
+random names and host ports, no shared volumes, and are removed automatically after the suite.
+No existing Compose services or external databases are needed.
+
+Coverage includes monthly version ordering, published and tentative schedule selection,
+inclusive month ranges, schedule creation/publication, and Oracle's missing-day projection
+(including nulls, numeric/boolean conversion and a DST transition). The tests call services
+with a real Hibernate EntityManager; they do not exercise WildFly's EJB security/JTA or HTTP.
+
+`./gradlew build` and `./gradlew check` run both suites, including in CI, and therefore require
+Docker. A missing Docker daemon fails the integration suite instead of skipping it.
+Reports are written to `build/reports/tests/test/index.html` and
+`build/reports/tests/integrationTest/index.html`. To package the WAR without running checks,
+use `./gradlew assemble`. The Docker image build excludes both test tasks because it runs
+inside the image builder without a Docker daemon.
 
 ## Develop
 In order to iterate rapidly when making changes it's often useful to run the app directly on the local workstation, perhaps leveraging an IDE.  In this scenario run the service dependencies with:

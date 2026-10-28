@@ -17,10 +17,27 @@ tasks.withType(JavaCompile).configureEach {
 repositories {
     mavenCentral()
 }
+sourceSets {
+    integrationTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+configurations {
+    integrationTestImplementation.extendsFrom testImplementation
+    integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.13.4')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    integrationTestImplementation 'org.testcontainers:oracle-xe:1.21.4'
+    integrationTestImplementation 'org.testcontainers:junit-jupiter:1.21.4'
+    integrationTestRuntimeOnly 'com.oracle.database.jdbc:ojdbc11:23.9.0.25.07'
+    integrationTestRuntimeOnly 'org.slf4j:slf4j-simple:2.0.17'
+    integrationTestRuntimeOnly 'org.eclipse:yasson:3.0.4'
 
     implementation 'org.epics:jca:2.4.10'
 
@@ -42,6 +59,22 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
     systemProperty 'user.timezone', 'America/New_York'
+}
+
+tasks.register('integrationTest', Test) {
+    description = 'Runs service and persistence integration tests against disposable Oracle XE.'
+    group = 'verification'
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    inputs.file('container/oracle/initdb.d/02_ddl.sql')
+    useJUnitPlatform()
+    systemProperty 'user.timezone', 'America/New_York'
+    systemProperty 'user.language', 'en'
+    systemProperty 'user.country', 'US'
+    shouldRunAfter tasks.named('test')
+}
+tasks.named('check') {
+    dependsOn tasks.named('integrationTest')
 }
 
 tasks.named('jar') {

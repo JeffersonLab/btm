@@ -13,6 +13,11 @@ application. See [README.md](README.md) for setup and architecture. Based on the
   Java Format; use `./gradlew spotlessApply` for formatting and review the diff. There is
   a JUnit 5 suite under `src/test/java`; run it with `./gradlew test`. Tests run in
   `America/New_York` and require no application server, database or EPICS services.
+  The database integration suite under `src/integrationTest/java` runs with
+  `./gradlew integrationTest` and is also part of `build`/`check`. It requires Docker,
+  starts its own disposable Oracle XE with random ports, and uses the project's demo DDL.
+  For rootless Docker set `DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock`. It tests service
+  queries and persistence, not WildFly EJB security/JTA or HTTP. See README's Test section.
 - For documentation-only changes, check links, examples and `git diff --check`.
 - Demo setup and local WildFly development are documented in
   [README.md](README.md#develop). [deps.yaml](deps.yaml) provides Oracle, Keycloak, Puppet,
