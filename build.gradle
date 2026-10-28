@@ -18,6 +18,10 @@ repositories {
     mavenCentral()
 }
 dependencies {
+    testImplementation platform('org.junit:junit-bom:5.13.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
     implementation 'org.epics:jca:2.4.10'
 
     // No matter what smoothness weblib MUST be included in WAR (https://github.com/JeffersonLab/smoothness/issues/4)
@@ -35,6 +39,11 @@ dependencies {
             'org.hibernate:hibernate-envers:6.6.19.Final',
             'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
 }
+tasks.named('test') {
+    useJUnitPlatform()
+    systemProperty 'user.timezone', 'America/New_York'
+}
+
 tasks.named('jar') {
     enabled = false
 }

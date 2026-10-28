@@ -11,7 +11,8 @@ application. See [README.md](README.md) for setup and architecture. Based on the
   the WAR is `build/libs/btm.war`.
 - For Java or build changes, run `./gradlew build` before opening a PR. Spotless uses Google
   Java Format; use `./gradlew spotlessApply` for formatting and review the diff. There is
-  currently no `src/test` suite; a successful build does not verify runtime behavior.
+  a JUnit 5 suite under `src/test/java`; run it with `./gradlew test`. Tests run in
+  `America/New_York` and require no application server, database or EPICS services.
 - For documentation-only changes, check links, examples and `git diff --check`.
 - Demo setup and local WildFly development are documented in
   [README.md](README.md#develop). [deps.yaml](deps.yaml) provides Oracle, Keycloak, Puppet,
