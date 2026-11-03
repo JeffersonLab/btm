@@ -19,26 +19,14 @@ caput -a HLD:bta_sec_hall_off_h 168 3600 3600 3600 3600 3600 3600 3600 3600 3600
 
 # Time PVS
 
-year=`date +%Y`
-month=`date +%m`
-day=`date +%d`
-hour=`date +%H`
+SECONDS_PER_HOUR=3600
 
-hour=$((hour+1))
-
-#echo $year
-#echo $month
-#echo $day
-#echo $hour
-
-# +'%Y-%m-%d-%H'
-d=`date -d "${year}-${month}-${day} ${hour}:00" +'%s'`
-
-#echo $d
+# Start of the next hour, computed in epoch seconds: adding 1 to `date +%H`
+# fails at hour 23 (24:00 is not a valid time) and at 08 and 09 (read as octal)
+now=`date +'%s'`
+d=$(((now/SECONDS_PER_HOUR+1)*SECONDS_PER_HOUR))
 
 set -- $d
-
-SECONDS_PER_HOUR=3600
 
 max=167
 #echo `seq 1 $max`
