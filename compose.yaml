@@ -3,36 +3,34 @@ services:
     extends:
       file: deps.yaml
       service: oracle
-    container_name: btm-oracle
 
   keycloak:
     extends:
       file: deps.yaml
       service: keycloak
-    container_name: btm-keycloak
 
   puppet:
     extends:
       file: deps.yaml
       service: puppet
-    container_name: btm-puppet
 
   mailhog:
     extends:
       file: deps.yaml
       service: mailhog
-    container_name: btm-mailhog
 
   softioc:
     extends:
       file: deps.yaml
       service: softioc
-    container_name: btm-softioc
 
   btm:
     hostname: btm
-    container_name: btm-dev
     ports:
-      - "8443:8443"
-      - "8080:8080"
-      - "9990:9990"
+      - "127.0.0.1:${BTM_HTTPS_PORT:-8443}:8443"
+      - "127.0.0.1:${BTM_HTTP_PORT:-8080}:8080"
+      - "127.0.0.1:${BTM_MANAGEMENT_PORT:-9990}:9990"
+    environment:
+      # The browser reaches Keycloak and the app on the host's ports
+      KEYCLOAK_FRONTEND_SERVER_URL: 'http://localhost:${BTM_KEYCLOAK_PORT:-8081}/auth'
+      FRONTEND_SERVER_URL: 'https://localhost:${BTM_HTTPS_PORT:-8443}'

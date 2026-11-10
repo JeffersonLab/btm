@@ -21,7 +21,7 @@ services:
 
   softioc:
     extends:
-      file: deps.yaml
+      file: compose.yaml
       service: softioc
 
   btm:
