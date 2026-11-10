@@ -23,12 +23,14 @@ application. See [README.md](README.md) for setup and architecture. Based on the
   [README.md](README.md#develop). [deps.yaml](deps.yaml) provides Oracle, Keycloak, Puppet,
   MailHog and a soft IOC. [build.yaml](build.yaml) builds the app from this worktree;
   the default [compose.override.yaml](compose.override.yaml) uses a published image.
-- Before starting services, check existing listeners and containers. The Compose files use
-  fixed container names and host ports: app 8080/8443/9990, Oracle 1521/5500, Keycloak
-  8081/9991, Puppet 3000, MailHog 1025/8025 and EPICS 5064/5065 (TCP and UDP). A Compose
-  project name alone does not isolate them. Use a worktree-specific override for names,
-  ports and affected URLs, and record ownership and connection settings before startup.
-  Use the same project name, files and settings for tests and cleanup.
+- Before starting services, check existing listeners and containers (`ss -ltnp`,
+  `ss -lunp`, `docker ps`). Compose names containers after the worktree's directory, and
+  every host port has a `BTM_*_PORT` setting, listed in README's
+  [Ports](README.md#ports) section with its default (app 8080/8443/9990, Keycloak 8081/9991,
+  ...), which other projects also use. Give each worktree free ports in its own `.env`
+  (ignored by git); the app's and Keycloak's login URLs follow `BTM_HTTPS_PORT` and
+  `BTM_KEYCLOAK_PORT`. Record ownership and connection settings before startup, and use the
+  same directory, files and `.env` for tests and cleanup.
 - Demo schema and seed data are in [container/oracle/initdb.d](container/oracle/initdb.d);
   Keycloak and EPICS fixtures are under `container/keycloak/initdb.d` and
   `container/softioc/db`. Reset only your own disposable services; never reset another
@@ -37,7 +39,7 @@ application. See [README.md](README.md) for setup and architecture. Based on the
   do not send development requests to live logbooks, EPICS channels, databases or other JLab
   systems. Use an isolated stand-in for integrations not covered by the demo stack.
 - For UI changes, build and deploy the changed WAR to local WildFly or build the app image
-  with `build.yaml`, then check the affected pages at `/btm` (default app port 8080).
+  with `build.yaml`, then check the affected pages at `https://localhost:<BTM_HTTPS_PORT>/btm`.
   The default demo login is documented in [README.md](README.md#quick-start-with-compose).
 - Runtime settings are documented in [README.md](README.md#configure); app-server setup
   is in `container/app/app-setup.env` and the Dockerfile. Keep local overrides and

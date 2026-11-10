@@ -36,6 +36,28 @@ http://localhost:8080/btm
 
 **Note**: Login with demo username "jdoe" and password "password".
 
+### Ports
+The containers publish these ports on the host, listening only on its local address (127.0.0.1), so other computers can't reach the demo database, accounts, and management consoles.  To use them from another computer, forward them over SSH, such as `ssh -N -L 8443:localhost:8443 -L 8081:localhost:8081 <host>` for the app and Keycloak.  If another project already uses some of them, or you run a second copy of the demo, set other ports in a `.env` file next to `compose.yaml`, which Compose reads, or in the environment:
+
+| Variable                     | Default | Port of                        |
+|------------------------------|---------|--------------------------------|
+| BTM_HTTPS_PORT               | 8443    | app (HTTPS)                    |
+| BTM_HTTP_PORT                | 8080    | app (HTTP)                     |
+| BTM_MANAGEMENT_PORT          | 9990    | Wildfly management             |
+| BTM_KEYCLOAK_PORT            | 8081    | Keycloak                       |
+| BTM_KEYCLOAK_MANAGEMENT_PORT | 9991    | Keycloak management            |
+| BTM_ORACLE_PORT              | 1521    | Oracle                         |
+| BTM_ORACLE_EM_PORT           | 5500    | Oracle Enterprise Manager      |
+| BTM_PUPPET_PORT              | 3000    | Puppet Show                    |
+| BTM_SMTP_PORT                | 1025    | MailHog SMTP                   |
+| BTM_MAILHOG_PORT             | 8025    | MailHog web UI                 |
+| BTM_SOFTIOC_PORT             | 5064    | soft IOC Channel Access (TCP and UDP) |
+| BTM_SOFTIOC_REPEATER_PORT    | 5065    | soft IOC CA repeater (TCP and UDP)    |
+
+The app and Keycloak are set up for the ports you choose, so log in at `https://localhost:<BTM_HTTPS_PORT>/btm`.  The app reaches the soft IOC over the Compose network whatever its host ports are, but a Channel Access client on the host only works with the default soft IOC ports, since the IOC's search replies name port 5064.
+
+Compose names the containers, network, and images after the project's directory, such as `btm-oracle-1`, so a copy in another directory, such as a git worktree, gets its own.
+
 See: [Docker Compose Strategy](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c)
 
 ## Install
@@ -131,7 +153,7 @@ KEYCLOAK_BACKEND_SERVER_URL=http://localhost:8081
 FRONTEND_SERVER_URL=https://localhost:8443
 BTM_EPICS_ADDR_LIST=localhost
 ```
-Further, the local DataSource must also leverage localhost port forwarding so the `standalone.xml` connection-url field should be: `jdbc:oracle:thin:@//localhost:1521/xepdb1`.  
+Further, the local DataSource must also leverage localhost port forwarding so the `standalone.xml` connection-url field should be: `jdbc:oracle:thin:@//localhost:1521/xepdb1`.  These are the default [ports](#ports); use yours if you set others, except for the soft IOC, which a local Wildfly reaches only on the defaults.
 
 The [server](https://github.com/JeffersonLab/wildfly/blob/main/scripts/server-setup.sh) and [app](https://github.com/JeffersonLab/wildfly/blob/main/scripts/app-setup.sh) setup scripts can be used to setup a local instance of Wildfly. 
 
