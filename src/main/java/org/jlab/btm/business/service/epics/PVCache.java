@@ -7,14 +7,15 @@ import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import org.jlab.btm.business.util.CALoadException;
 
 /**
  * PV Cache.
  *
- * <p>Multiple threads can call this method concurrently due to ConcurrencyManagementType.BEAN. But
- * the get/put methods delegate to a ConcurrentHashMap, so that is where our concurrency management
- * is handled.
+ * <p>Multiple threads can call these methods concurrently due to ConcurrencyManagementType.BEAN.
+ * But the readers and the writer delegate to a ConcurrentHashMap, so that is where our concurrency
+ * management is handled.
  */
 @Startup
 @Singleton
@@ -49,8 +50,17 @@ public class PVCache {
     return map.get(name);
   }
 
-  public void put(String name, PVCacheEntry value) {
-    map.put(name, value);
+  /**
+   * Returns a writer that stores entries in the cache directly, not through a call to this EJB.
+   *
+   * <p>The monitor session writes from its own thread, starting while the application is still
+   * starting. The application server holds EJB calls from other threads until startup has finished,
+   * so values written through one couldn't arrive while {@link PVMonitorManager} waits for them.
+   *
+   * @return The writer, taking a PV name and its entry
+   */
+  public BiConsumer<String, PVCacheEntry> writer() {
+    return map::put;
   }
 
   /**

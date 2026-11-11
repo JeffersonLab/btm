@@ -90,7 +90,9 @@ public class PVMonitorManager {
   @PostConstruct
   public void start() {
     try {
-      session = PVMonitorSession.open(createConfiguration(), PV_LIST, cache::put);
+      // The writer, not cache::put: the server holds EJB calls from the session's thread until
+      // this method returns, so the values awaited below would never arrive in time
+      session = PVMonitorSession.open(createConfiguration(), PV_LIST, cache.writer());
 
       Set<String> missing = session.awaitInitialValues(STARTUP_TIMEOUT);
 
@@ -117,7 +119,8 @@ public class PVMonitorManager {
     }
   }
 
-  private Configuration createConfiguration() {
+  /** Package-private so a test can point the session at a synthetic IOC. */
+  Configuration createConfiguration() {
     DefaultConfiguration config = new DefaultConfiguration("monitor-context");
 
     String addrList = System.getenv("BTM_EPICS_ADDR_LIST");
