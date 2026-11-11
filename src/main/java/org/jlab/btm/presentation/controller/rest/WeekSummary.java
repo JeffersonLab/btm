@@ -63,6 +63,27 @@ public class WeekSummary {
   @GET
   @Produces("application/json")
   public Response getSummaryJson(@QueryParam("week-start") final String ccShiftStart) {
+    final Date ccStart;
+
+    try {
+      ccStart = BtmParamConverter.convertDayAndHour(ccShiftStart);
+    } catch (ParseException e) {
+      throw new JsonWebApplicationException(
+          Response.Status.BAD_REQUEST, "unrecognized date format");
+    }
+
+    if (ccStart == null) {
+      throw new JsonWebApplicationException(
+          Response.Status.BAD_REQUEST,
+          "Parameter week-start (Crew Chief Shift Start) in format yyyy-mm-ddThh is missing");
+    }
+
+    if (!TimeUtil.isCrewChiefShiftStart(ccStart)) {
+      throw new JsonWebApplicationException(
+          Response.Status.BAD_REQUEST,
+          "week start hour must be one of 23, 7, 15 to correspond to a crew chief shift start");
+    }
+
     StreamingOutput stream =
         new StreamingOutput() {
           @Override
@@ -71,27 +92,6 @@ public class WeekSummary {
               ExpHourService expHourService = lookupHourService();
               CcAccHourService ccAccHourService = lookupOpAccHourService();
               PdShiftPlanService pdShiftService = lookupPdShiftService();
-
-              Date ccStart;
-
-              try {
-                ccStart = BtmParamConverter.convertDayAndHour(ccShiftStart);
-              } catch (ParseException e) {
-                throw new JsonWebApplicationException(
-                    Response.Status.BAD_REQUEST, "unrecognized date format");
-              }
-
-              if (ccStart == null) {
-                throw new JsonWebApplicationException(
-                    Response.Status.BAD_REQUEST,
-                    "Parameter week-start (Crew Chief Shift Start) in format yyyy-mm-ddThh is missing");
-              }
-
-              if (!TimeUtil.isCrewChiefShiftStart(ccStart)) {
-                throw new JsonWebApplicationException(
-                    Response.Status.BAD_REQUEST,
-                    "week start hour must be one of 23, 7, 15 to correspond to a crew chief shift start");
-              }
 
               Date ccEnd = TimeUtil.addDays(ccStart, 7);
               Date expStart = TimeUtil.addHours(ccStart, 1);
