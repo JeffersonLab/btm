@@ -1,6 +1,5 @@
 package org.jlab.btm.business.service.epics;
 
-import gov.aps.jca.dbr.DBR;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import java.util.ArrayList;
@@ -102,19 +101,19 @@ public class CcEpicsShiftService {
   private ShiftInfo getFromCache() throws CALoadException {
     ShiftInfo accounting = new ShiftInfo();
 
-    List<DBR> dbrs = new ArrayList<>();
+    List<PVCacheEntry> entries = new ArrayList<>();
 
-    dbrs.add(cache.getOrThrow(Constant.CREW_CHIEF_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.OPERATORS_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.PROGRAM_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.PROGRAM_DEPUTY_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.COMMENTS_CHANNEL_NAME).getDbr());
+    entries.add(cache.getOrThrow(Constant.CREW_CHIEF_CHANNEL_NAME));
+    entries.add(cache.getOrThrow(Constant.OPERATORS_CHANNEL_NAME));
+    entries.add(cache.getOrThrow(Constant.PROGRAM_CHANNEL_NAME));
+    entries.add(cache.getOrThrow(Constant.PROGRAM_DEPUTY_CHANNEL_NAME));
+    entries.add(cache.getOrThrow(Constant.COMMENTS_CHANNEL_NAME));
 
-    accounting.setCrewChief(SimpleGet.getStringValue(dbrs.remove(0))[0]);
-    accounting.setOperators(SimpleGet.getStringValue(dbrs.remove(0))[0]);
-    accounting.setProgram(SimpleGet.getStringValue(dbrs.remove(0))[0]);
-    accounting.setProgramDeputy(SimpleGet.getStringValue(dbrs.remove(0))[0]);
-    accounting.setComments(SimpleGet.getStringValue(dbrs.remove(0))[0]);
+    accounting.setCrewChief(entries.remove(0).getString());
+    accounting.setOperators(entries.remove(0).getString());
+    accounting.setProgram(entries.remove(0).getString());
+    accounting.setProgramDeputy(entries.remove(0).getString());
+    accounting.setComments(entries.remove(0).getString());
 
     return accounting;
   }

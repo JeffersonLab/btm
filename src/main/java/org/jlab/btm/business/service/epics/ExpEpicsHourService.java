@@ -1,6 +1,5 @@
 package org.jlab.btm.business.service.epics;
 
-import gov.aps.jca.dbr.DBR;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import java.util.ArrayList;
@@ -90,25 +89,25 @@ public class ExpEpicsHourService {
     ExperimenterAccounting accounting = new ExperimenterAccounting();
     accounting.setHall(hall);
 
-    List<DBR> dbrs = new ArrayList<>();
+    List<PVCacheEntry> entries = new ArrayList<>();
 
-    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_TIME_SUFFIX).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ABU_SUFFIX).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BANU_SUFFIX).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BNA_SUFFIX).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ER_SUFFIX).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_PCC_SUFFIX).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_UED_SUFFIX).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_OFF_SUFFIX).getDbr());
+    entries.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_TIME_SUFFIX));
+    entries.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ABU_SUFFIX));
+    entries.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BANU_SUFFIX));
+    entries.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_BNA_SUFFIX));
+    entries.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_ER_SUFFIX));
+    entries.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_PCC_SUFFIX));
+    entries.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_UED_SUFFIX));
+    entries.add(cache.getOrThrow(Constant.EXP_HALL_PREFIX + hall + Constant.EXP_OFF_SUFFIX));
 
-    accounting.setTime(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setABU(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setBANU(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setBNA(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setER(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setPCC(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setUED(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setOFF(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setTime(entries.remove(0).getDoubleArray());
+    accounting.setABU(entries.remove(0).getDoubleArray());
+    accounting.setBANU(entries.remove(0).getDoubleArray());
+    accounting.setBNA(entries.remove(0).getDoubleArray());
+    accounting.setER(entries.remove(0).getDoubleArray());
+    accounting.setPCC(entries.remove(0).getDoubleArray());
+    accounting.setUED(entries.remove(0).getDoubleArray());
+    accounting.setOFF(entries.remove(0).getDoubleArray());
 
     return accounting;
   }
