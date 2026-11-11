@@ -1,12 +1,9 @@
 package org.jlab.btm.business.service.epics;
 
-import com.cosylab.epics.caj.CAJChannel;
-import com.cosylab.epics.caj.CAJContext;
-import gov.aps.jca.*;
+import gov.aps.jca.CAException;
+import gov.aps.jca.JCALibrary;
+import gov.aps.jca.configuration.Configuration;
 import gov.aps.jca.configuration.DefaultConfiguration;
-import gov.aps.jca.dbr.DBR;
-import gov.aps.jca.event.MonitorEvent;
-import gov.aps.jca.event.MonitorListener;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.annotation.security.RolesAllowed;
@@ -14,6 +11,7 @@ import jakarta.ejb.DependsOn;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import java.time.Duration;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,9 +26,7 @@ public class PVMonitorManager {
 
   @EJB PVCache cache;
 
-  private CAJContext context;
-  private Map<String, CAJChannel> channels;
-  private Map<String, Monitor> monitors;
+  private PVMonitorSession session;
 
   public static final List<String> PV_LIST;
 
@@ -88,76 +84,40 @@ public class PVMonitorManager {
     PV_LIST = Collections.unmodifiableList(dynamic);
   }
 
+  /** How long startup waits for the PVs' first values before carrying on without them. */
+  static final Duration STARTUP_TIMEOUT = Duration.ofSeconds(10);
+
   @PostConstruct
   public void start() {
     try {
-      startMonitors();
-    } catch (CAException
-        | TimeoutException e) { // @PostConstruct isn't supposed to throw checked exceptions...
+      session = PVMonitorSession.open(createConfiguration(), PV_LIST, cache::put);
+
+      Set<String> missing = session.awaitInitialValues(STARTUP_TIMEOUT);
+
+      if (!missing.isEmpty()) {
+        LOGGER.log(
+            Level.WARNING,
+            "No value yet from {0} of {1} PVs after {2} seconds; monitoring them once they connect:"
+                + " {3}",
+            new Object[] {missing.size(), PV_LIST.size(), STARTUP_TIMEOUT.toSeconds(), missing});
+      }
+    } catch (CAException e) { // @PostConstruct isn't supposed to throw checked exceptions...
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      LOGGER.log(Level.WARNING, "Interrupted while waiting for initial PV values", e);
     }
   }
 
   @PreDestroy
   public void stop() {
-    try {
-      stopMonitors();
-    } catch (CAException e) { // @PreDestroy isn't supposed to throw exceptions...
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+    if (session != null) {
+      session.close();
+      session = null;
     }
   }
 
-  private void startMonitors() throws CAException, TimeoutException {
-    context = createContext();
-
-    channels = new HashMap<>();
-    monitors = new HashMap<>();
-
-    for (String pv : PV_LIST) {
-      CAJChannel channel = (CAJChannel) context.createChannel(pv);
-
-      channels.put(pv, channel);
-    }
-
-    context.pendIO(10);
-
-    for (String pv : PV_LIST) {
-      CAJChannel channel = channels.get(pv);
-
-      Monitor monitor =
-          channel.addMonitor(
-              channel.getFieldType(),
-              channel.getElementCount(),
-              Monitor.VALUE,
-              new MonitorListener() {
-
-                @Override
-                public void monitorChanged(MonitorEvent ev) {
-                  CAStatus status = ev.getStatus();
-                  DBR dbr = ev.getDBR();
-                  cache.put(pv, new PVCacheEntry(status, dbr, new Date()));
-                }
-              });
-
-      monitors.put(pv, monitor);
-    }
-
-    context.pendIO(10);
-  }
-
-  private void stopMonitors() throws CAException {
-    for (Monitor monitor : monitors.values()) {
-      monitor.clear();
-    }
-
-    for (CAJChannel channel : channels.values()) {
-      context.destroyChannel(channel, true);
-    }
-
-    context.destroy();
-  }
-
-  private CAJContext createContext() throws CAException {
+  private Configuration createConfiguration() {
     DefaultConfiguration config = new DefaultConfiguration("monitor-context");
 
     String addrList = System.getenv("BTM_EPICS_ADDR_LIST");
@@ -170,7 +130,7 @@ public class PVMonitorManager {
     config.setAttribute("auto_addr_list", "false");
     config.setAttribute("class", JCALibrary.CHANNEL_ACCESS_JAVA);
 
-    return (CAJContext) JCALibrary.getInstance().createContext(config);
+    return config;
   }
 
   @RolesAllowed({"cc", "btm-admin"})

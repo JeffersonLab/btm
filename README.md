@@ -110,6 +110,9 @@ Run the unit tests without external services:
 ./gradlew test
 ```
 
+The EPICS monitor tests run a synthetic IOC, CAJ's Channel Access server, inside the test JVM,
+on loopback with free ports and made-up PV names; they contact no other IOC.
+
 Run the database integration tests with Java 21 and a running Docker daemon:
 
 ```sh
