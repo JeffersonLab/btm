@@ -42,7 +42,10 @@ dependencies {
     integrationTestRuntimeOnly 'org.slf4j:slf4j-simple:2.0.17'
     integrationTestRuntimeOnly 'org.eclipse:yasson:3.0.4'
 
-    implementation 'org.epics:jca:2.4.10'
+    // gpclient wraps JCA, which the monitor session still configures directly
+    implementation 'org.epics:gpclient-core:1.0.9',
+                   'org.epics:gpclient-ca:1.0.9',
+                   'org.epics:jca:2.4.11'
 
     // No matter what smoothness weblib MUST be included in WAR (https://github.com/JeffersonLab/smoothness/issues/4)
     implementation "org.jlab:smoothness-weblib:${smoothnessVersion}"

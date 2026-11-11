@@ -1,6 +1,5 @@
 package org.jlab.btm.business.service.epics;
 
-import gov.aps.jca.dbr.DBR;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import java.util.ArrayList;
@@ -56,25 +55,25 @@ public class CcEpicsMultiplicityHourService {
   private MultiplicityBeamAvailability getFromCache() throws CALoadException {
     MultiplicityBeamAvailability accounting = new MultiplicityBeamAvailability();
 
-    List<DBR> dbrs = new ArrayList<>();
+    List<PVCacheEntry> entries = new ArrayList<>();
 
-    dbrs.add(cache.getOrThrow(Constant.TIME_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.MULTI_ONE_UP).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.MULTI_TWO_UP).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.MULTI_THREE_UP).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.MULTI_FOUR_UP).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.MULTI_ANY_UP).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.MULTI_ALL_UP).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.MULTI_DOWN).getDbr());
+    entries.add(cache.getOrThrow(Constant.TIME_CHANNEL_NAME));
+    entries.add(cache.getOrThrow(Constant.MULTI_ONE_UP));
+    entries.add(cache.getOrThrow(Constant.MULTI_TWO_UP));
+    entries.add(cache.getOrThrow(Constant.MULTI_THREE_UP));
+    entries.add(cache.getOrThrow(Constant.MULTI_FOUR_UP));
+    entries.add(cache.getOrThrow(Constant.MULTI_ANY_UP));
+    entries.add(cache.getOrThrow(Constant.MULTI_ALL_UP));
+    entries.add(cache.getOrThrow(Constant.MULTI_DOWN));
 
-    accounting.setTime(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setOneUp(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setTwoUp(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setThreeUp(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setFourUp(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setAnyUp(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setAllUp(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setDownHard(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setTime(entries.remove(0).getDoubleArray());
+    accounting.setOneUp(entries.remove(0).getDoubleArray());
+    accounting.setTwoUp(entries.remove(0).getDoubleArray());
+    accounting.setThreeUp(entries.remove(0).getDoubleArray());
+    accounting.setFourUp(entries.remove(0).getDoubleArray());
+    accounting.setAnyUp(entries.remove(0).getDoubleArray());
+    accounting.setAllUp(entries.remove(0).getDoubleArray());
+    accounting.setDownHard(entries.remove(0).getDoubleArray());
 
     return accounting;
   }

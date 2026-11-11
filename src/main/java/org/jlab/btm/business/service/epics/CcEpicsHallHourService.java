@@ -1,6 +1,5 @@
 package org.jlab.btm.business.service.epics;
 
-import gov.aps.jca.dbr.DBR;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import java.util.ArrayList;
@@ -79,21 +78,21 @@ public class CcEpicsHallHourService {
   private HallBeamAvailability getFromCache(Hall hall) throws CALoadException {
     HallBeamAvailability accounting = new HallBeamAvailability();
 
-    List<DBR> dbrs = new ArrayList<>();
+    List<PVCacheEntry> entries = new ArrayList<>();
 
-    dbrs.add(cache.getOrThrow(Constant.TIME_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_UP_SUFFIX).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_TUNE_SUFFIX).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_BNR_SUFFIX).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_DOWN_SUFFIX).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_OFF_SUFFIX).getDbr());
+    entries.add(cache.getOrThrow(Constant.TIME_CHANNEL_NAME));
+    entries.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_UP_SUFFIX));
+    entries.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_TUNE_SUFFIX));
+    entries.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_BNR_SUFFIX));
+    entries.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_DOWN_SUFFIX));
+    entries.add(cache.getOrThrow(Constant.HALL_PREFIX + hall + Constant.HALL_OFF_SUFFIX));
 
-    accounting.setTime(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setUp(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setTune(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setBnr(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setDown(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setOff(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setTime(entries.remove(0).getDoubleArray());
+    accounting.setUp(entries.remove(0).getDoubleArray());
+    accounting.setTune(entries.remove(0).getDoubleArray());
+    accounting.setBnr(entries.remove(0).getDoubleArray());
+    accounting.setDown(entries.remove(0).getDoubleArray());
+    accounting.setOff(entries.remove(0).getDoubleArray());
 
     return accounting;
   }

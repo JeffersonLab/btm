@@ -1,6 +1,5 @@
 package org.jlab.btm.business.service.epics;
 
-import gov.aps.jca.dbr.DBR;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.CcAccHour;
 import org.jlab.btm.persistence.epics.AcceleratorBeamAvailability;
 import org.jlab.btm.persistence.epics.Constant;
-import org.jlab.btm.persistence.epics.SimpleGet;
 
 /**
  * Responsible for querying experimenter hall EPICS time accounting data.
@@ -77,23 +75,23 @@ public class CcEpicsAccHourService {
   private AcceleratorBeamAvailability getFromCache() throws CALoadException {
     AcceleratorBeamAvailability accounting = new AcceleratorBeamAvailability();
 
-    List<DBR> dbrs = new ArrayList<>();
+    List<PVCacheEntry> entries = new ArrayList<>();
 
-    dbrs.add(cache.getOrThrow(Constant.TIME_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.ACC_UP_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.ACC_SAD_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.ACC_DOWN_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.ACC_STUDIES_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.ACC_RESTORE_CHANNEL_NAME).getDbr());
-    dbrs.add(cache.getOrThrow(Constant.ACC_ACC_CHANNEL_NAME).getDbr());
+    entries.add(cache.getOrThrow(Constant.TIME_CHANNEL_NAME));
+    entries.add(cache.getOrThrow(Constant.ACC_UP_CHANNEL_NAME));
+    entries.add(cache.getOrThrow(Constant.ACC_SAD_CHANNEL_NAME));
+    entries.add(cache.getOrThrow(Constant.ACC_DOWN_CHANNEL_NAME));
+    entries.add(cache.getOrThrow(Constant.ACC_STUDIES_CHANNEL_NAME));
+    entries.add(cache.getOrThrow(Constant.ACC_RESTORE_CHANNEL_NAME));
+    entries.add(cache.getOrThrow(Constant.ACC_ACC_CHANNEL_NAME));
 
-    accounting.setTime(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setUp(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setSad(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setDown(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setStudies(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setRestore(SimpleGet.getDoubleValue(dbrs.remove(0)));
-    accounting.setAcc(SimpleGet.getDoubleValue(dbrs.remove(0)));
+    accounting.setTime(entries.remove(0).getDoubleArray());
+    accounting.setUp(entries.remove(0).getDoubleArray());
+    accounting.setSad(entries.remove(0).getDoubleArray());
+    accounting.setDown(entries.remove(0).getDoubleArray());
+    accounting.setStudies(entries.remove(0).getDoubleArray());
+    accounting.setRestore(entries.remove(0).getDoubleArray());
+    accounting.setAcc(entries.remove(0).getDoubleArray());
 
     return accounting;
   }

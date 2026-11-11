@@ -50,6 +50,7 @@ class PVMonitorSessionTest {
   private final List<SyntheticIoc> iocs = new ArrayList<>();
   private final List<Update> updates = new CopyOnWriteArrayList<>();
   private final Map<String, Double> latest = new ConcurrentHashMap<>();
+  private final Map<String, Boolean> connected = new ConcurrentHashMap<>();
 
   private record Update(String pv, double value) {}
 
@@ -96,12 +97,12 @@ class PVMonitorSessionTest {
     PVMonitorSession session = open();
 
     assertEquals(Set.copyOf(PVS), session.awaitInitialValues(Duration.ofSeconds(2)));
-    assertEquals(0, session.monitorCount());
+    assertEquals(0, session.connectedCount());
 
     SyntheticIoc ioc = startIoc(PVS, 1.0);
 
     awaitValues(PVS, 1.0);
-    assertEquals(3, session.monitorCount());
+    assertEquals(3, session.connectedCount());
     assertTrue(session.missingValues().isEmpty());
 
     ioc.write("TEST:PV:A", 2.0);
@@ -118,12 +119,12 @@ class PVMonitorSessionTest {
     assertEquals(Set.of("TEST:PV:C"), session.awaitInitialValues(Duration.ofSeconds(3)));
     assertEquals(1.0, latest.get("TEST:PV:A"));
     assertEquals(1.0, latest.get("TEST:PV:B"));
-    assertEquals(2, session.monitorCount());
+    assertEquals(2, session.connectedCount());
 
     ioc.add("TEST:PV:C", 5.0);
 
     awaitValues(List.of("TEST:PV:C"), 5.0);
-    assertEquals(3, session.monitorCount());
+    assertEquals(3, session.connectedCount());
     assertTrue(session.missingValues().isEmpty());
   }
 
@@ -135,15 +136,20 @@ class PVMonitorSessionTest {
     assertTrue(session.awaitInitialValues(WAIT).isEmpty());
 
     first.close();
+
+    await(
+        () -> PVS.stream().noneMatch(pv -> connected.get(pv)),
+        () -> "connected " + connected + ", expected every PV disconnected");
+    assertEquals(0, session.connectedCount());
     SyntheticIoc second = startIoc(PVS, 2.0);
 
     awaitValues(PVS, 2.0);
-    assertEquals(3, session.monitorCount());
+    assertEquals(3, session.connectedCount());
 
     second.write("TEST:PV:A", 3.0);
 
     awaitValues(List.of("TEST:PV:A"), 3.0);
-    Thread.sleep(500); // Time for a duplicate monitor's copy of the update to arrive
+    Thread.sleep(500); // Time for a duplicate subscription's copy of the update to arrive
     assertEquals(
         1,
         updates.stream().filter(u -> u.pv().equals("TEST:PV:A") && u.value() == 3.0).count(),
@@ -158,13 +164,17 @@ class PVMonitorSessionTest {
       PVMonitorSession session = open();
 
       assertTrue(session.awaitInitialValues(WAIT).isEmpty());
-      assertEquals(3, session.monitorCount());
+      assertEquals(3, session.connectedCount());
 
       session.close();
       session.close(); // Twice, as reset() after a shutdown might
 
       assertTrue(session.isContextDestroyed());
     }
+
+    await(
+        () -> sessionThreads().isEmpty(),
+        () -> "threads left by closed sessions: " + sessionThreads());
 
     updates.clear();
     ioc.write("TEST:PV:A", 9.0);
@@ -173,13 +183,23 @@ class PVMonitorSessionTest {
     assertEquals(List.of(), updates, "updates after every session closed");
   }
 
+  /** Live threads that a session or its gpclient data source started. */
+  private static List<String> sessionThreads() {
+    return Thread.getAllStackTraces().keySet().stream()
+        .filter(Thread::isAlive)
+        .map(Thread::getName)
+        .filter(name -> name.startsWith("btm-pv-") || name.contains("CADataSource Worker"))
+        .toList();
+  }
+
   private PVMonitorSession open() throws CAException {
     PVMonitorSession session =
         PVMonitorSession.open(
             clientConfiguration(),
             PVS,
             (pv, entry) -> {
-              double value = ((DBR_Double) entry.getDbr()).getDoubleValue()[0];
+              double value = entry.getDoubleArray()[0];
+              connected.put(pv, entry.isConnected());
               updates.add(new Update(pv, value));
               latest.put(pv, value);
             });

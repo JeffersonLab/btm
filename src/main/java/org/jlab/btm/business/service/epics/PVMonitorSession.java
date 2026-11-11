@@ -1,86 +1,108 @@
 package org.jlab.btm.business.service.epics;
 
-import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.CAException;
-import gov.aps.jca.Channel;
-import gov.aps.jca.JCALibrary;
-import gov.aps.jca.Monitor;
 import gov.aps.jca.configuration.Configuration;
-import gov.aps.jca.event.ConnectionEvent;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.epics.gpclient.GPClientConfiguration;
+import org.epics.gpclient.GPClientInstance;
+import org.epics.gpclient.PVEvent;
+import org.epics.gpclient.PVReader;
+import org.epics.vtype.VType;
 
 /**
- * One Channel Access context with a channel and a value monitor per PV.
+ * One Channel Access context with a gpclient reader per PV.
  *
- * <p>A channel's monitor is registered from its connection callback, the first time it connects, so
- * a PV that is unavailable at startup starts updating once its IOC is reachable, and one missing PV
- * doesn't keep the others from being monitored. CAJ re-subscribes existing monitors when a channel
- * reconnects, so each channel gets at most one monitor for the life of the session.
+ * <p>gpclient connects each channel, subscribes to it when it connects, and resubscribes when its
+ * IOC comes back, so a PV that is unavailable at startup starts updating once its IOC is reachable,
+ * and one missing PV doesn't keep the others from being monitored. Every change of a PV's value or
+ * connection is delivered to the sink on this session's own thread, in order.
  *
- * <p>Closing the session clears the monitors and destroys the channels and the context; a closed
- * session registers no further monitors and delivers no further values.
+ * <p>Closing the session destroys the context, with its channels and monitors; a closed session
+ * delivers no further values.
  */
 final class PVMonitorSession implements AutoCloseable {
   private static final Logger LOGGER = Logger.getLogger(PVMonitorSession.class.getName());
 
   private final BiConsumer<String, PVCacheEntry> sink;
-  private final CAJContext context;
-  private final Map<String, Channel> channels = new LinkedHashMap<>();
-  private final Map<String, Monitor> monitors = new HashMap<>();
+  private final ConfiguredCADataSource dataSource;
+  private final ExecutorService notifier;
+  private final ScheduledExecutorService scanner;
+  private final Map<String, PVReader<VType>> readers = new LinkedHashMap<>();
+
+  /** When each PV's latest value arrived; written on the notifier thread only. */
+  private final Map<String, Date> valueTimes = new ConcurrentHashMap<>();
+
   private final Set<String> received = new HashSet<>();
 
-  /** Guards channels, monitors and closed; held while registering a monitor. */
+  /** Guards readers and closed. */
   private final Object lock = new Object();
 
-  /** Guards received; a separate lock so value callbacks never wait for a registration. */
+  /** Guards received; a separate lock so notifications never wait for startup or shutdown. */
   private final Object valuesLock = new Object();
 
   private volatile boolean closed = false;
 
-  private PVMonitorSession(BiConsumer<String, PVCacheEntry> sink, CAJContext context) {
+  private PVMonitorSession(
+      BiConsumer<String, PVCacheEntry> sink, ConfiguredCADataSource dataSource) {
     this.sink = sink;
-    this.context = context;
+    this.dataSource = dataSource;
+    this.notifier = Executors.newSingleThreadExecutor(r -> daemon(r, "btm-pv-notify"));
+    this.scanner = Executors.newSingleThreadScheduledExecutor(r -> daemon(r, "btm-pv-scan"));
+  }
+
+  private static Thread daemon(Runnable runnable, String name) {
+    Thread thread = new Thread(runnable, name);
+    thread.setDaemon(true);
+    return thread;
   }
 
   /**
-   * Creates a context and a channel for each PV, and asks Channel Access to connect them. Doesn't
-   * wait for connections; see {@link #awaitInitialValues(Duration)}.
+   * Creates a context and starts a reader for each PV. Doesn't wait for connections; see {@link
+   * #awaitInitialValues(Duration)}.
    *
    * @param config The Channel Access client configuration
    * @param pvs The PV names
-   * @param sink Receives each monitor update
+   * @param sink Receives an entry each time a PV's value or connection changes, once it has a value
    * @return The session
-   * @throws CAException If the context or a channel can't be created; the session is then closed
+   * @throws CAException If the context can't be created
    */
   static PVMonitorSession open(
       Configuration config, List<String> pvs, BiConsumer<String, PVCacheEntry> sink)
       throws CAException {
-    CAJContext context = (CAJContext) JCALibrary.getInstance().createContext(config);
-    PVMonitorSession session = new PVMonitorSession(sink, context);
+    PVMonitorSession session = new PVMonitorSession(sink, new ConfiguredCADataSource(config));
 
     try {
+      GPClientInstance client =
+          new GPClientConfiguration()
+              .dataSource(session.dataSource)
+              .notificationExecutor(session.notifier)
+              .dataProcessingThreadPool(session.scanner)
+              .defaultMaxRate(Duration.ofMillis(50))
+              .build();
+
       for (String pv : pvs) {
-        Channel channel = context.createChannel(pv, event -> session.connectionChanged(pv, event));
+        PVReader<VType> reader =
+            client.read(pv).addReadListener((event, r) -> session.changed(pv, event, r)).start();
 
         synchronized (session.lock) {
-          session.channels.put(pv, channel);
+          session.readers.put(pv, reader);
         }
       }
-
-      context.flushIO();
-    } catch (CAException | RuntimeException e) {
+    } catch (RuntimeException e) {
       session.close();
       throw e;
     }
@@ -88,51 +110,40 @@ final class PVMonitorSession implements AutoCloseable {
     return session;
   }
 
-  private void connectionChanged(String pv, ConnectionEvent event) {
-    if (!event.isConnected()) {
-      return;
-    }
-
-    Channel channel = (Channel) event.getSource();
-
-    synchronized (lock) {
-      if (closed || monitors.containsKey(pv)) {
-        return;
-      }
-
-      try {
-        Monitor monitor =
-            channel.addMonitor(
-                channel.getFieldType(),
-                channel.getElementCount(),
-                Monitor.VALUE,
-                ev -> update(pv, new PVCacheEntry(ev.getStatus(), ev.getDBR(), new Date())));
-
-        monitors.put(pv, monitor);
-
-        context.flushIO();
-      } catch (CAException | RuntimeException e) {
-        LOGGER.log(Level.WARNING, "Unable to monitor " + pv, e);
-      }
-    }
-  }
-
-  private void update(String pv, PVCacheEntry entry) {
+  private void changed(String pv, PVEvent event, PVReader<VType> reader) {
     if (closed) {
       return;
     }
 
-    sink.accept(pv, entry);
+    if (event.isType(PVEvent.Type.EXCEPTION)) {
+      LOGGER.log(Level.WARNING, "Channel Access problem with " + pv, event.getException());
+    }
 
-    synchronized (valuesLock) {
-      received.add(pv);
-      valuesLock.notifyAll();
+    VType value = reader.getValue();
+
+    if (value == null) {
+      return; // Connected, or failed, before any value: nothing to cache yet
+    }
+
+    boolean isValue = event.isType(PVEvent.Type.VALUE);
+
+    Date ts = isValue ? new Date() : valueTimes.getOrDefault(pv, new Date());
+
+    valueTimes.put(pv, ts);
+
+    sink.accept(pv, new PVCacheEntry(value, reader.isConnected(), ts));
+
+    if (isValue) {
+      synchronized (valuesLock) {
+        received.add(pv);
+        valuesLock.notifyAll();
+      }
     }
   }
 
   /**
-   * Waits until every PV has delivered a value, or the timeout passes. Monitors keep being
-   * registered after the timeout as channels connect.
+   * Waits until every PV has delivered a value, or the timeout passes. PVs keep being connected
+   * after the timeout as their IOCs become reachable.
    *
    * @param timeout The longest to wait
    * @return The PVs that haven't delivered a value yet, sorted; empty if all have
@@ -140,7 +151,7 @@ final class PVMonitorSession implements AutoCloseable {
    */
   Set<String> awaitInitialValues(Duration timeout) throws InterruptedException {
     long deadline = System.nanoTime() + timeout.toNanos();
-    int expected = channelCount();
+    int expected = readerCount();
 
     synchronized (valuesLock) {
       while (!closed && received.size() < expected) {
@@ -157,9 +168,9 @@ final class PVMonitorSession implements AutoCloseable {
     return missingValues();
   }
 
-  private int channelCount() {
+  private int readerCount() {
     synchronized (lock) {
-      return channels.size();
+      return readers.size();
     }
   }
 
@@ -170,7 +181,7 @@ final class PVMonitorSession implements AutoCloseable {
     Set<String> missing;
 
     synchronized (lock) {
-      missing = new TreeSet<>(channels.keySet());
+      missing = new TreeSet<>(readers.keySet());
     }
 
     synchronized (valuesLock) {
@@ -181,11 +192,11 @@ final class PVMonitorSession implements AutoCloseable {
   }
 
   /**
-   * @return The number of monitors registered
+   * @return The number of PVs whose channel is connected
    */
-  int monitorCount() {
+  int connectedCount() {
     synchronized (lock) {
-      return monitors.size();
+      return (int) readers.values().stream().filter(PVReader::isConnected).count();
     }
   }
 
@@ -193,55 +204,38 @@ final class PVMonitorSession implements AutoCloseable {
    * @return Whether the context has been destroyed
    */
   boolean isContextDestroyed() {
-    return context.isDestroyed();
+    return dataSource.isContextDestroyed();
   }
 
   /**
-   * Clears the monitors and destroys the channels and the context. Logs and continues past a
-   * failure to clear or destroy one of them, so the context is always destroyed. Calling it again
-   * does nothing.
+   * Destroys the context, with its channels and monitors, and stops this session's threads. Calling
+   * it again does nothing.
+   *
+   * <p>The readers aren't closed one by one first: gpclient destroys a closed reader's channel on
+   * its worker thread, and CAJ abandons the rest of a context's shutdown if a channel is destroyed
+   * while the context is destroying them all.
    */
   @Override
   public void close() {
-    List<Monitor> monitorsToClear;
-    List<Channel> channelsToDestroy;
-
     synchronized (lock) {
       if (closed) {
         return;
       }
 
       closed = true;
-
-      monitorsToClear = new ArrayList<>(monitors.values());
-      channelsToDestroy = new ArrayList<>(channels.values());
     }
 
     synchronized (valuesLock) {
       valuesLock.notifyAll();
     }
 
-    // Outside the lock: a connection or monitor callback may be waiting for it on a CA thread.
-    for (Monitor monitor : monitorsToClear) {
-      try {
-        monitor.clear();
-      } catch (CAException | RuntimeException e) {
-        LOGGER.log(Level.WARNING, "Unable to clear monitor", e);
-      }
-    }
-
-    for (Channel channel : channelsToDestroy) {
-      try {
-        channel.destroy();
-      } catch (CAException | RuntimeException e) {
-        LOGGER.log(Level.WARNING, "Unable to destroy channel " + channel.getName(), e);
-      }
-    }
-
     try {
-      context.destroy();
+      dataSource.destroy();
     } catch (CAException | RuntimeException e) {
       LOGGER.log(Level.SEVERE, "Unable to destroy Channel Access context", e);
     }
+
+    scanner.shutdownNow();
+    notifier.shutdownNow();
   }
 }
