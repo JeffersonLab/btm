@@ -27,7 +27,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BooleanSupplier;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +37,7 @@ import org.junit.jupiter.api.Test;
  * Runs {@link PVMonitorSession} against a synthetic IOC: CAJ's in-process Channel Access server,
  * bound to loopback on free ports, with made-up PV names. No EPICS service outside the test JVM is
  * contacted, and the client doesn't use the default CA ports, so a repeater or IOC elsewhere on the
- * machine isn't involved.
+ * machine isn't involved. The client starts no CA repeater either: see {@link #disableRepeater()}.
  */
 class PVMonitorSessionTest {
   private static final Duration WAIT = Duration.ofSeconds(30);
@@ -50,6 +52,28 @@ class PVMonitorSessionTest {
   private final Map<String, Double> latest = new ConcurrentHashMap<>();
 
   private record Update(String pv, double value) {}
+
+  private static final String DISABLE_REPEATER = "CA_DISABLE_REPEATER";
+  private static String previousDisableRepeater;
+
+  /**
+   * A CAJ client context otherwise spawns a CA repeater JVM on its repeater port when none is
+   * running there; it outlives the test run, one per test's random port. The tests don't need one:
+   * they find channels by searching often, not from beacons.
+   */
+  @BeforeAll
+  static void disableRepeater() {
+    previousDisableRepeater = System.setProperty(DISABLE_REPEATER, "true");
+  }
+
+  @AfterAll
+  static void restoreRepeater() {
+    if (previousDisableRepeater == null) {
+      System.clearProperty(DISABLE_REPEATER);
+    } else {
+      System.setProperty(DISABLE_REPEATER, previousDisableRepeater);
+    }
+  }
 
   @BeforeEach
   void pickPorts() throws IOException {
