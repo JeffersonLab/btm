@@ -254,9 +254,19 @@ class PVMonitorSessionTest {
 
       context.initialize(server);
 
-      if (context.getServerPort() != serverPort) {
+      // The TCP acceptor falls back to a random port if the configured one is taken
+      int tcpPort = context.getTcpServerPort();
+      int udpPort = context.getUdpServerPort();
+
+      if (tcpPort != serverPort || udpPort != serverPort) {
         context.destroy();
-        throw new CAException("Synthetic IOC bound port " + context.getServerPort());
+        throw new CAException(
+            "Synthetic IOC bound TCP port "
+                + tcpPort
+                + " and UDP port "
+                + udpPort
+                + ", not "
+                + serverPort);
       }
 
       thread =
