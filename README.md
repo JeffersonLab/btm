@@ -85,6 +85,8 @@ Uses the [Smoothness Environment Variables](https://github.com/JeffersonLab/smoo
 | LOGBOOK_DEBUG       | If set to "true" then TLOG is used as logbook                  |
 | BTM_EPICS_ADDR_LIST | EPICS CA Address List for obtaining time keeping measurements. |
 
+Host names in `BTM_EPICS_ADDR_LIST` are looked up when EPICS monitoring starts.  While any PV is not connected they are looked up again every 30 seconds, and monitoring restarts if one resolves to an address it did not have before, so an IOC host that DNS did not know at startup, or whose address changed, is picked up without a CA reset.
+
 ### Database
 This application requires an Oracle 19+ database with the following [schema](https://github.com/JeffersonLab/btm/tree/main/container/oracle/initdb.d) installed.   The application server hosting this app must also be configured with a JNDI datasource.
 
