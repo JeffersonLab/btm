@@ -92,6 +92,26 @@ public class ShiftSummary {
   @GET
   @Produces("application/json")
   public Response getSummaryJson(@QueryParam("shift-start") final String ccShiftStart) {
+    final Date ccStart;
+
+    try {
+      ccStart = BtmParamConverter.convertDayAndHour(ccShiftStart);
+    } catch (ParseException e) {
+      throw new JsonWebApplicationException(
+          Response.Status.BAD_REQUEST, "unrecognized date format");
+    }
+
+    if (ccStart == null) {
+      throw new JsonWebApplicationException(
+          Response.Status.BAD_REQUEST,
+          "Parameter shift-start (Crew Chief Shift Start) in format yyyy-mm-ddThh is missing");
+    }
+
+    if (!TimeUtil.isCrewChiefShiftStart(ccStart)) {
+      throw new JsonWebApplicationException(
+          Response.Status.BAD_REQUEST, "shift start hour must be one of 23, 7, 15");
+    }
+
     StreamingOutput stream =
         new StreamingOutput() {
           @Override
@@ -103,26 +123,6 @@ public class ShiftSummary {
               CcAccHourService ccAccHourService = lookupOpAccHourService();
               CcHallHourService hallHourService = lookupOpHallHourService();
               PdShiftPlanService pdShiftService = lookupPdShiftService();
-
-              Date ccStart;
-
-              try {
-                ccStart = BtmParamConverter.convertDayAndHour(ccShiftStart);
-              } catch (ParseException e) {
-                throw new JsonWebApplicationException(
-                    Response.Status.BAD_REQUEST, "unrecognized date format");
-              }
-
-              if (ccStart == null) {
-                throw new JsonWebApplicationException(
-                    Response.Status.BAD_REQUEST,
-                    "Parameter shift-start (Crew Chief Shift Start) in format yyyy-mm-ddThh is missing");
-              }
-
-              if (!TimeUtil.isCrewChiefShiftStart(ccStart)) {
-                throw new JsonWebApplicationException(
-                    Response.Status.BAD_REQUEST, "shift start hour must be one of 23, 7, 15");
-              }
 
               PdShiftPlan plan = pdShiftService.findInDatabase(ccStart);
 

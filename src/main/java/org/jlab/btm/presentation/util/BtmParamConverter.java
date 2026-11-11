@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalQuery;
 import java.util.Date;
 import org.jlab.btm.persistence.enumeration.DurationUnits;
 import org.jlab.btm.persistence.enumeration.TimesheetType;
@@ -21,6 +23,21 @@ public final class BtmParamConverter {
     // No one can instantiate due to private visibility
   }
 
+  /**
+   * Parses with a DateTimeFormatter, reporting failure as the checked ParseException these
+   * converters declare, so callers' ParseException handlers see malformed input.
+   */
+  private static <T> T parse(DateTimeFormatter formatter, String valueStr, TemporalQuery<T> query)
+      throws ParseException {
+    try {
+      return formatter.parse(valueStr, query);
+    } catch (DateTimeParseException e) {
+      ParseException pe = new ParseException(e.getMessage(), e.getErrorIndex());
+      pe.initCause(e);
+      throw pe;
+    }
+  }
+
   public static Date convertJLabDateTime(HttpServletRequest request, String name)
       throws ParseException {
     final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm");
@@ -30,7 +47,7 @@ public final class BtmParamConverter {
     String valueStr = request.getParameter(name);
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      final LocalDateTime ldt = formatter.parse(valueStr, LocalDateTime::from);
+      final LocalDateTime ldt = parse(formatter, valueStr, LocalDateTime::from);
       final ZonedDateTime zdt = ldt.atZone(ZoneId.of("America/New_York"));
       value = Date.from(zdt.toInstant());
     }
@@ -47,7 +64,7 @@ public final class BtmParamConverter {
     String valueStr = request.getParameter(name);
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      final LocalDate ldt = formatter.parse(valueStr, LocalDate::from);
+      final LocalDate ldt = parse(formatter, valueStr, LocalDate::from);
       value = Date.from(ldt.atStartOfDay(ZoneId.of("America/New_York")).toInstant());
     }
 
@@ -63,7 +80,7 @@ public final class BtmParamConverter {
     String valueStr = request.getParameter(name);
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      final LocalDate ld = formatter.parse(valueStr, LocalDate::from);
+      final LocalDate ld = parse(formatter, valueStr, LocalDate::from);
       final ZonedDateTime zdt = ld.atStartOfDay(ZoneId.of("America/New_York"));
       value = Date.from(zdt.toInstant());
     }
@@ -84,7 +101,7 @@ public final class BtmParamConverter {
     String valueStr = request.getParameter(name);
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      final YearMonth ym = formatter.parse(valueStr, YearMonth::from);
+      final YearMonth ym = parse(formatter, valueStr, YearMonth::from);
       final LocalDate ld = ym.atDay(1);
       final ZonedDateTime zdt = ld.atStartOfDay(ZoneId.of("America/New_York"));
       value = Date.from(zdt.toInstant());
@@ -106,7 +123,7 @@ public final class BtmParamConverter {
     String valueStr = request.getParameter(name);
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      final YearMonth ym = formatter.parse(valueStr, YearMonth::from);
+      final YearMonth ym = parse(formatter, valueStr, YearMonth::from);
       final LocalDate ld = ym.atDay(1);
       final ZonedDateTime zdt = ld.atStartOfDay(ZoneId.of("America/New_York"));
       value = Date.from(zdt.toInstant());
@@ -125,7 +142,7 @@ public final class BtmParamConverter {
     Date value = null;
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      final YearMonth ym = formatter.parse(valueStr, YearMonth::from);
+      final YearMonth ym = parse(formatter, valueStr, YearMonth::from);
       final LocalDate ld = ym.atDay(1);
       final ZonedDateTime zdt = ld.atStartOfDay(ZoneId.of("America/New_York"));
       value = Date.from(zdt.toInstant());
@@ -147,7 +164,7 @@ public final class BtmParamConverter {
     String valueStr = request.getParameter(name);
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      final LocalDate ld = formatter.parse(valueStr, LocalDate::from);
+      final LocalDate ld = parse(formatter, valueStr, LocalDate::from);
       final ZonedDateTime zdt = ld.atStartOfDay(ZoneId.of("America/New_York"));
       value = Date.from(zdt.toInstant());
     } else {
@@ -167,7 +184,7 @@ public final class BtmParamConverter {
     Date value = null;
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      final LocalDate ld = formatter.parse(valueStr, LocalDate::from);
+      final LocalDate ld = parse(formatter, valueStr, LocalDate::from);
       final ZonedDateTime zdt = ld.atStartOfDay(ZoneId.of("America/New_York"));
       value = Date.from(zdt.toInstant());
     }
@@ -181,7 +198,7 @@ public final class BtmParamConverter {
     Date value = null;
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      final LocalDateTime ldt = formatter.parse(valueStr, LocalDateTime::from);
+      final LocalDateTime ldt = parse(formatter, valueStr, LocalDateTime::from);
       final ZonedDateTime zdt = ldt.atZone(ZoneId.of("America/New_York"));
       value = Date.from(zdt.toInstant());
     }
@@ -198,7 +215,7 @@ public final class BtmParamConverter {
     String valueStr = request.getParameter(name);
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      final LocalDateTime ldt = formatter.parse(valueStr, LocalDateTime::from);
+      final LocalDateTime ldt = parse(formatter, valueStr, LocalDateTime::from);
       final ZonedDateTime zdt = ldt.atZone(ZoneId.of("America/New_York"));
       value = Date.from(zdt.toInstant());
     }

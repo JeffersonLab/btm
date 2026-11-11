@@ -37,21 +37,21 @@ public class MonthlyScheduleEndpoint {
   @GET
   @Produces("application/json")
   public Response getSchedulesJson(@QueryParam("month") final String month) {
+    final Date monthDate;
+
+    try {
+      monthDate = BtmParamConverter.convertMonthAndYear(month);
+    } catch (ParseException e) {
+      throw new JsonWebApplicationException(
+          Response.Status.BAD_REQUEST, "unrecognized date format");
+    }
+
     StreamingOutput stream =
         new StreamingOutput() {
           @Override
           public void write(OutputStream out) {
             try (JsonGenerator gen = Json.createGenerator(out)) {
               MonthlyScheduleService scheduleService = lookupScheduleService();
-
-              Date monthDate;
-
-              try {
-                monthDate = BtmParamConverter.convertMonthAndYear(month);
-              } catch (ParseException e) {
-                throw new JsonWebApplicationException(
-                    Response.Status.BAD_REQUEST, "unrecognized date format");
-              }
 
               List<MonthlySchedule> scheduleList = scheduleService.findAll(monthDate);
 

@@ -36,29 +36,28 @@ public class ScheduledCountEndpoint {
   @Produces("application/json")
   public Response getSchedulesJson(
       @QueryParam("start") final String startStr, @QueryParam("end") final String endStr) {
+    final Date start;
+    final Date end;
+
+    try {
+      start = BtmParamConverter.convertISO8601Date(startStr);
+      end = BtmParamConverter.convertISO8601Date(endStr);
+    } catch (ParseException e) {
+      throw new JsonWebApplicationException(
+          Response.Status.BAD_REQUEST, "unrecognized date format");
+    }
+
+    if (start == null || end == null) {
+      throw new JsonWebApplicationException(
+          Response.Status.BAD_REQUEST, "start and end dates in ISO8601 format are required");
+    }
+
     StreamingOutput stream =
         new StreamingOutput() {
           @Override
           public void write(OutputStream out) {
             try (JsonGenerator gen = Json.createGenerator(out)) {
               MonthlyScheduleService scheduleService = lookupScheduleService();
-
-              Date start;
-              Date end;
-
-              try {
-                start = BtmParamConverter.convertISO8601Date(startStr);
-                end = BtmParamConverter.convertISO8601Date(endStr);
-              } catch (ParseException e) {
-                throw new JsonWebApplicationException(
-                    Response.Status.BAD_REQUEST, "unrecognized date format");
-              }
-
-              if (start == null || end == null) {
-                throw new JsonWebApplicationException(
-                    Response.Status.BAD_REQUEST,
-                    "start and end dates in ISO8601 format are required");
-              }
 
               PacAccSum record = scheduleService.findSummary(start, end);
 

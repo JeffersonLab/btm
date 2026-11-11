@@ -32,6 +32,9 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.13.4')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // In-memory JAX-RS dispatch for REST endpoint tests; WildFly provides RESTEasy at runtime
+    testImplementation 'org.jboss.resteasy:resteasy-core:6.2.20.Final'
+    testRuntimeOnly 'org.eclipse.parsson:parsson:1.1.9'
 
     integrationTestImplementation 'org.testcontainers:oracle-xe:1.21.4'
     integrationTestImplementation 'org.testcontainers:junit-jupiter:1.21.4'
@@ -59,6 +62,8 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
     systemProperty 'user.timezone', 'America/New_York'
+    systemProperty 'user.language', 'en'
+    systemProperty 'user.country', 'US'
 }
 
 tasks.register('integrationTest', Test) {
