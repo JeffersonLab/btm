@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -19,11 +19,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jlab.btm.persistence.entity.ExpProgram;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
 import org.jlab.btm.persistence.entity.ScheduleDay;
-import org.jlab.btm.persistence.enumeration.AcceleratorProgram;
-import org.jlab.btm.persistence.projection.HallPriority;
 import org.jlab.btm.presentation.util.BtmFunctions;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
-import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.enumeration.Hall;
 
 /**
@@ -51,325 +48,26 @@ public class ExcelScheduleService {
       throw new IOException("Exactly one sheet is expected");
     }
 
-    Sheet sheet = wb.getSheetAt(0);
+    Map<Hall, Map<String, ExpProgram>> programsByHall = new EnumMap<>(Hall.class);
 
-    MonthlySchedule schedule = null;
-
-    Map<String, ExpProgram> hallAPurposeMap = purposeService.findProgramByHallNameMap(Hall.A);
-    Map<String, ExpProgram> hallBPurposeMap = purposeService.findProgramByHallNameMap(Hall.B);
-    Map<String, ExpProgram> hallCPurposeMap = purposeService.findProgramByHallNameMap(Hall.C);
-    Map<String, ExpProgram> hallDPurposeMap = purposeService.findProgramByHallNameMap(Hall.D);
-
-    if (hallAPurposeMap.get("OFF") == null) {
-      throw new UserFriendlyException(
-          "Hall A must have a program named 'OFF', please update program list");
+    for (Hall hall : new Hall[] {Hall.A, Hall.B, Hall.C, Hall.D}) {
+      programsByHall.put(hall, purposeService.findProgramByHallNameMap(hall));
     }
 
-    if (hallBPurposeMap.get("OFF") == null) {
-      throw new UserFriendlyException(
-          "Hall B must have a program named 'OFF', please update program list");
-    }
+    // Parse the whole sheet before creating any schedule so a bad row creates nothing
+    List<ExcelScheduleParser.ParsedMonth> months =
+        new ExcelScheduleParser(programsByHall).parse(wb.getSheetAt(0));
 
-    if (hallCPurposeMap.get("OFF") == null) {
-      throw new UserFriendlyException(
-          "Hall C must have a program named 'OFF', please update program list");
-    }
+    for (ExcelScheduleParser.ParsedMonth month : months) {
+      MonthlySchedule schedule = scheduleService.create(month.getStart());
+      resultList.add(schedule);
 
-    if (hallDPurposeMap.get("OFF") == null) {
-      throw new UserFriendlyException(
-          "Hall D must have a program named 'OFF', please update program list");
-    }
-
-    Integer hallAOffId = hallAPurposeMap.get("OFF").getExpProgramId().intValue();
-    Integer hallBOffId = hallBPurposeMap.get("OFF").getExpProgramId().intValue();
-    Integer hallCOffId = hallCPurposeMap.get("OFF").getExpProgramId().intValue();
-    Integer hallDOffId = hallDPurposeMap.get("OFF").getExpProgramId().intValue();
-
-    for (Row row : sheet) {
-
-      if (row.getRowNum() < 2) { // zero based
-        continue; // Skip first two rows as they are headers
-      }
-
-      ScheduleDay day = new ScheduleDay();
-
-      Cell cell = row.getCell(0); // Date
-
-      if (DateUtil.isCellDateFormatted(cell) && cell.getDateCellValue() != null) {
-        day.setDayMonthYear(cell.getDateCellValue());
-      } else {
-        continue;
-        // Skip row if first cell is null or blank or otherwise not a date
-      }
-
-      // cell = row.getCell(1); // Weekday, skip
-      cell = row.getCell(2); // GeV/pass
-
-      if (cell != null && cell.getCellType() == CellType.NUMERIC) {
-        day.setKiloVoltsPerPass((int) gigaToKilo(cell.getNumericCellValue()));
-      }
-
-      cell = row.getCell(3); // Program
-
-      if (cell == null || cell.getCellType() == CellType.BLANK) {
-        day.setAccProgram("OFF");
-      } else {
-        String programStr = cell.getStringCellValue().toUpperCase();
-        try {
-          AcceleratorProgram accProgram = AcceleratorProgram.valueOf(programStr);
-        } catch (IllegalArgumentException e) {
-          throw new UserFriendlyException("Unrecognized Accelerator Program, found: " + programStr);
-        }
-        day.setAccProgram(programStr);
-      }
-
-      // Hall A
-      cell = row.getCell(4); // Hall Program
-
-      Integer programId = this.parseHallProgram(cell, hallAPurposeMap, Hall.A);
-      if (programId == null) {
-        programId = hallAOffId;
-      }
-      day.setHallAProgramId(programId);
-
-      cell = row.getCell(5); // GeV/mA/Pol/MHz
-
-      HallProperties hallProperties = parseHallProperties(cell, Hall.A, "uA");
-
-      day.setHallAPolarized(false); // Can't be null so init false
-
-      if (hallProperties != null) {
-        day.setHallAKiloVolts(hallProperties.keV);
-        day.setHallANanoAmps(hallProperties.nA);
-        day.setHallAPolarized(hallProperties.polarized);
-        // TODO: set MHz?
-      }
-
-      // Hall B
-      cell = row.getCell(6); // Hall Program
-
-      programId = this.parseHallProgram(cell, hallBPurposeMap, Hall.B);
-      if (programId == null) {
-        programId = hallBOffId;
-      }
-      day.setHallBProgramId(programId);
-
-      cell = row.getCell(7); // GeV/mA/Pol/MHz
-
-      hallProperties = parseHallProperties(cell, Hall.B, "nA");
-
-      day.setHallBPolarized(false); // Can't be null so init false
-
-      if (hallProperties != null) {
-        day.setHallBKiloVolts(hallProperties.keV);
-        day.setHallBNanoAmps(hallProperties.nA);
-        day.setHallBPolarized(hallProperties.polarized);
-        // TODO: set MHz?
-      }
-
-      // Hall C
-      cell = row.getCell(8); // Hall Program
-
-      programId = this.parseHallProgram(cell, hallCPurposeMap, Hall.C);
-      if (programId == null) {
-        programId = hallCOffId;
-      }
-      day.setHallCProgramId(programId);
-
-      cell = row.getCell(9); // GeV/mA/Pol/MHz
-
-      hallProperties = parseHallProperties(cell, Hall.C, "uA");
-
-      day.setHallCPolarized(false); // Can't be null so init false
-
-      if (hallProperties != null) {
-        day.setHallCKiloVolts(hallProperties.keV);
-        day.setHallCNanoAmps(hallProperties.nA);
-        day.setHallCPolarized(hallProperties.polarized);
-        // TODO: set MHz?
-      }
-
-      // Hall D
-      cell = row.getCell(10); // Hall Program
-
-      programId = this.parseHallProgram(cell, hallDPurposeMap, Hall.D);
-      if (programId == null) {
-        programId = hallDOffId;
-      }
-      day.setHallDProgramId(programId);
-
-      cell = row.getCell(11); // GeV/mA/Pol/MHz
-
-      hallProperties = parseHallProperties(cell, Hall.D, "nA");
-
-      day.setHallDPolarized(false); // Can't be null so init false
-
-      if (hallProperties != null) {
-        day.setHallDKiloVolts(hallProperties.keV);
-        day.setHallDNanoAmps(hallProperties.nA);
-        day.setHallDPolarized(hallProperties.polarized);
-        // TODO: set MHz?
-      }
-
-      cell = row.getCell(12); // Priority Hall
-
-      String priorityHall = null;
-
-      if (cell != null && cell.getCellType() == CellType.STRING) {
-        priorityHall = cell.getStringCellValue();
-
-        List<HallPriority> priorityList = BtmFunctions.parsePriorityString(priorityHall);
-
-        for (HallPriority priority : priorityList) {
-          switch (priority.getHall()) {
-            case A:
-              day.setHallAPriority(priority.getPriority());
-              break;
-            case B:
-              day.setHallBPriority(priority.getPriority());
-              break;
-            case C:
-              day.setHallCPriority(priority.getPriority());
-              break;
-            case D:
-              day.setHallDPriority(priority.getPriority());
-              break;
-          }
-        }
-      }
-
-      cell = row.getCell(13); // Pass
-
-      if (cell != null && cell.getCellType() == CellType.STRING) {
-        String passString = cell.getStringCellValue();
-
-        String[] tokens = passString.split("/");
-        Integer[] passes = new Integer[4];
-
-        for (int i = 0; i < 4; i++) {
-          try {
-            passes[i] =
-                Math.round(
-                    Float.valueOf(
-                        tokens[i])); // Hall D might read 0.5 or 5.5, so round up and GUI will know
-            // what to do.
-          } catch (NumberFormatException e) {
-            passes[i] = null;
-          }
-        }
-
-        day.setHallAPasses(passes[0]);
-        day.setHallBPasses(passes[1]);
-        day.setHallCPasses(passes[2]);
-        day.setHallDPasses(passes[3]);
-      }
-
-      if (TimeUtil.isFirstOfMonth(day.getDayMonthYear(), Calendar.getInstance())) {
-        schedule = scheduleService.create(day.getDayMonthYear());
-        resultList.add(schedule);
-      }
-
-      if (schedule == null) {
-        throw new UserFriendlyException("Excel schedule must start on first of month");
-      } else if (!TimeUtil.isSameMonth(schedule.getStartDay(), day.getDayMonthYear())) {
-        throw new UserFriendlyException("Each month must start with day 1");
-      } else {
-        day = scheduleService.setDay(schedule, day);
+      for (ScheduleDay day : month.getDays()) {
+        scheduleService.setDay(schedule, day);
       }
     }
 
     return resultList;
-  }
-
-  private HallProperties parseHallProperties(Cell cell, Hall hall, String currentUnits)
-      throws UserFriendlyException {
-    HallProperties properties = null;
-
-    if (cell != null && cell.getCellType() == CellType.STRING) {
-      String hallProperties = cell.getStringCellValue();
-
-      if (hallProperties != null && !hallProperties.trim().isEmpty()) {
-        String[] tokens = hallProperties.split("/");
-
-        if (tokens.length != 4) {
-          throw new UserFriendlyException(
-              "Hall "
-                  + hall
-                  + " Properties must be formated 'GeV/mA/Pol/MHz', found: "
-                  + hallProperties);
-        }
-
-        properties = new HallProperties();
-
-        double geV;
-        double current;
-
-        try {
-          geV = Double.parseDouble(tokens[0]);
-        } catch (NumberFormatException e) {
-          throw new UserFriendlyException(
-              "Hall " + hall + " GeV must be a number, found: " + tokens[0]);
-        }
-        properties.keV = ((int) gigaToKilo(geV));
-
-        try {
-          current = Double.parseDouble(tokens[1]);
-        } catch (NumberFormatException e) {
-          throw new UserFriendlyException(
-              "Hall " + hall + " current must be a number, found: " + tokens[1]);
-        }
-        if (currentUnits.equals("uA")) {
-          properties.nA = (int) microToNano(current);
-        } else {
-          properties.nA = (int) current;
-        }
-
-        if ("p".equalsIgnoreCase(tokens[2])) {
-          properties.polarized = true;
-        } else if ("-".equals(tokens[2])) {
-          properties.polarized = false;
-        } else {
-          throw new UserFriendlyException(
-              "Hall " + hall + " Pol must be one of 'p,-', found: " + tokens[2]);
-        }
-
-        try {
-          properties.mHz = Integer.parseInt(tokens[3]);
-        } catch (NumberFormatException e) {
-          throw new UserFriendlyException(
-              "Hall " + hall + " MHz must be a number, found: " + tokens[3]);
-        }
-      }
-    }
-
-    return properties;
-  }
-
-  private Integer parseHallProgram(Cell cell, Map<String, ExpProgram> purposeMap, Hall hall)
-      throws UserFriendlyException {
-    String purposeName = null;
-    Integer programId = null;
-
-    if (cell != null && cell.getCellType() == CellType.STRING) {
-      purposeName = cell.getStringCellValue();
-    }
-
-    if (purposeName != null) {
-      ExpProgram hallProgram = purposeMap.get(purposeName);
-
-      if (hallProgram == null) {
-        throw new UserFriendlyException(
-            "Could not find hall "
-                + hall
-                + " program: '"
-                + purposeName
-                + "', please update Program list");
-      }
-
-      programId = hallProgram.getExpProgramId().intValue();
-    }
-
-    return programId;
   }
 
   @PermitAll
@@ -588,16 +286,8 @@ public class ExcelScheduleService {
     return kilo / 1000000.0;
   }
 
-  private double gigaToKilo(double giga) {
-    return giga * 1000000.0;
-  }
-
   private double nanoToMicro(int nano) {
     return nano / 1000.0;
-  }
-
-  private double microToNano(double micro) {
-    return micro * 1000.0;
   }
 
   private String purposeName(ExpProgram purpose) {
@@ -608,18 +298,6 @@ public class ExcelScheduleService {
     }
 
     return name;
-  }
-
-  private class HallProperties {
-
-    public int keV;
-    public int nA;
-    public boolean polarized;
-    public int mHz;
-
-    public String toString() {
-      return "keV: " + keV + ", nA: " + nA;
-    }
   }
 
   /*private String nullToEmpty(Integer input) {
