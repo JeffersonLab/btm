@@ -73,6 +73,21 @@ public final class BtmFunctions {
     return value;
   }
 
+  /**
+   * @param start The start of a span of time
+   * @param end Its end, or null if it hasn't ended, in which case it is measured until now
+   * @return The span's length in hours, with two decimals; empty if there is no start
+   */
+  public static String formatHoursBetween(Date start, Date end) {
+    if (start == null) {
+      return "";
+    }
+
+    long millis = (end == null ? System.currentTimeMillis() : end.getTime()) - start.getTime();
+
+    return new DecimalFormat("#,##0.00").format(millis / 3600000.0);
+  }
+
   public static String formatBoolean(Boolean value) {
     if (value == null) {
       return "";

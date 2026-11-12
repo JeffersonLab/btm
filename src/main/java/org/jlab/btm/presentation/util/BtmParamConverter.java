@@ -7,8 +7,10 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.time.temporal.TemporalQuery;
 import java.util.Date;
+import java.util.Locale;
 import org.jlab.btm.persistence.enumeration.DurationUnits;
 import org.jlab.btm.persistence.enumeration.TimesheetType;
 import org.jlab.smoothness.persistence.enumeration.Hall;
@@ -50,6 +52,37 @@ public final class BtmParamConverter {
       final LocalDateTime ldt = parse(formatter, valueStr, LocalDateTime::from);
       final ZonedDateTime zdt = ldt.atZone(ZoneId.of("America/New_York"));
       value = Date.from(zdt.toInstant());
+    }
+
+    return value;
+  }
+
+  /**
+   * Converts a date and time like 31-Jan-2026 13:45:59, in JLab's time zone; the seconds are
+   * optional, and the month's case doesn't matter. A time in the hour that repeats when daylight
+   * saving time ends is taken as the first of the two.
+   *
+   * @param request The request
+   * @param name The parameter's name
+   * @return The instant, or null if the parameter is missing or empty
+   * @throws ParseException If the value isn't such a date and time
+   */
+  public static Instant convertJLabDateTimeWithSeconds(HttpServletRequest request, String name)
+      throws ParseException {
+    final DateTimeFormatter formatter =
+        new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .appendPattern("dd-MMM-uuuu HH:mm[:ss]")
+            .toFormatter(Locale.US)
+            .withResolverStyle(ResolverStyle.STRICT);
+
+    Instant value = null;
+
+    String valueStr = request.getParameter(name);
+
+    if (valueStr != null && !valueStr.isBlank()) {
+      final LocalDateTime ldt = parse(formatter, valueStr.trim(), LocalDateTime::from);
+      value = ldt.atZone(ZoneId.of("America/New_York")).toInstant();
     }
 
     return value;

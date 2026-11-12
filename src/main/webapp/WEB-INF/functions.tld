@@ -23,6 +23,11 @@ https://jakarta.ee/xml/ns/jakartaee/web-jsptaglibrary_3_0.xsd"
         </function-signature>
     </function>
     <function>
+        <name>formatHoursBetween</name>
+        <function-class>org.jlab.btm.presentation.util.BtmFunctions</function-class>
+        <function-signature>java.lang.String formatHoursBetween(java.util.Date, java.util.Date)</function-signature>
+    </function>
+    <function>
         <name>formatBoolean</name>
         <function-class>org.jlab.btm.presentation.util.BtmFunctions</function-class>
         <function-signature>java.lang.String formatBoolean(java.lang.Boolean)</function-signature>

@@ -53,3 +53,4 @@ ENV FRONTEND_SERVER_URL='https://localhost:8443'
 # App specific
 ENV LOGBOOK_SERVER_URL='https://logbooks.jlab.org'
 ENV BTM_EPICS_ADDR_LIST='softioc'
+ENV BTM_PROGRAM_PV='BOOMCEBAPROGRAM'

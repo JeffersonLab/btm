@@ -91,6 +91,10 @@ public class PVMonitorManager {
 
     dynamic.addAll(fixed);
 
+    if (Constant.programPv() != null) {
+      dynamic.add(Constant.programPv());
+    }
+
     PV_LIST = Collections.unmodifiableList(dynamic);
   }
 

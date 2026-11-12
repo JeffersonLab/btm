@@ -55,9 +55,12 @@
             </table>
         </c:when>
         <c:otherwise>
-            <p>No EPICS/BOOM Data</p>
+            <p>No State Timeline or EPICS/BOOM Data</p>
         </c:otherwise>
     </c:choose>
+    <p class="measured-note">Hours that the <a href="${pageContext.request.contextPath}/state-timeline">State
+        Timeline</a> covers are calculated from it, with DTM downtime during Studies, NPES Restore and ACC counted as
+        Internal Down. Other hours are as BOOM measured them.</p>
 </div>
 <h3 id="acc-reported-hourly-detail">Reported</h3>
 <div>

@@ -47,6 +47,22 @@ public class Constant {
   public static final String EXP_UED_SUFFIX = ":bta_sec_enr_h";
   public static final String EXP_OFF_SUFFIX = ":bta_sec_hall_off_h";
 
+  /**
+   * The name of the environment variable naming the PV with the current accelerator program, which
+   * the State Timeline is recorded from.
+   */
+  public static final String PROGRAM_PV_ENV = "BTM_PROGRAM_PV";
+
+  /**
+   * @return The name of the PV with the current accelerator program; null if none is configured, in
+   *     which case the State Timeline is only kept by hand
+   */
+  public static String programPv() {
+    String name = System.getenv(PROGRAM_PV_ENV);
+
+    return name == null || name.isBlank() ? null : name.trim();
+  }
+
   // Liveness
   public static final String EXP_HALL_LIVENESS_PREFIX = "iochl";
   public static final String EXP_HALL_LIVENESS_SUFFIX = ":heartbeat";
