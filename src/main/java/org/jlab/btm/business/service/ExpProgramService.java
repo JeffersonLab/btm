@@ -5,6 +5,7 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -127,8 +128,20 @@ public class ExpProgramService extends AbstractService<ExpProgram> {
     create(purpose);
   }
 
+  /**
+   * Whether an experimenter shift or a tentative or published monthly schedule refers to the
+   * program. Schedule days store each hall's program ID without a foreign key, so removing a
+   * scheduled program would leave the schedule with an ID that no longer resolves to a name.
+   *
+   * @param programId The program ID
+   * @return true if the program is in use
+   */
   @PermitAll
   public boolean isInUse(BigInteger programId) {
+    return isUsedByShift(programId) || isUsedBySchedule(programId);
+  }
+
+  private boolean isUsedByShift(BigInteger programId) {
     TypedQuery<Long> q =
         em.createQuery(
             "select count(a.hall) from ExpShift a where a.expProgram.expProgramId = :id",
@@ -141,13 +154,26 @@ public class ExpProgramService extends AbstractService<ExpProgram> {
     return count > 0;
   }
 
+  private boolean isUsedBySchedule(BigInteger programId) {
+    Query q =
+        em.createNativeQuery(
+            "select count(*) from BTM_OWNER.SCHEDULE_DAY where :id in "
+                + "(HALL_A_PROGRAM_ID, HALL_B_PROGRAM_ID, HALL_C_PROGRAM_ID, HALL_D_PROGRAM_ID)");
+
+    q.setParameter("id", programId);
+
+    Number count = (Number) q.getSingleResult();
+
+    return count.longValue() > 0;
+  }
+
   @RolesAllowed({"cc", "btm-admin", "schcom"})
   public void remove(BigInteger programId) throws UserFriendlyException {
     ExpProgram purpose = find(programId);
 
     if (isInUse(programId)) {
       throw new UserFriendlyException(
-          "You cannot remove a program which is already in use.  Update the Active attribute instead.");
+          "You cannot remove a program which is already in use by an experimenter shift or a schedule.  Update the Active attribute instead.");
     }
 
     this.remove(purpose);
