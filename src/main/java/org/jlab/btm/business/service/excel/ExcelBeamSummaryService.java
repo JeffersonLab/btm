@@ -54,7 +54,7 @@ public class ExcelBeamSummaryService {
     c.setCellValue(pdSum.getPhysicsSeconds() / 3600);
     c = row.createCell(3);
     c.setCellStyle(numberStyle);
-    c.setCellValue(pacSum.getPhysicsDays() * 24);
+    c.setCellValue(pacSum.getPhysicsHours());
 
     // Studies Program
     row = sheet1.createRow(rownum++);
@@ -67,7 +67,7 @@ public class ExcelBeamSummaryService {
     c.setCellValue(pdSum.getStudiesSeconds() / 3600);
     c = row.createCell(3);
     c.setCellStyle(numberStyle);
-    c.setCellValue(pacSum.getStudiesDays() * 24);
+    c.setCellValue(pacSum.getStudiesHours());
 
     // Restore Program
     row = sheet1.createRow(rownum++);
@@ -80,7 +80,7 @@ public class ExcelBeamSummaryService {
     c.setCellValue(pdSum.getRestoreSeconds() / 3600);
     c = row.createCell(3);
     c.setCellStyle(numberStyle);
-    c.setCellValue(pacSum.getRestoreDays() * 24);
+    c.setCellValue(pacSum.getRestoreHours());
 
     // ACC Program
     row = sheet1.createRow(rownum++);
@@ -93,7 +93,7 @@ public class ExcelBeamSummaryService {
     c.setCellValue(pdSum.getAccSeconds() / 3600);
     c = row.createCell(3);
     c.setCellStyle(numberStyle);
-    c.setCellValue(pacSum.getAccDays() * 24);
+    c.setCellValue(pacSum.getAccHours());
 
     // Down Program
     row = sheet1.createRow(rownum++);
@@ -119,7 +119,7 @@ public class ExcelBeamSummaryService {
     c.setCellValue(pdSum.getProgramSeconds() / 3600);
     c = row.createCell(3);
     c.setCellStyle(numberStyle);
-    c.setCellValue(pacSum.getProgramDays() * 24);
+    c.setCellValue(pacSum.getProgramHours());
 
     // Period
     row = sheet1.createRow(rownum++);
@@ -145,7 +145,7 @@ public class ExcelBeamSummaryService {
     c.setCellValue(pdSum.getOffSeconds() / 3600);
     c = row.createCell(3);
     c.setCellStyle(numberStyle);
-    c.setCellValue(pacSum.getOffDays() * 24);
+    c.setCellValue(pacSum.getOffHours());
 
     // Implicit OFF
     row = sheet1.createRow(rownum++);

@@ -15,6 +15,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
 import org.jlab.btm.persistence.entity.ScheduleDay;
+import org.jlab.btm.persistence.projection.PacAccSum;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -257,6 +258,54 @@ class ScheduleServiceIT {
     assertNotNull(published.getPublishedDate());
     assertThrows(
         UserFriendlyException.class, () -> schedules.publish(first.getMonthlyScheduleId()));
+  }
+
+  @Test
+  void summarizesMonthsAcrossDaylightSavingChangesInElapsedHours() {
+    // March: 1-7 PHYSICS, 8 (23 hours) OFF, 9-20 RESTORE, 21-31 unscheduled
+    MonthlySchedule march = schedule("2026-03-01", 1, "2026-02-20");
+    days(march, "2026-03-01", 7, "PHYSICS");
+    day(march, "2026-03-08", "OFF");
+    days(march, "2026-03-09", 12, "RESTORE");
+    // November: 1 (25 hours) to 10 STUDIES, 11 ACC, 12 OFF, 13-30 unscheduled
+    MonthlySchedule november = schedule("2026-11-01", 1, "2026-10-20");
+    days(november, "2026-11-01", 10, "STUDIES");
+    day(november, "2026-11-11", "ACC");
+    day(november, "2026-11-12", "OFF");
+    // 14 March 2027 has 23 hours
+    MonthlySchedule march2027 = schedule("2027-03-01", 1, "2027-02-20");
+    day(march2027, "2027-03-14", "PHYSICS");
+    flushAndClear();
+
+    PacAccSum spring = schedules.findSummary(date("2026-03-01"), date("2026-04-01"));
+    assertEquals(31 * 24 - 1, spring.getPeriodHours(), 1e-9);
+    assertEquals(19, spring.getProgramDays());
+    assertEquals(1, spring.getOffDays());
+    assertEquals(11 * 24, spring.getImplicitOffHours(), 1e-9);
+    assertEquals(23 + 11 * 24, spring.getTotalOffHours(), 1e-9);
+
+    PacAccSum autumn = schedules.findSummary(date("2026-11-01"), date("2026-12-01"));
+    assertEquals(30 * 24 + 1, autumn.getPeriodHours(), 1e-9);
+    assertEquals(11, autumn.getProgramDays());
+    assertEquals(18 * 24, autumn.getImplicitOffHours(), 1e-9);
+    assertEquals(19 * 24, autumn.getTotalOffHours(), 1e-9);
+
+    // Fully scheduled change days have no OFF
+    PacAccSum springForward = schedules.findSummary(date("2027-03-14"), date("2027-03-15"));
+    assertEquals(23, springForward.getPeriodHours(), 1e-9);
+    assertEquals(0, springForward.getImplicitOffHours(), 1e-9);
+    assertEquals(0, springForward.getTotalOffHours(), 1e-9);
+    PacAccSum fallBack = schedules.findSummary(date("2026-11-01"), date("2026-11-02"));
+    assertEquals(25, fallBack.getPeriodHours(), 1e-9);
+    assertEquals(0, fallBack.getImplicitOffHours(), 1e-9);
+    assertEquals(0, fallBack.getTotalOffHours(), 1e-9);
+  }
+
+  private void days(MonthlySchedule schedule, String first, int count, String program) {
+    LocalDate day = LocalDate.parse(first);
+    for (int i = 0; i < count; i++) {
+      day(schedule, day.plusDays(i).toString(), program);
+    }
   }
 
   private void injectEntityManager(Object service) throws ReflectiveOperationException {
