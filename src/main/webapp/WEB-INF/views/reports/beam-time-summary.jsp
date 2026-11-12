@@ -177,7 +177,7 @@
                                     </td>
                                     <td><fmt:formatNumber value="${pdSum.physicsSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td><fmt:formatNumber value="${pacSum.physicsDays * 24}"
+                                    <td><fmt:formatNumber value="${pacSum.physicsHours}"
                                                           pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-subrow">
@@ -228,7 +228,7 @@
                                     </td>
                                     <td><fmt:formatNumber value="${pdSum.studiesSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td><fmt:formatNumber value="${pacSum.studiesDays * 24}"
+                                    <td><fmt:formatNumber value="${pacSum.studiesHours}"
                                                           pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
@@ -243,7 +243,7 @@
                                     </td>
                                     <td><fmt:formatNumber value="${pdSum.restoreSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td><fmt:formatNumber value="${pacSum.restoreDays * 24}"
+                                    <td><fmt:formatNumber value="${pacSum.restoreHours}"
                                                           pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
@@ -257,7 +257,7 @@
                                     </td>
                                     <td><fmt:formatNumber value="${pdSum.accSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td><fmt:formatNumber value="${pacSum.accDays * 24}"
+                                    <td><fmt:formatNumber value="${pacSum.accHours}"
                                                           pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
@@ -282,7 +282,7 @@
                                     </td>
                                     <td><fmt:formatNumber value="${pdSum.programSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td><fmt:formatNumber value="${pacSum.programDays * 24}"
+                                    <td><fmt:formatNumber value="${pacSum.programHours}"
                                                           pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
@@ -296,7 +296,7 @@
                                     </td>
                                     <td><fmt:formatNumber value="${pdSum.offSeconds / 3600}"
                                                           pattern="#,##0.0"/></td>
-                                    <td><fmt:formatNumber value="${pacSum.offDays * 24}"
+                                    <td><fmt:formatNumber value="${pacSum.offHours}"
                                                           pattern="#,##0.0"/></td>
                                 </tr>
                                 <tr class="data-row">
