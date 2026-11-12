@@ -10,6 +10,8 @@ import jakarta.persistence.Query;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +19,10 @@ import org.hibernate.envers.RevisionType;
 import org.jlab.btm.business.service.epics.CcEpicsAccHourService;
 import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.business.util.HourUtil;
+import org.jlab.btm.business.util.ProgramAccounting;
+import org.jlab.btm.business.util.ProgramAccounting.Span;
 import org.jlab.btm.persistence.entity.CcAccHour;
+import org.jlab.btm.persistence.entity.CcProgramInterval;
 import org.jlab.btm.persistence.entity.PdShiftPlan;
 import org.jlab.btm.persistence.projection.AcceleratorShiftAvailability;
 import org.jlab.btm.persistence.projection.CcAccShiftTotals;
@@ -36,7 +41,12 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
 
   private static final Logger logger = Logger.getLogger(CcAccHourService.class.getName());
 
+  /** DTM's event type for the accelerator being down ("blocked"). */
+  private static final BigInteger BLOCKED_EVENT_TYPE_ID = BigInteger.ONE;
+
   @EJB CcEpicsAccHourService epicsService;
+  @EJB CcProgramIntervalService programService;
+  @EJB DowntimeService downtimeService;
 
   @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
@@ -100,6 +110,58 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
   @PermitAll
   public List<CcAccHour> findInEpics(Date start, Date end) throws CALoadException {
     return epicsService.find(start, end);
+  }
+
+  /**
+   * Calculates accelerator program time from the State Timeline, with Internal Down from DTM: the
+   * time DTM has the machine down while the timeline's program is Studies, Restore or ACC.
+   *
+   * @param start The first hour
+   * @param end The last hour, inclusive
+   * @return The hours the timeline covers, up to now; see {@link ProgramAccounting#measuredHours}
+   */
+  @PermitAll
+  public List<CcAccHour> findInTimeline(Date start, Date end) {
+    Instant rangeStart = start.toInstant();
+    Instant rangeEnd = end.toInstant().plus(1, ChronoUnit.HOURS);
+
+    List<CcProgramInterval> intervals = programService.findOverlapping(rangeStart, rangeEnd);
+
+    if (intervals.isEmpty()) {
+      return new ArrayList<>();
+    }
+
+    List<Span> downtime = downtimeService.findDowntime(rangeStart, rangeEnd, BLOCKED_EVENT_TYPE_ID);
+
+    return ProgramAccounting.measuredHours(
+        intervals, downtime, start, end, Instant.now().truncatedTo(ChronoUnit.SECONDS));
+  }
+
+  /**
+   * Finds the measured hours: from the State Timeline and DTM where the timeline covers the hour,
+   * otherwise as BOOM measured it.
+   *
+   * @param start The first hour
+   * @param end The last hour, inclusive
+   * @return The measured hours, earliest first; hours neither source has are left out
+   */
+  @PermitAll
+  public List<CcAccHour> findMeasured(Date start, Date end) {
+    List<CcAccHour> boomHourList;
+
+    try {
+      boomHourList = findInEpics(start, end);
+    } catch (CALoadException e) {
+      logger.log(Level.INFO, "CALoadException: " + e.getMessage());
+      logger.log(Level.FINEST, "Unable to obtain EPICS acc hour data", e);
+      boomHourList = new ArrayList<>();
+    }
+
+    Map<Date, CcAccHour> measured = new TreeMap<>(HourUtil.createHourMap(boomHourList));
+
+    measured.putAll(HourUtil.createHourMap(findInTimeline(start, end)));
+
+    return new ArrayList<>(measured.values());
   }
 
   @PermitAll
@@ -383,13 +445,7 @@ public class CcAccHourService extends AbstractService<CcAccHour> {
     List<CcAccHour> dbAccHourList = findInDatabase(startHour, endHour);
     List<CcAccHour> epicsAccHourList;
     if (queryEpics) {
-      try {
-        epicsAccHourList = findInEpics(startHour, endHour);
-      } catch (CALoadException e) {
-        logger.log(Level.INFO, "CALoadException: " + e.getMessage());
-        logger.log(Level.FINEST, "Unable to obtain EPICS acc hour data", e);
-        epicsAccHourList = new ArrayList<>();
-      }
+      epicsAccHourList = findMeasured(startHour, endHour);
     } else {
       epicsAccHourList = new ArrayList<>();
     }

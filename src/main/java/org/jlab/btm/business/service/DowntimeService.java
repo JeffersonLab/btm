@@ -6,11 +6,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import java.math.BigInteger;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+import org.jlab.btm.business.util.ProgramAccounting.Span;
 import org.jlab.btm.persistence.entity.CcAccHour;
 import org.jlab.btm.persistence.projection.*;
 import org.jlab.smoothness.business.util.DateIterator;
@@ -63,6 +65,47 @@ public class DowntimeService extends AbstractService<CcAccHour> {
     }
 
     return totals;
+  }
+
+  /**
+   * Finds when DTM has the machine down, as spans of time instead of a total.
+   *
+   * <p>The times are read as seconds since the epoch, which the database calculates, so that a time
+   * in the repeated hour at the end of daylight saving time is the instant DTM recorded.
+   *
+   * @param start The start of a time range
+   * @param end The end of the range, exclusive
+   * @param eventTypeId The DTM event type
+   * @return The downtime of that type's events that overlap the range, earliest first; an event
+   *     that is still open has no end
+   */
+  @SuppressWarnings("unchecked")
+  @PermitAll
+  public List<Span> findDowntime(Instant start, Instant end, BigInteger eventTypeId) {
+    Query q =
+        em.createNativeQuery(
+            "select round((cast(sys_extract_utc(a.time_down) as date) - date '1970-01-01') * 86400), "
+                + "round((cast(sys_extract_utc(a.time_up) as date) - date '1970-01-01') * 86400) "
+                + "from btm_owner.event_first_incident a "
+                + "where a.event_type_id = :typeId "
+                + "and a.time_down < :end "
+                + "and nvl(a.time_up, sysdate) >= :start "
+                + "order by a.time_down");
+
+    q.setParameter("typeId", eventTypeId);
+    q.setParameter("start", start);
+    q.setParameter("end", end);
+
+    List<Span> spans = new ArrayList<>();
+
+    for (Object[] row : (List<Object[]>) q.getResultList()) {
+      Instant down = Instant.ofEpochSecond(((Number) row[0]).longValue());
+      Instant up = row[1] == null ? null : Instant.ofEpochSecond(((Number) row[1]).longValue());
+
+      spans.add(new Span(down, up));
+    }
+
+    return spans;
   }
 
   @PermitAll

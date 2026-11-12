@@ -37,3 +37,19 @@ CREATE SEQUENCE BTM_OWNER.RUN_ID
 -- Event First Incident
 insert into BTM_OWNER.EVENT_FIRST_INCIDENT values (1, 'Testing Blocked', null, 1, 1, 'Testing Blocked', sysdate, 1);
 insert into BTM_OWNER.EVENT_FIRST_INCIDENT values (2, 'Testing Tuning', null, 9, 2, 'Testing Tuning', sysdate, 1);
+
+-- State Timeline: Physics, then six hours of Studies, then Off, which is the program the demo IOC reports.
+-- DTM has the machine down for one of the hours of Studies, which timesheets count as Internal Down.
+INSERT INTO BTM_OWNER.CC_PROGRAM_INTERVAL (CC_PROGRAM_INTERVAL_ID, START_TIME, PROGRAM) VALUES (1, SYSTIMESTAMP - NUMTODSINTERVAL(72, 'HOUR'), 'PHYSICS');
+INSERT INTO BTM_OWNER.CC_PROGRAM_INTERVAL (CC_PROGRAM_INTERVAL_ID, START_TIME, PROGRAM) VALUES (2, SYSTIMESTAMP - NUMTODSINTERVAL(30, 'HOUR'), 'STUDIES');
+INSERT INTO BTM_OWNER.CC_PROGRAM_INTERVAL (CC_PROGRAM_INTERVAL_ID, START_TIME, PROGRAM) VALUES (3, SYSTIMESTAMP - NUMTODSINTERVAL(24, 'HOUR'), 'OFF');
+
+DROP SEQUENCE BTM_OWNER.CC_PROGRAM_INTERVAL_ID;
+CREATE SEQUENCE BTM_OWNER.CC_PROGRAM_INTERVAL_ID
+    INCREMENT BY 1
+    START WITH 4
+    NOCYCLE
+    NOCACHE
+    ORDER;
+
+insert into BTM_OWNER.EVENT_FIRST_INCIDENT values (3, 'Testing Blocked during Studies', SYSTIMESTAMP - NUMTODSINTERVAL(26, 'HOUR'), 1, 3, 'Testing Blocked during Studies', SYSTIMESTAMP - NUMTODSINTERVAL(27, 'HOUR'), 1);

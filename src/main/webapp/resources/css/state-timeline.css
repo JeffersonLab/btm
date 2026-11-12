@@ -1,0 +1,64 @@
+.filter-form {
+    display: none;
+}
+
+#current-program {
+    margin: 1em 0;
+    text-align: center;
+}
+
+#current-program-label {
+    font-size: 1.1em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+#current-program-name {
+    display: inline-block;
+    margin: 0.25em 0;
+    padding: 0.2em 1em;
+    border: 1px solid #555;
+    border-radius: 0.25em;
+    font-size: 3em;
+    font-weight: bold;
+}
+
+#current-program-name.program-physics {
+    background-color: #c8e6c9;
+}
+
+#current-program-name.program-studies,
+#current-program-name.program-restore,
+#current-program-name.program-acc {
+    background-color: #fff3c4;
+}
+
+#current-program-name.program-off,
+#current-program-name.program-none {
+    background-color: #e0e0e0;
+}
+
+#program-source {
+    text-align: center;
+}
+
+#interval-table {
+    width: 100%;
+}
+
+.current-interval {
+    font-weight: bold;
+}
+
+#interval-count {
+    margin-right: 1em;
+}
+
+#row-form-note {
+    margin: 1em;
+}
+
+.login-message {
+    display: block;
+    margin-top: 1em;
+}

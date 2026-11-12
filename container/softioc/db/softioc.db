@@ -25,6 +25,19 @@
                 field(VAL,"Comments Example")
         }
 
+# The current accelerator program, which the State Timeline is recorded from (BTM_PROGRAM_PV).
+# This record is the demo's: it is not copied from BOOM, which doesn't publish the program this way yet.
+        record(mbbo,"BOOMCEBAPROGRAM") {
+                field(PINI,"YES")
+                field(DTYP,"Soft Channel")
+                field(ZRST,"PHYSICS")
+                field(ONST,"STUDIES")
+                field(TWST,"RESTORE")
+                field(THST,"ACC")
+                field(FRST,"OFF")
+                field(VAL,"4")
+        }
+
 # /cs/op/iocs/iocin1/boomV/db/boom.db
         record(histogram,"BOOMUNIXTIME_h") {
                 field(DESC,"histogram record")

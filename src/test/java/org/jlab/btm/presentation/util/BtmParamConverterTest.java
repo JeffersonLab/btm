@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import java.lang.reflect.Proxy;
 import java.text.ParseException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
@@ -103,6 +104,45 @@ class BtmParamConverterTest {
         BtmParamConverter.convertJLabDateTime(request, "datetime"));
     assertEquals(date(2026, 1, 2, 15), BtmParamConverter.convertDayAndHour(request, "day-hour"));
     assertEquals(date(2026, 3, 1, 0), BtmParamConverter.convertMonthAndYear2(request, "month"));
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"02-Jan-2026 07:30:15", "02-jan-2026 07:30:15", " 02-JAN-2026 07:30:15 "})
+  void convertsDateTimeWithSeconds(String value) throws ParseException {
+    assertEquals(
+        Instant.parse("2026-01-02T12:30:15Z"),
+        BtmParamConverter.convertJLabDateTimeWithSeconds(request(Map.of("start", value)), "start"));
+  }
+
+  @Test
+  void convertsDateTimeWithoutSecondsAndInDaylightSavingTime() throws ParseException {
+    assertEquals(
+        Instant.parse("2026-07-02T11:30:00Z"),
+        BtmParamConverter.convertJLabDateTimeWithSeconds(
+            request(Map.of("start", "02-Jul-2026 07:30")), "start"));
+  }
+
+  @Test
+  void convertsMissingDateTimeWithSecondsToNull() throws ParseException {
+    assertNull(
+        BtmParamConverter.convertJLabDateTimeWithSeconds(request(Map.of("start", " ")), "start"));
+    assertNull(BtmParamConverter.convertJLabDateTimeWithSeconds(request(Map.of()), "start"));
+  }
+
+  @ParameterizedTest
+  @ValueSource(
+      strings = {
+        "not-a-date",
+        "02-Jan-2026",
+        "2026-01-02 07:30",
+        "31-Feb-2026 07:30",
+        "02-Jan-2026 24:30"
+      })
+  void rejectsMalformedDateTimeWithSeconds(String value) {
+    assertWrapsDateTimeParseException(
+        () ->
+            BtmParamConverter.convertJLabDateTimeWithSeconds(
+                request(Map.of("start", value)), "start"));
   }
 
   private interface Conversion {

@@ -19,6 +19,11 @@ A [Jakarta EE 10](https://en.wikipedia.org/wiki/Jakarta_EE) web application for 
 ## Overview
 The Beam Time Manager application allows crew chiefs and experimenters to track machine time accounting while allowing management to review reports.  The app prompts crew chiefs and experimenters with shift timesheets pre-filled with data estimated via beam position sensor measurements.  The app also holds a database view of the NPES schedule, exposes programmatic access via a JSON REST service, and integrates with Program Deputy [shift plans](https://github.com/JeffersonLab/pd-shiftplans) and [DTM](https://github.com/JeffersonLab/dtm) to enable prompting timekeepers with the expected plan as well.  The timesheets therefore consist of Planned, Measured, and Reported values.
 
+### State Timeline
+The accelerator program (Physics, Studies, NPES Restore, ACC or Off) is kept as a timeline of intervals, shown on the State Timeline tab with the current program.  The app records a program change when the PV named by `BTM_PROGRAM_PV` changes, and Crew Chiefs can add, change and remove intervals to correct mistakes.  Each interval runs until the next one starts, so the timeline has no gaps or overlaps.
+
+Downtime is not part of the timeline: it is recorded in [DTM](https://github.com/JeffersonLab/dtm) only.  The Measured accelerator program time of a Crew Chief timesheet is calculated from the timeline, and the time DTM has the machine down (blocked events) during Studies, NPES Restore or ACC is counted as Internal Down.  Hours that the timeline does not cover, such as those before it was first recorded, are as BOOM measured them.  Changing the timeline changes the Measured values of the timesheets it overlaps, but not the Reported values that were already saved.
+
 ## Quick Start with Compose
 1. Grab project
 ```
@@ -84,6 +89,9 @@ Uses the [Smoothness Environment Variables](https://github.com/JeffersonLab/smoo
 |---------------------|----------------------------------------------------------------|
 | LOGBOOK_DEBUG       | If set to "true" then TLOG is used as logbook                  |
 | BTM_EPICS_ADDR_LIST | EPICS CA Address List for obtaining time keeping measurements. |
+| BTM_PROGRAM_PV      | Optional name of the PV with the current accelerator program, which the State Timeline is recorded from.  If not set the timeline is only kept by hand. |
+
+The value of the `BTM_PROGRAM_PV` PV must be a string or an enumeration whose label is `PHYSICS`, `STUDIES`, `RESTORE`, `ACC` or `OFF`, in any case; `NULL` is taken as `PHYSICS` and `MD` as `STUDIES`, as BOOM names them in its hourly PVs.  Any other value, such as `DOWN`, is ignored and logged: the current program stays what it was.  The demo's soft IOC has such a PV, `BOOMCEBAPROGRAM`, which you can change to see the timeline follow, for example with `docker compose exec softioc caput BOOMCEBAPROGRAM STUDIES`.
 
 Host names in `BTM_EPICS_ADDR_LIST` are looked up when EPICS monitoring starts.  While any PV is not connected they are looked up again every 30 seconds, and monitoring restarts if one resolves to an address it did not have before, so an IOC host that DNS did not know at startup, or whose address changed, is picked up without a CA reset.
 
@@ -137,8 +145,11 @@ No existing Compose services or external databases are needed.
 
 Coverage includes monthly version ordering, published and tentative schedule selection,
 inclusive month ranges, schedule creation/publication, and Oracle's missing-day projection
-(including nulls, numeric/boolean conversion and a DST transition). The tests call services
-with a real Hibernate EntityManager; they do not exercise WildFly's EJB security/JTA or HTTP.
+(including nulls, numeric/boolean conversion and a DST transition). It also includes the State
+Timeline's queries and changes, DTM downtime read as time spans, and the accelerator hours
+calculated from both (including the repeated hour when daylight saving time ends). The tests
+call services with a real Hibernate EntityManager; they do not exercise WildFly's EJB
+security/JTA or HTTP.
 
 `./gradlew build` and `./gradlew check` run both suites, including in CI, and therefore require
 Docker. A missing Docker daemon fails the integration suite instead of skipping it.

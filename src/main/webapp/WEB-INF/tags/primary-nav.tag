@@ -4,6 +4,9 @@
 <%@taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <%@taglib prefix="s" uri="jlab.tags.smoothness"%>
 <ul>
+    <li${'/state-timeline' eq currentPath ? ' class="current-primary"' : ''}>
+        <a href="${pageContext.request.contextPath}/state-timeline">State Timeline</a>
+    </li>
     <li${fn:startsWith(currentPath, '/timesheet') ? ' class="current-primary"' : ''}>
         <a href="${pageContext.request.contextPath}/timesheet">Timesheets</a>
     </li>
