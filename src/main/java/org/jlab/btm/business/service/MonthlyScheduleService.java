@@ -29,6 +29,7 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
   private static final Logger LOGGER = Logger.getLogger(MonthlyScheduleService.class.getName());
 
   @EJB ScheduleDayService scheduleDayService;
+  @EJB RunService runService;
 
   @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
@@ -354,6 +355,8 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
     }
 
     schedule.setPublishedDate(new Date());
+
+    runService.recalculate();
 
     return schedule;
   }
