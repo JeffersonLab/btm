@@ -19,6 +19,10 @@ application. See [README.md](README.md) for setup and architecture. Based on the
   For rootless Docker set `DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock`. It tests service
   queries and persistence, not WildFly EJB security/JTA or HTTP. See README's Test section.
 - For documentation-only changes, check links, examples and `git diff --check`.
+- User guide (`docs/user-guide`): it is also a Zensical website (`zensical.toml`, tools pinned by
+  `uv.lock`). On a change to it, run `uv run --locked zensical build --strict`; link within the
+  guide by relative path, and outside it by full URL. It describes what the app does: update it
+  in the same PR as a change to behavior or pages.
 - Demo setup and local WildFly development are documented in
   [README.md](README.md#develop). [deps.yaml](deps.yaml) provides Oracle, Keycloak, Puppet,
   MailHog and a soft IOC. [build.yaml](build.yaml) builds the app from this worktree;
