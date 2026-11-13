@@ -7,6 +7,9 @@
     <li${'/setup/settings' eq currentPath ? ' class="current-secondary"' : ''}>
         <a href="${pageContext.request.contextPath}/setup/settings">Settings</a>
     </li>
+    <li${'/setup/runs' eq currentPath ? ' class="current-secondary"' : ''}>
+        <a href="${pageContext.request.contextPath}/setup/runs">Runs</a>
+    </li>
     <li${'/setup/directory-cache' eq currentPath ? ' class="current-secondary"' : ''}>
         <a href="${pageContext.request.contextPath}/setup/directory-cache">Directory Cache</a>
     </li>

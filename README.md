@@ -24,6 +24,9 @@ The accelerator program (Physics, Studies, NPES Restore, ACC or Off) is kept as 
 
 Downtime is not part of the timeline: it is recorded in [DTM](https://github.com/JeffersonLab/dtm) only.  The Measured accelerator program time of a Crew Chief timesheet is calculated from the timeline, and the time DTM has the machine down (blocked events) during Studies, NPES Restore or ACC is counted as Internal Down.  Hours that the timeline does not cover, such as those before it was first recorded, are as BOOM measured them.  Changing the timeline changes the Measured values of the timesheets it overlaps, but not the Reported values that were already saved.
 
+### Runs
+A run is a stretch of days the accelerator is scheduled to be on: consecutive days whose program is not OFF in each month's latest published NPES schedule, with a month that has no published schedule counting as OFF.  The runs are kept in the `RUN` table and served at `/rest/runs` (the current and previous run), which report date range selectors use.  They are recalculated whenever a schedule is published and when the app starts.  Admins can see them on the Setup > Runs page and set a run's days by hand where the actual run differs from the schedule; a run set by hand stays as it is when the schedules change, until it is removed.
+
 ## Quick Start with Compose
 1. Grab project
 ```

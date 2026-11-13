@@ -5,17 +5,15 @@ import jakarta.json.stream.JsonGenerator;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.CacheControl;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.StreamingOutput;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.jlab.btm.business.service.RunService;
 import org.jlab.btm.persistence.entity.Run;
-import org.jlab.smoothness.business.util.TimeUtil;
 
 /**
  * @author ryans
@@ -72,8 +70,10 @@ public class Runs {
             }
           }
         };
-    Date midnight = TimeUtil.startOfDay(new Date(), Calendar.getInstance());
-    midnight = TimeUtil.addDays(midnight, 1);
-    return Response.ok(stream).expires(midnight).build();
+    // Runs change when a schedule is published or an admin edits one, so clients check each time
+    CacheControl cacheControl = new CacheControl();
+    cacheControl.setNoCache(true);
+
+    return Response.ok(stream).cacheControl(cacheControl).build();
   }
 }

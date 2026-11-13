@@ -14,6 +14,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
+import org.jlab.btm.persistence.entity.Run;
 import org.jlab.btm.persistence.entity.ScheduleDay;
 import org.jlab.btm.persistence.projection.PacAccSum;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
@@ -61,6 +62,7 @@ class ScheduleServiceIT {
           new MetadataSources(registry)
               .addAnnotatedClass(MonthlySchedule.class)
               .addAnnotatedClass(ScheduleDay.class)
+              .addAnnotatedClass(Run.class)
               .buildMetadata()
               .buildSessionFactory();
     } catch (RuntimeException | Error e) {
@@ -85,6 +87,9 @@ class ScheduleServiceIT {
     // Supply the real EntityManager normally injected by WildFly, without changing app code.
     injectEntityManager(schedules);
     injectEntityManager(days);
+    RunService runs = new RunService();
+    injectEntityManager(runs);
+    schedules.runService = runs;
   }
 
   @AfterEach
