@@ -5,6 +5,7 @@ A [Jakarta EE 10](https://en.wikipedia.org/wiki/Jakarta_EE) web application for 
 
 ---
 - [Overview](https://github.com/JeffersonLab/btm#overview)
+- [User Guide](https://github.com/JeffersonLab/btm/blob/main/docs/user-guide/README.md)
 - [Quick Start with Compose](https://github.com/JeffersonLab/btm#quick-start-with-compose)
 - [Install](https://github.com/JeffersonLab/btm#install)
 - [Configure](https://github.com/JeffersonLab/btm#configure)
@@ -23,6 +24,8 @@ The Beam Time Manager application allows crew chiefs and experimenters to track 
 The accelerator program (Physics, Studies, NPES Restore, ACC or Off) is kept as a timeline of intervals, shown on the State Timeline tab with the current program.  The app records a program change when the PV named by `BTM_PROGRAM_PV` changes, and Crew Chiefs can add, change and remove intervals to correct mistakes.  Each interval runs until the next one starts, so the timeline has no gaps or overlaps.
 
 Downtime is not part of the timeline: it is recorded in [DTM](https://github.com/JeffersonLab/dtm) only.  The Measured accelerator program time of a Crew Chief timesheet is calculated from the timeline, and the time DTM has the machine down (blocked events) during Studies, NPES Restore or ACC is counted as Internal Down.  Hours that the timeline does not cover, such as those before it was first recorded, are as BOOM measured them.  Changing the timeline changes the Measured values of the timesheets it overlaps, but not the Reported values that were already saved.
+
+See the [User Guide](https://jeffersonlab.github.io/btm/latest/) for how to use the app.
 
 ## Quick Start with Compose
 1. Grab project
@@ -111,6 +114,13 @@ gradlew build
 **Note for JLab On-Site Users**: Jefferson Lab has an intercepting [proxy](https://gist.github.com/slominskir/92c25a033db93a90184a5994e71d0b78)
 
 See: [Docker Development Quick Reference](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#development-quick-reference)
+
+### User Guide website
+The [user guide](https://github.com/JeffersonLab/btm/tree/main/docs/user-guide) is Markdown, readable on GitHub, and also built into a website with [Zensical](https://zensical.org) ([zensical.toml](zensical.toml)). With [uv](https://docs.astral.sh/uv/getting-started/installation/) installed:
+```
+uv run --locked zensical build --strict
+```
+builds it into `site/`; `--strict` fails on a link to a missing page or heading. `uv run --locked zensical serve` previews it at http://localhost:8000.
 
 ## Test
 
