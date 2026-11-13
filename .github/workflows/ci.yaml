@@ -17,3 +17,8 @@ permissions:
 jobs:
   build:
     uses: jeffersonlab/java-workflows/.github/workflows/unit-ci.yaml@v3
+
+  # Builds the user guide's website (zensical.toml); --strict fails on a link to a missing page or
+  # heading. Releases publish it (cd.yaml).
+  user-guide:
+    uses: jeffersonlab/general-workflows/.github/workflows/user-guide-build.yaml@v2

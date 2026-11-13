@@ -123,7 +123,9 @@ The [user guide](https://github.com/JeffersonLab/btm/tree/main/docs/user-guide) 
 ```
 uv run --locked zensical build --strict
 ```
-builds it into `site/`; `--strict` fails on a link to a missing page or heading. `uv run --locked zensical serve` previews it at http://localhost:8000.
+builds it into `site/`, as CI does; `--strict` fails on a link to a missing page or heading. `uv run --locked zensical serve` previews it at http://localhost:8000.
+
+CI builds it and each release publishes it with the [user guide workflows](https://github.com/JeffersonLab/general-workflows/blob/main/docs/user-guide/README.md) of general-workflows.
 
 ## Test
 
@@ -192,6 +194,7 @@ The [server](https://github.com/JeffersonLab/wildfly/blob/main/scripts/server-se
     - The [Create release](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/gh-release.yaml) GitHub Action to tag the source and create release notes summarizing any pull requests.   Edit the release notes to add any missing details.  A war file artifact is attached to the release.
     - The [Publish docker image](https://github.com/JeffersonLab/container-workflows/blob/main/.github/workflows/docker-publish.yaml) GitHub Action to create a new demo Docker image.
     - The [Deploy to JLab](https://github.com/JeffersonLab/general-workflows/blob/main/.github/workflows/jlab-deploy-app.yaml) GitHub Action to deploy to the JLab test environment.
+    - The [Publish user guide](https://github.com/JeffersonLab/general-workflows/blob/main/.github/workflows/user-guide-publish.yaml) GitHub Action to publish the [User Guide](https://jeffersonlab.github.io/btm/) to GitHub Pages, in a folder for the release and in `latest/`.
 
 ## Deploy
 The deploy to JLab's acctest is handled automatically via the release workflow.
