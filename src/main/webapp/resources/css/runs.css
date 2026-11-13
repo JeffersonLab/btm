@@ -1,0 +1,15 @@
+#run-table {
+    margin-top: 0.5em;
+}
+
+.schedule-differs {
+    font-weight: bold;
+}
+
+#recalculate-form {
+    margin-top: 1em;
+}
+
+#row-form-note {
+    margin: 1em;
+}

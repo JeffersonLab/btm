@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.logging.Logger;
+import org.jlab.btm.business.util.RunCalculator;
+import org.jlab.smoothness.business.util.TimeUtil;
 
 /**
  * @author ryans
@@ -34,9 +37,18 @@ public class Run implements Serializable {
 
   @Basic(optional = false)
   @NotNull
-  @Column(name = "END_DAY_MONTH_YEAR", nullable = true)
+  @Column(name = "END_DAY_MONTH_YEAR", nullable = false)
   @Temporal(TemporalType.TIMESTAMP)
   private Date endDay;
+
+  /** Whether an admin set the dates; otherwise they come from the published schedules. */
+  @Basic(optional = false)
+  @NotNull
+  @Column(name = "MANUAL", nullable = false)
+  private Boolean manual = false;
+
+  /** The run the published schedules have in its place, if any; only for display. */
+  @Transient private RunCalculator.Bounds scheduled;
 
   public BigInteger getRunId() {
     return runId;
@@ -56,6 +68,61 @@ public class Run implements Serializable {
 
   public void setEndDay(Date endDay) {
     this.endDay = endDay;
+  }
+
+  /**
+   * @return The last day of the run, the day before its end
+   */
+  public Date getLastDay() {
+    return endDay == null ? null : TimeUtil.addDays(endDay, -1);
+  }
+
+  public boolean isManual() {
+    return Boolean.TRUE.equals(manual);
+  }
+
+  public void setManual(boolean manual) {
+    this.manual = manual;
+  }
+
+  /**
+   * @return The number of days in the run
+   */
+  public long getDays() {
+    return ChronoUnit.DAYS.between(
+        RunCalculator.toLocalDate(startDay), RunCalculator.toLocalDate(endDay));
+  }
+
+  public RunCalculator.Bounds getScheduled() {
+    return scheduled;
+  }
+
+  /**
+   * @return The first day of the run the published schedules have in its place; null if none
+   */
+  public Date getScheduledStartDay() {
+    return scheduled == null ? null : RunCalculator.toDate(scheduled.start());
+  }
+
+  /**
+   * @return The last day of the run the published schedules have in its place; null if none
+   */
+  public Date getScheduledLastDay() {
+    return scheduled == null ? null : RunCalculator.toDate(scheduled.lastDay());
+  }
+
+  /**
+   * @return Whether the published schedules have the same days for the run
+   */
+  public boolean isAsScheduled() {
+    return scheduled != null
+        && scheduled.equals(
+            new RunCalculator.Bounds(
+                RunCalculator.toLocalDate(startDay), RunCalculator.toLocalDate(endDay)));
+  }
+
+  public void setScheduled(RunCalculator.Bounds scheduled) {
+    this.scheduled = scheduled;
   }
 
   @Override
@@ -78,6 +145,6 @@ public class Run implements Serializable {
 
   @Override
   public String toString() {
-    return "[ runId=" + runId + " ], " + "Start Day: " + getStartDay();
+    return "[ runId=" + runId + " ], " + "Start Day: " + getStartDay() + ", End Day: " + endDay;
   }
 }
