@@ -116,7 +116,7 @@ TBD; set those days in the Table view afterwards.
 `schedule.xlsx`. The Excel export's layout is not the upload's, so an exported workbook can't be
 uploaded again as it is.
 
-The exports work for tentative versions too, for anyone who has the link.
+Like the version itself, a tentative version's exports are only for committee members.
 
 ### Where the schedule is used
 
@@ -127,8 +127,8 @@ The exports work for tentative versions too, for anyone who has the link.
   the published versions.
 - Other applications read it through BTM's [web service](#web-service).
 
-For a month with nothing published, the Beam Summary and `/btm/rest/schedule` use its latest
-tentative version; the runs use only published versions.
+All of these use only published versions: a month with nothing published yet counts as
+unscheduled. Tentative versions are seen only on the Schedule tab, by committee members.
 
 ### Web service
 
@@ -136,8 +136,8 @@ Other applications can read the schedule as JSON, without logging in:
 
 | Request | Returns |
 |---|---|
-| `/btm/rest/schedule?start=2026-01-01&end=2026-01-31` | Each scheduled day from `start` to `end` (inclusive): its accelerator program and each hall's program. |
-| `/btm/rest/scheduled-count?start=2026-01-01&end=2026-02-01` | The number of days from `start` to `end` (exclusive) whose program is not OFF. |
+| `/btm/rest/schedule?start=2026-01-01&end=2026-01-31` | Each scheduled day from `start` to `end` (inclusive), from each month's latest published version: its accelerator program and each hall's program. |
+| `/btm/rest/scheduled-count?start=2026-01-01&end=2026-02-01` | The number of days from `start` to `end` (exclusive) whose program is not OFF, in the published versions. |
 | `/btm/rest/monthly-schedule?month=january-2026` | The month's versions, with each one's published date (empty if tentative). |
 | `/btm/rest/runs` | The current and previous [runs](administration.md#runs)' start and end dates. |
 | `/btm/rest/shift-summary?shift-start=2026-01-12T07` | A Crew Chief shift's saved totals: its shift information, the accelerator's hours, and each hall's Crew Chief and experimenter hours. The start hour is 23, 7 or 15. |

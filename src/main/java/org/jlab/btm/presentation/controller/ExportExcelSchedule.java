@@ -51,6 +51,14 @@ public class ExportExcelSchedule extends HttpServlet {
 
     MonthlySchedule schedule = scheduleService.find(scheduleId);
 
+    // As on the Schedule page, a tentative version is only for the scheduling committee
+    if (schedule != null && !scheduleService.isViewable(schedule)) {
+      response.sendError(
+          HttpServletResponse.SC_FORBIDDEN,
+          "Committee Member Login Required for Tentative Schedule");
+      return;
+    }
+
     if (schedule != null) {
       Date start = schedule.getStartDay();
       Date end = TimeUtil.endOfMonth(start, Calendar.getInstance());

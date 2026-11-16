@@ -46,6 +46,7 @@ class ScheduleServiceIT {
   private EntityManager em;
   private MonthlyScheduleService schedules;
   private ScheduleDayService days;
+  private TestCaller caller;
 
   @BeforeAll
   static void openFactory() {
@@ -90,6 +91,8 @@ class ScheduleServiceIT {
     RunService runs = new RunService();
     injectEntityManager(runs);
     schedules.runService = runs;
+    caller = new TestCaller();
+    schedules.context = caller.context();
   }
 
   @AfterEach
@@ -153,11 +156,11 @@ class ScheduleServiceIT {
 
   @Test
   void findsSchedulesAcrossInclusiveMonthsAndSkipsAbsentMonths() {
-    schedule("2025-12-01", 1, null);
+    schedule("2025-12-01", 1, "2025-11-20");
     MonthlySchedule january = schedule("2026-01-01", 1, "2026-01-03");
     schedule("2026-01-01", 2, null);
-    MonthlySchedule march = schedule("2026-03-01", 1, null);
-    schedule("2026-04-01", 1, null);
+    MonthlySchedule march = schedule("2026-03-01", 1, "2026-02-20");
+    schedule("2026-04-01", 1, "2026-03-20");
     flushAndClear();
 
     assertEquals(
@@ -167,6 +170,52 @@ class ScheduleServiceIT {
             .stream()
             .map(MonthlySchedule::getMonthlyScheduleId)
             .toList());
+  }
+
+  @Test
+  void leavesMonthsWithOnlyTentativeVersionsOutOfRanges() {
+    MonthlySchedule january = schedule("2026-01-01", 1, "2026-01-03");
+    schedule("2026-02-01", 1, null);
+    schedule("2026-02-01", 2, null);
+    flushAndClear();
+
+    assertEquals(
+        List.of(january.getMonthlyScheduleId()),
+        schedules
+            .findMostRecentPublishedInDateRange(date("2026-01-01"), date("2026-02-28"))
+            .stream()
+            .map(MonthlySchedule::getMonthlyScheduleId)
+            .toList());
+  }
+
+  @Test
+  void countsAMonthWithOnlyATentativeVersionAsUnscheduled() {
+    MonthlySchedule tentative = schedule("2026-02-01", 1, null);
+    days(tentative, "2026-02-01", 28, "PHYSICS");
+    flushAndClear();
+
+    PacAccSum february = schedules.findSummary(date("2026-02-01"), date("2026-03-01"));
+    assertEquals(0, february.getProgramDays());
+    assertEquals(28 * 24, february.getImplicitOffHours(), 1e-9);
+  }
+
+  @Test
+  void showsTentativeVersionsOnlyToTheCommittee() {
+    MonthlySchedule published = schedule("2026-01-01", 1, "2026-01-03");
+    MonthlySchedule tentative = schedule("2026-01-01", 2, null);
+
+    assertTrue(schedules.isViewable(published));
+    assertFalse(schedules.isViewable(tentative));
+
+    caller.is("jdoe");
+    assertTrue(schedules.isViewable(published));
+    assertFalse(schedules.isViewable(tentative));
+
+    caller.is("member", "schcom");
+    assertTrue(schedules.isViewable(tentative));
+
+    caller.is("admin", "btm-admin");
+    assertTrue(schedules.isViewable(tentative));
   }
 
   @Test
