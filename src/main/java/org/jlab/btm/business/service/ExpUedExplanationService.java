@@ -109,13 +109,18 @@ public class ExpUedExplanationService extends AbstractService<ExpUedExplanation>
 
   @PermitAll
   public void remove(Hall hall, Date startDayAndHour, BigInteger id) throws UserFriendlyException {
-    ruleService.editCheck(hall, startDayAndHour);
+    ExpUedExplanation explanation = id == null ? null : this.find(id);
 
-    ExpUedExplanation explanation = this.find(id);
-
-    if (explanation == null) {
+    // The explanation must be on the timesheet named, whose rules are checked
+    if (explanation == null
+        || explanation.getHall() != hall
+        || startDayAndHour == null
+        || !BtmTimeUtil.getExpShiftStart(explanation.getExpHour().getDayAndHour())
+            .equals(BtmTimeUtil.getExpShiftStart(startDayAndHour))) {
       throw new UserFriendlyException("Explanation not found with ID: " + id);
     }
+
+    ruleService.editCheck(hall, explanation.getExpHour().getDayAndHour());
 
     super.remove(explanation);
   }

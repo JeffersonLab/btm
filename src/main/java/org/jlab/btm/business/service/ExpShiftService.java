@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.jlab.btm.business.util.BtmTimeUtil;
 import org.jlab.btm.persistence.entity.ExpProgram;
 import org.jlab.btm.persistence.entity.ExpShift;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
@@ -106,6 +107,11 @@ public class ExpShiftService extends AbstractService<ExpShift> {
       BigInteger purposeId,
       String comments)
       throws UserFriendlyException {
+    if (startDayAndHour == null
+        || !startDayAndHour.equals(BtmTimeUtil.getExpShiftStart(startDayAndHour))) {
+      throw new UserFriendlyException("Shift Start hour must be one of 0, 8, 16");
+    }
+
     ruleService.editCheck(hall, startDayAndHour);
 
     ExpShift shift = find(hall, startDayAndHour);
