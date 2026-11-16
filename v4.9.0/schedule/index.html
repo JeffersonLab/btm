@@ -1,0 +1,1177 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="How to account for accelerator and experimental hall beam time with Beam Time Manager (BTM)">
+      
+      
+      
+      
+        <link rel="prev" href="../state-timeline/">
+      
+      
+        <link rel="next" href="../reports/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.69">
+    
+    
+      
+        <title>Schedule and programs - Beam Time Manager User Guide</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.e15858d4.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b27955a4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Skip to content
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="Beam Time Manager User Guide" class="md-header__button md-logo" aria-label="Beam Time Manager User Guide" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Beam Time Manager User Guide
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Schedule and programs
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun-moon" viewBox="0 0 24 24"><path d="M12 2v2M14.837 16.385a6 6 0 1 1-7.223-7.222c.624-.147.97.66.715 1.248a4 4 0 0 0 5.26 5.259c.589-.255 1.396.09 1.248.715M16 12a4 4 0 0 0-4-4M19 5l-1.256 1.256M20 12h2"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/JeffersonLab/btm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JeffersonLab/btm
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="Beam Time Manager User Guide" class="md-nav__button md-logo" aria-label="Beam Time Manager User Guide" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    Beam Time Manager User Guide
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JeffersonLab/btm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JeffersonLab/btm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Concepts
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../timesheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Timesheets
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Cross-checks
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../state-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  State Timeline
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Schedule and programs
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Schedule and programs
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        The schedule
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The schedule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#months-and-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Months and versions
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calendar-and-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Calendar and table
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-and-editing-a-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Creating and editing a version
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publishing" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Publishing
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uploading-from-excel" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Uploading from Excel
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Exporting
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-the-schedule-is-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Where the schedule is used
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#web-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Web service
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#programs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Programs
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Reports
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../administration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Administration
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Common issues
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        The schedule
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The schedule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#months-and-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Months and versions
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calendar-and-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Calendar and table
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-and-editing-a-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Creating and editing a version
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publishing" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Publishing
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uploading-from-excel" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Uploading from Excel
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Exporting
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-the-schedule-is-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Where the schedule is used
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#web-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Web service
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#programs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Programs
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+  
+    <a href="https://github.com/JeffersonLab/btm/edit/main/docs/user-guide/schedule.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="schedule-and-programs">Schedule and programs<a class="headerlink" href="#schedule-and-programs" title="Permanent link">&para;</a></h1>
+<p><a href="../">User Guide</a> › Schedule and programs</p>
+<p>The <strong>Schedule</strong> tab holds the NPES schedule: for each day of a month, the accelerator program
+and each hall's program. The <strong>Programs</strong> tab lists the hall programs that the schedule and the
+experimenter timesheets choose from.</p>
+<h2 id="the-schedule">The schedule<a class="headerlink" href="#the-schedule" title="Permanent link">&para;</a></h2>
+<p>Anyone can view published schedules. Members of the scheduling committee (the <code>schcom</code> role)
+and administrators (<code>btm-admin</code>) can also see tentative versions, and create, edit and publish
+them.</p>
+<h3 id="months-and-versions">Months and versions<a class="headerlink" href="#months-and-versions" title="Permanent link">&para;</a></h3>
+<p>Each month's schedule has numbered versions. A version is <strong>tentative</strong> while the committee works
+on it, and <strong>published</strong> once it is final; a published version can't be changed.</p>
+<p>The tab opens on the current month's latest published version, or, if none is published yet, its
+highest-numbered tentative version. <strong>Previous</strong> and <strong>Next</strong> go to the neighbouring months. To
+see another month or version, open the filter, choose a <strong>Date</strong> and a <strong>Version #</strong>, and
+<strong>Apply</strong>. The version list says which are published, and when.</p>
+<p>A month's address is <code>/btm/schedule/&lt;month&gt;-&lt;year&gt;</code>, such as <code>/btm/schedule/january-2026</code>, and
+<code>/btm/schedule/january-2026/2</code> is its version 2.</p>
+<h3 id="calendar-and-table">Calendar and table<a class="headerlink" href="#calendar-and-table" title="Permanent link">&para;</a></h3>
+<p>The <strong>Calendar</strong> view, the default, shows the month as a grid of weeks, with a row for the
+accelerator (<strong>Acc.</strong>) and one for each hall:</p>
+<ul>
+<li>Each hall's program for the day, linked to the program's web page where it has one; the
+  polarized beam icon; and the energy (GeV), current (μA) and passes when the hall has an energy.</li>
+<li>The shaded hall is the day's top priority; the <strong>Priority</strong> key explains it.</li>
+<li>Today is circled in red.</li>
+</ul>
+<p>The <strong>Table</strong> view shows a row for each day:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Date</td>
+<td>The day.</td>
+</tr>
+<tr>
+<td>Accelerator: Program</td>
+<td>PHYSICS, FACDEV, STUDIES, RESTORE, ACC, DOWN, OFF or TBD.</td>
+</tr>
+<tr>
+<td>Accelerator: GeV / Pass</td>
+<td>The energy gain per pass.</td>
+</tr>
+<tr>
+<td>Accelerator: Min Hall Count</td>
+<td>The least number of halls (1 to 4) that must take beam.</td>
+</tr>
+<tr>
+<td>Hall: Program / Experiment</td>
+<td>Each hall's program, from the <a href="#programs">Programs</a> tab.</td>
+</tr>
+<tr>
+<td>Hall: GeV, μA</td>
+<td>Each hall's energy and current.</td>
+</tr>
+<tr>
+<td>Hall: Polarized</td>
+<td>✔ for polarized beam.</td>
+</tr>
+<tr>
+<td>Hall: Passes</td>
+<td>1 to 5 for Halls A, B and C; 0.5 or 5.5 for Hall D.</td>
+</tr>
+<tr>
+<td>Priority</td>
+<td>The halls in order of priority, such as <code>A,C,B</code>; only halls with an energy are listed.</td>
+</tr>
+<tr>
+<td>Hall: Notes, General Notes</td>
+<td>Free text, up to 256 characters each.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Full Screen</strong> shows the schedule on its own, such as for a meeting room display.</p>
+<h3 id="creating-and-editing-a-version">Creating and editing a version<a class="headerlink" href="#creating-and-editing-a-version" title="Permanent link">&para;</a></h3>
+<p>If a month has no schedule, committee members see <strong>Create</strong> and <strong>Upload</strong> in its place:</p>
+<ul>
+<li><strong>Create</strong> makes an empty tentative version, for you to fill in.</li>
+<li><strong>Upload</strong> makes versions from an Excel workbook; see <a href="#uploading-from-excel">Uploading from Excel</a>.
+  It is also under every schedule, to add versions to months that have one.</li>
+</ul>
+<p>Others see "-- Committee Member Login Required for Tentative Schedule --" for a month that has
+only tentative versions.</p>
+<p>To edit a tentative version, switch to the <strong>Table</strong> view and click a day's row. The row becomes
+a form and a toolbar slides out:</p>
+<ul>
+<li><strong>Save</strong> saves the row, and <strong>Cancel</strong> discards your changes.</li>
+<li><strong>Copy</strong> keeps the row's values, and <strong>Paste</strong> writes them to the selected day and the days
+  after it: <strong>X</strong> sets how many days, up to the end of the month. <strong>Clipboard</strong> shows what was
+  copied. The copy is kept in your browser, so it can be pasted into another month or version.</li>
+</ul>
+<p>Every day needs an accelerator program and a program for each hall. The accelerator's GeV / Pass
+must be between 0 and 3, a hall's GeV between 0 and 13 and its μA between 0 and 500, or empty.
+When Hall D is at 5.5 passes and Halls A, B and C all have passes, at least one of them must be at 5.</p>
+<p>The <strong>Clipboard</strong> dialog's <strong>Clear</strong> link clears everything BTM keeps in your browser, not only
+the schedule clipboard.</p>
+<h3 id="publishing">Publishing<a class="headerlink" href="#publishing" title="Permanent link">&para;</a></h3>
+<p>When the version is final, select <strong>Publish</strong> and confirm. Publishing also works out the
+<a href="../administration/#runs">runs</a> again. A published version can't be changed:
+to change a published month, select <strong>New Version</strong>, which copies the version you are viewing
+into a new tentative version, numbered after the month's latest. Edit it and publish it in turn.</p>
+<p>A newer tentative version doesn't replace the published one as the version everyone sees until
+it is published.</p>
+<h3 id="uploading-from-excel">Uploading from Excel<a class="headerlink" href="#uploading-from-excel" title="Permanent link">&para;</a></h3>
+<p><strong>Upload</strong> reads a workbook with a single sheet, whose first two rows are headings and whose
+other rows are days, in date order:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>The date, as a date cell (a formula giving a date, such as <code>=A3+1</code>, is fine).</td>
+</tr>
+<tr>
+<td>B</td>
+<td>The weekday (ignored).</td>
+</tr>
+<tr>
+<td>C</td>
+<td>The accelerator's GeV per pass.</td>
+</tr>
+<tr>
+<td>D</td>
+<td>The accelerator program: PHYSICS, STUDIES, RESTORE, ACC, DOWN or OFF, in any capitalization. Empty means OFF.</td>
+</tr>
+<tr>
+<td>E, G, I, K</td>
+<td>Hall A, B, C and D's program, by its name on the Programs tab. Extra spaces and capitalization don't matter, unless that makes the name match two programs; then use the exact name. Empty means the hall's program named OFF, which must exist.</td>
+</tr>
+<tr>
+<td>F, H, J, L</td>
+<td>Hall A, B, C and D's beam, as <code>GeV/current/pol/MHz</code>, such as <code>10.6/50/p/249</code>. The current is in μA for Halls A and C and in nA for Halls B and D; pol is <code>p</code> for polarized or <code>-</code>; the frequency must be a whole number, and is not kept. For a hall whose program is OFF, anything else in the cell, such as a note, is ignored.</td>
+</tr>
+<tr>
+<td>M</td>
+<td>The priority, such as <code>A,C,B</code>.</td>
+</tr>
+<tr>
+<td>N</td>
+<td>The passes, as <code>a/b/c/d</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Each month in the workbook becomes a new tentative version of that month, so one workbook can
+hold several months. A month whose rows start after the 1st gets OFF for the days before.
+The whole workbook is checked before any version is made, and an error names its row. Notes and
+Min Hall Count are not read. The upload can't schedule FACDEV or
+TBD; set those days in the Table view afterwards.</p>
+<h3 id="exporting">Exporting<a class="headerlink" href="#exporting" title="Permanent link">&para;</a></h3>
+<p><strong>HTML</strong> and <strong>Excel</strong> download the version you are viewing, as <code>schedule.html</code> or
+<code>schedule.xlsx</code>. The Excel export's layout is not the upload's, so an exported workbook can't be
+uploaded again as it is.</p>
+<p>Like the version itself, a tentative version's exports are only for committee members.</p>
+<h3 id="where-the-schedule-is-used">Where the schedule is used<a class="headerlink" href="#where-the-schedule-is-used" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The <a href="../reports/#beam-summary">Beam Summary</a> report's <strong>NPES Sched. Hrs</strong> column
+  counts the scheduled hours. Each scheduled day counts as its real length: 24 hours, but 23 on
+  the day daylight saving time starts and 25 on the day it ends.</li>
+<li>The <a href="../administration/#runs">runs</a> that the reports' date pickers offer are worked out from
+  the published versions.</li>
+<li>Other applications read it through BTM's <a href="#web-service">web service</a>.</li>
+</ul>
+<p>All of these use only published versions: a month with nothing published yet counts as
+unscheduled. Tentative versions are seen only on the Schedule tab, by committee members.</p>
+<h3 id="web-service">Web service<a class="headerlink" href="#web-service" title="Permanent link">&para;</a></h3>
+<p>Other applications can read the schedule as JSON, without logging in:</p>
+<table>
+<thead>
+<tr>
+<th>Request</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/btm/rest/schedule?start=2026-01-01&amp;end=2026-01-31</code></td>
+<td>Each scheduled day from <code>start</code> to <code>end</code> (inclusive), from each month's latest published version: its accelerator program and each hall's program.</td>
+</tr>
+<tr>
+<td><code>/btm/rest/scheduled-count?start=2026-01-01&amp;end=2026-02-01</code></td>
+<td>The number of days from <code>start</code> to <code>end</code> (exclusive) whose program is not OFF, in the published versions.</td>
+</tr>
+<tr>
+<td><code>/btm/rest/monthly-schedule?month=january-2026</code></td>
+<td>The month's versions, with each one's published date (empty if tentative).</td>
+</tr>
+<tr>
+<td><code>/btm/rest/runs</code></td>
+<td>The current and previous <a href="../administration/#runs">runs</a>' start and end dates.</td>
+</tr>
+<tr>
+<td><code>/btm/rest/shift-summary?shift-start=2026-01-12T07</code></td>
+<td>A Crew Chief shift's saved totals: its shift information, the accelerator's hours, and each hall's Crew Chief and experimenter hours. The start hour is 23, 7 or 15.</td>
+</tr>
+<tr>
+<td><code>/btm/rest/week-summary?week-start=2026-01-07T07</code></td>
+<td>The same totals for the week starting at that Crew Chief shift.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="programs">Programs<a class="headerlink" href="#programs" title="Permanent link">&para;</a></h2>
+<p>A hall program is what a hall is scheduled to do: an experiment, such as E12-06-102, or a task,
+such as commissioning or maintenance. Each hall has a program named OFF for days without beam.</p>
+<p>The <strong>Programs</strong> tab has a tab for each hall, listing its programs:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>The program's name, unique within the hall.</td>
+</tr>
+<tr>
+<td>Alias</td>
+<td>A second, often shorter, name. Lists show the program as "Name (Alias)".</td>
+</tr>
+<tr>
+<td>URL</td>
+<td>A web page about the program; the schedule links to it.</td>
+</tr>
+<tr>
+<td>Experiment</td>
+<td>Yes for an experiment. Experimenter timesheets list experiments apart from the other programs.</td>
+</tr>
+<tr>
+<td>Active</td>
+<td>Only active programs can be chosen on the schedule and on timesheets.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Hide Inactive</strong>, on by default, hides the inactive programs. The <strong>Accelerator</strong> tab is a fixed
+glossary of the accelerator programs and states.</p>
+<p>Crew Chiefs (<code>cc</code>), committee members (<code>schcom</code>) and administrators (<code>btm-admin</code>) can <strong>Add</strong>,
+<strong>Edit</strong> and <strong>Remove</strong> programs. A program that a timesheet or a schedule uses can't be
+removed: make it inactive instead. <strong>Remove</strong> doesn't ask for confirmation.</p>
+<p>When an experiment ends, set its <strong>Active</strong> to No: it stays on the schedules and timesheets that
+name it, and leaves the lists. A day whose hall program has been made inactive must be given an
+active program before that row can be saved again.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../state-timeline/" class="md-footer__link md-footer__link--prev" aria-label="Previous: State Timeline">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                State Timeline
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../reports/" class="md-footer__link md-footer__link--next" aria-label="Next: Reports">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Reports
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.action.edit","navigation.footer","navigation.top","search.highlight"],"redirect":null,"search":"../assets/javascripts/workers/search.7d14d953.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.8b1c90bd.min.js"></script>
+      
+    
+  </body>
+</html>
