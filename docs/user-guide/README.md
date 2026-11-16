@@ -40,7 +40,7 @@ than the version you are using.
 | **Programs** | Each hall's programs: experiments and other tasks. |
 | **Metrics** | A glossary of the hall, multiplicity and experimenter states. |
 | **Reports** | Beam time, physics, availability and charge reports, the review calendar, the activity audit and the EPICS connection status. |
-| **Setup** | Administrators only: settings and the user directory cache. |
+| **Setup** | Administrators only: settings, runs and the user directory cache. |
 | **Help** | Version, contacts, documentation and a feedback form. |
 
 ## Quick start for Crew Chiefs

@@ -25,7 +25,7 @@ it.
 
 ## Setup
 
-The **Setup** tab, for administrators only, has two pages.
+The **Setup** tab, for administrators only, has three pages.
 
 ### Settings
 
@@ -44,6 +44,30 @@ Cache** or a redeploy.
 | `EMAIL_ENABLED`, `EMAIL_TESTING_ENABLED`, `EMAIL_DOMAIN_NAME`, `EMAIL_SENDER_ADDRESS` | Email, such as the feedback form. In testing mode, all mail goes to the testers. |
 | `IP_READ_FILTER_ENABLED`, `IP_READ_ALLOWLIST_PATTERN`, `IP_READ_URL_PATTERN` | Let computers at allowed addresses view pages that need a login. Takes effect after a redeploy. |
 | `SMOOTHNESS_CDN_ENABLED`, `SMOOTHNESS_SERVER` | Where the pages' shared styles and scripts are loaded from. |
+
+### Runs
+
+A run is a stretch of days the accelerator is scheduled to be on: consecutive days whose program
+is not OFF in each month's latest published [schedule](schedule.md). A day, or a month, with no
+published schedule counts as OFF. The reports' date pickers offer the current and previous runs
+as **Current Run** and **Previous Run**, and the Charge report opens on the current run.
+
+BTM works the runs out again whenever a schedule is published and when the app starts; **Recalculate
+from Schedules** does it now. The page shows the **Current Run** and **Previous Run**, and lists
+every run:
+
+| Column | Meaning |
+|---|---|
+| First Day, Last Day, Days | The run's days. |
+| Source | **Schedule**, worked out from the published schedules, or **Set by hand**. |
+| Published Schedules | What the published schedules have for the run: **Same**, other days, or **No run**. |
+
+When the actual run differs from the schedule, such as a restore that started two days before the
+NPES schedule had it, select the run and **Edit** its **First Day** and **Last Day**, or **Add** a
+run. A run set by hand stays as it is when the schedules change, and takes the place of any
+scheduled run that shares its days; two runs can't share a day. **Remove** a run set by hand to
+go back to the schedule. A run from the schedules can't be removed, since recalculating would add
+it again: edit it instead.
 
 ### Directory Cache
 

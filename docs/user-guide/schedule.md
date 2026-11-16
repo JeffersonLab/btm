@@ -80,7 +80,8 @@ the schedule clipboard.
 
 ### Publishing
 
-When the version is final, select **Publish** and confirm. A published version can't be changed:
+When the version is final, select **Publish** and confirm. Publishing also works out the
+[runs](administration.md#runs) again. A published version can't be changed:
 to change a published month, select **New Version**, which copies the version you are viewing
 into a new tentative version, numbered after the month's latest. Edit it and publish it in turn.
 
@@ -120,9 +121,12 @@ The exports work for tentative versions too, for anyone who has the link.
 - The [Beam Summary](reports.md#beam-summary) report's **NPES Sched. Hrs** column
   counts the scheduled hours. Each scheduled day counts as its real length: 24 hours, but 23 on
   the day daylight saving time starts and 25 on the day it ends.
+- The [runs](administration.md#runs) that the reports' date pickers offer are worked out from
+  the published versions.
 - Other applications read it through BTM's [web service](#web-service).
 
-For a month with nothing published, both use its latest tentative version.
+For a month with nothing published, the Beam Summary and `/btm/rest/schedule` use its latest
+tentative version; the runs use only published versions.
 
 ### Web service
 
@@ -133,7 +137,7 @@ Other applications can read the schedule as JSON, without logging in:
 | `/btm/rest/schedule?start=2026-01-01&end=2026-01-31` | Each scheduled day from `start` to `end` (inclusive): its accelerator program and each hall's program. |
 | `/btm/rest/scheduled-count?start=2026-01-01&end=2026-02-01` | The number of days from `start` to `end` (exclusive) whose program is not OFF. |
 | `/btm/rest/monthly-schedule?month=january-2026` | The month's versions, with each one's published date (empty if tentative). |
-| `/btm/rest/runs` | The current and previous runs' start and end dates, from the schedule. |
+| `/btm/rest/runs` | The current and previous [runs](administration.md#runs)' start and end dates. |
 | `/btm/rest/shift-summary?shift-start=2026-01-12T07` | A Crew Chief shift's saved totals: its shift information, the accelerator's hours, and each hall's Crew Chief and experimenter hours. The start hour is 23, 7 or 15. |
 | `/btm/rest/week-summary?week-start=2026-01-07T07` | The same totals for the week starting at that Crew Chief shift. |
 
