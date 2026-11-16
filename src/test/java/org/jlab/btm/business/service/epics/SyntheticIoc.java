@@ -23,6 +23,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 final class SyntheticIoc implements AutoCloseable {
   private static final Duration STOP_WAIT = Duration.ofSeconds(30);
+  private static final Duration START_WAIT = Duration.ofSeconds(5);
+  private static final Duration START_RETRY_INTERVAL = Duration.ofMillis(100);
 
   private final DefaultServerImpl server = new DefaultServerImpl();
   private final Map<String, MemoryProcessVariable> pvs = new ConcurrentHashMap<>();
@@ -30,7 +32,37 @@ final class SyntheticIoc implements AutoCloseable {
   private final Thread thread;
   private boolean closed = false;
 
-  SyntheticIoc(int serverPort, int beaconPort) throws CAException {
+  /** CAJ bound another port than the one configured, as it does when that one is taken. */
+  static final class PortTakenException extends CAException {
+    PortTakenException(String message) {
+      super(message);
+    }
+  }
+
+  /**
+   * Starts an IOC on the given ports, trying again for a few seconds while they're taken. A port
+   * from {@link #freePort()} is free only until it's released, and one a closed IOC used may be
+   * briefly unavailable to the next: something else on the machine can take it in between, or a
+   * closed connection can still hold it.
+   */
+  static SyntheticIoc start(int serverPort, int beaconPort)
+      throws CAException, InterruptedException {
+    long deadline = System.nanoTime() + START_WAIT.toNanos();
+
+    while (true) {
+      try {
+        return new SyntheticIoc(serverPort, beaconPort);
+      } catch (PortTakenException e) {
+        if (System.nanoTime() - deadline > 0) {
+          throw e;
+        }
+
+        Thread.sleep(START_RETRY_INTERVAL.toMillis());
+      }
+    }
+  }
+
+  private SyntheticIoc(int serverPort, int beaconPort) throws CAException {
     DefaultConfiguration config = new DefaultConfiguration("test-ioc");
     config.setAttribute("server_port", Integer.toString(serverPort));
     config.setAttribute("beacon_addr_list", "127.0.0.1");
@@ -55,7 +87,7 @@ final class SyntheticIoc implements AutoCloseable {
 
     if (tcpPort != serverPort || udpPort != serverPort) {
       context.destroy();
-      throw new CAException(
+      throw new PortTakenException(
           "Synthetic IOC bound TCP port "
               + tcpPort
               + " and UDP port "
