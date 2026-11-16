@@ -132,8 +132,9 @@ When the timesheet is right, select **Sign**. BTM then:
    saving it fails.
 4. Adds your signature: as Crew Chief, or as Operability Manager for an administrator.
 5. Posts a "Crew Chief Timesheet Summary" entry to the ELOG logbook, tagged BeamAccounting, with
-   the shift's totals and shift information. If the logbook can't be reached, the timesheet is
-   still signed, without a warning: check that the entry is there.
+   the shift's totals, under the same headings as the Shift Summary tab, and shift information.
+   If the logbook can't be reached, the timesheet is still signed, without a warning: check that
+   the entry is there.
 
 The **Signatures** table lists who signed, as which role, and when. More than one person can
 sign, but nobody twice in the same role. A signed Crew Chief timesheet can still be edited, and

@@ -15,13 +15,28 @@
 <table border="1">
     <thead>
     <tr>
-        <th></th>
-        <th title="Machine is capable of beam delivery">PHYSICS</th>
-        <th title="Beam Studies / machine development">STUDIES</th>
-        <th title="Machine restoration after system failure">RESTORE</th>
-        <th title="Accelerator Configuration Change">ACC</th>
-        <th title="System Failures + FSDs">DOWN</th>
-        <th title="Scheduled Accelerator Maintenance">OFF (SAM)</th>
+        <th rowspan="2"></th>
+        <th rowspan="2"
+            title="Machine program intention is to deliver beam to at least one experimental hall (even if down - choose physics down)">
+            PHYSICS (Research + Tuning + Down)
+        </th>
+        <th colspan="4">INTERNAL</th>
+        <th rowspan="2"
+            title="Machine is scheduled to be off for holiday, maintenance, or budget restrictions (Scheduled Accelerator Maintenance)">
+            OFF (SAM)
+        </th>
+    </tr>
+    <tr>
+        <th title="Machine is being studied/tested/developed.  This does not include opportunistic beam studies.">
+            STUDIES
+        </th>
+        <th title="Machine is being restored after being OFF as scheduled by NPES.  This is not to be confused with recovery after component failure, which is rolled up into down">
+            NPES RESTORE
+        </th>
+        <th title="Machine is changing configurations (Accelerator Configuration Change)">ACC</th>
+        <th title="Machine is down due to component failures + FSDs that occurred during Studies, Restore, and ACC, but not during Physics">
+            INTERNAL DOWN
+        </th>
     </tr>
     </thead>
     <tbody>
@@ -59,11 +74,13 @@
     <thead>
     <tr>
         <th colspan="2"></th>
-        <th title="Beam available for physics (CW or TUNE mode beam)">UP</th>
-        <th title="Hall is tuning (CW or TUNE mode beam)">TUNE</th>
-        <th title="Beam Not Requested">BNR</th>
-        <th title="System Failures + FSDs">DOWN</th>
-        <th title="Scheduled Off">OFF</th>
+        <th title="Beam available for physics (CW or TUNE mode beam, but measured as CW)">UP {ABU}</th>
+        <th title="Hall is tuning (CW or pulse/tune mode beam, but measured as pulse/tune mode)">TUNE {ABU}</th>
+        <th title="Beam Not Requested">BNR {BANU}</th>
+        <th title="Component failures + FSDs that occurred while attempting to deliver beam to a particular hall (only counted if hall is intended to receive beam)">
+            PHYSICS DOWN {BNA}
+        </th>
+        <th title="Scheduled Off (this includes ACC)">OFF</th>
     </tr>
     </thead>
     <tbody>
