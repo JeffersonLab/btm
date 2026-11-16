@@ -71,8 +71,8 @@ and checks:
   to see why.
 
 **Crew Chief Comments** explain discrepancies; signing a timesheet whose cross-checks fail
-requires one. **Reviewer Comments** are for administrators reviewing the timesheet later; a Crew Chief can open
-them for editing, but only an administrator can save them.
+requires one. **Reviewer Comments** are for administrators reviewing the timesheet later; only an
+administrator can edit them, and others see them read-only.
 
 The panel shows when it was calculated; **Reload** recalculates it, such as after a hall saved
 its hours.

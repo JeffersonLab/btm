@@ -123,7 +123,7 @@
                         value="${crossCheckComment.reviewerRemark}"/></textarea>
             </div>
             <div class="form-button-panel">
-                <button id="edit-reviewer-comment-button" type="button"${editable ? '' : ' disabled="disabled"'}>Edit
+                <button id="edit-reviewer-comment-button" type="button"${pageContext.request.isUserInRole('btm-admin') ? '' : ' disabled="disabled"'}>Edit
                 </button>
                 <button id="save-reviewer-comment-button" type="button" style="display: none;">Save</button>
                 <button id="cancel-reviewer-comment-button" type="button" style="display: none;">Cancel</button>
