@@ -26,8 +26,8 @@ saved hour accounts for.
 Most reports have a date range. Its presets include the current and previous fiscal years
 (starting 1 October) and their quarters, years, months, weeks (from Wednesday), Crew Chief
 shifts, the past 10, 7 or 3 days, yesterday and today, or **Custom**: the start is inclusive and
-the end exclusive. Where the server knows the run schedule, **Current Run** and **Previous Run**
-are offered too. On the Beam Summary, Physics Summary and Hall Availability reports, the week
+the end exclusive. Where the server is set up for it, **Current Run** and **Previous Run** are offered
+too: the runs on [Setup › Runs](administration.md#runs). On the Beam Summary, Physics Summary and Hall Availability reports, the week
 and day presets start at 7:00, at a Crew Chief shift boundary, and the three reports share the
 range you choose. They open on the seven days to 7:00 today.
 
