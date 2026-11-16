@@ -88,11 +88,11 @@
         <tr>
             <th style="border-bottom: 1px solid lightgray;" rowspan="3">Hall ${availability.hall}</th>
             <th>Planned</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>${btm:formatDuration(availability.pdShiftTotals.upSeconds, durationUnits)}</td>
+            <td>${btm:formatDuration(availability.pdShiftTotals.tuneSeconds, durationUnits)}</td>
+            <td>${btm:formatDuration(availability.pdShiftTotals.bnrSeconds, durationUnits)}</td>
+            <td>${btm:formatDuration(availability.pdShiftTotals.downSeconds, durationUnits)}</td>
+            <td>${btm:formatDuration(availability.pdShiftTotals.offSeconds, durationUnits)}</td>
         </tr>
         <tr>
             <th>Measured</th>
