@@ -1,8 +1,10 @@
 package org.jlab.btm.business.service;
 
+import jakarta.annotation.Resource;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
+import jakarta.ejb.SessionContext;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -30,6 +32,8 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
 
   @EJB ScheduleDayService scheduleDayService;
   @EJB RunService runService;
+
+  @Resource SessionContext context;
 
   @PersistenceContext(unitName = "webappPU")
   private EntityManager em;
@@ -110,12 +114,13 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
 
   /**
    * Find the most recently published set of monthly schedules that are included with the specified
-   * date range. For any given month if no schedules are published then them most recent tentative
-   * schedule is used, or if none at all then no record is included for that month.
+   * date range. A month with no published schedule has no record: tentative versions are only for
+   * the scheduling committee, on the Schedule page, while these schedules feed the reports and the
+   * web service that anyone can read.
    *
    * @param start The start date (inclusive)
    * @param end The end date (inclusive)
-   * @return A list of published/recent monthly schedules that span the date range
+   * @return A list of published monthly schedules that span the date range
    */
   @PermitAll
   public List<MonthlySchedule> findMostRecentPublishedInDateRange(Date start, Date end) {
@@ -127,14 +132,27 @@ public class MonthlyScheduleService extends AbstractService<MonthlySchedule> {
 
     while (iterator.hasNext()) {
       Date next = iterator.next();
-      // LOGGER.log(Level.WARNING, "Date: " + next);
       MonthlySchedule schedule = this.findMostRecentPublished(next);
-      if (schedule != null) {
+      if (schedule != null && schedule.getPublishedDate() != null) {
         monthlySchedules.add(schedule);
       }
     }
 
     return monthlySchedules;
+  }
+
+  /**
+   * Whether the caller may see a schedule version: anyone may see a published version, and only the
+   * scheduling committee and administrators a tentative one.
+   *
+   * @param schedule The schedule version
+   * @return true if the caller may see it
+   */
+  @PermitAll
+  public boolean isViewable(MonthlySchedule schedule) {
+    return schedule.getPublishedDate() != null
+        || context.isCallerInRole("schcom")
+        || context.isCallerInRole("btm-admin");
   }
 
   @RolesAllowed({"schcom", "btm-admin"})

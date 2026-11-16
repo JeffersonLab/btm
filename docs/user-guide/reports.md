@@ -14,7 +14,7 @@ are on **Programs › Accelerator**.
 | **CC** | The hours saved on Crew Chief timesheets. |
 | **Experimenter** | The hours saved on experimenter timesheets. |
 | **PD** | The Program Deputy shift plans. |
-| **NPES** | The [schedule](schedule.md): each month's latest published version, or its latest tentative one if none is published. |
+| **NPES** | The [schedule](schedule.md): each month's latest published version. A month with nothing published counts as unscheduled. |
 | **DTM** | DTM's CEBAF Blocked and CEBAF Tuning events. An event still open counts up to now. |
 
 The reports count only hours saved on timesheets; an hour still showing measured values isn't

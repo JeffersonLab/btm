@@ -7,18 +7,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.ejb.EJBAccessException;
-import jakarta.ejb.SessionContext;
 import jakarta.persistence.EntityManager;
 import java.lang.reflect.Field;
-import java.lang.reflect.Proxy;
 import java.math.BigInteger;
-import java.security.Principal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -69,7 +65,7 @@ class ExpTimesheetEditRulesIT {
 
   private static SessionFactory factory;
   private EntityManager em;
-  private Caller caller;
+  private TestCaller caller;
   private ExpSecurityRuleService rules;
   private ExpHourService hours;
   private ExpUedExplanationService explanations;
@@ -115,7 +111,7 @@ class ExpTimesheetEditRulesIT {
   void wireServices() throws ReflectiveOperationException {
     em = factory.createEntityManager();
     em.getTransaction().begin();
-    caller = new Caller();
+    caller = new TestCaller();
 
     // Supply what WildFly normally injects, without changing app code.
     ExpSignatureService signatures = new ExpSignatureService();
@@ -344,30 +340,6 @@ class ExpTimesheetEditRulesIT {
 
     static void use(AuditContext context) {
       setCurrentInstance(context);
-    }
-  }
-
-  /** The logged-in user and their roles, as WildFly's SessionContext would report them. */
-  private static class Caller {
-    private String username = "anonymous";
-    private Set<String> roles = Set.of();
-
-    void is(String username, String... roles) {
-      this.username = username;
-      this.roles = Set.of(roles);
-    }
-
-    SessionContext context() {
-      return (SessionContext)
-          Proxy.newProxyInstance(
-              SessionContext.class.getClassLoader(),
-              new Class<?>[] {SessionContext.class},
-              (proxy, method, args) ->
-                  switch (method.getName()) {
-                    case "getCallerPrincipal" -> (Principal) () -> username;
-                    case "isCallerInRole" -> roles.contains((String) args[0]);
-                    default -> throw new UnsupportedOperationException(method.getName());
-                  });
     }
   }
 }

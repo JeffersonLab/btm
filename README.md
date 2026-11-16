@@ -158,7 +158,8 @@ Only synthetic test data is inserted; each test rolls back its transaction. Cont
 random names and host ports, no shared volumes, and are removed automatically after the suite.
 No existing Compose services or external databases are needed.
 
-Coverage includes monthly version ordering, published and tentative schedule selection,
+Coverage includes monthly version ordering, published and tentative schedule selection and who
+may see tentative versions, experimenter timesheet edit rules,
 inclusive month ranges, schedule creation/publication, and Oracle's missing-day projection
 (including nulls, numeric/boolean conversion and a DST transition). It also includes the State
 Timeline's queries and changes, DTM downtime read as time spans, and the accelerator hours
