@@ -1,0 +1,1469 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="How to account for accelerator and experimental hall beam time with Beam Time Manager (BTM)">
+      
+      
+      
+      
+        <link rel="prev" href="./..">
+      
+      
+        <link rel="next" href="../timesheets/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.69">
+    
+    
+      
+        <title>Concepts - Beam Time Manager User Guide</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.e15858d4.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b27955a4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Skip to content
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="Beam Time Manager User Guide" class="md-header__button md-logo" aria-label="Beam Time Manager User Guide" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Beam Time Manager User Guide
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Concepts
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun-moon" viewBox="0 0 24 24"><path d="M12 2v2M14.837 16.385a6 6 0 1 1-7.223-7.222c.624-.147.97.66.715 1.248a4 4 0 0 0 5.26 5.259c.589-.255 1.396.09 1.248.715M16 12a4 4 0 0 0-4-4M19 5l-1.256 1.256M20 12h2"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/JeffersonLab/btm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JeffersonLab/btm
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="Beam Time Manager User Guide" class="md-nav__button md-logo" aria-label="Beam Time Manager User Guide" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    Beam Time Manager User Guide
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JeffersonLab/btm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JeffersonLab/btm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Concepts
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Concepts
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-account-for-beam-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Why account for beam time
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modes-states-and-programs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Modes, states and programs
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schedules" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Schedules
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planned-measured-and-reported" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Planned, measured and reported
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Planned, measured and reported">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automated-time-accounting" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Automated time accounting
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accelerator-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Accelerator states
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Accelerator states">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internal-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Internal mode
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#physics-mode-for-each-hall" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Physics mode, for each hall
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiplicity-and-aggregate-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Multiplicity and aggregate states
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hall-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Hall states
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restore-acc-and-their-allowances" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Restore, ACC and their allowances
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#derived-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Derived metrics
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Derived metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#accelerator" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Accelerator
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#halls" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Halls
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Roles
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../timesheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Timesheets
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Cross-checks
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../state-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  State Timeline
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schedule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Schedule and programs
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Reports
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../administration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Administration
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Common issues
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-account-for-beam-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Why account for beam time
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modes-states-and-programs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Modes, states and programs
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schedules" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Schedules
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planned-measured-and-reported" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Planned, measured and reported
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Planned, measured and reported">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automated-time-accounting" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Automated time accounting
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accelerator-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Accelerator states
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Accelerator states">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internal-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Internal mode
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#physics-mode-for-each-hall" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Physics mode, for each hall
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiplicity-and-aggregate-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Multiplicity and aggregate states
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hall-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Hall states
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restore-acc-and-their-allowances" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Restore, ACC and their allowances
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#derived-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Derived metrics
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Derived metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#accelerator" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Accelerator
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#halls" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Halls
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Roles
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+  
+    <a href="https://github.com/JeffersonLab/btm/edit/main/docs/user-guide/concepts.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="concepts">Concepts<a class="headerlink" href="#concepts" title="Permanent link">&para;</a></h1>
+<p><a href="../">User Guide</a> › Concepts</p>
+<h2 id="why-account-for-beam-time">Why account for beam time<a class="headerlink" href="#why-account-for-beam-time" title="Permanent link">&para;</a></h2>
+<p>Time accounting gathers data about how the accelerator is used and how available it is, so that
+lab leadership can track and monitor performance. It is kept from two perspectives:</p>
+<ul>
+<li><strong>Operations</strong> (Accelerator Division): the Crew Chief accounts for the accelerator's time and
+  for the beam each hall received.</li>
+<li><strong>The halls</strong> (Physics Division): each hall's experimenters account for the beam their hall
+  could use and did use.</li>
+</ul>
+<p>Time is accounted per hour: each figure is the time within the hour that the machine, or a
+hall, was in a particular state. The hours are grouped into eight-hour shift
+<a href="../timesheets/">timesheets</a>. To keep the bookkeeping light, automated time accounting
+<a href="#planned-measured-and-reported">measures</a> a best-effort figure for every hour, and the
+timekeepers correct it where it is wrong.</p>
+<p>BTM is not Downtime Manager (DTM). DTM records each failure separately, by system and component;
+BTM accounts for the hours of the program. The two are linked (BTM reads DTM's downtime to
+measure Internal Down), but DTM's failure records are not meant to add up to BTM's hours.</p>
+<h2 id="modes-states-and-programs">Modes, states and programs<a class="headerlink" href="#modes-states-and-programs" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mode</strong></td>
+<td>The machine is always in exactly one of three time accounting modes: <strong>Physics</strong>, <strong>Internal</strong> or <strong>Off</strong>.</td>
+</tr>
+<tr>
+<td><strong>State</strong></td>
+<td>What the machine or a hall was doing within a mode, such as Up, BNR or Internal Down. Counting the time in each state is the core of time accounting. Most states are mutually exclusive, so the states of an hour add up to one hour; <a href="#accelerator-states">Down Hard</a> and the multiplicity states are exceptions.</td>
+</tr>
+<tr>
+<td><strong>Program</strong></td>
+<td>The mode, or the more specific state, that is scheduled. The accelerator has a program, and when it is Physics each hall may have its own program: an experiment, or a task such as commissioning or maintenance.</td>
+</tr>
+</tbody>
+</table>
+<p>In <strong>Physics</strong> mode the machine is provided to the Physics Division, which does not by itself
+mean that research is being done. In <strong>Internal</strong> mode the Accelerator Division uses the
+machine itself: for beam studies, a configuration change (pass or energy change), or restoring
+the machine after it was off. In <strong>Off</strong> mode the machine is off.</p>
+<p>On the State Timeline and the timesheets, the accelerator program is one of five, fixed (the
+<a href="../schedule/">schedule</a> has a few more, such as FACDEV and TBD):</p>
+<table>
+<thead>
+<tr>
+<th>Program</th>
+<th>Mode</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Physics</strong></td>
+<td>Physics</td>
+<td>Beam is scheduled for the halls.</td>
+</tr>
+<tr>
+<td><strong>Studies</strong></td>
+<td>Internal</td>
+<td>The machine is studied, tested or developed as planned (beam studies, machine development). Recovering to physics after studies is still Studies.</td>
+</tr>
+<tr>
+<td><strong>NPES Restore</strong></td>
+<td>Internal</td>
+<td>The machine is restored after being off, as planned. See <a href="#restore-acc-and-their-allowances">Restore</a>.</td>
+</tr>
+<tr>
+<td><strong>ACC</strong></td>
+<td>Internal</td>
+<td>Accelerator Configuration Change: the machine is being configured for a different pass or energy.</td>
+</tr>
+<tr>
+<td><strong>Off</strong></td>
+<td>Off</td>
+<td>The machine is off as planned, for a holiday, the budget or the schedule (not for a failure); also called Scheduled Accelerator Maintenance (SAM).</td>
+</tr>
+</tbody>
+</table>
+<p>Hall programs are kept on the <a href="../schedule/#programs">Programs</a> tab and scheduled on the
+<a href="../schedule/">Schedule</a> tab. Other JLab facilities, such as LERF, UITF, CMTF and VTA, are not part
+of time accounting.</p>
+<h2 id="schedules">Schedules<a class="headerlink" href="#schedules" title="Permanent link">&para;</a></h2>
+<p>Several schedules, each more detailed than the last, say what the machine should be doing:</p>
+<ol>
+<li>The <strong>NPES schedule</strong> (Nuclear Physics Experiment Scheduling committee) plans months: the
+   accelerator program and each hall's program, day by day. BTM keeps it on the
+   <a href="../schedule/">Schedule</a> tab.</li>
+<li>The <strong>MCC whiteboard</strong> plans weeks.</li>
+<li>The <strong>Program Deputy (PD) shift plan</strong> plans days: the hours of each program in a shift. BTM
+   shows it as the <strong>Planned</strong> values of a timesheet.</li>
+<li>The <strong>Crew Chief</strong> decides minute by minute, guided by the plans before.</li>
+</ol>
+<p>The more detailed plans follow the less detailed ones, but they may differ in practice: a run
+may start a few days earlier than the NPES schedule said, or a hall planned for beam at 3 PM may
+be ready a few hours early.</p>
+<p>The workflow, from the schedule to the reports:</p>
+<ol>
+<li>The Program Advisory Committee (PAC) and Technical Advisory Committee (TAC) work with the
+   hall liaisons to review, approve and schedule experiments, and the NPES schedule is published.</li>
+<li>Operability staff make the whiteboard schedule from it.</li>
+<li>The PD makes the shift plan from the whiteboard.</li>
+<li>The Crew Chief runs the program in the shift plan, and watches the automated time
+   accounting (BOOM) during the shift.</li>
+<li>At the end of the shift, the Crew Chief checks the timesheet, filled in from the automated
+   accounting, and corrects it.</li>
+<li>The Crew Chief calls the halls to fill out their timesheets, compares their figures with the
+   <a href="../cross-checks/">cross-checks</a> and resolves differences.</li>
+<li>The Crew Chief signs the timesheet, which makes a logbook entry.</li>
+<li>The PD presents BTM's <a href="../reports/">reports</a> in the daily and weekly meetings.</li>
+</ol>
+<h2 id="planned-measured-and-reported">Planned, measured and reported<a class="headerlink" href="#planned-measured-and-reported" title="Permanent link">&para;</a></h2>
+<p>A timesheet has up to three values for each figure:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Where it comes from</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Planned</strong></td>
+<td>The PD shift plan.</td>
+</tr>
+<tr>
+<td><strong>Measured</strong></td>
+<td>Automated time accounting: for the Crew Chief, BOOM (Beam Objective Operational Monitor) and the <a href="../state-timeline/">State Timeline</a>; for the halls, the halls' EPICS time accounting.</td>
+</tr>
+<tr>
+<td><strong>Reported</strong></td>
+<td>What the timekeeper saved. This is the official figure the reports use.</td>
+</tr>
+</tbody>
+</table>
+<p>Until a timekeeper saves an hour, the timesheet shows its measured values as the reported ones,
+to start from; the reports count only saved hours.</p>
+<h3 id="automated-time-accounting">Automated time accounting<a class="headerlink" href="#automated-time-accounting" title="Permanent link">&para;</a></h3>
+<p><strong>BOOM</strong> is the Crew Chief's automated time accounting. It works out the operations states of
+each hour from diagnostics, the state of the Fast ShutDown (FSD) system, and modes the Crew Chief
+can force when the automatic choice is wrong (BNR, Down and Off). BOOM switches to Down on a
+trip, even when a mode is forced.</p>
+<p>The halls' automated time accounting runs in EPICS IOCs. Each hall sets two PVs, <em>beam present</em>
+and <em>beam used</em>, and the IOCs combine them with BOOM's forced ACC, BANU and Off modes. When
+nothing else is measured, the hour is BNA. Two problems are common: <em>beam used</em> often watches
+only the data acquisition, so energy measurements and other procedures are left out, and <em>beam
+present</em> measures whether beam is actually there, not whether the Crew Chief could send it.</p>
+<p>The accelerator program comes from the <a href="../state-timeline/">State Timeline</a>, which follows the
+program PV and which Crew Chiefs can correct.</p>
+<h2 id="accelerator-states">Accelerator states<a class="headerlink" href="#accelerator-states" title="Permanent link">&para;</a></h2>
+<p>The Crew Chief's timesheet uses these states.</p>
+<h3 id="internal-mode">Internal mode<a class="headerlink" href="#internal-mode" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Studies</strong></td>
+<td>As planned: the machine is studied, tested or developed.</td>
+</tr>
+<tr>
+<td><strong>NPES Restore</strong></td>
+<td>As planned: the machine is restored after being off.</td>
+</tr>
+<tr>
+<td><strong>ACC</strong></td>
+<td>As planned: the machine is configured for a different pass or energy.</td>
+</tr>
+<tr>
+<td><strong>Internal Down</strong></td>
+<td>Also called SRA Down (Studies, Restore and ACC Down). The machine should be doing studies, a restore or a configuration change, but a component failed or it needs excessive tuning. It includes recovering from the failure. BTM measures it from DTM: the time DTM has the machine down (blocked events) during Studies, NPES Restore or ACC.</td>
+</tr>
+<tr>
+<td><strong>Down Hard</strong></td>
+<td>Shared with Physics mode, below. When recording Internal Down, Down Hard is recorded too.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="physics-mode-for-each-hall">Physics mode, for each hall<a class="headerlink" href="#physics-mode-for-each-hall" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Up</strong></td>
+<td>CW beam was measured on the hall's beam current monitor (BCM).</td>
+</tr>
+<tr>
+<td><strong>Tune</strong></td>
+<td>Pulsed beam was measured on the hall's BCM. The name is a misnomer: tuning is sometimes done with CW beam, and a hall may use pulsed beam.</td>
+</tr>
+<tr>
+<td><strong>BNR</strong></td>
+<td>Beam Not Requested: the accelerator can deliver beam and is scheduled to, but the hall asked to hold it, for a hall component failure, a hall controlled access or a hall procedure.</td>
+</tr>
+<tr>
+<td><strong>Down</strong></td>
+<td>The hall is scheduled for beam but can't get it, because of an accelerator component failure, recovery from an accelerator failure, accelerator tuning, or unacceptable beam quality. The halls call this BNA. If neither the accelerator nor the hall is ready, but both are scheduled to be, record Down, not BNR: the hall gets the benefit.</td>
+</tr>
+<tr>
+<td><strong>Off</strong></td>
+<td>The hall is not scheduled for beam. During an ACC, as in any Internal mode, the Crew Chief records the hall Off.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="multiplicity-and-aggregate-states">Multiplicity and aggregate states<a class="headerlink" href="#multiplicity-and-aggregate-states" title="Permanent link">&para;</a></h3>
+<p>These overlap the others:</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>One, Two, Three, Four Hall Up</strong></td>
+<td>Exactly that many halls measured CW beam.</td>
+</tr>
+<tr>
+<td><strong>Any Hall Up</strong></td>
+<td>At least one hall measured CW beam.</td>
+</tr>
+<tr>
+<td><strong>All Halls Up</strong></td>
+<td>Every hall that is supposed to be up is up: at least one hall measured CW beam, and each other hall measured CW beam or is Off.</td>
+</tr>
+<tr>
+<td><strong>Down Hard</strong></td>
+<td>The whole machine is down because of a component failure or tuning, including every hall that is not Off, which records Down. It applies in both Physics and Internal mode, and usually starts at an FSD trip. It corresponds to DTM's accelerator downtime.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hall-states">Hall states<a class="headerlink" href="#hall-states" title="Permanent link">&para;</a></h2>
+<p>Each hall's experimenters record Off unless the accelerator program is Physics. Hours nobody saved
+are shown in the reports as Implicit Off, but a timesheet can't be signed until every hour is
+saved. In Physics mode a hall may still be Off if it is not scheduled for beam.</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ABU</strong></td>
+<td>Acceptable Beam Used: the hall is receiving beam and is satisfied with its quality. <em>Used</em> means used for anything with beam: harp scans, Møller measurements, data acquisition or any other hall procedure.</td>
+</tr>
+<tr>
+<td><strong>BANU</strong></td>
+<td>Beam Available, Not Used: the accelerator can deliver beam, and the hall is the one holding up the program, such as for a hall component failure or a hall controlled access. The Crew Chief's BNR is part of BANU. Beam may or may not be in the hall during BANU; the halls differ.</td>
+</tr>
+<tr>
+<td><strong>BNA</strong></td>
+<td>Beam Not Acceptable (or not available): the hall is scheduled for beam but isn't receiving it, or receives beam of unacceptable quality. The hall decides what is acceptable, though not against the beam requirements agreed with the program committee. Operations calls this Down. An accelerator component failure is BNA. If both the accelerator and the hall should be ready and neither is, the hall gets the benefit: BNA.</td>
+</tr>
+<tr>
+<td><strong>Off</strong></td>
+<td>The hall is not expected to receive beam. This includes the accelerator's Internal programs: Studies, NPES Restore and ACC.</td>
+</tr>
+</tbody>
+</table>
+<p>The halls also record the state of their own equipment:</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ER</strong></td>
+<td>Experiment Ready: the experiment's equipment works and is ready for beam.</td>
+</tr>
+<tr>
+<td><strong>PCC</strong></td>
+<td>Planned Configuration Change: a controlled access or another planned configuration change is under way.</td>
+</tr>
+<tr>
+<td><strong>UED</strong></td>
+<td>Unplanned Experiment Down: the experiment's equipment is not working.</td>
+</tr>
+</tbody>
+</table>
+<p>Whether a failure is BANU or BNA depends on where the failed component is, not on who maintains
+or paid for it: a component located in the hall makes BANU; one located in the accelerator
+makes BNA.</p>
+<h2 id="restore-acc-and-their-allowances">Restore, ACC and their allowances<a class="headerlink" href="#restore-acc-and-their-allowances" title="Permanent link">&para;</a></h2>
+<p><strong>NPES Restore</strong> is only the initial restore after the machine was off, as scheduled by the NPES:
+it has its own allowance in the schedule. It includes commissioning and hall checkout done with
+beam, the injector checkout, and threading beam out of the injector. Restoring to one hall at
+the start of a run and to another later is fine: restore time need not be contiguous. Recovering
+after a component failure is not NPES Restore but Internal Down, and recovering after studies is
+still Studies.</p>
+<p><strong>ACC</strong> is for configuring the machine for a different pass or energy, not for the initial
+restore and not for tuning, which is part of Down.</p>
+<p>Both are allotted a set time by the Director of Operations: for ACC it depends on the change
+(going from 1 pass to 5 is allotted more than from 5 to 4), and the PD usually schedules that
+allotment. Once the allotment is used up, record Internal Down, as for excessive tuning. A
+scheduled ACC may be extended if failures prevent it.</p>
+<h2 id="derived-metrics">Derived metrics<a class="headerlink" href="#derived-metrics" title="Permanent link">&para;</a></h2>
+<h3 id="accelerator">Accelerator<a class="headerlink" href="#accelerator" title="Permanent link">&para;</a></h3>
+<p>DTM's reports derive these from the accelerator program time <strong>P</strong> = Physics + Studies + NPES
+Restore + ACC + Internal Down (Physics already includes its own downtime):</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Formula</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uptime</td>
+<td>P − (DTM event downtime + trip downtime)</td>
+</tr>
+<tr>
+<td>Mean time between failures (MTBF)</td>
+<td>Uptime / DTM event count</td>
+</tr>
+<tr>
+<td>Mean time between trips (MTBT)</td>
+<td>Uptime / trip count</td>
+</tr>
+<tr>
+<td>Hourly failure rate</td>
+<td>DTM event count / Uptime</td>
+</tr>
+<tr>
+<td>Hourly trip rate</td>
+<td>Trip count / Uptime</td>
+</tr>
+<tr>
+<td>Availability</td>
+<td>Uptime / P × 100</td>
+</tr>
+</tbody>
+</table>
+<h3 id="halls">Halls<a class="headerlink" href="#halls" title="Permanent link">&para;</a></h3>
+<p>BTM's <a href="../reports/#hall-availability">Hall Availability</a> report derives these for each hall from
+the hall's program time <strong>T</strong> = ER + PCC + UED, from the experimenter timesheets:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Formula</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accelerator availability (AA)</td>
+<td>(ABU + BANU) / T</td>
+</tr>
+<tr>
+<td>Experiment availability (EA)</td>
+<td>(ER + PCC) / T</td>
+</tr>
+<tr>
+<td>Simultaneous availability (SA)</td>
+<td>ABU / T</td>
+</tr>
+</tbody>
+</table>
+<h2 id="roles">Roles<a class="headerlink" href="#roles" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Who</th>
+<th>Can</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Anyone</td>
+<td>View the timesheets, the State Timeline, published schedules, the programs and the reports, without logging in.</td>
+</tr>
+<tr>
+<td>Any logged-in user</td>
+<td>Edit and sign experimenter timesheets, within <a href="../timesheets/#who-can-change-a-signed-timesheet">limits once signed</a>; see the Activity Audit.</td>
+</tr>
+<tr>
+<td>Crew Chiefs</td>
+<td>Edit and sign Crew Chief timesheets, correct the State Timeline, and edit the programs.</td>
+</tr>
+<tr>
+<td>The scheduling committee</td>
+<td>Create, edit and publish schedules, and edit the programs.</td>
+</tr>
+<tr>
+<td>Administrators (Operability managers)</td>
+<td>All of these, and the Setup tab.</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="../administration/#roles">Administration</a> for the role names.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="./.." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Home
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../timesheets/" class="md-footer__link md-footer__link--next" aria-label="Next: Timesheets">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Timesheets
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.action.edit","navigation.footer","navigation.top","search.highlight"],"redirect":null,"search":"../assets/javascripts/workers/search.7d14d953.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.8b1c90bd.min.js"></script>
+      
+    
+  </body>
+</html>
