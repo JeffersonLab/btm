@@ -9,13 +9,18 @@ import gov.aps.jca.JCALibrary;
 import gov.aps.jca.configuration.Configuration;
 import gov.aps.jca.configuration.DefaultConfiguration;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BooleanSupplier;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -131,7 +136,16 @@ class PVMonitorSessionTest {
         () -> PVS.stream().noneMatch(pv -> connected.get(pv)),
         () -> "connected " + connected + ", expected every PV disconnected");
     assertEquals(0, session.connectedCount());
+
+    // Something else on the machine may take the port before the IOC comes back
+    Duration hold = Duration.ofSeconds(1);
+    long restarting = System.nanoTime();
+    holdTcpPort(serverPort, hold);
+
     SyntheticIoc second = startIoc(PVS, 2.0);
+
+    assertTrue(
+        System.nanoTime() - restarting >= hold.toNanos(), "IOC restarted while its port was held");
 
     awaitValues(PVS, 2.0);
     assertEquals(3, session.connectedCount());
@@ -211,8 +225,9 @@ class PVMonitorSessionTest {
     return config;
   }
 
-  private SyntheticIoc startIoc(List<String> pvs, double value) throws CAException {
-    SyntheticIoc ioc = new SyntheticIoc(serverPort, beaconPort);
+  private SyntheticIoc startIoc(List<String> pvs, double value)
+      throws CAException, InterruptedException {
+    SyntheticIoc ioc = SyntheticIoc.start(serverPort, beaconPort);
     iocs.add(ioc);
 
     for (String pv : pvs) {
@@ -220,6 +235,22 @@ class PVMonitorSessionTest {
     }
 
     return ioc;
+  }
+
+  /** Holds a TCP port on every address, as CAJ's acceptor binds, and releases it after a while. */
+  private static void holdTcpPort(int port, Duration hold) throws IOException {
+    ServerSocket holder = new ServerSocket();
+    holder.bind(new InetSocketAddress(port));
+
+    CompletableFuture.runAsync(
+        () -> {
+          try {
+            holder.close();
+          } catch (IOException e) {
+            throw new UncheckedIOException(e);
+          }
+        },
+        CompletableFuture.delayedExecutor(hold.toMillis(), TimeUnit.MILLISECONDS));
   }
 
   private void awaitValues(List<String> pvs, double value) throws InterruptedException {

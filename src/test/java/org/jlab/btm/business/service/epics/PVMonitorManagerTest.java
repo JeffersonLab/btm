@@ -96,12 +96,12 @@ class PVMonitorManagerTest {
   }
 
   @BeforeEach
-  void setUp() throws IOException, CAException {
+  void setUp() throws IOException, CAException, InterruptedException {
     serverPort = SyntheticIoc.freePort();
     repeaterPort = SyntheticIoc.freePort();
     deadPort = SyntheticIoc.freePort();
 
-    ioc = new SyntheticIoc(serverPort, SyntheticIoc.freePort());
+    ioc = SyntheticIoc.start(serverPort, SyntheticIoc.freePort());
     manager = new TestManager();
     manager.cache = new PVCache();
 
