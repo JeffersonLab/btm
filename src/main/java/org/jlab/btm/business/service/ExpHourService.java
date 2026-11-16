@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hibernate.envers.RevisionType;
 import org.jlab.btm.business.service.epics.ExpEpicsHourService;
+import org.jlab.btm.business.util.BtmTimeUtil;
 import org.jlab.btm.business.util.CALoadException;
 import org.jlab.btm.business.util.HourUtil;
 import org.jlab.btm.persistence.entity.ExpHour;
@@ -414,7 +415,17 @@ public class ExpHourService extends AbstractService<ExpHour> {
 
     Map<Date, ExpHour> hourMap = HourUtil.createHourMap(hourList);
 
-    ruleService.editCheck(hall, hourArray[0]);
+    // Hours may span two shifts; each shift's timesheet has its own signatures
+    Set<Date> shiftStarts = new LinkedHashSet<>();
+    for (Date hour : hourArray) {
+      if (hour == null) {
+        throw new UserFriendlyException("Day and hour cannot be empty");
+      }
+      shiftStarts.add(BtmTimeUtil.getExpShiftStart(hour));
+    }
+    for (Date shiftStart : shiftStarts) {
+      ruleService.editCheck(hall, shiftStart);
+    }
 
     /*for (int i = 0; i < hourArray.length; i++) {
         Date hour = hourArray[i];

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jlab.btm.business.util.BtmTimeUtil;
 import org.jlab.btm.persistence.entity.ExpSignature;
 import org.jlab.btm.persistence.enumeration.Role;
 import org.jlab.smoothness.persistence.enumeration.Hall;
@@ -28,8 +29,10 @@ public class ExpSecurityRuleService {
   @EJB ExpSignatureService signatureService;
 
   /**
-   * Run the security rules for editing a timesheet denoted by hall and day and hour and return a
-   * reason for failure or null if the checks pass.
+   * Run the security rules for editing the timesheet of the hall's experimenter shift containing
+   * the day and hour, and return a reason for failure or null if the checks pass. Signatures and
+   * the 48-hour limit belong to the shift, so any hour of a shift gets the same answer as its
+   * start.
    *
    * <p>The security rules are:
    *
@@ -48,7 +51,9 @@ public class ExpSecurityRuleService {
   public String checkForEditDeniedReason(Hall hall, Date dayAndHour) {
     // logger.log(Level.WARNING, "checkForEditDeniedReason");
 
-    SignatureChecker sigChecker = new SignatureChecker(hall, dayAndHour);
+    Date shiftStart = BtmTimeUtil.getExpShiftStart(dayAndHour);
+
+    SignatureChecker sigChecker = new SignatureChecker(hall, shiftStart);
 
     boolean opSigned = sigChecker.isOperabilityManagerSigned();
     boolean hallSigned = sigChecker.isHallManagerSigned(hall);
@@ -85,7 +90,7 @@ public class ExpSecurityRuleService {
         }
 
         Date now = new Date();
-        long differenceMillis = Math.abs(now.getTime() - dayAndHour.getTime());
+        long differenceMillis = Math.abs(now.getTime() - shiftStart.getTime());
         long fourtyEightHoursInMillis = 172_800_000;
 
         boolean after48Hours = differenceMillis > fourtyEightHoursInMillis;
