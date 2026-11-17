@@ -150,7 +150,7 @@ jlab.btm.validateCrossCheckStatusThenSave = function () {
         window.console && console.log('Unable to reload cross check summary/details: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
         alert('Unable to reload cross check summary/details: server did not handle request');
 
-        var $button = $("sign-button");
+        var $button = $("#sign-button");
         $button.html("Sign");
         $button.removeAttr("disabled");
     });
@@ -899,7 +899,7 @@ jlab.btm.editCrossComment = function () {
 
     request.done(function (data) {
         if ($(".status", data).html() !== "Success") {
-            alert('Unable to save shift information: ' + $(".reason", data).html());
+            alert('Unable to save cross check comments: ' + $(".reason", data).html());
         } else {
             /* Success */
             jlab.btm.doSaveCrossCheckCommentSuccess();
