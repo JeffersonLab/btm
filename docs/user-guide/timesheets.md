@@ -185,8 +185,9 @@ hall's active [programs](schedule.md#programs), listed under General and Experim
 ### Signing
 
 Before you can sign, save every hour, the shift information, and reasons for all the UED. Then
-**Sign**: you sign as User, or as Operability Manager if you are an administrator. The timesheet
-can have one signature of each. Signing posts an "Experimenter X Timesheet Summary" entry to the
+**Sign**: you sign as User; as the hall's manager (such as Hall B Manager) if you lead the hall;
+or as Operability Manager if you are an administrator. The timesheet can have one signature of
+each, so a User and the hall's manager can both sign it. Signing posts an "Experimenter X Timesheet Summary" entry to the
 hall's logbook (HALOG, HBLOG, HCLOG or HDLOG), tagged BeamAccounting; as for the Crew Chief, the
 timesheet is signed even if the logbook can't be reached.
 
@@ -200,7 +201,10 @@ hour is saved too: the Crew Chief's shift needs it.
 | Nobody | Any logged-in user. |
 | A User, up to 48 hours after the shift started | Any logged-in user. |
 | A User, more than 48 hours after the shift started | The signer, the hall's manager or an administrator. |
+| The hall's manager | The hall's manager or an administrator. |
 | An Operability Manager | An administrator. |
+
+With more than one signature, the lowest row that applies decides.
 
 Above the **Sign** button, the timesheet says why you can't change it. A refused save says
 "Access Denied".

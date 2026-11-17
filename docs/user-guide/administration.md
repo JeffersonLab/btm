@@ -14,14 +14,15 @@ effect when they next log in.
 | `btm-admin` | Operability Manager | Everything below, and the Setup tab. Signs timesheets as Operability Manager, and writes Reviewer Comments on cross-checks. |
 | `cc` | Crew Chief | Edit and sign Crew Chief timesheets; correct the State Timeline; edit the programs; reset the EPICS connection on CA Status. |
 | `schcom` | Committee Member | Create, upload, edit and publish schedules, including tentative ones; edit the programs. |
-| `halead`, `hblead`, `hclead`, `hdlead` | Hall A, B, C, D Manager | Change their hall's experimenter timesheets after they are locked to their signer, 48 hours after the shift started. |
+| `halead`, `hblead`, `hclead`, `hdlead` | Hall A, B, C, D Manager | Sign their hall's experimenter timesheets as its manager, which locks them against Users; change them after they are locked to their signer, 48 hours after the shift started. |
 | (any logged-in user) | User | Edit and sign experimenter timesheets; see the Activity Audit; send feedback. |
 
 Everyone can view the timesheets, State Timeline, published schedules, programs, metrics and
 reports without logging in.
 
 An administrator's signature locks an experimenter timesheet: then only administrators can change
-it.
+it. A hall manager's signature locks it against Users: then only the hall's managers and
+administrators can change it.
 
 ## Setup
 
