@@ -94,9 +94,8 @@ The shift's checks for each hall, with a message for each that fails:
 | **Hall**: High EXP OFF / Low OPS OFF | The hall's OFF ≤ the Crew Chief's OFF + 10 min. |
 | **Multiplicity**: High UP / Low ANY UP | The hall's UP ≤ ANY UP + 10 min. |
 
-The first two hall checks are skipped when the hall had no more than half an hour of UP. The
-tooltips of some checks describe them more loosely than this table; the table is what BTM
-calculates.
+The first two hall checks are skipped when the hall had no more than half an hour of UP. Hover
+over a check's heading to see when it passes.
 
 ### Hourly
 

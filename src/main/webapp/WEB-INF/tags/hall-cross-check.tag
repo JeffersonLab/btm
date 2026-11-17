@@ -9,17 +9,17 @@
     <thead>
     <tr>
         <th></th>
-        <th title="Half of ABU + BANU is no more than the sum of UP, TUNE, BNR if there is at last half an hour of UP: ((ABU + BANU) / 2 ≤ UP + TUNE + BNR) OR UP ≤ 0.5">
+        <th title="Half of ABU + BANU is no more than UP + TUNE + BNR, unless UP is half an hour or less: (ABU + BANU) / 2 ≤ UP + TUNE + BNR OR UP ≤ 30min">
             High ABU / Low UP
         </th>
-        <th title="ABU + BANU is at least half as much as UP + TUNE + BNR if there is at least half an hour of UP: (ABU ≥ UP / 2) OR UP ≤ 0.5">
+        <th title="ABU + BANU is at least half of UP + TUNE + BNR, unless UP is half an hour or less: ABU + BANU ≥ (UP + TUNE + BNR) / 2 OR UP ≤ 30min">
             Low ABU / High UP
         </th>
         <th title="BNR is no more than ten minutes over BANU: BNR ≤ BANU + 10min">Low BANU</th>
         <th title="BNA is no more than ten minutes over the sum of DOWN, UP, and TUNE: BNA ≤ DOWN + UP + TUNE + 10min">
             High BNA / Low DOWN + UP + TUNE
         </th>
-        <th title="Experimenter OFF is no more than 10 minutes over Operations measured OFF: EXP-OFF ≤ OPS-OFF + 10min">
+        <th title="Experimenter OFF is no more than ten minutes over the Crew Chief's OFF: EXP OFF ≤ OPS OFF + 10min">
             High EXP OFF / Low OPS OFF
         </th>
     </tr>
