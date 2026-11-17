@@ -9,7 +9,7 @@
     <thead>
     <tr>
         <th></th>
-        <th title="The sum of UP + TUNE + BNR + DOWN is less than ten minutes over Physics: PHYSICS + 10min &gt; UP + TUNE + BNR + DOWN">
+        <th title="The hall's UP + TUNE + BNR + DOWN is no more than ten minutes over the accelerator's PHYSICS: UP + TUNE + BNR + DOWN ≤ PHYSICS + 10min">
             Low Physics / High UP + TUNE + BNR + DOWN
         </th>
     </tr>

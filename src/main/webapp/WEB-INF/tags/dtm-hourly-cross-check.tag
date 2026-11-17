@@ -61,10 +61,10 @@
         <thead>
         <tr>
             <th></th>
-            <th title="The sum of physics + internal down + 10 minutes is less than blocked event downtime; physics + internal down + 10 minutes < blocked">
+            <th title="DTM blocked event downtime is no more than ten minutes over PHYSICS + INTERNAL DOWN: BLOCKED ≤ PHYSICS + INTERNAL DOWN + 10min">
                 Low Program
             </th>
-            <th title="The sum of physics + 10 minutes is less than tuning event downtime; physics + 10 minutes < tuning">High Tuning</th>
+            <th title="DTM tuning event downtime is no more than ten minutes over PHYSICS: TUNING ≤ PHYSICS + 10min">High Tuning</th>
         </tr>
         </thead>
         <tbody>
