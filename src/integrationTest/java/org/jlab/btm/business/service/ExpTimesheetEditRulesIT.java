@@ -19,6 +19,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.jlab.btm.business.util.BtmTimeUtil;
 import org.jlab.btm.persistence.entity.ExpHour;
 import org.jlab.btm.persistence.entity.ExpProgram;
 import org.jlab.btm.persistence.entity.ExpReason;
@@ -66,6 +67,7 @@ class ExpTimesheetEditRulesIT {
   private static SessionFactory factory;
   private EntityManager em;
   private TestCaller caller;
+  private ExpSignatureService signatures;
   private ExpSecurityRuleService rules;
   private ExpHourService hours;
   private ExpUedExplanationService explanations;
@@ -114,8 +116,9 @@ class ExpTimesheetEditRulesIT {
     caller = new TestCaller();
 
     // Supply what WildFly normally injects, without changing app code.
-    ExpSignatureService signatures = new ExpSignatureService();
+    signatures = new ExpSignatureService();
     signatures.em = em;
+    signatures.context = caller.context();
 
     rules = new ExpSecurityRuleService();
     rules.context = caller.context();
@@ -132,6 +135,10 @@ class ExpTimesheetEditRulesIT {
     shifts = new ExpShiftService();
     inject(ExpShiftService.class, shifts, em);
     shifts.ruleService = rules;
+
+    signatures.hourService = hours;
+    signatures.explanationService = explanations;
+    signatures.shiftService = shifts;
 
     // Saving hours writes an audit revision with the request's address and user
     TestAudit.use(new TestAudit());
@@ -171,6 +178,67 @@ class ExpTimesheetEditRulesIT {
 
     caller.is("alice");
     assertNull(rules.checkForEditDeniedReason(Hall.A, plusHours(OLD_SHIFT, 3)));
+  }
+
+  @Test
+  void aHallLeadSignsTheirHallsTimesheetAsItsManager() throws UserFriendlyException {
+    caller.is("alice");
+    completeTimesheet(Hall.B, OLD_SHIFT);
+    signatures.signTimesheet(Hall.B, OLD_SHIFT);
+
+    caller.is("lead", "hblead");
+    signatures.signTimesheet(Hall.B, OLD_SHIFT);
+
+    assertEquals(Role.USER, signatureOf(Hall.B, OLD_SHIFT, "alice").getSignedRole());
+    assertEquals(Role.HALL_B_MANAGER, signatureOf(Hall.B, OLD_SHIFT, "lead").getSignedRole());
+
+    caller.is("another-lead", "hblead");
+    UserFriendlyException e =
+        assertThrows(
+            UserFriendlyException.class, () -> signatures.signTimesheet(Hall.B, OLD_SHIFT));
+    assertEquals("A Hall B Manager has already signed the timesheet", e.getUserMessage());
+  }
+
+  @Test
+  void aHallLeadSignsAnotherHallsTimesheetAsAUser() throws UserFriendlyException {
+    caller.is("lead", "hblead");
+    completeTimesheet(Hall.A, OLD_SHIFT);
+
+    signatures.signTimesheet(Hall.A, OLD_SHIFT);
+
+    assertEquals(Role.USER, signatureOf(Hall.A, OLD_SHIFT, "lead").getSignedRole());
+  }
+
+  @Test
+  void anAdminSignsAsOperabilityManagerEvenIfAHallLead() throws UserFriendlyException {
+    caller.is("admin", "btm-admin", "hblead");
+    completeTimesheet(Hall.B, OLD_SHIFT);
+
+    signatures.signTimesheet(Hall.B, OLD_SHIFT);
+
+    assertEquals(Role.OPERABILITY_MANAGER, signatureOf(Hall.B, OLD_SHIFT, "admin").getSignedRole());
+  }
+
+  @Test
+  void aHallManagerSignatureLocksTheTimesheetAgainstUsersAtOnce() {
+    // Within 48 hours, when a User's signature locks nothing
+    Date currentShift = BtmTimeUtil.getExpShiftStart(new Date());
+    sign(Hall.B, currentShift, "lead", Role.HALL_B_MANAGER);
+
+    caller.is("jdoe");
+    assertEquals(
+        "You cannot modify a Hall B Manager signed timesheet unless you are the Hall B Manager or"
+            + " an Admin",
+        rules.checkForEditDeniedReason(Hall.B, currentShift));
+
+    caller.is("lead-of-another-hall", "halead");
+    assertNotNull(rules.checkForEditDeniedReason(Hall.B, currentShift));
+
+    caller.is("another-lead", "hblead");
+    assertNull(rules.checkForEditDeniedReason(Hall.B, currentShift));
+
+    caller.is("admin", "btm-admin");
+    assertNull(rules.checkForEditDeniedReason(Hall.B, currentShift));
   }
 
   @Test
@@ -272,6 +340,37 @@ class ExpTimesheetEditRulesIT {
         .setParameter("start", shiftStart)
         .setParameter("end", plusHours(shiftStart, 8))
         .getResultList();
+  }
+
+  /** Saves what signing needs: every hour, with no UED to explain, and the shift information. */
+  private void completeTimesheet(Hall hall, Date shiftStart) throws UserFriendlyException {
+    Date[] hourArray = new Date[8];
+    for (int i = 0; i < hourArray.length; i++) {
+      hourArray[i] = plusHours(shiftStart, i);
+    }
+    saveHours(hall, hourArray);
+
+    ExpProgram program = new ExpProgram();
+    program.setHall(hall);
+    program.setName("Physics");
+    program.setActive(true);
+    program.setExperiment(false);
+    em.persist(program);
+
+    ExpShift shift = new ExpShift();
+    shift.setHall(hall);
+    shift.setStartDayAndHour(shiftStart);
+    shift.setExpProgram(program);
+    em.persist(shift);
+    em.flush();
+  }
+
+  private ExpSignature signatureOf(Hall hall, Date shiftStart, String username) {
+    em.flush();
+    return signatures.find(hall, shiftStart).stream()
+        .filter(s -> s.getSignedBy().equals(username))
+        .findFirst()
+        .orElseThrow();
   }
 
   private void sign(Hall hall, Date shiftStart, String username, Role role) {

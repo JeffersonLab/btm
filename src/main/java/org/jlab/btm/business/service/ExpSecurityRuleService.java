@@ -86,7 +86,12 @@ public class ExpSecurityRuleService {
 
       if (!callerIsHallManager) {
         if (hallSigned) {
-          return "You cannot modify a Hall Manager signed timesheet unless you are a Hall Manager or Admin";
+          String manager = Role.getHallManagerRole(hall).getLabel();
+          return "You cannot modify a "
+              + manager
+              + " signed timesheet unless you are the "
+              + manager
+              + " or an Admin";
         }
 
         Date now = new Date();

@@ -1,5 +1,6 @@
 package org.jlab.btm.business.service;
 
+import jakarta.annotation.security.DeclareRoles;
 import jakarta.annotation.security.PermitAll;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
@@ -24,6 +25,7 @@ import org.jlab.smoothness.persistence.enumeration.Hall;
  * @author ryans
  */
 @Stateless
+@DeclareRoles({"btm-admin", "halead", "hblead", "hclead", "hdlead"})
 public class ExpSignatureService extends AbstractService<ExpSignature> {
 
   @PersistenceContext(unitName = "webappPU")
@@ -137,12 +139,26 @@ public class ExpSignatureService extends AbstractService<ExpSignature> {
     return status;
   }
 
+  /**
+   * Sign the hall's experimenter timesheet for the shift starting at the day and hour. The caller
+   * signs with their most powerful role for the hall: Operability Manager for an administrator, the
+   * hall's manager for its lead, and User for anyone else. The timesheet can have one signature of
+   * each role.
+   *
+   * @param hall the hall.
+   * @param startDayAndHour the shift's start.
+   * @throws UserFriendlyException if the caller or their role has already signed, or the timesheet
+   *     isn't complete.
+   */
   @PermitAll
   public void signTimesheet(Hall hall, Date startDayAndHour) throws UserFriendlyException {
     Role role = Role.USER;
+    Role hallManager = Role.getHallManagerRole(hall);
 
     if (context.isCallerInRole("btm-admin")) {
       role = Role.OPERABILITY_MANAGER;
+    } else if (context.isCallerInRole(hallManager.getName())) {
+      role = hallManager;
     }
 
     String username = context.getCallerPrincipal().getName();
