@@ -588,6 +588,10 @@ jlab.btm.signTimesheet = function () {
             /* Success */
             /*$("#signature-status-value").text("Complete").removeClass("incomplete-status").addClass("complete-status");*/
             /*$("#status-div span").text("Complete").removeClass("incomplete-status").addClass("complete-status");*/
+            var warning = $(".warning", data).text();
+            if (warning) {
+                alert(warning);
+            }
             leaveSpinning = true;
             window.location.reload(true);
         }
