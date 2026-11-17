@@ -1,36 +1,21 @@
 package org.jlab.btm.presentation.util;
 
-import org.jlab.smoothness.business.util.ExceptionUtil;
-
 /** The XML response to a request to sign a timesheet. */
 public final class SignResponse {
 
   private SignResponse() {}
 
   /**
-   * The warning shown when a timesheet is signed but its logbook entry could not be made.
+   * The warning shown when a timesheet is signed but its logbook entry could not be made. It names
+   * the logbook, not why the entry failed: that goes to the server log, not to the user.
    *
    * @param logbook The logbook the entry was for
-   * @param e Why the entry could not be made
    * @return The warning
    */
-  public static String logbookWarning(String logbook, Throwable e) {
-    Throwable rootCause = e == null ? null : ExceptionUtil.getRootCause(e);
-    String reason = null;
-
-    if (rootCause != null) {
-      reason = rootCause.getMessage();
-
-      if (reason == null || reason.isBlank()) {
-        reason = rootCause.getClass().getSimpleName();
-      }
-    }
-
+  public static String logbookWarning(String logbook) {
     return "Signed, but the "
         + logbook
-        + " logbook entry could not be made"
-        + (reason == null ? "" : ": " + reason)
-        + ". Please make the entry by hand.";
+        + " logbook entry could not be made. Please make the entry by hand.";
   }
 
   /**

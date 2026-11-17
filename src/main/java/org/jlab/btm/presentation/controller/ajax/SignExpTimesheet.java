@@ -140,7 +140,7 @@ public class SignExpTimesheet extends HttpServlet {
 
       } catch (Exception e) {
         logger.log(Level.WARNING, "Unable to create log entry", e);
-        warning = SignResponse.logbookWarning(LogbookService.hallLogbook(hall), e);
+        warning = SignResponse.logbookWarning(LogbookService.hallLogbook(hall));
       }
     } catch (EJBAccessException e) {
       logger.log(Level.WARNING, "Unable to sign timesheet due to access exception", e);

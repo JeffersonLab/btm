@@ -118,7 +118,7 @@ public class SignCcTimesheet extends HttpServlet {
 
       } catch (Exception e) {
         logger.log(Level.WARNING, "Unable to create log entry", e);
-        warning = SignResponse.logbookWarning(LogbookService.crewChiefLogbook(), e);
+        warning = SignResponse.logbookWarning(LogbookService.crewChiefLogbook());
       }
     } catch (EJBAccessException e) {
       logger.log(Level.WARNING, "Unable to sign timesheet due to access exception", e);
