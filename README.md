@@ -45,7 +45,15 @@ docker compose up
 http://localhost:8080/btm
 ```
 
-**Note**: Login with demo username "jdoe" and password "password".
+**Note**: Login with demo username "jdoe" and password "password".  Other demo users, also with password "password", have other roles (see [Roles](https://github.com/JeffersonLab/btm/blob/main/docs/user-guide/administration.md#roles)):
+
+| Username | Role                              |
+|----------|-----------------------------------|
+| jdoe     | `btm-admin` (Operability Manager) |
+| user1    | `hblead` (Hall B Manager)         |
+| user2    | none (User)                       |
+| user3    | `hdlead` (Hall D Manager)         |
+| user4    | `cc` (Crew Chief)                 |
 
 ### Ports
 The containers publish these ports on the host, listening only on its local address (127.0.0.1), so other computers can't reach the demo database, accounts, and management consoles.  To use them from another computer, forward them over SSH, such as `ssh -N -L 8443:localhost:8443 -L 8081:localhost:8081 <host>` for the app and Keycloak.  If another project already uses some of them, or you run a second copy of the demo, set other ports in a `.env` file next to `compose.yaml`, which Compose reads, or in the environment:
