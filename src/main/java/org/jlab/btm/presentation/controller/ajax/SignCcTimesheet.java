@@ -19,6 +19,7 @@ import org.jlab.btm.business.service.*;
 import org.jlab.btm.persistence.enumeration.DurationUnits;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.btm.presentation.util.InternalHtmlRequestExecutor;
+import org.jlab.btm.presentation.util.SignResponse;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.ExceptionUtil;
 import org.jlab.smoothness.business.util.TimeUtil;
@@ -54,6 +55,7 @@ public class SignCcTimesheet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     String errorReason = null;
+    String warning = null;
 
     try {
       if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
@@ -116,6 +118,7 @@ public class SignCcTimesheet extends HttpServlet {
 
       } catch (Exception e) {
         logger.log(Level.WARNING, "Unable to create log entry", e);
+        warning = SignResponse.logbookWarning(LogbookService.crewChiefLogbook(), e);
       }
     } catch (EJBAccessException e) {
       logger.log(Level.WARNING, "Unable to sign timesheet due to access exception", e);
@@ -139,19 +142,7 @@ public class SignCcTimesheet extends HttpServlet {
 
     PrintWriter pw = response.getWriter();
 
-    String xml;
-
-    if (errorReason == null) {
-      xml = "<response><span class=\"status\">Success</span></response>";
-    } else {
-      xml =
-          "<response><span class=\"status\">Error</span><span "
-              + "class=\"reason\">"
-              + errorReason
-              + "</span></response>";
-    }
-
-    pw.write(xml);
+    pw.write(SignResponse.toXml(errorReason, warning));
 
     pw.flush();
 

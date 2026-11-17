@@ -40,22 +40,9 @@ public class LogbookService {
 
     String username = checkAuthorized(); /*Must be logged in*/
 
-    String logbookServerUrl = System.getenv("LOGBOOK_SERVER_URL");
-    String logbooks = "ELOG";
-    String tags = "BeamAccounting";
-
-    // In the absence of a test server an alternative is to use production server,
-    // but route entries to TLOG
-    String logbookDebug = System.getenv("LOGBOOK_DEBUG");
-
-    if ("true".equals(logbookDebug)) {
-      logbooks = "TLOG";
-      tags = null;
-    }
-
-    if (logbookServerUrl == null) {
-      throw new IOException("logbook server not configured");
-    }
+    String logbookServerUrl = getLogbookServerUrl();
+    String logbooks = crewChiefLogbook();
+    String tags = getTags();
 
     Properties config = Library.getConfiguration();
 
@@ -81,33 +68,9 @@ public class LogbookService {
 
     String username = checkAuthorized(); /*Must be logged in*/
 
-    String logbookServerUrl = System.getenv("LOGBOOK_SERVER_URL");
-    String logbooks = "ELOG";
-    String tags = "BeamAccounting";
-
-    // In the absence of a test server an alternative is to use production server,
-    // but route entries to TLOG
-    String logbookDebug = System.getenv("LOGBOOK_DEBUG");
-
-    if ("true".equals(logbookDebug)) {
-      logbooks = "TLOG";
-      tags = null;
-    } else {
-      switch (hall) {
-        case A:
-          logbooks = "HALOG";
-          break;
-        case B:
-          logbooks = "HBLOG";
-          break;
-        case C:
-          logbooks = "HCLOG";
-          break;
-        case D:
-          logbooks = "HDLOG";
-          break;
-      }
-    }
+    String logbookServerUrl = getLogbookServerUrl();
+    String logbooks = hallLogbook(hall);
+    String tags = getTags();
 
     logger.log(Level.INFO, "Sending elog to logbook: {0}", logbooks);
 
@@ -127,5 +90,59 @@ public class LogbookService {
     extension.setAuthor(username);
 
     return entry.submitNow();
+  }
+
+  /**
+   * The logbook Crew Chief timesheets are posted to.
+   *
+   * @return ELOG, or TLOG when LOGBOOK_DEBUG is true
+   */
+  public static String crewChiefLogbook() {
+    return isDebug() ? "TLOG" : "ELOG";
+  }
+
+  /**
+   * The logbook a hall's experimenter timesheets are posted to.
+   *
+   * @param hall The hall
+   * @return The hall's logbook, or TLOG when LOGBOOK_DEBUG is true
+   */
+  public static String hallLogbook(Hall hall) {
+    if (isDebug()) {
+      return "TLOG";
+    }
+
+    switch (hall) {
+      case A:
+        return "HALOG";
+      case B:
+        return "HBLOG";
+      case C:
+        return "HCLOG";
+      case D:
+        return "HDLOG";
+      default:
+        return "ELOG";
+    }
+  }
+
+  // In the absence of a test server an alternative is to use production server,
+  // but route entries to TLOG
+  private static boolean isDebug() {
+    return "true".equals(System.getenv("LOGBOOK_DEBUG"));
+  }
+
+  private static String getTags() {
+    return isDebug() ? null : "BeamAccounting";
+  }
+
+  private static String getLogbookServerUrl() throws IOException {
+    String logbookServerUrl = System.getenv("LOGBOOK_SERVER_URL");
+
+    if (logbookServerUrl == null) {
+      throw new IOException("logbook server not configured");
+    }
+
+    return logbookServerUrl;
   }
 }
