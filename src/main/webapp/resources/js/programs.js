@@ -187,7 +187,15 @@ $(document).on("click", ".open-edit-dialog-button", function () {
 });
 
 $(document).on("click", ".delete-button", function () {
-    jlab.btm.removeProgram.call(this);
+    var $selectedRow = $(this).closest(".ui-tabs-panel").find("tr.selected-row");
+
+    if ($selectedRow.length < 1) {
+        return false;
+    }
+
+    if (confirm("Remove the program " + $selectedRow.find("td:first-child").text().trim() + "?")) {
+        jlab.btm.removeProgram.call(this);
+    }
     return false;
 });
 
