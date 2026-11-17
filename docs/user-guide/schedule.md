@@ -98,7 +98,7 @@ other rows are days, in date order:
 | A | The date, as a date cell (a formula giving a date, such as `=A3+1`, is fine). |
 | B | The weekday (ignored). |
 | C | The accelerator's GeV per pass. |
-| D | The accelerator program: PHYSICS, STUDIES, RESTORE, ACC, DOWN or OFF, in any capitalization. Empty means OFF. |
+| D | The accelerator program: PHYSICS, FACDEV, STUDIES, RESTORE, ACC, DOWN, OFF or TBD, in any capitalization. Empty means OFF. |
 | E, G, I, K | Hall A, B, C and D's program, by its name on the Programs tab. Extra spaces and capitalization don't matter, unless that makes the name match two programs; then use the exact name. Empty means the hall's program named OFF, which must exist. |
 | F, H, J, L | Hall A, B, C and D's beam, as `GeV/current/pol/MHz`, such as `10.6/50/p/249`. The current is in μA for Halls A and C and in nA for Halls B and D; pol is `p` for polarized or `-`; the frequency must be a whole number, and is not kept. For a hall whose program is OFF, anything else in the cell, such as a note, is ignored. |
 | M | The priority, such as `A,C,B`. |
@@ -107,8 +107,7 @@ other rows are days, in date order:
 Each month in the workbook becomes a new tentative version of that month, so one workbook can
 hold several months. A month whose rows start after the 1st gets OFF for the days before.
 The whole workbook is checked before any version is made, and an error names its row. Notes and
-Min Hall Count are not read. The upload can't schedule FACDEV or
-TBD; set those days in the Table view afterwards.
+Min Hall Count are not read.
 
 ### Exporting
 

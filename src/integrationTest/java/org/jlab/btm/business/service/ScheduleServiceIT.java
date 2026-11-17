@@ -16,6 +16,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
 import org.jlab.btm.persistence.entity.Run;
 import org.jlab.btm.persistence.entity.ScheduleDay;
+import org.jlab.btm.persistence.enumeration.AcceleratorProgram;
 import org.jlab.btm.persistence.projection.PacAccSum;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.junit.jupiter.api.AfterAll;
@@ -312,6 +313,23 @@ class ScheduleServiceIT {
     assertNotNull(published.getPublishedDate());
     assertThrows(
         UserFriendlyException.class, () -> schedules.publish(first.getMonthlyScheduleId()));
+  }
+
+  @Test
+  void persistsEveryAcceleratorProgramTheUploadAccepts() throws UserFriendlyException {
+    // The upload parses column D into AcceleratorProgram, so each must pass SCHEDULE_DAY_CK2
+    MonthlySchedule schedule = schedules.create(date("2026-01-01"));
+    AcceleratorProgram[] programs = AcceleratorProgram.values();
+    for (int i = 0; i < programs.length; i++) {
+      day(schedule, "2026-01-0" + (i + 1), programs[i].name());
+    }
+    flushAndClear();
+
+    for (int i = 0; i < programs.length; i++) {
+      ScheduleDay found =
+          days.findByDateAndSchedule(date("2026-01-0" + (i + 1)), schedule.getMonthlyScheduleId());
+      assertEquals(programs[i].name(), found.getAccProgram());
+    }
   }
 
   @Test

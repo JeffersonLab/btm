@@ -105,6 +105,11 @@ class ExcelScheduleParserTest {
     return new ExcelScheduleParser(programs()).parse(sheet);
   }
 
+  private static List<ScheduleDay> onlyMonth(List<ExcelScheduleParser.ParsedMonth> months) {
+    assertEquals(1, months.size());
+    return months.get(0).getDays();
+  }
+
   private static ScheduleDay onlyDay(List<ExcelScheduleParser.ParsedMonth> months) {
     assertEquals(1, months.size());
     assertEquals(1, months.get(0).getDays().size());
@@ -205,6 +210,30 @@ class ExcelScheduleParserTest {
     UserFriendlyException e = assertThrows(UserFriendlyException.class, this::parse);
 
     assertEquals("Row 3: Unrecognized Accelerator Program, found: Beam", e.getUserMessage());
+  }
+
+  @Test
+  void acceptsEveryAcceleratorProgramTheTableOffers() throws UserFriendlyException {
+    String[] offered = {"PHYSICS", "FACDEV", "STUDIES", "RESTORE", "ACC", "DOWN", "OFF", "TBD"};
+    for (int i = 0; i < offered.length; i++) {
+      row(date(2026, 3, 1 + i), offered[i].toLowerCase());
+    }
+
+    List<ScheduleDay> days = onlyMonth(parse());
+
+    assertEquals(offered.length, days.size());
+    for (int i = 0; i < offered.length; i++) {
+      assertEquals(offered[i], days.get(i).getAccProgram());
+    }
+  }
+
+  @Test
+  void rejectsTheMisspelledAcceleratorProgramTdb() {
+    row(date(2026, 3, 1), "TDB");
+
+    UserFriendlyException e = assertThrows(UserFriendlyException.class, this::parse);
+
+    assertEquals("Row 3: Unrecognized Accelerator Program, found: TDB", e.getUserMessage());
   }
 
   @Test
