@@ -134,7 +134,7 @@ When the timesheet is right, select **Sign**. BTM then:
 5. Posts a "Crew Chief Timesheet Summary" entry to the ELOG logbook, tagged BeamAccounting, with
    the shift's totals, under the same headings as the Shift Summary tab, and shift information.
    If the entry can't be made, the timesheet is still signed, and BTM warns you, naming the
-   logbook and the reason: make the entry by hand.
+   logbook: make the entry by hand. The reason is in the server log.
 
 The **Signatures** table lists who signed, as which role, and when. More than one person can
 sign, but nobody twice in the same role. A signed Crew Chief timesheet can still be edited, and
