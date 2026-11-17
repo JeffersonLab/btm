@@ -14,6 +14,8 @@ KC_ROLE_NAME=hclead
 create_role
 KC_ROLE_NAME=hdlead
 create_role
+KC_ROLE_NAME=cc
+create_role
 
 echo "----------------"
 echo "| Create Users |"
@@ -46,4 +48,14 @@ create_user
 KC_ROLE_NAME=${KC_RESOURCE}-user
 assign_role
 KC_ROLE_NAME=hdlead
+assign_role
+
+KC_USERNAME=user4
+KC_FIRSTNAME=David
+KC_LASTNAME=Garcia
+KC_EMAIL=user4@example.com
+create_user
+KC_ROLE_NAME=${KC_RESOURCE}-user
+assign_role
+KC_ROLE_NAME=cc
 assign_role
