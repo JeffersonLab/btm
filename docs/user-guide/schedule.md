@@ -162,7 +162,7 @@ glossary of the accelerator programs and states.
 
 Crew Chiefs (`cc`), committee members (`schcom`) and administrators (`btm-admin`) can **Add**,
 **Edit** and **Remove** programs. A program that a timesheet or a schedule uses can't be
-removed: make it inactive instead. **Remove** doesn't ask for confirmation.
+removed: make it inactive instead. **Remove** asks for confirmation first.
 
 When an experiment ends, set its **Active** to No: it stays on the schedules and timesheets that
 name it, and leaves the lists. A day whose hall program has been made inactive must be given an
