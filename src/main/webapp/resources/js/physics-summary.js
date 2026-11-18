@@ -226,7 +226,7 @@ doBarChart = function () {
 
 doPieChart = function () {
     var ds = [],
-        colors = ['yellow', 'orange', 'red', 'purple', 'brown', 'lightgray'],
+        colors = ['yellow', 'orange', 'red', 'brown', 'lightgray'],
         $graph = $("#chart-placeholder"),
         $table = $(".chart-legend");
 

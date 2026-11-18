@@ -40,14 +40,6 @@
                 <th>
                     <div class="color-box"></div>
                 </th>
-                <th class="legend-label">ACC</th>
-                <td><fmt:formatNumber value="${totals.accSeconds / 3600}" pattern="#,##0.0"/></td>
-                <td>(<fmt:formatNumber value="${(totals.accSeconds / 3600) / period * 100}" pattern="#,##0.0"/>%)</td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="color-box"></div>
-                </th>
                 <th class="legend-label">OFF</th>
                 <td><fmt:formatNumber value="${totals.expOffSeconds / 3600}" pattern="#,##0.0"/></td>
                 <td>(<fmt:formatNumber value="${(totals.expOffSeconds / 3600) / period * 100}" pattern="#,##0.0"/>%)
