@@ -15,8 +15,8 @@ import org.jlab.btm.business.service.excel.ExcelBeamSummaryService;
 import org.jlab.btm.persistence.projection.CcAccSum;
 import org.jlab.btm.persistence.projection.PacAccSum;
 import org.jlab.btm.persistence.projection.PdAccSum;
+import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.util.TimeUtil;
-import org.jlab.smoothness.presentation.util.ParamConverter;
 
 /**
  * @author ryans
@@ -50,8 +50,8 @@ public class ExcelBeamSummary extends HttpServlet {
     PacAccSum pacSum = null;
 
     try {
-      start = ParamConverter.convertFriendlyDate(request, "start");
-      end = ParamConverter.convertFriendlyDate(request, "end");
+      start = BtmParamConverter.convertJLabDateTime(request, "start");
+      end = BtmParamConverter.convertJLabDateTime(request, "end");
     } catch (Exception e) {
       throw new ServletException("Unable to parse date", e);
     }
