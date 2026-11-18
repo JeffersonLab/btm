@@ -7,17 +7,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import org.jlab.btm.business.service.ExpProgramService;
 import org.jlab.btm.business.service.MonthlyScheduleService;
 import org.jlab.btm.persistence.entity.ExpProgram;
 import org.jlab.btm.persistence.entity.MonthlySchedule;
 import org.jlab.btm.persistence.entity.ScheduleDay;
-import org.jlab.btm.persistence.projection.DailyCharge;
-import org.jlab.btm.persistence.projection.HallChargeData;
+import org.jlab.btm.persistence.projection.DailyPrograms;
 import org.jlab.btm.presentation.util.BtmParamConverter;
 import org.jlab.smoothness.business.util.TimeUtil;
 
@@ -28,8 +27,6 @@ import org.jlab.smoothness.business.util.TimeUtil;
     name = "Charge",
     urlPatterns = {"/reports/charge"})
 public class Charge extends HttpServlet {
-
-  private static final Logger LOGGER = Logger.getLogger(Charge.class.getName());
 
   @EJB MonthlyScheduleService scheduleService;
 
@@ -57,38 +54,20 @@ public class Charge extends HttpServlet {
       return;
     }
 
-    Double period = null;
     String selectionMessage = null;
-    HallChargeData scheduledChargeData = null;
+    List<DailyPrograms> programDays = null;
 
     if (start != null && end != null) {
       if (!start.before(end)) {
         throw new ServletException("start date must be before end date");
       }
 
-      period = (end.getTime() - start.getTime()) / 1000.0 / 60 / 60;
-
       List<MonthlySchedule> monthlySchedules =
           scheduleService.findMostRecentPublishedInDateRange(start, end);
       List<ScheduleDay> scheduleDays =
           scheduleService.filterScheduleDaysFromRange(monthlySchedules, start, end);
 
-      scheduledChargeData = calculateScheduledHallCharge(scheduleDays);
-
-      /*LOGGER.log(Level.WARNING, "Printing Monthly Schedules: ");
-      for(MonthlySchedule schedule: monthlySchedules) {
-          LOGGER.log(Level.WARNING, schedule.toString());
-      }
-
-      LOGGER.log(Level.WARNING, "Printing Days: ");
-      for(ScheduleDay day: scheduleDays) {
-          LOGGER.log(Level.WARNING, day.toString());
-      }*/
-
-      /*LOGGER.log(Level.WARNING, "Printing Hall A Charge: ");
-      for(DailyCharge charge: scheduledChargeData.chargeListA) {
-          LOGGER.log(Level.WARNING, charge.toString());
-      }*/
+      programDays = programsByDay(scheduleDays, programService.findProgramByIdMap());
 
       selectionMessage = TimeUtil.formatSmartRangeSeparateTime(start, end);
     }
@@ -96,97 +75,32 @@ public class Charge extends HttpServlet {
     request.setAttribute("start", start);
     request.setAttribute("end", end);
     request.setAttribute("selectionMessage", selectionMessage);
-    request.setAttribute("period", period);
-    request.setAttribute("scheduledChargeData", scheduledChargeData);
+    request.setAttribute("programDays", programDays);
 
     request.getRequestDispatcher("/WEB-INF/views/reports/charge.jsp").forward(request, response);
   }
 
-  private HallChargeData calculateScheduledHallCharge(List<ScheduleDay> scheduleDays) {
-    HallChargeData data = new HallChargeData();
+  /**
+   * Names the program each hall is scheduled to run on each day, for the charts' hover.
+   *
+   * @param scheduleDays the published schedule's days, in order
+   * @param programMap the programs by ID
+   * @return the programs by day, in the same order
+   */
+  static List<DailyPrograms> programsByDay(
+      List<ScheduleDay> scheduleDays, Map<Integer, ExpProgram> programMap) {
+    List<DailyPrograms> programDays = new ArrayList<>();
 
-    Map<Integer, ExpProgram> purposeMap = programService.findProgramByIdMap();
-
-    if (scheduleDays != null && !scheduleDays.isEmpty()) {
-      // Date dateprev = TimeUtil.addDays(scheduleDays.get(0).getDayMonthYear(), -1);
-      Date dateprev = scheduleDays.get(0).getDayMonthYear();
-      DailyCharge prevA = new DailyCharge();
-      DailyCharge prevB = new DailyCharge();
-      DailyCharge prevC = new DailyCharge();
-      DailyCharge prevD = new DailyCharge();
-
-      for (ScheduleDay day : scheduleDays) {
-        Date d = day.getDayMonthYear();
-        long elapsedSeconds = (d.getTime() - dateprev.getTime()) / 1000;
-        dateprev = d;
-
-        // Hall A
-        DailyCharge recordA = new DailyCharge();
-        recordA.program = purposeMap.get(day.getHallAProgramId()).getName();
-        Integer nAA = day.getHallANanoAmps();
-
-        if (nAA == null) {
-          nAA = 0;
-        }
-
-        recordA.d = d;
-        recordA.nA = nAA;
-        recordA.nC = (prevA.nA * elapsedSeconds) + prevA.nC;
-        prevA = recordA;
-        data.getChargeListA().add(recordA);
-
-        /*LOGGER.log(Level.WARNING, "Hall A: " + d);
-        LOGGER.log(Level.WARNING, "Current (nA): " + nAA);
-        LOGGER.log(Level.WARNING, "Elapsed Seconds: " + elapsedSeconds);
-        LOGGER.log(Level.WARNING, "Charge (nC): " + recordA.nC);*/
-
-        // Hall B
-        DailyCharge recordB = new DailyCharge();
-        recordB.program = purposeMap.get(day.getHallBProgramId()).getName();
-        Integer nAB = day.getHallBNanoAmps();
-
-        if (nAB == null) {
-          nAB = 0;
-        }
-
-        recordB.d = d;
-        recordB.nA = nAB;
-        recordB.nC = (prevB.nA * elapsedSeconds) + prevB.nC;
-        prevB = recordB;
-        data.getChargeListB().add(recordB);
-
-        // Hall C
-        DailyCharge recordC = new DailyCharge();
-        recordC.program = purposeMap.get(day.getHallCProgramId()).getName();
-        Integer nAC = day.getHallCNanoAmps();
-
-        if (nAC == null) {
-          nAC = 0;
-        }
-
-        recordC.d = d;
-        recordC.nA = nAC;
-        recordC.nC = (prevC.nA * elapsedSeconds) + prevC.nC;
-        prevC = recordC;
-        data.getChargeListC().add(recordC);
-
-        // Hall D
-        DailyCharge recordD = new DailyCharge();
-        recordD.program = purposeMap.get(day.getHallDProgramId()).getName();
-        Integer nAD = day.getHallDNanoAmps();
-
-        if (nAD == null) {
-          nAD = 0;
-        }
-
-        recordD.d = d;
-        recordD.nA = nAD;
-        recordD.nC = (prevD.nA * elapsedSeconds) + prevD.nC;
-        prevD = recordD;
-        data.getChargeListD().add(recordD);
-      }
+    for (ScheduleDay day : scheduleDays) {
+      programDays.add(
+          new DailyPrograms(
+              day.getDayMonthYear(),
+              programMap.get(day.getHallAProgramId()).getName(),
+              programMap.get(day.getHallBProgramId()).getName(),
+              programMap.get(day.getHallCProgramId()).getName(),
+              programMap.get(day.getHallDProgramId()).getName()));
     }
 
-    return data;
+    return programDays;
   }
 }

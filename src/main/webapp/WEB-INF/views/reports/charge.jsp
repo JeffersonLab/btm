@@ -30,32 +30,8 @@
         <script type="text/javascript"
                 src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/charge.js"></script>
         <script>
-            var dataA = jlab.series.charge.scheduled.a.data,
-                dataB = jlab.series.charge.scheduled.b.data,
-                dataC = jlab.series.charge.scheduled.c.data,
-                dataD = jlab.series.charge.scheduled.d.data;
-
-            dataA = jlab.series.current.scheduled.a.data;
-            dataB = jlab.series.current.scheduled.b.data;
-            dataC = jlab.series.current.scheduled.c.data;
-            dataD = jlab.series.current.scheduled.d.data;
-
-            dataA = jlab.series.programs.a;
-            dataB = jlab.series.programs.b;
-            dataC = jlab.series.programs.c;
-            dataD = jlab.series.programs.d;
-
-            <c:forEach items="${scheduledChargeData.chargeListA}" var="record">
-            dataA.push('${record.program}');
-            </c:forEach>
-            <c:forEach items="${scheduledChargeData.chargeListB}" var="record">
-            dataB.push('${record.program}');
-            </c:forEach>
-            <c:forEach items="${scheduledChargeData.chargeListC}" var="record">
-            dataC.push('${record.program}');
-            </c:forEach>
-            <c:forEach items="${scheduledChargeData.chargeListD}" var="record">
-            dataD.push('${record.program}');
+            <c:forEach items="${programDays}" var="day">
+            jlab.series.programs.push({x: ${day.timestamp}, a: '${fn:escapeXml(day.hallA)}', b: '${fn:escapeXml(day.hallB)}', c: '${fn:escapeXml(day.hallC)}', d: '${fn:escapeXml(day.hallD)}'});
             </c:forEach>
         </script>
     </jsp:attribute>
@@ -88,51 +64,6 @@
                 <c:otherwise>
                     <div class="message-box"><c:out value="${selectionMessage}"/></div>
                     <div class="error-box"></div>
-                    <c:if test="${false}">
-                                <s:chart-widget>
-                                    <table class="chart-legend">
-                                        <tbody>
-                                        <tr class="sub-head-row">
-                                            <th colspan="2"><div class="key-header hall-key-header">Hall</div></th>
-                                            <th><div class="key-header scheduled-key-header">Scheduled</div></th>
-                                            <th><div class="key-header delivered-key-header">Delivered</div></th>
-                                        </tr>
-                                        <tr>
-                                            <th>
-                                                <div class="color-box" style="background-color: blue;"></div>
-                                            </th>
-                                            <th>A</th>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <th>
-                                                <div class="color-box" style="background-color: red;"></div>
-                                            </th>
-                                            <th>B</th>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <th>
-                                                <div class="color-box" style="background-color: green;"></div>
-                                            </th>
-                                            <th>C</th>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <th>
-                                                <div class="color-box" style="background-color: orange;"></div>
-                                            </th>
-                                            <th>D</th>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </s:chart-widget>
-                    </c:if>
                 </c:otherwise>
             </c:choose>
             <table class="quad-table">
@@ -144,11 +75,10 @@
                             <table class="custom-key">
                                 <tbody>
                                 <tr>
-                                    <th><div class="key-header scheduled-key-header">Scheduled</div></th>
                                     <th><div class="key-header delivered-key-header">Delivered</div></th>
                                 </tr>
-                                <tr><th id="key-a-current-scheduled"></th><th id="key-a-current-delivered"></th></tr>
-                                <tr><th id="key-a-charge-scheduled"></th><th id="key-a-charge-delivered"></th></tr>
+                                <tr><th id="key-a-current-delivered"></th></tr>
+                                <tr><th id="key-a-charge-delivered"></th></tr>
                                 </tbody>
                             </table>
                             <div id="charta-charge-placeholder" class="charge-placeholder"></div>
@@ -163,11 +93,10 @@
                             <table class="custom-key">
                                 <tbody>
                                 <tr>
-                                    <th><div class="key-header scheduled-key-header">Scheduled</div></th>
                                     <th><div class="key-header delivered-key-header">Delivered</div></th>
                                 </tr>
-                                <tr><th id="key-b-current-scheduled"></th><th id="key-b-current-delivered"></th></tr>
-                                <tr><th id="key-b-charge-scheduled"></th><th id="key-b-charge-delivered"></th></tr>
+                                <tr><th id="key-b-current-delivered"></th></tr>
+                                <tr><th id="key-b-charge-delivered"></th></tr>
                                 </tbody>
                             </table>
                             <div id="chartb-charge-placeholder" class="charge-placeholder"></div>
@@ -184,11 +113,10 @@
                             <table class="custom-key">
                                 <tbody>
                                 <tr>
-                                    <th><div class="key-header scheduled-key-header">Scheduled</div></th>
                                     <th><div class="key-header delivered-key-header">Delivered</div></th>
                                 </tr>
-                                <tr><th id="key-c-current-scheduled"></th><th id="key-c-current-delivered"></th></tr>
-                                <tr><th id="key-c-charge-scheduled"></th><th id="key-c-charge-delivered"></th></tr>
+                                <tr><th id="key-c-current-delivered"></th></tr>
+                                <tr><th id="key-c-charge-delivered"></th></tr>
                                 </tbody>
                             </table>
                             <div id="chartc-charge-placeholder" class="charge-placeholder"></div>
@@ -203,11 +131,10 @@
                             <table class="custom-key">
                                 <tbody>
                                 <tr>
-                                    <th><div class="key-header scheduled-key-header">Scheduled</div></th>
                                     <th><div class="key-header delivered-key-header">Delivered</div></th>
                                 </tr>
-                                <tr><th id="key-d-current-scheduled"></th><th id="key-d-current-delivered"></th></tr>
-                                <tr><th id="key-d-charge-scheduled"></th><th id="key-d-charge-delivered"></th></tr>
+                                <tr><th id="key-d-current-delivered"></th></tr>
+                                <tr><th id="key-d-charge-delivered"></th></tr>
                                 </tbody>
                             </table>
                             <div id="chartd-charge-placeholder" class="charge-placeholder"></div>

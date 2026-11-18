@@ -7,109 +7,21 @@ jlab.series = {
             b: {data: []},
             c: {data: []},
             d: {data: []}
-        },
-        scheduled: {
-            a: {data: []},
-            b: {data: []},
-            c: {data: []},
-            d: {data: []}
         }
     },
-    current:{
+    current: {
         delivered: {
             a: {data: []},
             b: {data: []},
             c: {data: []},
             d: {data: []}
-        },
-        scheduled: {
-            a: {data: []},
-            b: {data: []},
-            c: {data: []},
-            d: {data: []}
         }
     },
-    programs: {
-        a: [],
-        b: [],
-        c: [],
-        d: []
-    }
+    /* Each scheduled day's hall programs: {x: day start in local milliseconds, a: ..., b: ..., c: ..., d: ...} */
+    programs: []
 };
 
-jlab.ratioData = [{
-        label: 'Hall A Delivered',
-        color: 'blue',
-        data: jlab.series.charge.delivered.a.data,
-        dashes: {
-            show: true,
-            lineWidth: 4,
-            dashLength: 10
-        }
-    },
-    {
-        label: 'Hall A Scheduled',
-        color: 'blue',
-        data: jlab.series.charge.scheduled.a.data,
-        lines: {show: true}
-    },
-    {
-        label: 'Hall B Delivered',
-        color: 'red',
-        data: jlab.series.charge.delivered.b.data,
-        dashes: {
-            show: true,
-            lineWidth: 4,
-            dashLength: 10
-        }
-    },
-    {
-        label: 'Hall B Scheduled',
-        color: 'red',
-        data: jlab.series.charge.scheduled.b.data,
-        lines: {show: true}
-    },
-    {
-        label: 'Hall C Delivered',
-        color: 'green',
-        data: jlab.series.charge.delivered.c.data,
-        dashes: {
-            show: true,
-            lineWidth: 4,
-            dashLength: 10
-        }
-    },
-    {
-        label: 'Hall C Scheduled',
-        color: 'green',
-        data: jlab.series.charge.scheduled.c.data,
-        lines: {show: true}
-    },
-    {
-        label: 'Hall D Delivered',
-        color: 'orange',
-        data: jlab.series.charge.delivered.d.data,
-        dashes: {
-            show: true,
-            lineWidth: 4,
-            dashLength: 10
-        }
-    },
-    {
-        label: 'Hall D Scheduled',
-        color: 'orange',
-        data: jlab.series.charge.scheduled.d.data,
-        lines: {show: true}
-    }];
-
 jlab.hallCurrentData = [
-    {
-        label: 'Scheduled',
-        color: 'gray',
-        data: [],
-        lines: {show: false, steps: true},
-        points: {show: false}
-    },
     {
         label: 'Delivered',
         color: 'rgb(169,169,169, 0.5)',
@@ -126,52 +38,39 @@ jlab.hallCurrentData = [
 
 /* Create hall current data by deep copying template */
 jlab.currentDataA = JSON.parse(JSON.stringify(jlab.hallCurrentData));
-jlab.currentDataA[0].data = jlab.series.current.scheduled.a.data;
-jlab.currentDataA[1].data = jlab.series.current.delivered.a.data;
+jlab.currentDataA[0].data = jlab.series.current.delivered.a.data;
 
 jlab.currentDataB = JSON.parse(JSON.stringify(jlab.hallCurrentData));
-jlab.currentDataB[0].data = jlab.series.current.scheduled.b.data;
-jlab.currentDataB[1].data = jlab.series.current.delivered.b.data;
+jlab.currentDataB[0].data = jlab.series.current.delivered.b.data;
 
 jlab.currentDataC = JSON.parse(JSON.stringify(jlab.hallCurrentData));
-jlab.currentDataC[0].data = jlab.series.current.scheduled.c.data;
-jlab.currentDataC[1].data = jlab.series.current.delivered.c.data;
+jlab.currentDataC[0].data = jlab.series.current.delivered.c.data;
 
 jlab.currentDataD = JSON.parse(JSON.stringify(jlab.hallCurrentData));
-jlab.currentDataD[0].data = jlab.series.current.scheduled.d.data;
-jlab.currentDataD[1].data = jlab.series.current.delivered.d.data;
+jlab.currentDataD[0].data = jlab.series.current.delivered.d.data;
 
 
 jlab.hallChargeData = [
     {
-        label: 'Scheduled',
-        color: 'gray',
+        label: 'Delivered',
+        color: 'black',
         data: [],
-        lines: {show: false},
-    },
-    {
-    label: 'Delivered',
-    color: 'black',
-    data: [],
-    lines: {show: true, lineWidth: 1}
-}];
+        lines: {show: true, lineWidth: 1}
+    }
+];
 
 /* Create hall charge data by deep copying template */
 jlab.chargeDataA = JSON.parse(JSON.stringify(jlab.hallChargeData));
-jlab.chargeDataA[0].data = jlab.series.charge.scheduled.a.data;
-jlab.chargeDataA[1].data = jlab.series.charge.delivered.a.data;
+jlab.chargeDataA[0].data = jlab.series.charge.delivered.a.data;
 
 jlab.chargeDataB = JSON.parse(JSON.stringify(jlab.hallChargeData));
-jlab.chargeDataB[0].data = jlab.series.charge.scheduled.b.data;
-jlab.chargeDataB[1].data = jlab.series.charge.delivered.b.data;
+jlab.chargeDataB[0].data = jlab.series.charge.delivered.b.data;
 
 jlab.chargeDataC = JSON.parse(JSON.stringify(jlab.hallChargeData));
-jlab.chargeDataC[0].data = jlab.series.charge.scheduled.c.data;
-jlab.chargeDataC[1].data = jlab.series.charge.delivered.c.data;
+jlab.chargeDataC[0].data = jlab.series.charge.delivered.c.data;
 
 jlab.chargeDataD = JSON.parse(JSON.stringify(jlab.hallChargeData));
-jlab.chargeDataD[0].data = jlab.series.charge.scheduled.d.data;
-jlab.chargeDataD[1].data = jlab.series.charge.delivered.d.data;
+jlab.chargeDataD[0].data = jlab.series.charge.delivered.d.data;
 
 jlab.addYAxisLabelExtra = function (placeholder, label) {
     var yaxisLabel = $("<div class='axis-label y-axis-label'></div>")
@@ -182,7 +81,6 @@ jlab.addYAxisLabelExtra = function (placeholder, label) {
 
 jlab.addAxisLabels = function () {
     /*jlab.addXAxisLabel("Time");*/
-    jlab.addYAxisLabel("Percent of Scheduled");
     jlab.addYAxisLabelExtra($("#charta-charge-placeholder"), "C");
     jlab.addYAxisLabelExtra($("#chartb-charge-placeholder"), "mC");
     jlab.addYAxisLabelExtra($("#chartc-charge-placeholder"), "C");
@@ -194,30 +92,6 @@ jlab.addAxisLabels = function () {
     jlab.addYAxisLabelExtra($("#chartd-current-placeholder"), "nA");
 };
 
-/**
- * Flot has built-in step function, but it doesn't add points to series exposed in API.  This function does, which makes
- * interpolation more accurate.
- *
- * @param data flot data
- * @returns {[]}
- */
-jlab.stepFlotLine = function(data) {
-    var out = [];
-    var prev = null;
-
-    if(data.length > 1) {
-        out.push(data[0]);
-        prev = data[0];
-        for (let i = 1; i < data.length; i++) {
-            out.push([data[i][0], prev[1]]);
-            //out.push([prev[0], data[i][1]]);
-            out.push(data[i]);
-            prev = data[i];
-        }
-    }
-
-    return out;
-}
 jlab.toUserDateStringUtc = function (x) {
     var year = x.getUTCFullYear(),
         month = x.getUTCMonth(),
@@ -329,9 +203,6 @@ jlab.fetchMultiple = function (params) {
         Promise.all(promises).then(values => {
             $("#busy-wait").hide();
 
-            //jlab.doLineChart();
-            //jlab.updateKey();
-
             var options = jlab.defaultHallChartOptions;
 
             /* Deep copy object */
@@ -342,31 +213,10 @@ jlab.fetchMultiple = function (params) {
             /*chargeChartOptions.xaxis.reserveSpace = true;*/
 
 
-            var scale = $("#scale").val();
-
-            if(scale == '') {
-                scale = 1;
-            }
-
-            //jlab.scaleHallScheduled(scale);
-
-
-
-
-
             jlab.hallAChargeChart = $.plot($("#charta-charge-placeholder"), jlab.chargeDataA, chargeChartOptions);
             jlab.hallBChargeChart = $.plot($("#chartb-charge-placeholder"), jlab.chargeDataB, chargeChartOptions);
             jlab.hallCChargeChart = $.plot($("#chartc-charge-placeholder"), jlab.chargeDataC, chargeChartOptions);
             jlab.hallDChargeChart = $.plot($("#chartd-charge-placeholder"), jlab.chargeDataD, chargeChartOptions);
-
-            /*jlab.currentDataA[0].data = jlab.series.current.scheduled.a.data = jlab.stepFlotLine(jlab.series.current.scheduled.a.data);
-            jlab.currentDataB[0].data = jlab.series.current.scheduled.b.data = jlab.stepFlotLine(jlab.series.current.scheduled.b.data);
-            jlab.currentDataC[0].data = jlab.series.current.scheduled.c.data = jlab.stepFlotLine(jlab.series.current.scheduled.c.data);
-            jlab.currentDataD[0].data = jlab.series.current.scheduled.d.data = jlab.stepFlotLine(jlab.series.current.scheduled.d.data);*/
-
-
-
-
 
             options.yaxis.ticks = 2;
 
@@ -405,69 +255,6 @@ jlab.fetchMultiple = function (params) {
     }
 };
 
-jlab.toScientificNotationHTML = function(number, units) {
-        var result = 0;
-
-        /*result = number.toExponential(2);*/
-
-        if(number !== undefined && number !== 0) {
-            var exp = number.toExponential(1),
-                tokens = exp.split("e"),
-                sci = tokens[0] + "x10",
-                supNum = tokens[1] * 1;
-
-                if(supNum < 0) {  /* Negative exponent */
-                    if(Math.abs(supNum) > 4) { /* 5+ zeros */
-                        result = sci + '<sup>' + supNum + '</sup>' + units;
-                    } else { /* 4 or less zeros */
-                        result = number.toFixed(4) + units;
-                    }
-                } else { /* Non-negative exponent */
-                    if(supNum > 4) { /* 5+ zeros */
-                        result = sci + '<sup>' + supNum + '</sup>' + units;
-                    } else if(supNum > 3) { /* 4 zeros */
-                        result = number.toFixed(0) + units;
-                    } else if(supNum > 2) { /* 3 zeros */
-                        result = parseFloat(number.toFixed(1)) + units; /*parseFloat trims trailing zeros*/
-                    } else if(supNum > 1) { /* 2 zeros */
-                        result = parseFloat(number.toFixed(2)) + units;
-                    } else if(supNum > 0) { /* 1 zero */
-                        result = parseFloat(number.toFixed(3)) + units;
-                    } else { /* 0 zeros */
-                        result = parseFloat(number.toFixed(4)) + units;
-                    }
-                }
-        }
-
-        return result;
-};
-
-jlab.updateKey = function() {
-
-    var stores = [jlab.series.charge.delivered.a, jlab.series.charge.delivered.b, jlab.series.charge.delivered.c, jlab.series.charge.delivered.d],
-        units = ['C', 'mC', 'C', 'mC'];
-
-    $(".chart-legend").find("tr:not(.sub-head-row)").each(function(i, row){
-        var max = 0,
-            num = 0;
-        if(stores[i].data.length > 0) {
-            max = stores[i].data[stores[i].data.length - 1][1],
-                num = jlab.toScientificNotationHTML(max, units[i]);
-        }
-        $(this).find("td:nth-child(4)").html(num);
-    });
-
-
-    stores = [jlab.scheduledATotal, jlab.scheduledBTotal, jlab.scheduledCTotal, jlab.scheduledDTotal];
-    units = ['C', 'mC', 'C', 'mC'];
-
-    $(".chart-legend").find("tr:not(.sub-head-row)").each(function(i, row){
-        var max = stores[i][1],
-            num = jlab.toScientificNotationHTML(max, units[i]);
-        $(this).find("td:nth-child(3)").html(num);
-    });
-}
-
 jlab.initLineChart = function() {
     var start = jlab.fromFriendlyDateString($("#start").val()),
         end = jlab.fromFriendlyDateString($("#end").val()),
@@ -493,122 +280,6 @@ jlab.initLineChart = function() {
     };
 
     jlab.fetchMultiple(params);
-};
-
-jlab.createRatioData = function(scale) {
-    var deliveredA = jlab.ratioData[0].data = [];
-    var scheduledA = jlab.ratioData[1].data = [];
-    var deliveredB = jlab.ratioData[2].data = [];
-    var scheduledB = jlab.ratioData[3].data = [];
-    var deliveredC = jlab.ratioData[4].data = [];
-    var scheduledC = jlab.ratioData[5].data = [];
-    var deliveredD = jlab.ratioData[6].data = [];
-    var scheduledD = jlab.ratioData[7].data = [];
-
-    var source = jlab.series.charge.scheduled.a.data;
-    jlab.scheduledATotal = 0;
-    if(source.length > 0) {
-        jlab.scheduledATotal = [source[source.length - 1][0], source[source.length - 1][1] * scale];
-    }
-
-    source = jlab.series.charge.scheduled.b.data;
-    jlab.scheduledBTotal = 0;
-    if(source.length > 0) {
-        jlab.scheduledBTotal = [source[source.length - 1][0], source[source.length - 1][1] * scale];
-    }
-
-    source = jlab.series.charge.scheduled.c.data;
-    jlab.scheduledCTotal = 0;
-    if(source.length > 0) {
-        jlab.scheduledCTotal = [source[source.length - 1][0], source[source.length - 1][1] * scale];
-    }
-
-    source = jlab.series.charge.scheduled.d.data;
-    jlab.scheduledDTotal = 0;
-    if(source.length > 0) {
-        jlab.scheduledDTotal = [source[source.length - 1][0], source[source.length - 1][1] * scale];
-    }
-
-    jlab.createRatioForSeries(jlab.series.charge.delivered.a.data, deliveredA, jlab.scheduledATotal, 1);
-    jlab.createRatioForSeries(jlab.series.charge.scheduled.a.data, scheduledA, jlab.scheduledATotal, scale);
-    jlab.createRatioForSeries(jlab.series.charge.delivered.b.data, deliveredB, jlab.scheduledBTotal, 1);
-    jlab.createRatioForSeries(jlab.series.charge.scheduled.b.data, scheduledB, jlab.scheduledBTotal, scale);
-    jlab.createRatioForSeries(jlab.series.charge.delivered.c.data, deliveredC, jlab.scheduledCTotal, 1);
-    jlab.createRatioForSeries(jlab.series.charge.scheduled.c.data, scheduledC, jlab.scheduledCTotal, scale);
-    jlab.createRatioForSeries(jlab.series.charge.delivered.d.data, deliveredD, jlab.scheduledDTotal, 1);
-    jlab.createRatioForSeries(jlab.series.charge.scheduled.d.data, scheduledD, jlab.scheduledDTotal, scale);
-};
-
-jlab.createRatioForSeries = function(source, out, scheduledTotal, scale) {
-    if(source.length > 0) {
-        var totalRecord = scheduledTotal;
-        //var totalRecord = source[source.length - 1];
-        for(var i = 0; i < source.length; i++) {
-            var record = source[i];
-            //var ratio = record[1];
-            //var ratio = totalRecord[1];
-            var ratio = (record[1] * scale) / (totalRecord[1]) * 100;
-            out.push([record[0], ratio]);
-        }
-    }
-};
-
-jlab.doLineChart = function () {
-
-    /*console.log(jlab.flotData);*/
-
-    /*if (jlab.series.charge.a.data.length === 0) {
-        $('<div>No data to chart</div>').insertBefore($("#chart-placeholder"));
-        return;
-    }*/
-
-    var scale = $("#scale").val();
-
-    if(scale == '') {
-        scale = 1;
-    }
-
-    jlab.createRatioData(scale);
-
-    /*console.log(jlab.ratioData);*/
-    /*console.log(jlab.series);*/
-
-    $(".chart-wrap").addClass("has-y-axis-label").addClass("has-x-axis-label");
-
-    jlab.ratioChart = $.plot($("#chart-placeholder"), jlab.ratioData, {
-        lines: {
-            lineWidth: 4
-        },
-        legend: {
-            show: false,
-            position: 'nw',
-            noColumns: 1,
-            labelFormatter: function(label, series) {
-                if(label === 'Scheduled') {
-                    return null;
-                }
-                return label;
-            }
-        },
-        yaxes: [{
-            min: 0
-        }, {
-            position: 'right', /*Last x-axis label may wrap if we don't do this*/
-            reserveSpace: true
-        }],
-        xaxis: {
-            mode: "time",
-            timeBase: "milliseconds",
-            ticks: 6,
-            timezone: null /*UTC data (timezone-less) - converted to America/New_York server side*/
-        },
-        grid: {
-            borderWidth: 1,
-            hoverable: false,
-            borderColor: 'gray',
-            backgroundColor: {colors: ["#fff", "#eee"]}
-        }
-    });
 };
 
 jlab.defaultHallChartOptions = {
@@ -704,25 +375,17 @@ jlab.cleanupAll = function() {
 
     jlab.latestPosition = null;
 
-    jlab.chartALegend.charge.series[0].innerHTML = '';
-    jlab.chartALegend.charge.series[1].innerHTML = '';
-    jlab.chartALegend.current.series[0].innerHTML = '';
-    jlab.chartALegend.current.series[1].innerHTML = '';
+    jlab.chartALegend.charge.innerHTML = '';
+    jlab.chartALegend.current.innerHTML = '';
 
-    jlab.chartBLegend.charge.series[0].innerHTML = '';
-    jlab.chartBLegend.charge.series[1].innerHTML = '';
-    jlab.chartBLegend.current.series[0].innerHTML = '';
-    jlab.chartBLegend.current.series[1].innerHTML = '';
+    jlab.chartBLegend.charge.innerHTML = '';
+    jlab.chartBLegend.current.innerHTML = '';
 
-    jlab.chartCLegend.charge.series[0].innerHTML = '';
-    jlab.chartCLegend.charge.series[1].innerHTML = '';
-    jlab.chartCLegend.current.series[0].innerHTML = '';
-    jlab.chartCLegend.current.series[1].innerHTML = '';
+    jlab.chartCLegend.charge.innerHTML = '';
+    jlab.chartCLegend.current.innerHTML = '';
 
-    jlab.chartDLegend.charge.series[0].innerHTML = '';
-    jlab.chartDLegend.charge.series[1].innerHTML = '';
-    jlab.chartDLegend.current.series[0].innerHTML = '';
-    jlab.chartDLegend.current.series[1].innerHTML = '';
+    jlab.chartDLegend.charge.innerHTML = '';
+    jlab.chartDLegend.current.innerHTML = '';
 };
 
 jlab.hideTooltipAll = function() {
@@ -731,155 +394,113 @@ jlab.hideTooltipAll = function() {
 };
 
 jlab.chartALegend = {
-    charge: {
-        scheduled: document.getElementById('key-a-charge-scheduled'),
-        delivered: document.getElementById('key-a-charge-delivered')
-    }, current: {
-        scheduled: document.getElementById('key-a-current-scheduled'),
-        delivered: document.getElementById('key-a-current-delivered')
-    }
+    charge: document.getElementById('key-a-charge-delivered'),
+    current: document.getElementById('key-a-current-delivered')
 };
-jlab.chartALegend.charge.series = [jlab.chartALegend.charge.scheduled, jlab.chartALegend.charge.delivered];
-jlab.chartALegend.current.series = [jlab.chartALegend.current.scheduled, jlab.chartALegend.current.delivered];
 
 jlab.chartBLegend = {
-    charge: {
-        scheduled: document.getElementById('key-b-charge-scheduled'),
-        delivered: document.getElementById('key-b-charge-delivered')
-    }, current: {
-        scheduled: document.getElementById('key-b-current-scheduled'),
-        delivered: document.getElementById('key-b-current-delivered')
-    }
+    charge: document.getElementById('key-b-charge-delivered'),
+    current: document.getElementById('key-b-current-delivered')
 };
-jlab.chartBLegend.charge.series = [jlab.chartBLegend.charge.scheduled, jlab.chartBLegend.charge.delivered];
-jlab.chartBLegend.current.series = [jlab.chartBLegend.current.scheduled, jlab.chartBLegend.current.delivered];
 
 jlab.chartCLegend = {
-    charge: {
-        scheduled: document.getElementById('key-c-charge-scheduled'),
-        delivered: document.getElementById('key-c-charge-delivered')
-    }, current: {
-        scheduled: document.getElementById('key-c-current-scheduled'),
-        delivered: document.getElementById('key-c-current-delivered')
-    }
+    charge: document.getElementById('key-c-charge-delivered'),
+    current: document.getElementById('key-c-current-delivered')
 };
-jlab.chartCLegend.charge.series = [jlab.chartCLegend.charge.scheduled, jlab.chartCLegend.charge.delivered];
-jlab.chartCLegend.current.series = [jlab.chartCLegend.current.scheduled, jlab.chartCLegend.current.delivered];
 
 jlab.chartDLegend = {
-    charge: {
-        scheduled: document.getElementById('key-d-charge-scheduled'),
-        delivered: document.getElementById('key-d-charge-delivered')
-    }, current: {
-        scheduled: document.getElementById('key-d-current-scheduled'),
-        delivered: document.getElementById('key-d-current-delivered')
-    }
+    charge: document.getElementById('key-d-charge-delivered'),
+    current: document.getElementById('key-d-current-delivered')
 };
-jlab.chartDLegend.charge.series = [jlab.chartDLegend.charge.scheduled, jlab.chartDLegend.charge.delivered];
-jlab.chartDLegend.current.series = [jlab.chartDLegend.current.scheduled, jlab.chartDLegend.current.delivered];
 
 jlab.updateSelected = function() {
     jlab.updateSelectedTimeout = null;
 
     if (jlab.latestPosition != null) {
-        var closestXIndex = jlab.findClosestXIndex(jlab.hallAChargeChart, jlab.latestPosition); /*Just use Hall A chart scheduled, as all halls have same X axis for scheduled (but not for delivered!)*/
-        jlab.updatePrograms(closestXIndex);
+        jlab.updatePrograms(jlab.latestPosition.x);
 
-        jlab.updateSelectedInChart(jlab.hallAChargeChart, jlab.latestPosition, jlab.chartALegend.charge.series, 'C', closestXIndex);
-        jlab.updateSelectedInChart(jlab.hallACurrentChart, jlab.latestPosition, jlab.chartALegend.current.series, 'µA', closestXIndex);
-        jlab.updateSelectedInChart(jlab.hallBChargeChart, jlab.latestPosition, jlab.chartBLegend.charge.series, 'mC', closestXIndex);
-        jlab.updateSelectedInChart(jlab.hallBCurrentChart, jlab.latestPosition, jlab.chartBLegend.current.series, 'nA', closestXIndex);
-        jlab.updateSelectedInChart(jlab.hallCChargeChart, jlab.latestPosition, jlab.chartCLegend.charge.series, 'C', closestXIndex);
-        jlab.updateSelectedInChart(jlab.hallCCurrentChart, jlab.latestPosition, jlab.chartCLegend.current.series, 'µA', closestXIndex);
-        jlab.updateSelectedInChart(jlab.hallDChargeChart, jlab.latestPosition, jlab.chartDLegend.charge.series, 'mC', closestXIndex);
-        jlab.updateSelectedInChart(jlab.hallDCurrentChart, jlab.latestPosition, jlab.chartDLegend.current.series, 'nA', closestXIndex);
+        jlab.updateSelectedInChart(jlab.hallAChargeChart, jlab.latestPosition, jlab.chartALegend.charge, 'C');
+        jlab.updateSelectedInChart(jlab.hallACurrentChart, jlab.latestPosition, jlab.chartALegend.current, 'µA');
+        jlab.updateSelectedInChart(jlab.hallBChargeChart, jlab.latestPosition, jlab.chartBLegend.charge, 'mC');
+        jlab.updateSelectedInChart(jlab.hallBCurrentChart, jlab.latestPosition, jlab.chartBLegend.current, 'nA');
+        jlab.updateSelectedInChart(jlab.hallCChargeChart, jlab.latestPosition, jlab.chartCLegend.charge, 'C');
+        jlab.updateSelectedInChart(jlab.hallCCurrentChart, jlab.latestPosition, jlab.chartCLegend.current, 'µA');
+        jlab.updateSelectedInChart(jlab.hallDChargeChart, jlab.latestPosition, jlab.chartDLegend.charge, 'mC');
+        jlab.updateSelectedInChart(jlab.hallDCurrentChart, jlab.latestPosition, jlab.chartDLegend.current, 'nA');
 
         jlab.updateSelectedDateTime(jlab.latestPosition);
     }
 };
 
-jlab.updatePrograms = function(index) {
+/**
+ * Finds the scheduled programs for the day containing x.
+ *
+ * @param x time in local milliseconds, as the charts plot it
+ * @returns {object|null} the day's programs, or null if no published schedule covers that day
+ */
+jlab.findPrograms = function(x) {
+    var days = jlab.series.programs,
+        found = null;
 
-    /*Take previous nearest*/
-    if(index > 0) {
-        index = index - 1;
+    for (var i = 0; i < days.length && days[i].x <= x; i++) {
+        found = days[i];
     }
 
-    $("#program-tooltip-a").html(jlab.series.programs.a[index]).show();
-    $("#program-tooltip-b").html(jlab.series.programs.b[index]).show();
-    $("#program-tooltip-c").html(jlab.series.programs.c[index]).show();
-    $("#program-tooltip-d").html(jlab.series.programs.d[index]).show();
-}
+    /* Local milliseconds have no daylight saving shifts, so every day is 24 hours long */
+    if (found !== null && x >= found.x + 24 * 60 * 60 * 1000) {
+        found = null;
+    }
+
+    return found;
+};
+
+jlab.updatePrograms = function(x) {
+    var programs = jlab.findPrograms(x);
+
+    ['a', 'b', 'c', 'd'].forEach(function(hall) {
+        var tooltip = $("#program-tooltip-" + hall);
+
+        if (programs === null) {
+            tooltip.hide();
+        } else {
+            tooltip.html(programs[hall]).show();
+        }
+    });
+};
 
 jlab.updateSelectedDateTime = function(pos) {
     var formattedX = jlab.toUserDateTimeStringUtc(new Date(pos.x));
     $(".date-tooltip").html(formattedX).show();
 };
 
-jlab.findClosestXIndex = function(plot, pos) {
-    var j = 0, dataset = plot.getData();
+jlab.updateSelectedInChart = function(plot, pos, legendCell, units) {
+    var j, series = plot.getData()[0];
 
-    if(dataset.length > 0) {
-        var series = dataset[0];
-        // Find the nearest points, x-wise
-        for (j = 0; j < series.data.length; ++j) {
-            if (series.data[j][0] > pos.x) {
-                break;
-            }
+    if(series.data.length === 0) {
+        return;
+    }
+
+    for (j = 0; j < series.data.length; ++j) {
+        if (series.data[j][0] > pos.x) {
+            break;
         }
     }
 
-    return j;
-};
+    // Now Interpolate
+    var y,
+        p1 = series.data[j - 1],
+        p2 = series.data[j];
 
-jlab.updateSelectedInChart = function(plot, pos, legendSeries, units, j) {
-
-    var i, j, dataset = plot.getData();
-
-    for (i = 0; i < dataset.length; ++i) {
-        var series = dataset[i];
-
-        if(series.data.length === 0) {
-            return;
-        }
-
-        /*If scheduled series, which is at index 0, then use passed in closest point index j since it is a shared value.
-        Otherwise series contains delivered data and number of points is variable so we must search for nearest
-         point each time */
-        if(i > 0) {
-            for (j = 0; j < series.data.length; ++j) {
-                if (series.data[j][0] > pos.x) {
-                    break;
-                }
-            }
-        }
-
-        // Now Interpolate
-        var y,
-            p1 = series.data[j - 1],
-            p2 = series.data[j];
-
-        /*if(debug) {
-            console.log(
-                jlab.toUserDateStringUtc(new Date(series.data[j - 2][0])),
-                jlab.toUserDateStringUtc(new Date(p1[0])),
-                jlab.toUserDateStringUtc(new Date(p2[0])),
-                jlab.toUserDateStringUtc(new Date(series.data[j + 1][0])),
-                jlab.toUserDateStringUtc(new Date(series.data[j + 2][0]))
-            );
-        }*/
-
-        if (p1 == null) {
-            y = p2[1];
-        } else if (p2 == null) {
-            y = p1[1];
-        } else if(series.lines.steps === true) {
-            y = p1[1]; /*If points are stepped then don't interpolate, just grab nearest previous point*/
-        } else {
-            y = p1[1] + (p2[1] - p1[1]) * (pos.x - p1[0]) / (p2[0] - p1[0]);
-        }
-        legendSeries[i].innerHTML = y.toFixed(2) + '' + units;
+    if (p1 == null) {
+        y = p2[1];
+    } else if (p2 == null) {
+        y = p1[1];
+    } else if(series.lines.steps === true) {
+        y = p1[1]; /*If points are stepped then don't interpolate, just grab nearest previous point*/
+    } else {
+        y = p1[1] + (p2[1] - p1[1]) * (pos.x - p1[0]) / (p2[0] - p1[0]);
     }
+    legendCell.innerHTML = y.toFixed(2) + '' + units;
 };
 
 jlab.doTooltip = function() {
@@ -932,101 +553,6 @@ jlab.doTooltip = function() {
     });
 };
 
-jlab.doScale = function(scale, source, destination) {
-    for(var i = 0; i < source.length; i++) {
-        var point = [source[i][0], source[i][1] * scale];
-        destination.push(point);
-    }
-};
-
-jlab.scaleHallScheduled = function(scale) {
-    jlab.currentDataA[0].data = [];
-    jlab.doScale(scale, jlab.series.current.scheduled.a.data, jlab.currentDataA[0].data);
-
-    jlab.chargeDataA[0].data = [];
-    jlab.doScale(scale, jlab.series.charge.scheduled.a.data, jlab.chargeDataA[0].data);
-
-    jlab.currentDataB[0].data = [];
-    jlab.doScale(scale, jlab.series.current.scheduled.b.data, jlab.currentDataB[0].data);
-
-    jlab.chargeDataB[0].data = [];
-    jlab.doScale(scale, jlab.series.charge.scheduled.b.data, jlab.chargeDataB[0].data);
-
-    jlab.currentDataC[0].data = [];
-    jlab.doScale(scale, jlab.series.current.scheduled.c.data, jlab.currentDataC[0].data);
-
-    jlab.chargeDataC[0].data = [];
-    jlab.doScale(scale, jlab.series.charge.scheduled.c.data, jlab.chargeDataC[0].data);
-
-    jlab.currentDataD[0].data = [];
-    jlab.doScale(scale, jlab.series.current.scheduled.d.data, jlab.currentDataD[0].data);
-
-    jlab.chargeDataD[0].data = [];
-    jlab.doScale(scale, jlab.series.charge.scheduled.d.data, jlab.chargeDataD[0].data);
-};
-
-jlab.scaleScheduled = function(scale) {
-
-    jlab.scaleHallScheduled(scale);
-
-    jlab.createRatioData(scale);
-
-    jlab.redrawAll();
-};
-
-jlab.redrawAll = function() {
-    jlab.hallACurrentChart.setData(jlab.currentDataA);
-    jlab.hallACurrentChart.setupGrid();
-    jlab.hallACurrentChart.draw();
-
-    jlab.hallAChargeChart.setData(jlab.chargeDataA);
-    jlab.hallAChargeChart.setupGrid();
-    jlab.hallAChargeChart.draw();
-
-    jlab.hallBCurrentChart.setData(jlab.currentDataB);
-    jlab.hallBCurrentChart.setupGrid();
-    jlab.hallBCurrentChart.draw();
-
-    jlab.hallBChargeChart.setData(jlab.chargeDataB);
-    jlab.hallBChargeChart.setupGrid();
-    jlab.hallBChargeChart.draw();
-
-    jlab.hallCCurrentChart.setData(jlab.currentDataC);
-    jlab.hallCCurrentChart.setupGrid();
-    jlab.hallCCurrentChart.draw();
-
-    jlab.hallCChargeChart.setData(jlab.chargeDataC);
-    jlab.hallCChargeChart.setupGrid();
-    jlab.hallCChargeChart.draw();
-
-    jlab.hallDCurrentChart.setData(jlab.currentDataD);
-    jlab.hallDCurrentChart.setupGrid();
-    jlab.hallDCurrentChart.draw();
-
-    jlab.hallDChargeChart.setData(jlab.chargeDataD);
-    jlab.hallDChargeChart.setupGrid();
-    jlab.hallDChargeChart.draw();
-
-    jlab.ratioChart.setData(jlab.ratioData);
-    jlab.ratioChart.setupGrid();
-    jlab.ratioChart.draw();
-
-    $(".charge-placeholder .flot-x-axis").hide();
-
-    jlab.updateKey();
-};
-
-/*$(document).on("change", "#scale", function(){
-
-    var scale = $("#scale").val();
-
-    if(scale == '') {
-        scale = 1;
-    }
-
-    jlab.scaleScheduled(scale);
-});*/
-
 $(document).on("smoothnessready", function(){
     let start, end;
 
@@ -1039,27 +565,9 @@ $(document).on("smoothnessready", function(){
         end = range.end;
     }
 
-    let defaultParams = {start: jlab.toFriendlyDateString(start), end: jlab.toFriendlyDateString(end), scale: '0.5', print: 'N', fullscreen: 'N'};
+    let defaultParams = {start: jlab.toFriendlyDateString(start), end: jlab.toFriendlyDateString(end), print: 'N', fullscreen: 'N'};
     let redirecting = jlab.initParams(defaultParams);
     if(!redirecting) {
         jlab.initLineChart();
     }
-});
-
-$(function () {
-    /*console.log(jlab.toScientificNotationHTML(0.00000012345678, ''));
-    console.log(jlab.toScientificNotationHTML(0.0000012345678, ''));
-    console.log(jlab.toScientificNotationHTML(0.000012345678, ''));
-    console.log(jlab.toScientificNotationHTML(0.00012345678, ''));
-    console.log(jlab.toScientificNotationHTML(0.0012345678, ''));
-    console.log(jlab.toScientificNotationHTML(0.012345678, ''));
-    console.log(jlab.toScientificNotationHTML(0.12345678, ''));
-    console.log(jlab.toScientificNotationHTML(1.2345678, ''));
-    console.log(jlab.toScientificNotationHTML(12.345678, ''));
-    console.log(jlab.toScientificNotationHTML(123.45678, ''));
-    console.log(jlab.toScientificNotationHTML(1234.5678, ''));
-    console.log(jlab.toScientificNotationHTML(12345.678, ''));
-    console.log(jlab.toScientificNotationHTML(123456.78, ''));
-    console.log(jlab.toScientificNotationHTML(1234567.8, ''));
-    console.log(jlab.toScientificNotationHTML(12345678, ''));*/
 });
