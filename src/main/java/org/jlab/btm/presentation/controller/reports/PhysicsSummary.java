@@ -144,7 +144,7 @@ public class PhysicsSummary extends HttpServlet {
                         + totals.getBanuSeconds()
                         + totals.getBnaSeconds()
                         + totals.getExpOffSeconds())
-                    / 3600;
+                    / 3600.0;
         expUnknownList.add(unknown);
 
         unknown =
@@ -153,7 +153,7 @@ public class PhysicsSummary extends HttpServlet {
                         + totals.getBnrSeconds()
                         + totals.getDownSeconds()
                         + totals.getOpOffSeconds())
-                    / 3600;
+                    / 3600.0;
         opUnknownList.add(unknown);
       }
 
