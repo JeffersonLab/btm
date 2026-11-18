@@ -1108,8 +1108,9 @@ shows what BOOM has for the shift (Source EPICS), for the current, previous and 
    saving it fails.</li>
 <li>Adds your signature: as Crew Chief, or as Operability Manager for an administrator.</li>
 <li>Posts a "Crew Chief Timesheet Summary" entry to the ELOG logbook, tagged BeamAccounting, with
-   the shift's totals and shift information. If the logbook can't be reached, the timesheet is
-   still signed, without a warning: check that the entry is there.</li>
+   the shift's totals, under the same headings as the Shift Summary tab, and shift information.
+   If the entry can't be made, the timesheet is still signed, and BTM warns you, naming the
+   logbook: make the entry by hand. The reason is in the server log.</li>
 </ol>
 <p>The <strong>Signatures</strong> table lists who signed, as which role, and when. More than one person can
 sign, but nobody twice in the same role. A signed Crew Chief timesheet can still be edited, and
@@ -1162,10 +1163,11 @@ the <strong>Hour</strong>, the <strong>Reason</strong> (from the hall's list, ke
 hall's active <a href="../schedule/#programs">programs</a>, listed under General and Experiments.</p>
 <h3 id="signing_1">Signing<a class="headerlink" href="#signing_1" title="Permanent link">&para;</a></h3>
 <p>Before you can sign, save every hour, the shift information, and reasons for all the UED. Then
-<strong>Sign</strong>: you sign as User, or as Operability Manager if you are an administrator. The timesheet
-can have one signature of each. Signing posts an "Experimenter X Timesheet Summary" entry to the
+<strong>Sign</strong>: you sign as User; as the hall's manager (such as Hall B Manager) if you lead the hall;
+or as Operability Manager if you are an administrator. The timesheet can have one signature of
+each, so a User and the hall's manager can both sign it. Signing posts an "Experimenter X Timesheet Summary" entry to the
 hall's logbook (HALOG, HBLOG, HCLOG or HDLOG), tagged BeamAccounting; as for the Crew Chief, the
-timesheet is signed even if the logbook can't be reached.</p>
+timesheet is signed even if the entry can't be made, and BTM warns you so you can make it by hand.</p>
 <p>The status is Complete when the timesheet is signed and complete, and the previous shift's last
 hour is saved too: the Crew Chief's shift needs it.</p>
 <h3 id="who-can-change-a-signed-timesheet">Who can change a signed timesheet<a class="headerlink" href="#who-can-change-a-signed-timesheet" title="Permanent link">&para;</a></h3>
@@ -1190,11 +1192,16 @@ hour is saved too: the Crew Chief's shift needs it.</p>
 <td>The signer, the hall's manager or an administrator.</td>
 </tr>
 <tr>
+<td>The hall's manager</td>
+<td>The hall's manager or an administrator.</td>
+</tr>
+<tr>
 <td>An Operability Manager</td>
 <td>An administrator.</td>
 </tr>
 </tbody>
 </table>
+<p>With more than one signature, the lowest row that applies decides.</p>
 <p>Above the <strong>Sign</strong> button, the timesheet says why you can't change it. A refused save says
 "Access Denied".</p>
 <h2 id="what-the-crew-chief-needs-from-the-halls">What the Crew Chief needs from the halls<a class="headerlink" href="#what-the-crew-chief-needs-from-the-halls" title="Permanent link">&para;</a></h2>
