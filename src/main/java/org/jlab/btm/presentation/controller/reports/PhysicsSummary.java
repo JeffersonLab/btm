@@ -150,6 +150,7 @@ public class PhysicsSummary extends HttpServlet {
         unknown =
             period
                 - (totals.getUpSeconds()
+                        + totals.getTuningSeconds()
                         + totals.getBnrSeconds()
                         + totals.getDownSeconds()
                         + totals.getOpOffSeconds())
