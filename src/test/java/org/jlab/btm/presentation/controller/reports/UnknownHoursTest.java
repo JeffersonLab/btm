@@ -106,6 +106,47 @@ class UnknownHoursTest {
     assertEquals(List.of(expectedUnknown), attributes.get("opUnknownList"));
   }
 
+  @ParameterizedTest(name = "an hour of {0} leaves no Crew Chief Implicit OFF")
+  @CsvSource({"UP", "TUNE", "BNR", "DOWN", "OFF"})
+  void physicsSummaryCountsEveryCrewChiefCategory(String category) throws Exception {
+    long up = category.equals("UP") ? 3600 : 0;
+    long tune = category.equals("TUNE") ? 3600 : 0;
+    long bnr = category.equals("BNR") ? 3600 : 0;
+    long down = category.equals("DOWN") ? 3600 : 0;
+    long off = category.equals("OFF") ? 3600 : 0;
+
+    PhysicsSummary servlet = new PhysicsSummary();
+    servlet.expHourService =
+        new ExpHourService() {
+          @Override
+          public List<PhysicsSummaryTotals> reportTotals(Date s, Date e) {
+            return List.of(new PhysicsSummaryTotals('A', 3600, 0, 0, 0, up, tune, bnr, down, off));
+          }
+        };
+    servlet.multiplicityService =
+        new CcMultiplicityHourService() {
+          @Override
+          public MultiplicitySummaryTotals reportTotals(Date s, Date e) {
+            return new MultiplicitySummaryTotals(0, 0, 0, 0, 0, 0, 0);
+          }
+        };
+    servlet.planService =
+        new PdShiftPlanService() {
+          @Override
+          public Long[] findScheduledHallTime(Date s, Date e) {
+            return new Long[] {0L, 0L, 0L, 0L};
+          }
+        };
+
+    Map<String, Object> attributes =
+        get(
+            servlet,
+            Map.of(
+                "start", "01-Jan-2026 07:00", "end", "01-Jan-2026 08:00", "physics-data", "table"));
+
+    assertEquals(List.of(0.0), attributes.get("opUnknownList"));
+  }
+
   /** Calls the servlet's GET handler and returns the request attributes it set for its view. */
   private static Map<String, Object> get(
       jakarta.servlet.http.HttpServlet servlet, Map<String, String> parameters) throws Exception {
